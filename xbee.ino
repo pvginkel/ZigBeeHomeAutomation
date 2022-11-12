@@ -31,8 +31,15 @@ void setup()
 
     LOG("Running configuration");
 
-    XBeeConfig xbeeConfig;
-    xbeeConfig.setup(xbeeSerial);
+    XBeeConfig xbeeConfig(xbeeSerial);
+    xbeeConfig.enterConfig();
+
+    LOG("Restore Defaults: ", xbeeConfig.send("RE"));
+    LOG("Node Identifier: ", xbeeConfig.send("NI TEST LAMP 1"));
+    LOG("Coordinator Enable: ", xbeeConfig.send("CE 0"));
+
+    xbeeConfig.printConfig();
+    xbeeConfig.exitConfig();
 
     xbee.begin(xbeeSerial);
 }
@@ -46,4 +53,16 @@ void loop()
         lastLed = !lastLed;
         digitalWrite(IO_LED, lastLed);
     }
+
+    handleXbee();
+}
+
+void handleXbee() {
+    xbee.readPacket();
+    if (!xbee.getResponse().isAvailable()) {
+        return;
+    }
+
+    int frameType = xbee.getResponse().getApiId();
+
 }

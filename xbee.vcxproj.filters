@@ -21,10 +21,13 @@
     <ClInclude Include="__vm\.xbee.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Zigbee.h">
+    <ClInclude Include="XBeeConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="support.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
