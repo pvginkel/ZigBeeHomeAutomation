@@ -40,4 +40,6 @@
 #define _LOG_N2(N, ...) _LOG_N3(N, __VA_ARGS__)
 #define LOG(...)      _LOG_N2(_NUM_ARGS(__VA_ARGS__), __VA_ARGS__)
 
+#define ARRAY_LENGTH(array) (sizeof(array)/sizeof((array)[0]))
+
 typedef uint32_t time_t;
