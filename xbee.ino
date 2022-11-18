@@ -1,6 +1,5 @@
 #include "LevelControlOutputDevice.h"
 #include "Button.h"
-#include <XBee.h>
 #include <SoftwareSerial.h>
 
 #include "Display.h"
@@ -23,29 +22,17 @@ Button pb(IO_PB);
 LevelControlOutputDevice lightbulb(0x8);
 Display display;
 
-void on(uintptr_t) {
-    digitalWrite(IO_LED, HIGH);
-    display.setBrightness(255);
-}
-void off(uintptr_t) {
-    digitalWrite(IO_LED, LOW);
-    display.setBrightness(0);
-}
-void toggle(uintptr_t) {
-    bool on = !digitalRead(IO_LED);
-    digitalWrite(IO_LED, on);
-    display.setBrightness(on ? 255 : 0);
-}
-void setLevel(uint8_t level, uint16_t transitionTime, uintptr_t) {
-    analogWrite(IO_LED, level);
-    display.setBrightness(level);
-}
+static void updateButton();
+static void on(uintptr_t);
+static void off(uintptr_t);
+static void toggle(uintptr_t);
+static void setLevel(uint8_t level, uint16_t transitionTime, uintptr_t);
 
 void setup()
 {
     while (!Serial);
 
-    LOG("Serial ready");
+    DEBUG("Serial ready");
 
     u8g2.begin();
     display.begin(u8g2, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -67,21 +54,71 @@ void setup()
     device.setDisplay(display);
     device.begin(xbeeSerial);
 
-    LOG("Running configuration");
+    DEBUG("Running configuration");
 
     //device.performReset();
 }
 
 int lastMode = 0;
 bool lastLed;
+bool wasHigh = false;
 
 void loop()
 {
+    updateButton();
     device.loop();
-
-    if (pb.clicked()) {
-        device.performReset();
-    }
-
     display.loop();
+}
+
+void updateButton() {
+    if (pb.isState(HIGH)) {
+        if (!wasHigh) {
+            wasHigh = true;
+            lightbulb.getOnOffCluster()->toggle();
+        }
+
+        auto duration = millis() - pb.lastStateChange();
+        if (duration > 1000) {
+            int seconds = duration / 1000 - 1;
+            int remaining = 5 - seconds;
+
+            if (remaining <= 0) {
+                if (pb.clicked()) {
+                    display.setMessage("Resetting NOW");
+                    device.performReset();
+                }
+            }
+            else if (remaining > 1) {
+                display.setMessage("Resetting in " + String(5 - seconds) + " second");
+            }
+            else {
+                display.setMessage("Resetting in 1 second");
+            }
+        }
+    }
+    else if (wasHigh) {
+        wasHigh = false;
+        display.setMessage(String());
+    }
+}
+
+void on(uintptr_t) {
+    digitalWrite(IO_LED, HIGH);
+    display.setBrightness(255);
+}
+
+void off(uintptr_t) {
+    digitalWrite(IO_LED, LOW);
+    display.setBrightness(0);
+}
+
+void toggle(uintptr_t) {
+    bool on = !digitalRead(IO_LED);
+    digitalWrite(IO_LED, on);
+    display.setBrightness(on ? 255 : 0);
+}
+
+void setLevel(uint8_t level, uint16_t transitionTime, uintptr_t) {
+    analogWrite(IO_LED, level);
+    display.setBrightness(level);
 }

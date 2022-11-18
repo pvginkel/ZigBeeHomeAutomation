@@ -6,7 +6,6 @@
 
 class Button
 {
-private:
 	static const int DEBOUNCE = 50;
 
 	int _pin;
@@ -15,10 +14,11 @@ private:
 	time_t _lastStateChange;
 
 public:
-	Button(int pin) : _pin(pin) { }
+	Button(int pin) : _pin(pin) {
+	}
 
 	bool isState(int state) {
-		int currentMillis = millis();
+		time_t currentMillis = millis();
 		int newState = digitalRead(_pin);
 		if (newState != _state) {
 			_lastStateChange = currentMillis;
@@ -29,6 +29,10 @@ public:
 			return state == _state;
 		}
 		return false;
+	}
+
+	time_t lastStateChange() {
+		return _lastStateChange;
 	}
 
 	bool clicked() {

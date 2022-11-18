@@ -68,13 +68,13 @@ bool ZHA_Device::processGeneralCommand(Buffer& frameData, ZBExplicitRxResponse& 
 		case CommandIdentifier::ConfigureReporting:
 			return processGeneralConfigureReportingCommand(frameData, message, buffer);
 		default:
-			LOG("Received unimplemented command ", String((uint8_t)commandIdentifier, HEX));
+			DEBUG("Received unimplemented command ", String((uint8_t)commandIdentifier, HEX));
 			return false;
 	}
 }
 
 bool ZHA_Device::processGeneralReadAttributesCommand(Buffer& frameData, ZBExplicitRxResponse& message, Buffer& buffer) {
-	LOG("Reading attributes from cluster ", message.getClusterId());
+	DEBUG("Reading attributes from cluster ", message.getClusterId());
 
 	auto cluster = getInClusterById(message.getClusterId());
 
@@ -85,26 +85,26 @@ bool ZHA_Device::processGeneralReadAttributesCommand(Buffer& frameData, ZBExplic
 	response.transactionSequenceNumber(frame.transactionSequenceNumber());
 	response.commandIdentifier(CommandIdentifier::ReadAttributesResponse);
 
-	LOG("  Reading ", frame.attributeCount(), " attributes");
+	DEBUG("  Reading ", frame.attributeCount(), " attributes");
 
 	for (int i = 0; i < frame.attributeCount(); i++) {
 		auto attributeId = frame.attributeId(i);
 		auto attribute = cluster->getAttrById(attributeId);
 
 		if (attribute) {
-			LOG("  Attribute ", attributeId, " reporting ", attribute->toString());
+			DEBUG("  Attribute ", attributeId, " reporting ", attribute->toString());
 
 			response.appendAttribute(attributeId, Status::Success, attribute->dataType());
 
 			attribute->writeValue(response);
 		}
 		else {
-			LOG("  Attribute ", attributeId, " unsupported");
+			DEBUG("  Attribute ", attributeId, " unsupported");
 			response.appendAttribute(attributeId, Status::UnsupportedAttribute);
 		}
 	}
 
-	LOG("  Done");
+	DEBUG("  Done");
 
 	buffer.length(response.length());
 
@@ -143,13 +143,13 @@ bool ZHA_Device::processGeneralDiscoverAttributesCommand(Buffer& frameData, ZBEx
 	response.transactionSequenceNumber(frame.transactionSequenceNumber());
 	response.commandIdentifier(CommandIdentifier::DiscoverAttributesResponse);
 
-	LOG("Discover attributes start ", frame.startAttributeId(), " maximum ", frame.maximumAttributeIds());
+	DEBUG("Discover attributes start ", frame.startAttributeId(), " maximum ", frame.maximumAttributeIds());
 
 	auto index = cluster->getAttrIndexById(frame.startAttributeId());
 
 	for (int i = 0; i < frame.maximumAttributeIds(); i++) {
 		if (index == -1 || index >= cluster->numAttributes()) {
-			LOG("  Discovery complete");
+			DEBUG("  Discovery complete");
 			response.discoveryComplete(true);
 			break;
 		}
@@ -158,12 +158,12 @@ bool ZHA_Device::processGeneralDiscoverAttributesCommand(Buffer& frameData, ZBEx
 
 		response.appendAttribute(attribute->getAttrId(), attribute->dataType());
 
-		LOG("  Reporting ID ", attribute->getAttrId(), " data type ", String((int)attribute->dataType(), HEX));
+		DEBUG("  Reporting ID ", attribute->getAttrId(), " data type ", String((int)attribute->dataType(), HEX));
 	}
 
 	buffer.length(response.length());
 
-	LOG("  Done");
+	DEBUG("  Done");
 	return true;
 }
 
@@ -204,7 +204,7 @@ bool ZHA_Device::processGeneralConfigureReportingCommand(Buffer& frameData, ZBEx
 	  If all attributes are configured for reporting successfully, just return a single record with status SUCCESS.
 	*/
 
-	LOG("Configure reporting for attribute");
+	DEBUG("Configure reporting for attribute");
 
 	auto cluster = getInClusterById(message.getClusterId());
 
@@ -222,7 +222,7 @@ bool ZHA_Device::processGeneralConfigureReportingCommand(Buffer& frameData, ZBEx
 		}
 
 		if (type == ConfigureReportingType::Receive) {
-			LOG("NOT IMPLEMENTED");
+			DEBUG("NOT IMPLEMENTED");
 			break;
 		}
 
@@ -232,7 +232,7 @@ bool ZHA_Device::processGeneralConfigureReportingCommand(Buffer& frameData, ZBEx
 			auto attribute = cluster->getAttrById(element.attributeId());
 
 			if (attribute) {
-				LOG("  Configuring reporting for attribute ", element.attributeId(), " data type ", String((int)element.dataType(), HEX), " minimum interval ", element.minimumInterval(), " maximum interval ", element.maximumInterval());
+				DEBUG("  Configuring reporting for attribute ", element.attributeId(), " data type ", String((int)element.dataType(), HEX), " minimum interval ", element.minimumInterval(), " maximum interval ", element.maximumInterval());
 
 				attribute->configureReporting(
 					element.dataType(),
@@ -244,7 +244,7 @@ bool ZHA_Device::processGeneralConfigureReportingCommand(Buffer& frameData, ZBEx
 				response.appendAttribute(Status::Success, type, element.attributeId());
 			}
 			else {
-				LOG("  Unsupported attribute ", element.attributeId());
+				DEBUG("  Unsupported attribute ", element.attributeId());
 
 				response.appendAttribute(Status::UnsupportedAttribute, type, element.attributeId());
 			}

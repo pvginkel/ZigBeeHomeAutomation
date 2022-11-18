@@ -25,14 +25,12 @@ void Display::paint() {
         _screen->drawGlyph(_width - 12, 12, 57584);
     }
 
-    if (_brightness > 0) {
-        int maxWidth = _width - 16;
-        _screen->drawFrame(0, 0, maxWidth, 12);
-        maxWidth -= 4;
-        unsigned int width = _brightness * maxWidth / 255;
-        if (width > 0) {
-            _screen->drawBox(2, 2, width, 8);
-        }
+    int maxWidth = _width - 16;
+    _screen->drawFrame(0, 0, maxWidth, 12);
+    maxWidth -= 4;
+    unsigned int width = _brightness * maxWidth / 255;
+    if (width > 0) {
+        _screen->drawBox(2, 2, width, 8);
     }
 
     if (_message.length() > 0) {

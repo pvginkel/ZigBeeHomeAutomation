@@ -1,5 +1,12 @@
 #pragma once
 
+#define LOG_LEVEL_DEBUG 4
+#define LOG_LEVEL_INFO 3
+#define LOG_LEVEL_WARN 2
+#define LOG_LEVEL_ERROR 1
+
+#define LOG_LEVEL LOG_LEVEL_INFO
+
 #define _LOG1(a1) Serial.println(a1)
 #define _LOG2(a1, a2) Serial.print(a1); Serial.println(a2)
 #define _LOG3(a1, a2, a3) Serial.print(a1); Serial.print(a2); Serial.println(a3)
@@ -38,7 +45,38 @@
 
 #define _LOG_N3(N, ...) _LOG ## N(__VA_ARGS__)
 #define _LOG_N2(N, ...) _LOG_N3(N, __VA_ARGS__)
-#define LOG(...)      _LOG_N2(_NUM_ARGS(__VA_ARGS__), __VA_ARGS__)
+
+#if LOG_LEVEL >= LOG_LEVEL_ERROR
+#define LOG_ERROR 1
+#define ERROR(...) _LOG_N2(_NUM_ARGS(__VA_ARGS__), __VA_ARGS__)
+#else
+#define LOG_ERROR 0
+#define ERROR(...)
+#endif
+
+#if LOG_LEVEL >= LOG_LEVEL_WARN
+#define LOG_WARN 1
+#define WARN(...) _LOG_N2(_NUM_ARGS(__VA_ARGS__), __VA_ARGS__)
+#else
+#define LOG_WARN 0
+#define WARN(...)
+#endif
+
+#if LOG_LEVEL >= LOG_LEVEL_INFO
+#define LOG_INFO 1
+#define INFO(...) _LOG_N2(_NUM_ARGS(__VA_ARGS__), __VA_ARGS__)
+#else
+#define LOG_INFO 0
+#define INFO(...)
+#endif
+
+#if LOG_LEVEL >= LOG_LEVEL_DEBUG
+#define LOG_DEBUG 1
+#define DEBUG(...) _LOG_N2(_NUM_ARGS(__VA_ARGS__), __VA_ARGS__)
+#else
+#define LOG_DEBUG 0
+#define DEBUG(...)
+#endif
 
 #define ARRAY_LENGTH(array) (sizeof(array)/sizeof((array)[0]))
 
