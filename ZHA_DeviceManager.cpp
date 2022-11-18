@@ -131,6 +131,22 @@ void ZHA_DeviceManager::atCommandCallback(AtCommandResponse& command) {
 		_associationIndication = command.getValue()[0];
 		LOG("Association indication is now: ", getAssociationIndicationDescription(_associationIndication));
 
+		if (_display) {
+			_display->setConnected(_associationIndication == 0);
+			if (_associationIndication) {
+				auto message = getShortAssociationIndicationDescription(_associationIndication);
+				if (message) {
+					_display->setMessage(message);
+				}
+				else {
+					_display->setMessage("Unknown status 0x" + String(_associationIndication, HEX));
+				}
+			}
+			else {
+				_display->setMessage("");
+			}
+		}
+
 		if (_state == STATE_RETRIEVING_ASSOCIATION_INDICATION && _associationIndication == 0) {
 			retrieveConfiguration();
 			return;
@@ -154,19 +170,24 @@ void ZHA_DeviceManager::atCommandCallback(AtCommandResponse& command) {
 void ZHA_DeviceManager::modemStatusCallback(ModemStatusResponse& status) {
 
 	switch (status.getStatus()) {
-	case HARDWARE_RESET:
-		LOG("Modem reset.");
-		break;
-	case ASSOCIATED:
-		LOG("Joined network.");
-		if (_state == STATE_CONNECTED) {
-			setCommandBuilder(buildReadDiagnosticsCommand);
-
-			sendAnnounce();
-		}
-		break;
-	default:
-		printResponseCb(status, (uintptr_t)(Print*)&Serial);
+		case HARDWARE_RESET:
+			LOG("Modem reset.");
+			break;
+		case ASSOCIATED:
+			LOG("Joined network.");
+			if (_state == STATE_CONNECTED) {
+				setCommandBuilder(buildReadDiagnosticsCommand);
+				sendAnnounce();
+			}
+			break;
+		case DISASSOCIATED:
+			if (_display) {
+				_display->setMessage("Disassociated");
+			}
+			break;
+		default:
+			printResponseCb(status, (uintptr_t)(Print*)&Serial);
+			break;
 	}
 }
 
@@ -308,6 +329,11 @@ void ZHA_DeviceManager::addDevice(ZHA_Device* dev) {
 	_deviceList.add(dev);
 }
 
+void ZHA_DeviceManager::setDisplay(Display& display) {
+	_display = &display;
+	updateDisplay();
+}
+
 void ZHA_DeviceManager::begin(Stream& stream) {
 	_device.begin(stream);
 
@@ -397,6 +423,10 @@ void ZHA_DeviceManager::retrieveConfiguration() {
 
 	_state = STATE_RETRIEVING_CONFIGURATION;
 
+	if (_display) {
+		_display->setMessage("Connecting...");
+	}
+
 	setCommandBuilder(buildRetrieveConfigurationCommand);
 }
 
@@ -419,4 +449,32 @@ const char* ZHA_DeviceManager::getAssociationIndicationDescription(uint8_t assoc
 	case 0xFF: return "Scanning for a ZigBee network (routers and end devices)";
 	default: return nullptr;
 	}
+}
+
+const char* ZHA_DeviceManager::getShortAssociationIndicationDescription(uint8_t associationIndication) {
+	switch (associationIndication) {
+	case 0x21: return "No PANs found";
+	case 0x22: return "No valid PANs found";
+	case 0x23: return "Join time expired";
+	case 0x24: return "No beacons found";
+	case 0x25: return "Unexpected state";
+	case 0x27: return "Join attempt failed";
+	case 0x2A: return "Coordinator start failed";
+	case 0x2B: return "Finding coordinator";
+	case 0x2C: return "Leave network failed";
+	case 0xAB: return "Device not responding";
+	case 0xAC:
+	case 0xAD:
+	case 0xAF:
+		return "Secure join error";
+	case 0xFF: return "Scanning";
+	default: return nullptr;
+	}
+}
+
+void ZHA_DeviceManager::updateDisplay() {
+	if (!_display) {
+		return;
+	}
+
 }

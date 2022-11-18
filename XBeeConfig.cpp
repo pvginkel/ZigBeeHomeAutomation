@@ -47,6 +47,7 @@ AtCommandRequest buildRetrieveConfigurationCommand(int index) {
 		case 0: return serialNumberHighCommand();
 		case 1: return serialNumberLowCommand();
 		case 2: return networkAddressCommand();
+		case 3: return associationIndicationCommand();
 		default: return {};
 	}
 }
