@@ -106,15 +106,39 @@
     <None Include="xbee.ino" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicCluster.h" />
+    <ClInclude Include="Buffer.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Esp8266.h" />
+    <ClInclude Include="GroupsCluster.h" />
+    <ClInclude Include="IdentifyCluster.h" />
+    <ClInclude Include="LevelControlCluster.h" />
+    <ClInclude Include="LevelControlOutputDevice.h" />
+    <ClInclude Include="OnOffCluster.h" />
+    <ClInclude Include="ScenesCluster.h" />
     <ClInclude Include="support.h" />
     <ClInclude Include="XBeeConfig.h" />
-    <ClInclude Include="Zigbee.h" />
+    <ClInclude Include="Zcl.h" />
+    <ClInclude Include="ZHA_Attributes.h" />
+    <ClInclude Include="ZHA_Cluster.h" />
+    <ClInclude Include="ZHA_DeviceManager.h" />
+    <ClInclude Include="ZHA_Devices.h" />
+    <ClInclude Include="ZHA_Utils.h" />
     <ClInclude Include="__vm\.xbee.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BasicCluster.cpp" />
+    <ClCompile Include="GroupsCluster.cpp" />
+    <ClCompile Include="IdentifyCluster.cpp" />
+    <ClCompile Include="LevelControlCluster.cpp" />
+    <ClCompile Include="LevelControlOutputDevice.cpp" />
+    <ClCompile Include="OnOffCluster.cpp" />
+    <ClCompile Include="ScenesCluster.cpp" />
     <ClCompile Include="XBeeConfig.cpp" />
-    <ClCompile Include="Zigbee.cpp" />
+    <ClCompile Include="ZHA_Attributes.cpp" />
+    <ClCompile Include="ZHA_Cluster.cpp" />
+    <ClCompile Include="ZHA_DeviceManager.cpp" />
+    <ClCompile Include="ZHA_Devices.cpp" />
   </ItemGroup>
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>

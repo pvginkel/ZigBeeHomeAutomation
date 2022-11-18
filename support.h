@@ -43,3 +43,91 @@
 #define ARRAY_LENGTH(array) (sizeof(array)/sizeof((array)[0]))
 
 typedef uint32_t time_t;
+
+class Callback {
+public:
+	using Func = void (*)(uintptr_t);
+
+private:
+	Func _func;
+	uintptr_t _data;
+
+public:
+	Callback() : _func(nullptr), _data((uintptr_t)nullptr) {
+	}
+
+	void set(Func func, uintptr_t data) {
+		_func = func;
+		_data = data;
+	}
+
+	bool call() {
+		if (_func) {
+			_func(_data);
+			return true;
+		}
+		return false;
+	}
+};
+
+
+template <typename... Args>
+class CallbackArgs {
+public:
+	using Func = void (*)(Args..., uintptr_t);
+
+private:
+	Func _func;
+	uintptr_t _data;
+
+public:
+	CallbackArgs() : _func(nullptr), _data((uintptr_t)nullptr) {
+	}
+
+	void set(Func func, uintptr_t data) {
+		_func = func;
+		_data = data;
+	}
+
+	bool call(Args... args) {
+		if (_func) {
+			_func(args..., _data);
+			return true;
+		}
+		return false;
+	}
+};
+
+template <class T>
+T packArray(uint8_t* val) {
+	T res = 0;
+	for (int i = 0; i < sizeof(T); i++) {
+		res = res << 8 | val[i];
+	}
+	return res;
+}
+
+template <class T>
+T packArrayLe(uint8_t* val) {
+	T res = 0;
+	for (int i = sizeof(T) - 1; i >= 0; i--) {
+		res = res << 8 | val[i];
+	}
+	return res;
+}
+
+template <class T>
+void unpackArray(uint8_t* d, T v) {
+	for (int i = sizeof(T) - 1; i >= 0; i--) {
+		d[i] = v & 0xff;
+		v >>= 8;
+	}
+}
+
+template <class T>
+void unpackArrayLe(uint8_t* d, T v) {
+	for (int i = 0; i < sizeof(T); i++) {
+		d[i] = v & 0xff;
+		v >>= 8;
+	}
+}

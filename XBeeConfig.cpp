@@ -16,31 +16,47 @@ AT_BUILDER(softwareResetCommand, "FR");
 AT_BUILDER(serialNumberHighCommand, "SH");
 AT_BUILDER(serialNumberLowCommand, "SL");
 AT_BUILDER(networkAddressCommand, "MY");
+AT_BUILDER(apiModeCommand, "AP", 2);
+AT_BUILDER(operatingChannelCommand, "CH");
+AT_BUILDER(operatingPanIdCommand, "OI");
+AT_BUILDER(associationIndicationCommand, "AI");
+AT_BUILDER(parentNetworkAddressCommand, "MP");
 
 AtCommandRequest buildResetCommand(int index) {
 	switch (index) {
-	case 0: return restoreDefaultsCommand();
-	case 1: return apiOptionsCommand();
-	case 2: return networkResetCommand();
-	case 3: return nodeIdentifierCommand();
-	case 4: return zigbeeStackProfileCommand();
-	case 5: return nodeJoinTimeCommand();
-	case 6: return encryptionEnableCommand();
-	case 7: return encryptionOptionsCommand();
-	case 8: return linkKeyCommand();
-	case 9: return dio6RtsCommand();
-	case 10: return scanChannelsCommand();
-	case 11: return writeCommand();
-	case 12: return softwareResetCommand();
-	default: return {};
+		case 0: return restoreDefaultsCommand();
+		case 1: return apiOptionsCommand();
+		case 2: return networkResetCommand();
+		case 3: return nodeIdentifierCommand();
+		case 4: return zigbeeStackProfileCommand();
+		case 5: return nodeJoinTimeCommand();
+		case 6: return encryptionEnableCommand();
+		case 7: return encryptionOptionsCommand();
+		case 8: return linkKeyCommand();
+		case 9: return dio6RtsCommand();
+		case 10: return scanChannelsCommand();
+		case 11: return apiModeCommand();
+		case 12: return writeCommand();
+		case 13: return softwareResetCommand();
+		default: return {};
 	}
 }
 
 AtCommandRequest buildRetrieveConfigurationCommand(int index) {
 	switch (index) {
-	case 0: return serialNumberHighCommand();
-	case 1: return serialNumberLowCommand();
-	case 2: return networkAddressCommand();
+		case 0: return serialNumberHighCommand();
+		case 1: return serialNumberLowCommand();
+		case 2: return networkAddressCommand();
+		default: return {};
+	}
+}
+
+AtCommandRequest buildReadDiagnosticsCommand(int index) {
+	switch (index) {
+	case 0: return associationIndicationCommand();
+	case 1: return operatingChannelCommand();
+	case 2: return operatingPanIdCommand();
+	case 3: return parentNetworkAddressCommand();
 	default: return {};
 	}
 }
