@@ -5,7 +5,7 @@
 #define LOG_LEVEL_WARN 2
 #define LOG_LEVEL_ERROR 1
 
-#define LOG_LEVEL LOG_LEVEL_INFO
+#define LOG_LEVEL LOG_LEVEL_DEBUG
 
 #define _LOG1(a1) Serial.println(a1)
 #define _LOG2(a1, a2) Serial.print(a1); Serial.println(a2)

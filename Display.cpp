@@ -21,8 +21,15 @@ void Display::paint() {
     _screen->clearBuffer();
 
     if (_connected) {
-        _screen->setFont(u8g2_font_siji_t_6x10);
-        _screen->drawGlyph(_width - 12, 12, 57584);
+        // This font pulls in 10 Kb, but all we need is the "network bars" icon.
+        //
+        //_screen->setFont(u8g2_font_siji_t_6x10);
+        //_screen->drawGlyph(_width - 12, 12, 57584);
+
+        _screen->drawLine(_width - 1, 0, _width - 1, 8);
+        _screen->drawLine(_width - 3, 2, _width - 3, 6);
+        _screen->drawLine(_width - 5, 4, _width - 5, 4);
+        _screen->drawLine(_width - 7, 2, _width - 7, 2);
     }
 
     int maxWidth = _width - 16;
