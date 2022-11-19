@@ -66,10 +66,6 @@ void setup()
     device.begin(xbeeSerial);
 }
 
-int lastMode = 0;
-bool lastLed;
-bool wasHigh = false;
-
 void loop()
 {
     status.update();

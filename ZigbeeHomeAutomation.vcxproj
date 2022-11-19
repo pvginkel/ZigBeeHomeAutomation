@@ -108,7 +108,6 @@
   <ItemGroup>
     <ClInclude Include="BasicCluster.h" />
     <ClInclude Include="Buffer.h" />
-    <ClInclude Include="Button.h" />
     <ClInclude Include="Display.h" />
     <ClInclude Include="Esp8266.h" />
     <ClInclude Include="GroupsCluster.h" />
