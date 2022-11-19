@@ -339,14 +339,14 @@ namespace Zcl {
 		void appendShortString(const String& value) override {
 			auto length = value.length();
 			_buffer->set(_offset++, length);
-			value.getBytes((unsigned char *)_buffer->data(), MAX_FRAME_DATA_SIZE, _offset);
+			value.getBytes((unsigned char *)_buffer->data() + _offset, MAX_FRAME_DATA_SIZE);
 			_offset += length;
 		}
 
 		void appendLongString(const String& value) override {
 			auto length = value.length();
 			_buffer->setLe(_offset++, (uint16_t)length);
-			value.getBytes((unsigned char*)_buffer->data(), MAX_FRAME_DATA_SIZE, _offset);
+			value.getBytes((unsigned char*)_buffer->data() + _offset, MAX_FRAME_DATA_SIZE);
 			_offset += length;
 		}
 
@@ -509,14 +509,14 @@ namespace Zcl {
 		void appendShortString(const String& value) override {
 			auto length = value.length();
 			_buffer->set(_offset++, length);
-			value.getBytes((unsigned char*)_buffer->data(), MAX_FRAME_DATA_SIZE, _offset);
+			value.getBytes((unsigned char*)_buffer->data() + _offset, MAX_FRAME_DATA_SIZE);
 			_offset += length;
 		}
 
 		void appendLongString(const String& value) override {
 			auto length = value.length();
 			_buffer->setLe(_offset++, (uint16_t)length);
-			value.getBytes((unsigned char*)_buffer->data(), MAX_FRAME_DATA_SIZE, _offset);
+			value.getBytes((unsigned char*)_buffer->data() + _offset, MAX_FRAME_DATA_SIZE);
 			_offset += length;
 		}
 
