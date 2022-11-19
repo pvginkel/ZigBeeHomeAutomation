@@ -135,20 +135,19 @@ void ZHA_DeviceManager::atCommandCallback(AtCommandResponse& command) {
 		_associationIndication = command.getValue()[0];
 		DEBUG("Association indication is now: ", getAssociationIndicationDescription(_associationIndication));
 
-		if (_display) {
-			_display->setConnected(_associationIndication == 0);
-			if (_associationIndication) {
-				auto message = getShortAssociationIndicationDescription(_associationIndication);
-				if (message) {
-					_display->setMessage(message);
-				}
-				else {
-					_display->setMessage("Unknown status 0x" + String(_associationIndication, HEX));
-				}
+		setConnected(_associationIndication == 0 ? ConnectionStatus::Connected : ConnectionStatus::Connecting);
+
+		if (_associationIndication) {
+			auto message = getShortAssociationIndicationDescription(_associationIndication);
+			if (message) {
+				setStatus(message);
 			}
 			else {
-				_display->setMessage("");
+				setStatus("Unknown status 0x" + String(_associationIndication, HEX));
 			}
+		}
+		else {
+			setStatus("");
 		}
 
 		if (_state == STATE_RETRIEVING_ASSOCIATION_INDICATION && _associationIndication == 0) {
@@ -185,9 +184,7 @@ void ZHA_DeviceManager::modemStatusCallback(ModemStatusResponse& status) {
 			}
 			break;
 		case DISASSOCIATED:
-			if (_display) {
-				_display->setMessage("Disassociated");
-			}
+			setStatus("Disassociated");
 			break;
 		default:
 #if LOG_DEBUG
@@ -337,9 +334,8 @@ void ZHA_DeviceManager::addDevice(ZHA_Device* dev) {
 	_deviceList.add(dev);
 }
 
-void ZHA_DeviceManager::setDisplay(Display& display) {
-	_display = &display;
-	updateDisplay();
+void ZHA_DeviceManager::addStatusCb(StatusCb& statusCb) {
+	_statusCbs.add(&statusCb);
 }
 
 void ZHA_DeviceManager::begin(Stream& stream) {
@@ -361,7 +357,7 @@ void ZHA_DeviceManager::setCommandBuilder(command_builder_t commandBuilder) {
 	sendCurrentCommand();
 }
 
-void ZHA_DeviceManager::loop() {
+void ZHA_DeviceManager::update() {
 	_device.loop();
 
 	reportAttributes();
@@ -431,11 +427,21 @@ void ZHA_DeviceManager::retrieveConfiguration() {
 
 	_state = STATE_RETRIEVING_CONFIGURATION;
 
-	if (_display) {
-		_display->setMessage("Connecting...");
-	}
+	setStatus("Connecting...");
 
 	setCommandBuilder(buildRetrieveConfigurationCommand);
+}
+
+void ZHA_DeviceManager::setStatus(const String& status) {
+	for (int i = 0; i < _statusCbs.size(); i++) {
+		_statusCbs[i]->setStatus(status);
+	}
+}
+
+void ZHA_DeviceManager::setConnected(ConnectionStatus connected) {
+	for (int i = 0; i < _statusCbs.size(); i++) {
+		_statusCbs[i]->setConnected(connected);
+	}
 }
 
 const char* ZHA_DeviceManager::getAssociationIndicationDescription(uint8_t associationIndication) {
@@ -478,11 +484,4 @@ const char* ZHA_DeviceManager::getShortAssociationIndicationDescription(uint8_t 
 	case 0xFF: return "Scanning";
 	default: return nullptr;
 	}
-}
-
-void ZHA_DeviceManager::updateDisplay() {
-	if (!_display) {
-		return;
-	}
-
 }

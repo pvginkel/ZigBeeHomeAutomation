@@ -1,8 +1,8 @@
-#include "LevelControlOutputDevice.h"
-#include "Button.h"
+#include <Bounce2.h>
 #include <SoftwareSerial.h>
-
+#include "LevelControlOutputDevice.h"
 #include "Display.h"
+#include "StatusControl.h"
 #include "support.h"
 #include "ZHA_DeviceManager.h"
 
@@ -15,18 +15,21 @@ U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0);
 #define IO_XBEE_TX 3
 #define IO_PB 4
 #define IO_LED 5
+#define IO_STATUS_LED 6
 
 ZHA_DeviceManager device;
 SoftwareSerial xbeeSerial(IO_XBEE_RX, IO_XBEE_TX);
-Button pb(IO_PB);
-LevelControlOutputDevice lightbulb(0x8);
+LevelControlOutputDevice lightbulb(8);
 Display display;
+StatusControl status;
 
 static void updateButton();
 static void on(uintptr_t);
 static void off(uintptr_t);
 static void toggle(uintptr_t);
 static void setLevel(uint8_t level, uint16_t transitionTime, uintptr_t);
+static void reset(uintptr_t);
+static void resetCountdown(int remaining, uintptr_t);
 
 void setup()
 {
@@ -36,6 +39,12 @@ void setup()
 
     u8g2.begin();
     display.begin(u8g2, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    status.onClick(toggle);
+    status.onReset(reset);
+    status.onResetCountdown(resetCountdown);
+    status.setBounce(Bounce(IO_PB, 50));
+    status.setLed(IO_STATUS_LED);
 
     pinMode(IO_PB, INPUT);
     pinMode(IO_LED, OUTPUT);
@@ -51,12 +60,10 @@ void setup()
 
     xbeeSerial.begin(9600);
 
-    device.setDisplay(display);
+    device.addStatusCb(display);
+    device.addStatusCb(status);
+
     device.begin(xbeeSerial);
-
-    DEBUG("Running configuration");
-
-    //device.performReset();
 }
 
 int lastMode = 0;
@@ -65,41 +72,9 @@ bool wasHigh = false;
 
 void loop()
 {
-    updateButton();
-    device.loop();
-    display.loop();
-}
-
-void updateButton() {
-    if (pb.isState(HIGH)) {
-        if (!wasHigh) {
-            wasHigh = true;
-            lightbulb.getOnOffCluster()->toggle();
-        }
-
-        auto duration = millis() - pb.lastStateChange();
-        if (duration > 1000) {
-            int seconds = duration / 1000 - 1;
-            int remaining = 5 - seconds;
-
-            if (remaining <= 0) {
-                if (pb.clicked()) {
-                    display.setMessage("Resetting NOW");
-                    device.performReset();
-                }
-            }
-            else if (remaining > 1) {
-                display.setMessage("Resetting in " + String(5 - seconds) + " second");
-            }
-            else {
-                display.setMessage("Resetting in 1 second");
-            }
-        }
-    }
-    else if (wasHigh) {
-        wasHigh = false;
-        display.setMessage(String());
-    }
+    status.update();
+    device.update();
+    display.update();
 }
 
 void on(uintptr_t) {
@@ -121,4 +96,17 @@ void toggle(uintptr_t) {
 void setLevel(uint8_t level, uint16_t transitionTime, uintptr_t) {
     analogWrite(IO_LED, level);
     display.setBrightness(level);
+}
+
+void reset(uintptr_t) {
+    device.performReset();
+}
+
+void resetCountdown(int remaining, uintptr_t) {
+    if (remaining > 0) {
+        display.setStatus("Resetting in " + String(remaining));
+    }
+    else if (remaining == 0) {
+        display.setStatus("Resetting NOW");
+    }
 }

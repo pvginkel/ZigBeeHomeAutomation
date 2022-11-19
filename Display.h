@@ -1,15 +1,15 @@
 #pragma once
 
 #include <U8g2lib.h>
-#include "support.h"
+#include "StatusCb.h"
 
-class Display
+class Display : public StatusCb
 {
 	U8G2* _screen{};
 	bool _dirty{};
-	bool _connected{};
+	ConnectionStatus _connected{};
 	uint8_t _brightness{};
-	String _message;
+	String _status;
 	int _width{};
 	int _height{};
 
@@ -21,9 +21,9 @@ public:
 		_dirty = true;
 	}
 
-	void loop();
+	void update();
 
-	void setConnected(bool connected) {
+	void setConnected(ConnectionStatus connected) override {
 		_connected = connected;
 		_dirty = true;
 	}
@@ -33,8 +33,8 @@ public:
 		_dirty = true;
 	}
 
-	void setMessage(const String& message) {
-		_message = message;
+	void setStatus(const String& status) override {
+		_status = status;
 		_dirty = true;
 	}
 

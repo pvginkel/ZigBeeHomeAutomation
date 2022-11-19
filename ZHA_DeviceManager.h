@@ -3,8 +3,7 @@
 #include "Buffer.h"
 #include "XBeeConfig.h"
 #include "ZHA_Devices.h"
-#include "ZHA_Utils.h"
-#include "Display.h"
+#include "StatusCb.h"
 
 #define ZHA_PROFILE_ID 0x0104
 
@@ -55,16 +54,16 @@ class ZHA_DeviceManager {
 	time_t _lastSendMillis;
 	uint8_t _associationIndication;
 	time_t _associationIndicationMillis;
-	Display* _display;
+	LinkedList<StatusCb*> _statusCbs;
 
 public:
 	ZHA_DeviceManager();
 	void begin(Stream& stream);
 	void performReset();
-	void loop();
+	void update();
 
 	void addDevice(ZHA_Device* dev);
-	void setDisplay(Display& display);
+	void addStatusCb(StatusCb& statusCb);
 
 private:
 	void sendAnnounce();
@@ -86,8 +85,9 @@ private:
 	void sendCurrentCommand();
 	void retrieveAssociationIndication();	
 	void retrieveConfiguration();
+	void setStatus(const String& status);
+	void setConnected(ConnectionStatus connected);
+
 	static const char* getAssociationIndicationDescription(uint8_t associationIndication);
 	static const char* getShortAssociationIndicationDescription(uint8_t associationIndication);
-
-	void updateDisplay();
 };
