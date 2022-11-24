@@ -1,4 +1,4 @@
-#include "StatusControl.h"
+#include "ZigBee.h"
 
 void StatusControl::setLed(int pin) {
 	_led = pin;

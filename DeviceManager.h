@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Memory.h"
-#include "Device.h"
-#include "StatusCb.h"
-#include "Support.h"
+#include "ZigBee.h"
 
 #define ZHA_PROFILE_ID 0x0104
 

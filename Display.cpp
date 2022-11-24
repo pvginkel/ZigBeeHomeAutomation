@@ -1,5 +1,4 @@
 #include "Display.h"
-#include "support.h"
 
 #define FONT_HEIGHT 10
 #define FONT_WIDTH 6

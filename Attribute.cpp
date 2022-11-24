@@ -1,4 +1,4 @@
-#include "Attribute.h"
+#include "ZigBee.h"
 
 Attribute::Attribute(uint16_t attributeId) :
 	_dataType(DataType::NoData), _attributeId(attributeId), _reporting(false), _unreported(false),

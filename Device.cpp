@@ -1,5 +1,4 @@
-#include "Device.h"
-#include "support.h"
+#include "ZigBee.h"
 
 Device::Device(uint8_t endpointId, uint16_t deviceId)
 	: _endpointId(endpointId), _deviceId(deviceId) {

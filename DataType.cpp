@@ -1,4 +1,4 @@
-#include "DataType.h"
+#include "ZigBee.h"
 
 int getDataTypeLength(DataType dataType) {
 	switch (dataType) {

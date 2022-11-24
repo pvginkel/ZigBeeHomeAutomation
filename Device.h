@@ -1,9 +1,5 @@
 #pragma once
 
-#include "FrameParsing.h"
-#include "XBee.h"
-#include "Cluster.h"
-
 class Device {
     uint8_t _endpointId;
     LinkedList<Cluster*> _inClusters;

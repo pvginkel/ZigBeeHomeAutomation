@@ -1,4 +1,4 @@
-#include "Cluster.h"
+#include "ZigBee.h"
 
 Cluster::Cluster(uint16_t clusterId) : _clusterId(clusterId) {
 }

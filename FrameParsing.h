@@ -1,10 +1,5 @@
 #pragma once
 
-#include "Arduino.h"
-#include "Memory.h"
-#include "DataType.h"
-#include "Status.h"
-
 enum class FrameType {
 	Global = 0,
 	Cluster = 1

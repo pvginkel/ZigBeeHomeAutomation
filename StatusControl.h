@@ -1,10 +1,5 @@
 #pragma once
 
-#include <Bounce2.h>
-#include "Callback.h"
-#include "StatusCb.h"
-#include "support.h"
-
 class StatusControl : public StatusCb
 {
 	int _led = -1;

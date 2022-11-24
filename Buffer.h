@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Arduino.h"
-
 class Buffer
 {
 	uint8_t* _data;

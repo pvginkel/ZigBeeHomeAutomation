@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Arduino.h"
-
 enum class ConnectionStatus {
 	NotConnected,
 	Connecting,

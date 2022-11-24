@@ -1,7 +1,5 @@
-#include "DeviceManager.h"
-#include "Esp8266.h"
-#include "support.h"
-#include "Printers.h"
+#include <Printers.h>
+#include "ZigBee.h"
 
 #define IS_COMMAND(c, n) ((c).getCommand()[0] == (n)[0] && (c).getCommand()[1] == (n)[1])
 

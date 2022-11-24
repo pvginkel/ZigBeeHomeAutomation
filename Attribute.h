@@ -1,11 +1,5 @@
 #pragma once
 
-#include "Arduino.h"
-#include "Buffer.h"
-#include "DataType.h"
-#include "DateTime.h"
-#include "Memory.h"
-
 class Attribute {
 	DataType _dataType;
 	uint16_t _attributeId;

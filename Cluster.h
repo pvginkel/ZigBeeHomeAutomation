@@ -1,11 +1,5 @@
 #pragma once
 
-#include "Arduino.h"
-#include "Attribute.h"
-#include <LinkedList.h>
-#include "Memory.h"
-#include "Status.h"
-
 class Cluster {
     LinkedList<Attribute*> _attributes;
     uint16_t _clusterId;

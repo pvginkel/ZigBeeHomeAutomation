@@ -1,8 +1,5 @@
 #pragma once
 
-#include "Arduino.h"
-#include "Buffer.h"
-
 class Memory {
 	uint8_t* _data;
     int _position;
