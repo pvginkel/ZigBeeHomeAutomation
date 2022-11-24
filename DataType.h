@@ -60,5 +60,3 @@ enum class DataType {
 	Key128 = 0xf1,
 	Unk = 0xff,
 };
-
-int getDataTypeLength(DataType dataType);

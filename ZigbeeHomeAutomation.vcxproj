@@ -132,7 +132,6 @@
     <ClCompile Include="BasicDevice.cpp" />
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Clusters.cpp" />
-    <ClCompile Include="DataType.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="StatusControl.cpp" />
