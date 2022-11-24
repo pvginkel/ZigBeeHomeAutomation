@@ -27,10 +27,10 @@ void StatusControl::reportRemaining(int remaining) {
 		_resetCountdown.call(remaining);
 
 		if (remaining > 0) {
-			INFO("Resetting in ", remaining);
+			INFO(F("Resetting in "), remaining);
 		}
 		else if (remaining == 0) {
-			INFO("Resetting NOW");
+			INFO(F("Resetting NOW"));
 		}
 	}
 }

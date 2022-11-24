@@ -20,7 +20,7 @@ DeviceManager::DeviceManager() : _address(0), _shortAddress(0), _broadcastAddres
 
 /* Send the device announce command */
 void DeviceManager::sendAnnounce() {
-	DEBUG("Sending announce");
+	DEBUG(F("Sending announce"));
 
 	auto frameId = _device.getNextFrameId();
 
@@ -60,7 +60,7 @@ Device* DeviceManager::getDeviceByEndpoint(uint8_t endpointId) {
 
 void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clusterId, uint8_t* frameData, uint8_t frameDataLength) {
 	if (clusterId == ZDO_SIMPLE_DESCRIPTOR_REQUEST) {
-		DEBUG("ZDO Simple Descriptor Request");
+		DEBUG(F("ZDO Simple Descriptor Request"));
 
 		Device* dev = getDeviceByEndpoint(frameData[3]);
 		if (dev) {
@@ -105,7 +105,7 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 		}
 	}
 	else if (clusterId == ZDO_ACTIVE_ENDPOINTS_REQUEST) {
-		DEBUG("ZDO Active Endpoints Request");
+		DEBUG(F("ZDO Active Endpoints Request"));
 
 		Memory memory(_payload);
 
@@ -133,7 +133,7 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 		_device.send(message);
 	}
 	else if (clusterId == ZDO_MATCH_DESCRIPTOR_REQUEST) {
-		DEBUG("ZDO Match Descriptor Request");
+		DEBUG(F("ZDO Match Descriptor Request"));
 
 		uint16_t profile_id = ((uint16_t)frameData[4] << 8) | frameData[3];
 		uint8_t numInClusters = frameData[5];
@@ -190,21 +190,15 @@ void DeviceManager::atCommandCallback(AtCommandResponse& command) {
 	}
 	else if (IS_COMMAND(command, "AI")) {
 		_associationIndication = memory.readUInt8();
-		DEBUG("Association indication is now: ", getAssociationIndicationDescription(_associationIndication));
+		DEBUG(F("Association indication is now: "), getAssociationIndicationDescription(_associationIndication));
 
 		setConnected(_associationIndication == 0 ? ConnectionStatus::Connected : ConnectionStatus::Connecting);
 
 		if (_associationIndication) {
-			auto message = getShortAssociationIndicationDescription(_associationIndication);
-			if (message) {
-				setStatus(message);
-			}
-			else {
-				setStatus("Unknown status 0x" + String(_associationIndication, HEX));
-			}
+			setStatus(getShortAssociationIndicationDescription(_associationIndication));
 		}
 		else {
-			setStatus("");
+			setStatus(String());
 		}
 
 		if (_state == State::RetrievingAssociationIndication && _associationIndication == 0) {
@@ -231,17 +225,17 @@ void DeviceManager::modemStatusCallback(ModemStatusResponse& status) {
 
 	switch (status.getStatus()) {
 		case HARDWARE_RESET:
-			DEBUG("Modem reset.");
+			DEBUG(F("Modem reset."));
 			break;
 		case ASSOCIATED:
-			DEBUG("Joined network.");
+			DEBUG(F("Joined network."));
 			if (_state == State::Connected) {
 				setCommandBuilder(buildReadDiagnosticsCommand);
 				sendAnnounce();
 			}
 			break;
 		case DISASSOCIATED:
-			setStatus("Disassociated");
+			setStatus(F("Disassociated"));
 			break;
 		default:
 #if LOG_DEBUG
@@ -263,7 +257,7 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 	uint8_t* frameData = resp.getFrameData() + resp.getDataOffset();
 	int frameDataLength = resp.getFrameDataLength() - resp.getDataOffset();
 
-	//DEBUG("profileId ", profileId, " srcEndpoint ", srcEndpoint, " dstEndpoint ", dstEndpoint, " clusterId ", clusterId, " remote addr ", resp.getRemoteAddress16());
+	//DEBUG(F("profileId "), profileId, F(" srcEndpoint "), srcEndpoint, F(" dstEndpoint "), dstEndpoint, F(" clusterId "), clusterId, F(" remote addr "), resp.getRemoteAddress16());
 
 	if (profileId == 0x0000 && srcEndpoint == 0x00 && dstEndpoint == 0x00) {
 		/* ZDO command */
@@ -291,7 +285,7 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 			auto request = Frame::read(frameBuffer);
 
 			if (request.frameControl().frameType() == FrameType::Global) {
-		        DEBUG("General command");
+		        DEBUG(F("General command"));
 
 				Memory buffer(_payload);
 
@@ -317,7 +311,7 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 				auto cluster = device->getInClusterById(clusterId);
 				auto commandId = request.commandIdentifier();
 
-				DEBUG("Cluster ", clusterId, " specific command ID ", commandId);
+				DEBUG(F("Cluster "), clusterId, F(" specific command ID "), commandId);
 
 				Memory buffer(_payload);
 
@@ -359,7 +353,7 @@ void DeviceManager::reportAttributes() {
 			for (auto ats = 0; ats < ic->getAttributeCount(); ats++) {
 				auto at = ic->getAttributeByIndex(ats);
 				if (at->isUnreported()) {
-					DEBUG("Reporting attribute endpoint ", dev->getEndpointId(), " cluster ", ic->getClusterId(), " attribute ", at->getAttributeId(), " value ", at->toString());
+					DEBUG(F("Reporting attribute endpoint "), dev->getEndpointId(), F(" cluster "), ic->getClusterId(), F(" attribute "), at->getAttributeId(), F(" value "), at->toString());
 
 					Memory buffer(_payload);
 
@@ -432,7 +426,7 @@ void DeviceManager::update() {
 
 	if (_commandBuilder) {
 		if (millis() - _lastSendMillis > AT_COMMAND_RETRY_MS) {
-			DEBUG("Retrying...");
+			DEBUG(F("Retrying..."));
 			sendCurrentCommand();
 		}
 	}
@@ -470,7 +464,7 @@ bool DeviceManager::sendNextCommand() {
 void DeviceManager::sendCurrentCommand() {
 	auto command = _commandBuilder(_commandBuilderOffset);
 
-	DEBUG("Sending command ", (char)command.getCommand()[0], (char)command.getCommand()[1]);
+	DEBUG(F("Sending command "), (char)command.getCommand()[0], (char)command.getCommand()[1]);
 
 	_lastSendMillis = millis();
 	_device.send(command);
@@ -480,18 +474,18 @@ void DeviceManager::retrieveAssociationIndication() {
 	_state = State::RetrievingAssociationIndication;
 	_associationIndicationMillis = millis();
 
-	DEBUG("Requesting association indication");
+	DEBUG(F("Requesting association indication"));
 
 	auto command = associationIndicationCommand();
 	_device.send(command);
 }
 
 void DeviceManager::retrieveConfiguration() {
-	DEBUG("Retrieving configuration");
+	DEBUG(F("Retrieving configuration"));
 
 	_state = State::RetrievingConfiguration;
 
-	setStatus("Connecting...");
+	setStatus(F("Connecting..."));
 
 	setCommandBuilder(buildRetrieveConfigurationCommand);
 }
@@ -508,45 +502,45 @@ void DeviceManager::setConnected(ConnectionStatus connected) {
 	}
 }
 
-const char* DeviceManager::getAssociationIndicationDescription(uint8_t associationIndication) {
+String DeviceManager::getAssociationIndicationDescription(uint8_t associationIndication) {
 	switch (associationIndication) {
-	case 0x00: return "Successfully formed or joined a network. (Coordinators form a network, routers and end devices join a network.)";
-	case 0x21: return "Scan found no PANs";
-	case 0x22: return "Scan found no valid PANs based on current SC and ID settings";
-	case 0x23: return "Valid Coordinator or Routers found, but they are not allowing joining (NJ expired)";
-	case 0x24: return "No joinable beacons were found";
-	case 0x25: return "Unexpected state, node should not be attempting to join at this time";
-	case 0x27: return "Node Joining attempt failed (typically due to incompatible security settings)";
-	case 0x2A: return "Coordinator Start attempt failed";
-	case 0x2B: return "Checking for an existing coordinator";
-	case 0x2C: return "Attempt to leave the network failed";
-	case 0xAB: return "Attempted to join a device that did not respond.";
-	case 0xAC: return "Secure join error - network security key received unsecured";
-	case 0xAD: return "Secure join error - network security key not received";
-	case 0xAF: return "Secure join error - joining device does not have the right preconfigured link key";
-	case 0xFF: return "Scanning for a ZigBee network (routers and end devices)";
-	default: return nullptr;
+	case 0x00: return F("Successfully formed or joined a network. (Coordinators form a network, routers and end devices join a network.)");
+	case 0x21: return F("Scan found no PANs");
+	case 0x22: return F("Scan found no valid PANs based on current SC and ID settings");
+	case 0x23: return F("Valid Coordinator or Routers found, but they are not allowing joining (NJ expired)");
+	case 0x24: return F("No joinable beacons were found");
+	case 0x25: return F("Unexpected state, node should not be attempting to join at this time");
+	case 0x27: return F("Node Joining attempt failed (typically due to incompatible security settings)");
+	case 0x2A: return F("Coordinator Start attempt failed");
+	case 0x2B: return F("Checking for an existing coordinator");
+	case 0x2C: return F("Attempt to leave the network failed");
+	case 0xAB: return F("Attempted to join a device that did not respond.");
+	case 0xAC: return F("Secure join error - network security key received unsecured");
+	case 0xAD: return F("Secure join error - network security key not received");
+	case 0xAF: return F("Secure join error - joining device does not have the right preconfigured link key");
+	case 0xFF: return F("Scanning for a ZigBee network (routers and end devices)");
+	default: return F("Unknown");
 	}
 }
 
-const char* DeviceManager::getShortAssociationIndicationDescription(uint8_t associationIndication) {
+String DeviceManager::getShortAssociationIndicationDescription(uint8_t associationIndication) {
 	switch (associationIndication) {
-	case 0x21: return "No PANs found";
-	case 0x22: return "No valid PANs found";
-	case 0x23: return "Join time expired";
-	case 0x24: return "No beacons found";
-	case 0x25: return "Unexpected state";
-	case 0x27: return "Join attempt failed";
-	case 0x2A: return "Coordinator start failed";
-	case 0x2B: return "Finding coordinator";
-	case 0x2C: return "Leave network failed";
-	case 0xAB: return "Device not responding";
+	case 0x21: return F("No PANs found");
+	case 0x22: return F("No valid PANs found");
+	case 0x23: return F("Join time expired");
+	case 0x24: return F("No beacons found");
+	case 0x25: return F("Unexpected state");
+	case 0x27: return F("Join attempt failed");
+	case 0x2A: return F("Coordinator start failed");
+	case 0x2B: return F("Finding coordinator");
+	case 0x2C: return F("Leave network failed");
+	case 0xAB: return F("Device not responding");
 	case 0xAC:
 	case 0xAD:
 	case 0xAF:
-		return "Secure join error";
-	case 0xFF: return "Scanning";
-	default: return nullptr;
+		return F("Secure join error");
+	case 0xFF: return F("Scanning");
+	default: return String(F("Unknown status 0x")) + String(associationIndication, HEX);
 	}
 }
 

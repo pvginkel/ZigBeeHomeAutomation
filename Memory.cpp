@@ -465,7 +465,7 @@ Buffer Memory::readOctstrData(int length) {
 void Memory::writeOctstr(const Buffer& value) {
 	int length = value.getLength();
     if (length > 254) {
-        ERROR("Writing octstr of more than 254 bytes");
+        ERROR(F("Writing octstr of more than 254 bytes"));
     }
     writeUInt8(length);
     writeOctstrData(value);
@@ -502,7 +502,7 @@ String Memory::readStringData(int length) {
 void Memory::writeString(const String& value) {
     int length = value.length();
     if (length > 254) {
-        ERROR("Writing string of more than 254 bytes");
+        ERROR(F("Writing string of more than 254 bytes"));
     }
     writeUInt8(length);
     writeStringData(value);

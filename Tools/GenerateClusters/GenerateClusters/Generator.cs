@@ -191,13 +191,13 @@ public class Generator
                     cw.WriteLine("return _value.string;");
                     cw.UnIndent();
                     cw.WriteLine("}");
-                    cw.WriteLine("return \"\";");
+                    cw.WriteLine("return F(\"\");");
                     break;
                 case "Buffer":
-                    cw.WriteLine("return \"BUFFER\";");
+                    cw.WriteLine("return F(\"BUFFER\");");
                     break;
                 case "DateTime":
-                    cw.WriteLine("return \"DATETIME\";");
+                    cw.WriteLine("return F(\"DATETIME\");");
                     break;
                 default:
                     if (type.TypeName.StartsWith("uint"))
@@ -212,7 +212,7 @@ public class Generator
         }
         cw.WriteLine("default:");
         cw.Indent();
-        cw.WriteLine("return \"NULL\";");
+        cw.WriteLine("return F(\"NULL\");");
         cw.UnIndent();
         cw.UnIndent();
         cw.WriteLine("}");

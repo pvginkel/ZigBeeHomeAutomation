@@ -84,6 +84,6 @@ private:
 	void setStatus(const String& status);
 	void setConnected(ConnectionStatus connected);
 
-	static const char* getAssociationIndicationDescription(uint8_t associationIndication);
-	static const char* getShortAssociationIndicationDescription(uint8_t associationIndication);
+	static String getAssociationIndicationDescription(uint8_t associationIndication);
+	static String getShortAssociationIndicationDescription(uint8_t associationIndication);
 };

@@ -30,19 +30,19 @@ static void resetCountdown(int remaining, uintptr_t);
 class : public GenOnOffCluster {
 public:
     Status offCommand() override {
-        INFO("Lamp on");
+        INFO(F("Lamp on"));
         setLevel(0);
         return Status::Success;
     }
 
     Status onCommand() override {
-        INFO("Lamp off");
+        INFO(F("Lamp off"));
         setLevel(255);
         return Status::Success;
     }
 
     Status toggleCommand() override {
-        INFO("Lamp toggle");
+        INFO(F("Lamp toggle"));
         setLevel(isOn() ? 0 : 255);
         return Status::Success;
     }
@@ -51,7 +51,7 @@ public:
 class : public GenLevelCtrlCluster {
 public:
     Status moveToLevelWithOnOffCommand(uint8_t level, uint16_t transtime) override {
-        INFO("Level change to ", level);
+        INFO(F("Level change to "), level);
         setLevel(level);
         return Status::Success;
     }
@@ -62,12 +62,12 @@ void setup()
     deviceManager.addDevice(lightBulb);
     lightBulb.addInCluster(onOffCluster);
     lightBulb.addInCluster(levelCtrlCluster);
-    lightBulb.getBasicCluster().setManufacturerName(String("GE_Appliances"));
-    lightBulb.getBasicCluster().setModelId(String("ZLL Light"));
+    lightBulb.getBasicCluster().setManufacturerName(String(F("GE_Appliances")));
+    lightBulb.getBasicCluster().setModelId(String(F("ZLL Light")));
 
     while (!Serial);
 
-    DEBUG("Serial ready");
+    DEBUG(F("Serial ready"));
 
     u8g2.begin();
     display.begin(u8g2, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -118,9 +118,9 @@ void reset(uintptr_t) {
 
 void resetCountdown(int remaining, uintptr_t) {
     if (remaining > 0) {
-        display.setStatus("Resetting in " + String(remaining));
+        display.setStatus(String(F("Resetting in ")) + remaining);
     }
     else if (remaining == 0) {
-        display.setStatus("Resetting NOW");
+        display.setStatus(F("Resetting NOW"));
     }
 }

@@ -138,14 +138,14 @@ String Attribute::toString() {
         case DataType::Double:
             return String(_value.f32);
         case DataType::Octstr:
-            return "BUFFER";
+            return F("BUFFER");
         case DataType::String:
             if (_dataType == DataType::String || _dataType == DataType::String16) {
                 return _value.string;
             }
-            return "";
+            return String();
         case DataType::DateTime:
-            return "DATETIME";
+            return F("DATETIME");
         case DataType::ToD:
             return String((uint32_t)_value.ui64);
         case DataType::Date:
@@ -161,7 +161,7 @@ String Attribute::toString() {
         case DataType::EUI64:
             return String((uint32_t)_value.ui64);
         default:
-            return "NULL";
+            return F("NULL");
     }
 }
 

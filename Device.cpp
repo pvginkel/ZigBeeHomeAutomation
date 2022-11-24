@@ -65,13 +65,13 @@ bool Device::processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRxRe
 		case CommandIdentifier::ConfigureReporting:
 			return processGeneralConfigureReportingCommand(frame, request, message, response);
 		default:
-			DEBUG("Received unimplemented command ", String((uint8_t)commandIdentifier, HEX));
+			DEBUG(F("Received unimplemented command "), String((uint8_t)commandIdentifier, HEX));
 			return false;
 	}
 }
 
 bool Device::processGeneralReadAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {
-	DEBUG("Reading attributes from cluster ", message.getClusterId());
+	DEBUG(F("Reading attributes from cluster "), message.getClusterId());
 
 	auto cluster = getInClusterById(message.getClusterId());
 
@@ -81,27 +81,27 @@ bool Device::processGeneralReadAttributesCommand(Frame& frame, Memory& request, 
 		(uint8_t)CommandIdentifier::ReadAttributesResponse
 	).write(response);
 
-	DEBUG("  Reading attributes");
+	DEBUG(F("  Reading attributes"));
 
 	uint16_t attributeId;
 	while (ReadAttributesFrame::readNextAttributeId(request, attributeId)) {
 		auto attribute = cluster->getAttributeById(attributeId);
 
 		if (attribute) {
-			DEBUG("  Attribute ", attributeId, " reporting ", attribute->toString());
+			DEBUG(F("  Attribute "), attributeId, F(" reporting "), attribute->toString());
 
 			ReadAttributesResponseFrame::writeAttribute(response, attributeId, Status::Success, attribute->getDataType());
 
 			attribute->write(response);
 		}
 		else {
-			DEBUG("  Attribute ", attributeId, " unsupported");
+			DEBUG(F("  Attribute "), attributeId, F(" unsupported"));
 
 			ReadAttributesResponseFrame::writeAttribute(response, attributeId, Status::UnsupportedAttribute);
 		}
 	}
 
-	DEBUG("  Done");
+	DEBUG(F("  Done"));
 
 	return true;
 }
@@ -144,13 +144,13 @@ bool Device::processGeneralDiscoverAttributesCommand(Frame& frame, Memory& frame
 
 	auto discoverAttributesFrame = DiscoverAttributesFrame::read(frameData);
 
-	DEBUG("Discover attributes start ", discoverAttributesFrame.getStartAttributeId(), " maximum ", discoverAttributesFrame.getMaximumAttributeIds());
+	DEBUG(F("Discover attributes start "), discoverAttributesFrame.getStartAttributeId(), F(" maximum "), discoverAttributesFrame.getMaximumAttributeIds());
 
 	auto index = cluster->getAttributeIndex(discoverAttributesFrame.getStartAttributeId());
 
 	for (int i = 0; i < discoverAttributesFrame.getMaximumAttributeIds(); i++) {
 		if (index == -1 || index >= cluster->getAttributeCount()) {
-			DEBUG("  Discovery complete");
+			DEBUG(F("  Discovery complete"));
 			auto newPosition = buffer.getPosition();
 			buffer.setPosition(position);
 			DiscoverAttributesResponseFrame(true).write(buffer);
@@ -162,10 +162,10 @@ bool Device::processGeneralDiscoverAttributesCommand(Frame& frame, Memory& frame
 
 		DiscoverAttributesResponseFrame::writeAttribute(buffer, attribute->getAttributeId(), attribute->getDataType());
 
-		DEBUG("  Reporting ID ", attribute->getAttributeId(), " data type ", String((int)attribute->getDataType(), HEX));
+		DEBUG(F("  Reporting ID "), attribute->getAttributeId(), F(" data type "), String((int)attribute->getDataType(), HEX));
 	}
 
-	DEBUG("  Done");
+	DEBUG(F("  Done"));
 	return true;
 }
 
@@ -206,7 +206,7 @@ bool Device::processGeneralConfigureReportingCommand(Frame& frame, Memory& frame
 	  If all attributes are configured for reporting successfully, just return a single record with status SUCCESS.
 	*/
 
-	DEBUG("Configure reporting for attribute");
+	DEBUG(F("Configure reporting for attribute"));
 
 	auto cluster = getInClusterById(message.getClusterId());
 
@@ -219,7 +219,7 @@ bool Device::processGeneralConfigureReportingCommand(Frame& frame, Memory& frame
 	ConfigureReportingType type;
 	while (ConfigureReportingFrame::readNextElementType(frameData, type)) {
 		if (type == ConfigureReportingType::Receive) {
-			ERROR("NOT IMPLEMENTED");
+			ERROR(F("NOT IMPLEMENTED"));
 			break;
 		}
 
@@ -229,7 +229,7 @@ bool Device::processGeneralConfigureReportingCommand(Frame& frame, Memory& frame
 			auto attribute = cluster->getAttributeById(element.getAttributeId());
 
 			if (attribute) {
-				DEBUG("  Configuring reporting for attribute ", element.getAttributeId(), " data type ", String((int)element.getDataType(), HEX), " minimum interval ", element.getMinimumInterval(), " maximum interval ", element.getMaximumInterval());
+				DEBUG(F("  Configuring reporting for attribute "), element.getAttributeId(), F(" data type "), String((int)element.getDataType(), HEX), F(" minimum interval "), element.getMinimumInterval(), F(" maximum interval "), element.getMaximumInterval());
 
 				// TODO: We're ignoring element.dataType()!
 
@@ -242,7 +242,7 @@ bool Device::processGeneralConfigureReportingCommand(Frame& frame, Memory& frame
 				ConfigureReportingResponseFrame::writeAttribute(buffer, Status::Success, type, element.getAttributeId());
 			}
 			else {
-				DEBUG("  Unsupported attribute ", element.getAttributeId());
+				DEBUG(F("  Unsupported attribute "), element.getAttributeId());
 
 				ConfigureReportingResponseFrame::writeAttribute(buffer, Status::UnsupportedAttribute, type, element.getAttributeId());
 			}
