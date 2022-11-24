@@ -10,6 +10,8 @@ enum class ConnectionStatus {
 
 class StatusCb {
 public:
+	virtual ~StatusCb() = default;
+
 	virtual void setConnected(ConnectionStatus connected) = 0;
 	virtual void setStatus(const String& status) = 0;
 };

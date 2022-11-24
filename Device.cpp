@@ -1,45 +1,43 @@
-#include "ZHA_Devices.h"
+#include "Device.h"
 #include "support.h"
 
-using namespace Zcl;
-
-ZHA_Device::ZHA_Device(uint8_t endpointId, uint16_t deviceId)
+Device::Device(uint8_t endpointId, uint16_t deviceId)
 	: _endpointId(endpointId), _deviceId(deviceId) {
 }
 
-void ZHA_Device::addInCluster(ZHA_Cluster* inCluster) {
-	_inClusters.add(inCluster);
+void Device::addInCluster(Cluster* cluster) {
+	_inClusters.add(cluster);
 }
 
-void ZHA_Device::addOutCluster(ZHA_Cluster* outCluster) {
-	_outClusters.add(outCluster);
+void Device::addOutCluster(Cluster* cluster) {
+	_outClusters.add(cluster);
 }
 
-int ZHA_Device::getNumInClusters() {
+int Device::getInClusterCount() {
 	return _inClusters.size();
 }
 
-int ZHA_Device::getNumOutClusters() {
+int Device::getOutClusterCount() {
 	return _outClusters.size();
 }
 
-ZHA_Cluster* ZHA_Device::getInCluster(uint8_t num) {
-	return _inClusters.get(num);
+Cluster* Device::getInCluster(int index) {
+	return _inClusters.get(index);
 }
 
-ZHA_Cluster* ZHA_Device::getOutCluster(uint8_t num) {
-	return _outClusters.get(num);
+Cluster* Device::getOutCluster(int index) {
+	return _outClusters.get(index);
 }
 
-uint8_t ZHA_Device::getEndpointId() {
+uint8_t Device::getEndpointId() {
 	return _endpointId;
 }
 
-uint16_t ZHA_Device::getDeviceId() {
+uint16_t Device::getDeviceId() {
 	return _deviceId;
 }
 
-ZHA_Cluster* ZHA_Device::getInClusterById(uint16_t clusterId) {
+Cluster* Device::getInClusterById(uint16_t clusterId) {
 	for (uint8_t i = 0; i < _inClusters.size(); i++) {
 		if (_inClusters.get(i)->getClusterId() == clusterId) {
 			return _inClusters.get(i);
@@ -48,7 +46,7 @@ ZHA_Cluster* ZHA_Device::getInClusterById(uint16_t clusterId) {
 	return nullptr;
 }
 
-ZHA_Cluster* ZHA_Device::getOutClusterById(uint16_t clusterId) {
+Cluster* Device::getOutClusterById(uint16_t clusterId) {
 	for (uint8_t i = 0; i < _outClusters.size(); i++) {
 		if (_outClusters.get(i)->getClusterId() == clusterId) {
 			return _outClusters.get(i);
@@ -57,61 +55,60 @@ ZHA_Cluster* ZHA_Device::getOutClusterById(uint16_t clusterId) {
 	return nullptr;
 }
 
-bool ZHA_Device::processGeneralCommand(Buffer& frameData, ZBExplicitRxResponse& message, Buffer& buffer) {
-	auto commandIdentifier = Frame(frameData).commandIdentifier();
+bool Device::processGeneralCommand(Memory& frameData, ZBExplicitRxResponse& message, Memory& buffer) {
+	auto frame = Frame::read(frameData);
+	auto commandIdentifier = frame.commandIdentifier();
 
 	switch (commandIdentifier) {
 		case CommandIdentifier::ReadAttributes:
-			return processGeneralReadAttributesCommand(frameData, message, buffer);
+			return processGeneralReadAttributesCommand(frame, frameData, message, buffer);
 		case CommandIdentifier::DiscoverAttributes:
-			return processGeneralDiscoverAttributesCommand(frameData, message, buffer);
+			return processGeneralDiscoverAttributesCommand(frame, frameData, message, buffer);
 		case CommandIdentifier::ConfigureReporting:
-			return processGeneralConfigureReportingCommand(frameData, message, buffer);
+			return processGeneralConfigureReportingCommand(frame, frameData, message, buffer);
 		default:
 			DEBUG("Received unimplemented command ", String((uint8_t)commandIdentifier, HEX));
 			return false;
 	}
 }
 
-bool ZHA_Device::processGeneralReadAttributesCommand(Buffer& frameData, ZBExplicitRxResponse& message, Buffer& buffer) {
+bool Device::processGeneralReadAttributesCommand(Frame& frame, Memory& frameData, ZBExplicitRxResponse& message, Memory& buffer) {
 	DEBUG("Reading attributes from cluster ", message.getClusterId());
 
 	auto cluster = getInClusterById(message.getClusterId());
 
-	auto frame = ReadAttributesFrame(frameData);
+	Frame(
+		FrameControl(FrameType::Global, Direction::ToClient, true),
+		frame.transactionSequenceNumber(),
+		CommandIdentifier::ReadAttributesResponse
+	).write(buffer);
 
-	auto response = ReadAttributesResponseFrame(buffer);
-	response.frameControl(FrameControl(FrameType::Global, Direction::ToClient, true));
-	response.transactionSequenceNumber(frame.transactionSequenceNumber());
-	response.commandIdentifier(CommandIdentifier::ReadAttributesResponse);
+	DEBUG("  Reading attributes");
 
-	DEBUG("  Reading ", frame.attributeCount(), " attributes");
-
-	for (int i = 0; i < frame.attributeCount(); i++) {
-		auto attributeId = frame.attributeId(i);
-		auto attribute = cluster->getAttrById(attributeId);
+	uint16_t attributeId;
+	while (ReadAttributesFrame::readNextAttributeId(frameData, attributeId)) {
+		auto attribute = cluster->getAttributeById(attributeId);
 
 		if (attribute) {
 			DEBUG("  Attribute ", attributeId, " reporting ", attribute->toString());
 
-			response.appendAttribute(attributeId, Status::Success, attribute->dataType());
+			ReadAttributesResponseFrame::writeAttribute(buffer, attributeId, Status::Success, attribute->getDataType());
 
-			attribute->writeValue(response);
+			attribute->write(buffer);
 		}
 		else {
 			DEBUG("  Attribute ", attributeId, " unsupported");
-			response.appendAttribute(attributeId, Status::UnsupportedAttribute);
+
+			ReadAttributesResponseFrame::writeAttribute(buffer, attributeId, Status::UnsupportedAttribute);
 		}
 	}
 
 	DEBUG("  Done");
 
-	buffer.length(response.length());
-
 	return true;
 }
 
-bool ZHA_Device::processGeneralDiscoverAttributesCommand(Buffer& frameData, ZBExplicitRxResponse& message, Buffer& buffer) {
+bool Device::processGeneralDiscoverAttributesCommand(Frame& frame, Memory& frameData, ZBExplicitRxResponse& message, Memory& buffer) {
 	/*
 	  Command
 	  -----------------------------------------------------------
@@ -136,38 +133,45 @@ bool ZHA_Device::processGeneralDiscoverAttributesCommand(Buffer& frameData, ZBEx
 
 	auto cluster = getInClusterById(message.getClusterId());
 
-	auto frame = DiscoverAttributesFrame(frameData);
+	Frame(
+		FrameControl(FrameType::Global, Direction::ToClient, true),
+		frame.transactionSequenceNumber(),
+		CommandIdentifier::DiscoverAttributesResponse
+	).write(buffer);
 
-	auto response = DiscoverAttributesResponseFrame(buffer);
-	response.frameControl(FrameControl(FrameType::Global, Direction::ToClient, true));
-	response.transactionSequenceNumber(frame.transactionSequenceNumber());
-	response.commandIdentifier(CommandIdentifier::DiscoverAttributesResponse);
+	// Write a temporary value and get back here at the end.
 
-	DEBUG("Discover attributes start ", frame.startAttributeId(), " maximum ", frame.maximumAttributeIds());
+	auto position = buffer.getPosition();
+	DiscoverAttributesResponseFrame(false).write(buffer);
 
-	auto index = cluster->getAttrIndexById(frame.startAttributeId());
+	auto discoverAttributesFrame = DiscoverAttributesFrame::read(frameData);
 
-	for (int i = 0; i < frame.maximumAttributeIds(); i++) {
-		if (index == -1 || index >= cluster->numAttributes()) {
+	DEBUG("Discover attributes start ", discoverAttributesFrame.getStartAttributeId(), " maximum ", discoverAttributesFrame.getMaximumAttributeIds());
+
+	auto index = cluster->getAttributeIndex(discoverAttributesFrame.getStartAttributeId());
+
+	for (int i = 0; i < discoverAttributesFrame.getMaximumAttributeIds(); i++) {
+		if (index == -1 || index >= cluster->getAttributeCount()) {
 			DEBUG("  Discovery complete");
-			response.discoveryComplete(true);
+			auto newPosition = buffer.getPosition();
+			buffer.setPosition(position);
+			DiscoverAttributesResponseFrame(true).write(buffer);
+			buffer.setPosition(newPosition);
 			break;
 		}
 
-		auto attribute = cluster->getAttrByIndex(index++);
+		auto attribute = cluster->getAttributeByIndex(index++);
 
-		response.appendAttribute(attribute->getAttrId(), attribute->dataType());
+		DiscoverAttributesResponseFrame::writeAttribute(buffer, attribute->getAttributeId(), attribute->getDataType());
 
-		DEBUG("  Reporting ID ", attribute->getAttrId(), " data type ", String((int)attribute->dataType(), HEX));
+		DEBUG("  Reporting ID ", attribute->getAttributeId(), " data type ", String((int)attribute->getDataType(), HEX));
 	}
-
-	buffer.length(response.length());
 
 	DEBUG("  Done");
 	return true;
 }
 
-bool ZHA_Device::processGeneralConfigureReportingCommand(Buffer& frameData, ZBExplicitRxResponse& message, Buffer& buffer) {
+bool Device::processGeneralConfigureReportingCommand(Frame& frame, Memory& frameData, ZBExplicitRxResponse& message, Memory& buffer) {
 
 	/*
 	  Command
@@ -208,50 +212,44 @@ bool ZHA_Device::processGeneralConfigureReportingCommand(Buffer& frameData, ZBEx
 
 	auto cluster = getInClusterById(message.getClusterId());
 
-	auto frame = ConfigureReportingFrame(frameData);
+	Frame(
+		FrameControl(FrameType::Global, Direction::ToClient, true),
+		frame.transactionSequenceNumber(),
+		CommandIdentifier::ConfigureReportingResponse
+	).write(buffer);
 
-	auto response = ConfigureReportingResponseFrame(buffer);
-	response.frameControl(FrameControl(FrameType::Global, Direction::ToClient, true));
-	response.transactionSequenceNumber(frame.transactionSequenceNumber());
-	response.commandIdentifier(CommandIdentifier::ConfigureReportingResponse);
-
-	while (true) {
-		auto type = frame.readElementType();
-		if (type == ConfigureReportingType::End) {
-			break;
-		}
-
+	ConfigureReportingType type;
+	while (ConfigureReportingFrame::readNextElementType(frameData, type)) {
 		if (type == ConfigureReportingType::Receive) {
-			DEBUG("NOT IMPLEMENTED");
+			ERROR("NOT IMPLEMENTED");
 			break;
 		}
 
 		if (type == ConfigureReportingType::Send) {
-			auto element = frame.readSendElement();
+			auto element = ConfigureReportingFrame::readSendElement(frameData);
 
-			auto attribute = cluster->getAttrById(element.attributeId());
+			auto attribute = cluster->getAttributeById(element.getAttributeId());
 
 			if (attribute) {
-				DEBUG("  Configuring reporting for attribute ", element.attributeId(), " data type ", String((int)element.dataType(), HEX), " minimum interval ", element.minimumInterval(), " maximum interval ", element.maximumInterval());
+				DEBUG("  Configuring reporting for attribute ", element.getAttributeId(), " data type ", String((int)element.getDataType(), HEX), " minimum interval ", element.getMinimumInterval(), " maximum interval ", element.getMaximumInterval());
+
+				// TODO: We're ignoring element.dataType()!
 
 				attribute->configureReporting(
-					element.dataType(),
-					element.minimumInterval(),
-					element.maximumInterval(),
+					element.getMinimumInterval(),
+					element.getMaximumInterval(),
 					0,
 					0
 				);
-				response.appendAttribute(Status::Success, type, element.attributeId());
+				ConfigureReportingResponseFrame::writeAttribute(buffer, Status::Success, type, element.getAttributeId());
 			}
 			else {
-				DEBUG("  Unsupported attribute ", element.attributeId());
+				DEBUG("  Unsupported attribute ", element.getAttributeId());
 
-				response.appendAttribute(Status::UnsupportedAttribute, type, element.attributeId());
+				ConfigureReportingResponseFrame::writeAttribute(buffer, Status::UnsupportedAttribute, type, element.getAttributeId());
 			}
 		}
 	}
-
-	buffer.length(response.length());
 
 	return true;
 }

@@ -24,9 +24,6 @@
     <ClInclude Include="support.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ZHA_Attributes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -78,6 +75,18 @@
     <ClInclude Include="__vm\.ZigbeeHomeAutomation.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StatusControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusCb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Clusters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DateTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XBeeConfig.cpp">
@@ -117,6 +126,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Display.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StatusControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

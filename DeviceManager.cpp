@@ -1,14 +1,16 @@
-#include "ZHA_DeviceManager.h"
+#include "DeviceManager.h"
 #include "Esp8266.h"
 #include "support.h"
-#include "Zcl.h"
-
-using namespace Zcl;
+#include "Printers.h"
 
 #define IS_COMMAND(c, n) ((c).getCommand()[0] == (n)[0] && (c).getCommand()[1] == (n)[1])
-AT_BUILDER(associationIndicationCommand, "AI");
 
-ZHA_DeviceManager::ZHA_DeviceManager() : _addr64(0), _bcast64(0), _addr16(0), _buffer(_payload) {
+static AtCommandRequest buildResetCommand(int index);
+static AtCommandRequest buildRetrieveConfigurationCommand(int index);
+static AtCommandRequest buildReadDiagnosticsCommand(int index);
+static AtCommandRequest associationIndicationCommand();
+
+DeviceManager::DeviceManager() : _address(0), _shortAddress(0), _broadcastAddress(0), _buffer(_payload) {
 	//    onResponse(printResponseCb, (uintptr_t) (Print * ) & Serial);
 	_device.onZBExplicitRxResponse(explicitRxCallbackThunk, (uintptr_t)this);
 	_device.onModemStatusResponse(modemStatusCallbackThunk, (uintptr_t)this);
@@ -19,22 +21,37 @@ ZHA_DeviceManager::ZHA_DeviceManager() : _addr64(0), _bcast64(0), _addr16(0), _b
 }
 
 /* Send the device announce command */
-void ZHA_DeviceManager::sendAnnounce() {
+void DeviceManager::sendAnnounce() {
 	DEBUG("Sending announce");
+
+	auto frameId = _device.getNextFrameId();
 
 	uint8_t capability = 0b00001000; /* For now, just receiver on during idle times */
 	uint8_t announce_cluster = 0x13;
-	_payload[0] = _device.getNextFrameId();
-	unpackArrayLe(&_payload[1], _addr16);
-	unpackArrayLe(&_payload[3], _addr64.getLsb());
-	unpackArrayLe(&_payload[7], _addr64.getMsb());
-	_payload[11] = capability;
+	Memory memory(_payload, 0);
+	memory.writeUInt8(frameId);
+	memory.writeUInt16Le(_shortAddress);
+	memory.writeUInt32Le(_address.getLsb());
+	memory.writeUInt32Le(_address.getMsb());
+	memory.writeUInt8(capability);
 
-	ZBExplicitTxRequest announce(_bcast64, 0xFFFC, 0, 0, (uint8_t*)&_payload, 12, _payload[0], 0, 0, announce_cluster, 0);
+	ZBExplicitTxRequest announce(
+		_broadcastAddress,
+		0xFFFC,
+		0,
+		0,
+		memory.getData(),
+		memory.getPosition(),
+		frameId,
+		0,
+		0,
+		announce_cluster,
+		0
+	);
 	_device.send(announce);
 }
 
-ZHA_Device* ZHA_DeviceManager::getDeviceByEndpoint(uint8_t endpointId) {
+Device* DeviceManager::getDeviceByEndpoint(uint8_t endpointId) {
 	for (auto i = 0; i < _deviceList.size(); i++) {
 		if (endpointId == _deviceList.get(i)->getEndpointId()) {
 			return _deviceList.get(i);
@@ -43,54 +60,79 @@ ZHA_Device* ZHA_DeviceManager::getDeviceByEndpoint(uint8_t endpointId) {
 	return nullptr;
 }
 
-void ZHA_DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clusterId, uint8_t* frameData, uint8_t frameDataLength) {
+void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clusterId, uint8_t* frameData, uint8_t frameDataLength) {
 	if (clusterId == ZDO_SIMPLE_DESCRIPTOR_REQUEST) {
 		DEBUG("ZDO Simple Descriptor Request");
 
-		ZHA_Device* dev = getDeviceByEndpoint(frameData[3]);
+		Device* dev = getDeviceByEndpoint(frameData[3]);
 		if (dev) {
-			uint8_t numInClusters = dev->getNumInClusters();
-			uint8_t numOutClusters = dev->getNumOutClusters();
-			_payloadLength = 12;
-			_payload[0] = frameData[0];
-			_payload[1] = STATUS_SUCCESS;
-			unpackArrayLe(&_payload[2], _addr16);
-			_payload[5] = dev->getEndpointId();
-			unpackArrayLe(&_payload[6], (uint16_t)0x0104);
-			unpackArrayLe(&_payload[8], (uint16_t)dev->getDeviceId());
-			_payload[10] = 0x40;
-			_payload[11] = numInClusters;
+			uint8_t numInClusters = dev->getInClusterCount();
+			uint8_t numOutClusters = dev->getOutClusterCount();
+			Memory memory(_payload);
+			memory.writeUInt8(frameData[0]);
+			memory.writeUInt8((uint8_t)Status::Success);
+			memory.writeUInt16Le(_shortAddress);
+			auto lengthPosition = memory.getPosition();
+			memory.writeUInt8(0);
+			memory.writeUInt8(dev->getEndpointId());
+			memory.writeUInt16Le((uint16_t)0x0104);
+			memory.writeUInt16Le(dev->getDeviceId());
+			memory.writeUInt8(0x40);
+			memory.writeUInt8(numInClusters);
 			for (uint8_t i = 0; i < numInClusters; i++) {
-				unpackArrayLe(&_payload[_payloadLength], dev->getInCluster(i)->getClusterId());
-				_payloadLength += 2;
+				memory.writeUInt16Le(dev->getInCluster(i)->getClusterId());
 			}
-			_payload[_payloadLength] = numOutClusters;
-			_payloadLength++;
+			memory.writeUInt8(numOutClusters);
 			for (uint8_t i = 0; i < numOutClusters; i++) {
-				unpackArrayLe(&_payload[_payloadLength], dev->getOutCluster(i)->getClusterId());
-				_payloadLength += 2;
+				memory.writeUInt16Le(dev->getOutCluster(i)->getClusterId());
 			}
-			_payload[4] = _payloadLength - 5;
-			ZBExplicitTxRequest SDR(dst64, dst16, 0, 0, (uint8_t*)&_payload, _payloadLength, _device.getNextFrameId(), 0, 0,
-				ZDO_SIMPLE_DESCRIPTOR_RESPONSE, 0);
-			_device.send(SDR);
+			auto length = memory.getPosition();
+			memory.setPosition(lengthPosition);
+			memory.writeUInt8(length - 5);
+
+			ZBExplicitTxRequest message(
+				dst64,
+				dst16,
+				0,
+				0,
+				memory.getData(),
+				length,
+				_device.getNextFrameId(),
+				0,
+				0,
+				ZDO_SIMPLE_DESCRIPTOR_RESPONSE,
+				0
+			);
+			_device.send(message);
 		}
 	}
 	else if (clusterId == ZDO_ACTIVE_ENDPOINTS_REQUEST) {
 		DEBUG("ZDO Active Endpoints Request");
 
-		_payload[0] = frameData[0];
-		_payload[1] = STATUS_SUCCESS;
-		unpackArrayLe(&_payload[2], _addr16);
-		_payload[4] = _deviceList.size();
-		for (auto i = 0; i < _deviceList.size(); i++) {
-			_payload[5 + i] = _deviceList.get(i)->getEndpointId();
-		}
-		_payloadLength = 5 + _deviceList.size();
-		ZBExplicitTxRequest endpoints(dst64, dst16, 0, 0, (uint8_t*)&_payload, _payloadLength, _device.getNextFrameId(), 0, 0,
-			ZDO_ACTIVE_ENDPOINTS_RESPONSE, 0);
+		Memory memory(_payload);
 
-		_device.send(endpoints);
+		memory.writeUInt8(frameData[0]);
+		memory.writeUInt8((uint8_t)Status::Success);
+		memory.writeUInt16Le(_shortAddress);
+		memory.writeUInt8(_deviceList.size());
+		for (auto i = 0; i < _deviceList.size(); i++) {
+			memory.writeUInt8(_deviceList.get(i)->getEndpointId());
+		}
+
+		ZBExplicitTxRequest message(
+			dst64,
+			dst16,
+			0,
+			0,
+			memory.getData(),
+			memory.getPosition(),
+			_device.getNextFrameId(),
+			0,
+			0,
+			ZDO_ACTIVE_ENDPOINTS_RESPONSE,
+			0
+		);
+		_device.send(message);
 	}
 	else if (clusterId == ZDO_MATCH_DESCRIPTOR_REQUEST) {
 		DEBUG("ZDO Match Descriptor Request");
@@ -107,32 +149,49 @@ void ZHA_DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t
 				((uint16_t)frameData[7 + 2 * (i + numInClusters)] << 8) | frameData[6 + 2 * (i + numInClusters)];
 			Serial.println(cluster, HEX);
 		}
-		_payload[0] = frameData[0];
-		_payload[1] = STATUS_SUCCESS;
-		unpackArrayLe(&_payload[2], _addr16);
-		_payload[4] = 0;
-		ZBExplicitTxRequest endpoints(dst64, dst16, 0, 0, (uint8_t*)&_payload, 5, _device.getNextFrameId(), 0, 0,
-			(uint16_t)ZDO_MATCH_DESCRIPTOR_RESPONSE, 0);
-		_device.send(endpoints);
+
+		Memory memory(_payload);
+
+		memory.writeUInt8(frameData[0]);
+		memory.writeUInt8((uint8_t)Status::Success);
+		memory.writeUInt16Le(_shortAddress);
+		memory.writeUInt8(0);
+
+		ZBExplicitTxRequest message(
+			dst64,
+			dst16,
+			0,
+			0,
+			memory.getData(),
+			memory.getPosition(),
+			_device.getNextFrameId(),
+			0,
+			0,
+			ZDO_MATCH_DESCRIPTOR_RESPONSE,
+			0
+		);
+		_device.send(message);
 	}
 }
 
-void ZHA_DeviceManager::atCommandCallback(AtCommandResponse& command) {
+void DeviceManager::atCommandCallback(AtCommandResponse& command) {
 #if LOG_DEBUG
 	printResponseCb(command, (uintptr_t)(Print*)&Serial);
 #endif
 
+	Memory memory(command.getValue(), command.getValueLength());
+
 	if (IS_COMMAND(command, "SH")) {
-		_addr64.setMsb(packArray<uint32_t>(command.getValue()));
+		_address.setMsb(memory.readUInt32Be());
 	}
 	else if (IS_COMMAND(command, "SL")) {
-		_addr64.setLsb(packArray<uint32_t>(command.getValue()));
+		_address.setLsb(memory.readUInt32Be());
 	}
 	else if (IS_COMMAND(command, "MY")) {
-		_addr16 = packArray<uint16_t>(command.getValue());
+		_shortAddress = memory.readUInt16Be();
 	}
 	else if (IS_COMMAND(command, "AI")) {
-		_associationIndication = command.getValue()[0];
+		_associationIndication = memory.readUInt8();
 		DEBUG("Association indication is now: ", getAssociationIndicationDescription(_associationIndication));
 
 		setConnected(_associationIndication == 0 ? ConnectionStatus::Connected : ConnectionStatus::Connecting);
@@ -150,7 +209,7 @@ void ZHA_DeviceManager::atCommandCallback(AtCommandResponse& command) {
 			setStatus("");
 		}
 
-		if (_state == STATE_RETRIEVING_ASSOCIATION_INDICATION && _associationIndication == 0) {
+		if (_state == State::RetrievingAssociationIndication && _associationIndication == 0) {
 			retrieveConfiguration();
 			return;
 		}
@@ -160,17 +219,17 @@ void ZHA_DeviceManager::atCommandCallback(AtCommandResponse& command) {
 		return;
 	}
 
-	if (_state == STATE_RESETTING) {
+	if (_state == State::Resetting) {
 		retrieveAssociationIndication();
 	}
-	else if (_state == STATE_RETRIEVING_CONFIGURATION) {
-		_state = STATE_CONNECTED;
+	else if (_state == State::RetrievingConfiguration) {
+		_state = State::Connected;
 
 		sendAnnounce();
 	}
 }
 
-void ZHA_DeviceManager::modemStatusCallback(ModemStatusResponse& status) {
+void DeviceManager::modemStatusCallback(ModemStatusResponse& status) {
 
 	switch (status.getStatus()) {
 		case HARDWARE_RESET:
@@ -178,7 +237,7 @@ void ZHA_DeviceManager::modemStatusCallback(ModemStatusResponse& status) {
 			break;
 		case ASSOCIATED:
 			DEBUG("Joined network.");
-			if (_state == STATE_CONNECTED) {
+			if (_state == State::Connected) {
 				setCommandBuilder(buildReadDiagnosticsCommand);
 				sendAnnounce();
 			}
@@ -194,7 +253,7 @@ void ZHA_DeviceManager::modemStatusCallback(ModemStatusResponse& status) {
 	}
 }
 
-void ZHA_DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
+void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 #if LOG_DEBUG
 	printResponseCb(resp, (uintptr_t)(Print*)&Serial);
 #endif
@@ -206,7 +265,7 @@ void ZHA_DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 	uint8_t* frameData = resp.getFrameData() + resp.getDataOffset();
 	int frameDataLength = resp.getFrameDataLength() - resp.getDataOffset();
 
-	auto frameBuffer = Buffer(resp.getFrameData() + resp.getDataOffset(), resp.getFrameDataLength() - resp.getDataOffset());
+	auto frameBuffer = Memory(resp.getFrameData() + resp.getDataOffset(), resp.getFrameDataLength() - resp.getDataOffset());
 
 	//DEBUG("profileId ", profileId, " srcEndpoint ", srcEndpoint, " dstEndpoint ", dstEndpoint, " clusterId ", clusterId, " remote addr ", resp.getRemoteAddress16());
 
@@ -216,7 +275,7 @@ void ZHA_DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 			frameDataLength);
 	}
 	else if (profileId == ZHA_PROFILE_ID) {
-		ZHA_Device* device = getDeviceByEndpoint(dstEndpoint);
+		Device* device = getDeviceByEndpoint(dstEndpoint);
 		if (device) {
 			/* Frame layout
 		  ---------------------------------------------------------------------
@@ -231,8 +290,7 @@ void ZHA_DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 		  | Reserverd | Disable Default Response | Direction | MFR specific | Frame Type |
 		  --------------------------------------------------------------------------------
 		*/
-
-			auto request = Frame(frameBuffer);
+			auto request = Frame::read(frameBuffer);
 
 			if (request.frameControl().frameType() == FrameType::Global) {
 		        DEBUG("General command");
@@ -244,7 +302,7 @@ void ZHA_DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 						0, // broadcastRadius
 						0, // option
 						(uint8_t*)&_payload,
-						_buffer.length(),
+						_buffer.getPosition(),
 						_device.getNextFrameId(),
 						dstEndpoint,
 						srcEndpoint,
@@ -259,25 +317,25 @@ void ZHA_DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 		        DEBUG("Cluster specific command");
 
 				auto cluster = device->getInClusterById(clusterId);
-				auto result = cluster->processCommand(frameBuffer);
+				auto commandId = frameBuffer.readUInt8();
 
-				DEBUG("Sending result for cluster specific command: ", String((int)result, HEX));
+				Frame(
+					FrameControl(FrameType::Global, Direction::ToClient),
+					request.transactionSequenceNumber(),
+					CommandIdentifier::DefaultResponse
+				).write(_buffer);
 
-				auto response = new DefaultResponseFrame(_buffer);
+				_buffer.writeUInt8(commandId);
 
-				response->frameControl(FrameControl(FrameType::Global, Direction::ToClient));
-				response->transactionSequenceNumber(request.transactionSequenceNumber());
-				response->commandIdentifier(CommandIdentifier::DefaultResponse);
-				response->commandId(frameBuffer.get(2));
-				response->status(result);
+				cluster->processCommand(commandId, frameBuffer, _buffer);
 
 				ZBExplicitTxRequest message(
 					resp.getRemoteAddress64(),
 					resp.getRemoteAddress16(),
 					0, // broadcastRadius
 					0, // option
-					_buffer.data(),
-					response->length(),
+					_buffer.getData(),
+					_buffer.getPosition(),
 					_device.getNextFrameId(),
 					dstEndpoint,
 					srcEndpoint,
@@ -291,30 +349,30 @@ void ZHA_DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 	}
 }
 
-void ZHA_DeviceManager::reportAttributes() {
+void DeviceManager::reportAttributes() {
 	for (auto devs = 0; devs < _deviceList.size(); devs++) {
 		auto dev = _deviceList.get(devs);
-		for (auto ics = 0; ics < dev->getNumInClusters(); ics++) {
+		for (auto ics = 0; ics < dev->getInClusterCount(); ics++) {
 			auto ic = dev->getInCluster(ics);
-			for (auto ats = 0; ats < ic->numAttributes(); ats++) {
-				auto at = ic->getAttrByIndex(ats);
+			for (auto ats = 0; ats < ic->getAttributeCount(); ats++) {
+				auto at = ic->getAttributeByIndex(ats);
 				if (at->isUnreported()) {
-					DEBUG("Reporting attribute endpoint ", dev->getEndpointId(), " cluster ", ic->getClusterId(), " attribute ", at->getAttrId(), " value ", at->toString());
+					DEBUG("Reporting attribute endpoint ", dev->getEndpointId(), " cluster ", ic->getClusterId(), " attribute ", at->getAttributeId(), " value ", at->toString());
 
-					auto response = ReportAttributesFrame(_buffer);
+					auto response = Frame::read(_buffer);
 					response.frameControl(FrameControl(FrameType::Global, Direction::ToClient, true));
 					response.transactionSequenceNumber(0);
 					response.commandIdentifier(CommandIdentifier::ReportAttributes);
-					response.appendAttribute(at->getAttrId(), at->dataType());
-					at->writeValue(response);
+					ReportAttributesFrame::writeAttribute(_buffer, at->getAttributeId(), at->getDataType());
+					at->write(_buffer);
 
 					ZBExplicitTxRequest message(
-						_bcast64,
-						_bcast16,
+						_broadcastAddress,
+						_shortBroadcastAddress,
 						0, // broadcastRadius
 						0, // option
 						(uint8_t*)&_payload,
-						response.length(),
+						_buffer.getPosition(),
 						_device.getNextFrameId(),
 						dev->getEndpointId(),
 						1, // destination endpoint
@@ -330,34 +388,34 @@ void ZHA_DeviceManager::reportAttributes() {
 	}
 }
 
-void ZHA_DeviceManager::addDevice(ZHA_Device* dev) {
+void DeviceManager::addDevice(Device* dev) {
 	_deviceList.add(dev);
 }
 
-void ZHA_DeviceManager::addStatusCb(StatusCb& statusCb) {
+void DeviceManager::addStatusCb(StatusCb& statusCb) {
 	_statusCbs.add(&statusCb);
 }
 
-void ZHA_DeviceManager::begin(Stream& stream) {
+void DeviceManager::begin(Stream& stream) {
 	_device.begin(stream);
 
 	retrieveConfiguration();
 }
 
-void ZHA_DeviceManager::performReset() {
-	_state = STATE_RESETTING;
+void DeviceManager::performReset() {
+	_state = State::Resetting;
 
 	setCommandBuilder(buildResetCommand);
 }
 
-void ZHA_DeviceManager::setCommandBuilder(command_builder_t commandBuilder) {
+void DeviceManager::setCommandBuilder(command_builder_t commandBuilder) {
 	_commandBuilder = commandBuilder;
 	_commandBuilderOffset = 0;
 
 	sendCurrentCommand();
 }
 
-void ZHA_DeviceManager::update() {
+void DeviceManager::update() {
 	_device.loop();
 
 	reportAttributes();
@@ -375,7 +433,7 @@ void ZHA_DeviceManager::update() {
 
 	// Refresh association indication.
 
-	if (_state == STATE_RETRIEVING_ASSOCIATION_INDICATION) {
+	if (_state == State::RetrievingAssociationIndication) {
 		const time_t currentMillis = millis();
 		if (!_associationIndicationMillis || currentMillis - _associationIndicationMillis > ASSOCIATION_INDICATION_REFRESH_MS) {
 			_associationIndicationMillis = currentMillis;
@@ -386,7 +444,7 @@ void ZHA_DeviceManager::update() {
 	}
 }
 
-bool ZHA_DeviceManager::sendNextCommand() {
+bool DeviceManager::sendNextCommand() {
 	if (!_commandBuilder) {
 		return false;
 	}
@@ -403,7 +461,7 @@ bool ZHA_DeviceManager::sendNextCommand() {
 	return true;
 }
 
-void ZHA_DeviceManager::sendCurrentCommand() {
+void DeviceManager::sendCurrentCommand() {
 	auto command = _commandBuilder(_commandBuilderOffset);
 
 	DEBUG("Sending command ", (char)command.getCommand()[0], (char)command.getCommand()[1]);
@@ -412,8 +470,8 @@ void ZHA_DeviceManager::sendCurrentCommand() {
 	_device.send(command);
 }
 
-void ZHA_DeviceManager::retrieveAssociationIndication() {
-	_state = STATE_RETRIEVING_ASSOCIATION_INDICATION;
+void DeviceManager::retrieveAssociationIndication() {
+	_state = State::RetrievingAssociationIndication;
 	_associationIndicationMillis = millis();
 
 	DEBUG("Requesting association indication");
@@ -422,29 +480,29 @@ void ZHA_DeviceManager::retrieveAssociationIndication() {
 	_device.send(command);
 }
 
-void ZHA_DeviceManager::retrieveConfiguration() {
+void DeviceManager::retrieveConfiguration() {
 	DEBUG("Retrieving configuration");
 
-	_state = STATE_RETRIEVING_CONFIGURATION;
+	_state = State::RetrievingConfiguration;
 
 	setStatus("Connecting...");
 
 	setCommandBuilder(buildRetrieveConfigurationCommand);
 }
 
-void ZHA_DeviceManager::setStatus(const String& status) {
+void DeviceManager::setStatus(const String& status) {
 	for (int i = 0; i < _statusCbs.size(); i++) {
 		_statusCbs[i]->setStatus(status);
 	}
 }
 
-void ZHA_DeviceManager::setConnected(ConnectionStatus connected) {
+void DeviceManager::setConnected(ConnectionStatus connected) {
 	for (int i = 0; i < _statusCbs.size(); i++) {
 		_statusCbs[i]->setConnected(connected);
 	}
 }
 
-const char* ZHA_DeviceManager::getAssociationIndicationDescription(uint8_t associationIndication) {
+const char* DeviceManager::getAssociationIndicationDescription(uint8_t associationIndication) {
 	switch (associationIndication) {
 	case 0x00: return "Successfully formed or joined a network. (Coordinators form a network, routers and end devices join a network.)";
 	case 0x21: return "Scan found no PANs";
@@ -465,7 +523,7 @@ const char* ZHA_DeviceManager::getAssociationIndicationDescription(uint8_t assoc
 	}
 }
 
-const char* ZHA_DeviceManager::getShortAssociationIndicationDescription(uint8_t associationIndication) {
+const char* DeviceManager::getShortAssociationIndicationDescription(uint8_t associationIndication) {
 	switch (associationIndication) {
 	case 0x21: return "No PANs found";
 	case 0x22: return "No valid PANs found";
@@ -483,5 +541,78 @@ const char* ZHA_DeviceManager::getShortAssociationIndicationDescription(uint8_t 
 		return "Secure join error";
 	case 0xFF: return "Scanning";
 	default: return nullptr;
+	}
+}
+
+#define AT_BUILDER(n, c, ...) \
+	static AtCommandRequest n() { \
+		static uint8_t value[] = { __VA_ARGS__ }; \
+		return AtCommandRequest((uint8_t*)(c), (uint8_t*)value, ARRAY_LENGTH(value)); \
+	}
+
+#define AT_BUILDER_STR(n, c, v) \
+	static AtCommandRequest n() { \
+		return AtCommandRequest((uint8_t*)(c), (uint8_t*)(v), strlen(v)); \
+	}
+
+AT_BUILDER(restoreDefaultsCommand, "RE");
+AT_BUILDER(apiOptionsCommand, "AO", 3);
+AT_BUILDER(networkResetCommand, "NR", 0);
+AT_BUILDER_STR(nodeIdentifierCommand, "NI", "TEST LAMP");
+AT_BUILDER(zigbeeStackProfileCommand, "ZS", 2);
+AT_BUILDER(nodeJoinTimeCommand, "NJ", 0x5A);
+AT_BUILDER(encryptionEnableCommand, "EE", 1);
+AT_BUILDER(encryptionOptionsCommand, "EO", 1);
+AT_BUILDER(linkKeyCommand, "KY", 0x5A, 0x69, 0x67, 0x42, 0x65, 0x65, 0x41, 0x6C, 0x6C, 0x69, 0x61, 0x6E, 0x63, 0x65, 0x30, 0x39);
+AT_BUILDER(dio6RtsCommand, "D6", 0);
+AT_BUILDER(scanChannelsCommand, "SC", 0xff, 0xff);
+AT_BUILDER(writeCommand, "WR");
+AT_BUILDER(softwareResetCommand, "FR");
+AT_BUILDER(serialNumberHighCommand, "SH");
+AT_BUILDER(serialNumberLowCommand, "SL");
+AT_BUILDER(networkAddressCommand, "MY");
+AT_BUILDER(apiModeCommand, "AP", 2);
+AT_BUILDER(operatingChannelCommand, "CH");
+AT_BUILDER(operatingPanIdCommand, "OI");
+AT_BUILDER(associationIndicationCommand, "AI");
+AT_BUILDER(parentNetworkAddressCommand, "MP");
+
+AtCommandRequest buildResetCommand(int index) {
+	switch (index) {
+	case 0: return restoreDefaultsCommand();
+	case 1: return apiOptionsCommand();
+	case 2: return networkResetCommand();
+	case 3: return nodeIdentifierCommand();
+	case 4: return zigbeeStackProfileCommand();
+	case 5: return nodeJoinTimeCommand();
+	case 6: return encryptionEnableCommand();
+	case 7: return encryptionOptionsCommand();
+	case 8: return linkKeyCommand();
+	case 9: return dio6RtsCommand();
+	case 10: return scanChannelsCommand();
+	case 11: return apiModeCommand();
+	case 12: return writeCommand();
+	case 13: return softwareResetCommand();
+	default: return {};
+	}
+}
+
+AtCommandRequest buildRetrieveConfigurationCommand(int index) {
+	switch (index) {
+	case 0: return serialNumberHighCommand();
+	case 1: return serialNumberLowCommand();
+	case 2: return networkAddressCommand();
+	case 3: return associationIndicationCommand();
+	default: return {};
+	}
+}
+
+AtCommandRequest buildReadDiagnosticsCommand(int index) {
+	switch (index) {
+	case 0: return associationIndicationCommand();
+	case 1: return operatingChannelCommand();
+	case 2: return operatingPanIdCommand();
+	case 3: return parentNetworkAddressCommand();
+	default: return {};
 	}
 }
