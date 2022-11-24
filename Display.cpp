@@ -19,7 +19,7 @@ void Display::update() {
 void Display::paint() {
     _screen->clearBuffer();
 
-    if (_connected == ConnectionStatus::Connecting) {
+    if (_connected == ConnectionStatus::Connected) {
         // This font pulls in 10 Kb, but all we need is the "network bars" icon.
         //
         //_screen->setFont(u8g2_font_siji_t_6x10);

@@ -123,4 +123,7 @@ void resetCountdown(int remaining, uintptr_t) {
     else if (remaining == 0) {
         display.setStatus(F("Resetting NOW"));
     }
+    else {
+        display.setStatus(String());
+    }
 }

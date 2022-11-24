@@ -313,6 +313,10 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 
 				DEBUG(F("Cluster "), clusterId, F(" specific command ID "), commandId);
 
+				if (request.frameControl().disableDefaultResponse()) {
+					WARN(F("Sending default response even though disable default response is set"));
+				}
+
 				Memory buffer(_payload);
 
 				Frame(
