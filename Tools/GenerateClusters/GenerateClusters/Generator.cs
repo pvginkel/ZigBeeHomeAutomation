@@ -191,7 +191,7 @@ public class Generator
                     cw.WriteLine("return _value.string;");
                     cw.UnIndent();
                     cw.WriteLine("}");
-                    cw.WriteLine("return F(\"\");");
+                    cw.WriteLine("return String();");
                     break;
                 case "Buffer":
                     cw.WriteLine("return F(\"BUFFER\");");
@@ -422,9 +422,12 @@ public class Generator
 
         var obj = JObject.Parse(data);
 
+        var cwh = new CodeWriter();
         var cw = new CodeWriter();
 
-        cw.WriteLine("#pragma once");
+        cwh.WriteLine("#pragma once");
+
+        cw.WriteLine("#include \"ZigBee.h\"");
 
         foreach (var (key, _) in obj)
         {
@@ -444,18 +447,18 @@ public class Generator
                 )
             );
 
-            cw.WriteLine();
+            cwh.WriteLine();
 
             // Class definition.
 
-            cw.WriteLine($"class {key.ToUpperFirst()}Cluster: public Cluster {{");
-            cw.WriteLine("public:");
-            cw.Indent();
+            cwh.WriteLine($"class {key.ToUpperFirst()}Cluster: public Cluster {{");
+            cwh.WriteLine("public:");
+            cwh.Indent();
 
             // Constructor.
 
-            cw.WriteLine($"{key.ToUpperFirst()}Cluster() : Cluster({cluster["ID"]}) {{");
-            cw.WriteLine("}");
+            cwh.WriteLine($"{key.ToUpperFirst()}Cluster() : Cluster({cluster["ID"]}) {{");
+            cwh.WriteLine("}");
 
             // Attribute getters and setters.
 
@@ -476,18 +479,9 @@ public class Generator
                 if (methodTypeName == "String16" || methodTypeName == "Octstr16")
                     methodTypeName = methodTypeName.Substring(0, methodTypeName.Length - 2);
 
-                cw.WriteLine();
-                cw.WriteLine($"{dataType.TypeName} get{attributeName.ToUpperFirst()}() {{");
-                cw.Indent();
-                cw.WriteLine($"return get{methodTypeName}({attribute["ID"]});");
-                cw.UnIndent();
-                cw.WriteLine("}");
-                cw.WriteLine();
-                cw.WriteLine($"void set{attributeName.ToUpperFirst()}({argumentTypeName} value) {{");
-                cw.Indent();
-                cw.WriteLine($"set{methodTypeName}({attribute["ID"]}, value);");
-                cw.UnIndent();
-                cw.WriteLine("}");
+                cwh.WriteLine();
+                cwh.WriteLine($"{dataType.TypeName} get{attributeName.ToUpperFirst()}() {{ return get{methodTypeName}({attribute["ID"]}); }}");
+                cwh.WriteLine($"void set{attributeName.ToUpperFirst()}({argumentTypeName} {attributeName}) {{ set{methodTypeName}({attribute["ID"]}, {attributeName}); }}");
             }
 
             // Commands.
@@ -500,67 +494,70 @@ public class Generator
 
                 if (command.Response != null)
                 {
-                    cw.WriteLine();
-                    cw.WriteLine($"class {responseClassName} {{");
-                    cw.Indent();
+                    cwh.WriteLine();
+                    cwh.WriteLine($"class {responseClassName} {{");
+                    cwh.Indent();
 
                     foreach (var parameter in command.Response.Parameters)
                     {
-                        cw.WriteLine($"{parameter.TypeName} _{parameter.Name}{{}};");
+                        cwh.WriteLine($"{parameter.TypeName} _{parameter.Name}{{}};");
                     }
 
-                    cw.WriteLine();
-                    cw.UnIndent();
-                    cw.WriteLine("public:");
-                    cw.Indent();
+                    cwh.WriteLine();
+                    cwh.UnIndent();
+                    cwh.WriteLine("public:");
+                    cwh.Indent();
 
                     foreach (var parameter in command.Response.Parameters)
                     {
                         string argumentTypeName = GetArgumentTypeName(parameter.TypeName);
 
-                        cw.WriteLine($"{parameter.TypeName} get{parameter.Name.ToUpperFirst()}() {{ return _{parameter.Name}; }}");
-                        cw.WriteLine($"void set{parameter.Name.ToUpperFirst()}({argumentTypeName} value) {{ _{parameter.Name} = value; }}");
-                        cw.WriteLine();
+                        cwh.WriteLine($"{parameter.TypeName} get{parameter.Name.ToUpperFirst()}() {{ return _{parameter.Name}; }}");
+                        cwh.WriteLine($"void set{parameter.Name.ToUpperFirst()}({argumentTypeName} {parameter.Name}) {{ _{parameter.Name} = {parameter.Name}; }}");
+                        cwh.WriteLine();
                     }
 
-                    cw.UnIndent();
-                    cw.WriteLine("};");
+                    cwh.UnIndent();
+                    cwh.WriteLine("};");
                 }
 
                 // Virtual command method.
 
-                cw.WriteLine();
-                cw.Write($"virtual Status {command.Name}Command(");
+                cwh.WriteLine();
+                cwh.Write($"virtual Status {command.Name}Command(");
 
                 for (var i = 0; i < command.Parameters.Count; i++)
                 {
                     if (i > 0)
-                        cw.Write(", ");
+                        cwh.Write(", ");
 
                     var parameter = command.Parameters[i];
-                    cw.Write($"{parameter.TypeName} {parameter.Name}");
+                    cwh.Write($"{parameter.TypeName} {parameter.Name}");
                 }
 
                 if (command.Response != null)
                 {
                     if (command.Parameters.Count > 0)
-                        cw.Write(", ");
-                    cw.Write($"{responseClassName}& response");
+                        cwh.Write(", ");
+                    cwh.Write($"{responseClassName}& response");
                 }
 
-                cw.WriteLine(") {");
-                cw.Indent();
-                cw.WriteLine("return Status::UnsupportedAttribute;");
-                cw.UnIndent();
-                cw.WriteLine("}");
+                cwh.WriteLine(") {");
+                cwh.Indent();
+                cwh.WriteLine("return Status::UnsupportedAttribute;");
+                cwh.UnIndent();
+                cwh.WriteLine("}");
             }
 
             // Command parser.
 
             if (commands.Count > 0)
             {
+                cwh.WriteLine();
+                cwh.WriteLine("void processCommand(uint8_t commandId, Memory& request, Memory& response) override;");
+
                 cw.WriteLine();
-                cw.WriteLine("void processCommand(uint8_t commandId, Memory& request, Memory& response) override {");
+                cw.WriteLine($"void {key.ToUpperFirst()}Cluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {{");
                 cw.Indent();
 
                 cw.WriteLine("switch (commandId) {");
@@ -638,11 +635,12 @@ public class Generator
                 cw.WriteLine("}");
             }
 
-            cw.UnIndent();
-            cw.WriteLine("};");
+            cwh.UnIndent();
+            cwh.WriteLine("};");
         }
 
-        WriteFile("Clusters.h", cw.ToString());
+        WriteFile("Clusters.h", cwh.ToString());
+        WriteFile("Clusters.cpp", cw.ToString());
     }
 
     private List<Command> ParseCommands(JObject obj, Dictionary<int, Command> responses = null)
