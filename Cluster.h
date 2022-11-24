@@ -17,6 +17,7 @@ public:
         response.writeUInt8((uint8_t)Status::UnsupportedAttribute);
     }
 
+protected:
 // GENERATION START
     uint8_t getData8(uint16_t attributeId);
     void setData8(uint16_t attributeId, uint8_t value);

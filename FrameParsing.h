@@ -108,17 +108,17 @@ public:
 		return {
 			FrameControl(buffer.readUInt8()),
 			buffer.readUInt8(),
-			(CommandIdentifier)buffer.readUInt8()
+			buffer.readUInt8()
 		};
 	}
 
 private:
 	FrameControl _frameControl;
 	uint8_t _transactionSequenceNumber;
-	CommandIdentifier _commandIdentifier;
+	uint8_t _commandIdentifier;
 
 public:
-	Frame(FrameControl frameControl, uint8_t transactionSequenceNumber, CommandIdentifier commandIdentifier)
+	Frame(FrameControl frameControl, uint8_t transactionSequenceNumber, uint8_t commandIdentifier)
 		: _frameControl(frameControl),
 		  _transactionSequenceNumber(transactionSequenceNumber),
 		  _commandIdentifier(commandIdentifier) {
@@ -140,11 +140,11 @@ public:
 		_transactionSequenceNumber = transactionSequenceNumber;
 	}
 
-	CommandIdentifier commandIdentifier() const {
+	uint8_t commandIdentifier() const {
 		return _commandIdentifier;
 	}
 
-	void commandIdentifier(CommandIdentifier commandIdentifier) {
+	void commandIdentifier(uint8_t commandIdentifier) {
 		_commandIdentifier = commandIdentifier;
 	}
 

@@ -55,8 +55,8 @@ public class Generator
                 methodName += "Int" + type.Length;
                 typeName += "int" + type.NativeLength + "_t";
 
-                cwh.WriteLine($"{typeName} {methodName}Be();");
-                cw.WriteLine($"{typeName} Memory::{methodName}Be() {{");
+                cwh.WriteLine($"{typeName} {methodName}Le();");
+                cw.WriteLine($"{typeName} Memory::{methodName}Le() {{");
 
                 cw.Indent();
 
@@ -77,8 +77,8 @@ public class Generator
                 cw.WriteLine("}");
                 cw.WriteLine();
 
-                cwh.WriteLine($"{typeName} {methodName}Le();");
-                cw.WriteLine($"{typeName} Memory::{methodName}Le() {{");
+                cwh.WriteLine($"{typeName} {methodName}Be();");
+                cw.WriteLine($"{typeName} Memory::{methodName}Be() {{");
 
                 cw.Indent();
 
@@ -117,8 +117,8 @@ public class Generator
                 methodName += "Int" + type.Length;
                 typeName += "int" + type.NativeLength + "_t";
 
-                cwh.WriteLine($"void {methodName}Be({typeName} value);");
-                cw.WriteLine($"void Memory::{methodName}Be({typeName} value) {{");
+                cwh.WriteLine($"void {methodName}Le({typeName} value);");
+                cw.WriteLine($"void Memory::{methodName}Le({typeName} value) {{");
 
                 cw.Indent();
 
@@ -133,8 +133,8 @@ public class Generator
                 cw.WriteLine("}");
                 cw.WriteLine();
 
-                cwh.WriteLine($"void {methodName}Le({typeName} value);");
-                cw.WriteLine($"void Memory::{methodName}Le({typeName} value) {{");
+                cwh.WriteLine($"void {methodName}Be({typeName} value);");
+                cw.WriteLine($"void Memory::{methodName}Be({typeName} value) {{");
 
                 cw.Indent();
 
@@ -425,10 +425,6 @@ public class Generator
         var cw = new CodeWriter();
 
         cw.WriteLine("#pragma once");
-        cw.WriteLine();
-        cw.WriteLine("#include \"Cluster.h\"");
-        cw.WriteLine("#include \"Memory.h\"");
-        cw.WriteLine("#include \"DateTime.h\"");
 
         foreach (var (key, _) in obj)
         {
@@ -452,12 +448,13 @@ public class Generator
 
             // Class definition.
 
-            cw.WriteLine($"class {key.ToUpperFirst()}: public Cluster {{");
+            cw.WriteLine($"class {key.ToUpperFirst()}Cluster: public Cluster {{");
+            cw.WriteLine("public:");
             cw.Indent();
 
             // Constructor.
 
-            cw.WriteLine($"{key.ToUpperFirst()}() : Cluster({cluster["ID"]}) {{");
+            cw.WriteLine($"{key.ToUpperFirst()}Cluster() : Cluster({cluster["ID"]}) {{");
             cw.WriteLine("}");
 
             // Attribute getters and setters.

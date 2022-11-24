@@ -91,7 +91,7 @@ void StatusControl::update() {
 			auto total = _initialDelay + _steps * _stepTime;
 			auto target = currentMillis - _bounce.currentDuration() + total;
 			auto remaining = target - _lastStatusChange;
-			auto nextToggle = max((remaining * 20) / 100, 25);
+			auto nextToggle = max((remaining * 10) / 100, 25);
 			auto progress = currentMillis - _lastStatusChange;
 
 			if (progress >= nextToggle) {

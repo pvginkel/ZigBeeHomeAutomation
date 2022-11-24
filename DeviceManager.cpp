@@ -8,7 +8,7 @@ static AtCommandRequest buildRetrieveConfigurationCommand(int index);
 static AtCommandRequest buildReadDiagnosticsCommand(int index);
 static AtCommandRequest associationIndicationCommand();
 
-DeviceManager::DeviceManager() : _address(0), _shortAddress(0), _broadcastAddress(0), _buffer(_payload) {
+DeviceManager::DeviceManager() : _address(0), _shortAddress(0), _broadcastAddress(0) {
 	//    onResponse(printResponseCb, (uintptr_t) (Print * ) & Serial);
 	_device.onZBExplicitRxResponse(explicitRxCallbackThunk, (uintptr_t)this);
 	_device.onModemStatusResponse(modemStatusCallbackThunk, (uintptr_t)this);
@@ -263,8 +263,6 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 	uint8_t* frameData = resp.getFrameData() + resp.getDataOffset();
 	int frameDataLength = resp.getFrameDataLength() - resp.getDataOffset();
 
-	auto frameBuffer = Memory(resp.getFrameData() + resp.getDataOffset(), resp.getFrameDataLength() - resp.getDataOffset());
-
 	//DEBUG("profileId ", profileId, " srcEndpoint ", srcEndpoint, " dstEndpoint ", dstEndpoint, " clusterId ", clusterId, " remote addr ", resp.getRemoteAddress16());
 
 	if (profileId == 0x0000 && srcEndpoint == 0x00 && dstEndpoint == 0x00) {
@@ -288,19 +286,23 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 		  | Reserverd | Disable Default Response | Direction | MFR specific | Frame Type |
 		  --------------------------------------------------------------------------------
 		*/
+			auto frameBuffer = Memory(frameData, frameDataLength);
+
 			auto request = Frame::read(frameBuffer);
 
 			if (request.frameControl().frameType() == FrameType::Global) {
 		        DEBUG("General command");
 
-				if (device->processGeneralCommand(frameBuffer, resp, _buffer)) {
+				Memory buffer(_payload);
+
+				if (device->processGeneralCommand(request, frameBuffer, resp, buffer)) {
 					ZBExplicitTxRequest message(
 						resp.getRemoteAddress64(),
 						resp.getRemoteAddress16(),
 						0, // broadcastRadius
 						0, // option
 						(uint8_t*)&_payload,
-						_buffer.getPosition(),
+						buffer.getPosition(),
 						_device.getNextFrameId(),
 						dstEndpoint,
 						srcEndpoint,
@@ -312,28 +314,30 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 				}
 			}
 			if (request.frameControl().frameType() == FrameType::Cluster) {
-		        DEBUG("Cluster specific command");
-
 				auto cluster = device->getInClusterById(clusterId);
-				auto commandId = frameBuffer.readUInt8();
+				auto commandId = request.commandIdentifier();
+
+				DEBUG("Cluster ", clusterId, " specific command ID ", commandId);
+
+				Memory buffer(_payload);
 
 				Frame(
 					FrameControl(FrameType::Global, Direction::ToClient),
 					request.transactionSequenceNumber(),
-					CommandIdentifier::DefaultResponse
-				).write(_buffer);
+					(uint8_t)CommandIdentifier::DefaultResponse
+				).write(buffer);
 
-				_buffer.writeUInt8(commandId);
+				buffer.writeUInt8(commandId);
 
-				cluster->processCommand(commandId, frameBuffer, _buffer);
+				cluster->processCommand(commandId, frameBuffer, buffer);
 
 				ZBExplicitTxRequest message(
 					resp.getRemoteAddress64(),
 					resp.getRemoteAddress16(),
 					0, // broadcastRadius
 					0, // option
-					_buffer.getData(),
-					_buffer.getPosition(),
+					buffer.getData(),
+					buffer.getPosition(),
 					_device.getNextFrameId(),
 					dstEndpoint,
 					srcEndpoint,
@@ -357,20 +361,24 @@ void DeviceManager::reportAttributes() {
 				if (at->isUnreported()) {
 					DEBUG("Reporting attribute endpoint ", dev->getEndpointId(), " cluster ", ic->getClusterId(), " attribute ", at->getAttributeId(), " value ", at->toString());
 
-					auto response = Frame::read(_buffer);
-					response.frameControl(FrameControl(FrameType::Global, Direction::ToClient, true));
-					response.transactionSequenceNumber(0);
-					response.commandIdentifier(CommandIdentifier::ReportAttributes);
-					ReportAttributesFrame::writeAttribute(_buffer, at->getAttributeId(), at->getDataType());
-					at->write(_buffer);
+					Memory buffer(_payload);
+
+					Frame(
+						FrameControl(FrameType::Global, Direction::ToClient, true),
+						0,
+						(uint8_t)CommandIdentifier::ReportAttributes
+					).write(buffer);
+
+					ReportAttributesFrame::writeAttribute(buffer, at->getAttributeId(), at->getDataType());
+					at->write(buffer);
 
 					ZBExplicitTxRequest message(
 						_broadcastAddress,
 						_shortBroadcastAddress,
 						0, // broadcastRadius
 						0, // option
-						(uint8_t*)&_payload,
-						_buffer.getPosition(),
+						buffer.getData(),
+						buffer.getPosition(),
 						_device.getNextFrameId(),
 						dev->getEndpointId(),
 						1, // destination endpoint
@@ -386,8 +394,8 @@ void DeviceManager::reportAttributes() {
 	}
 }
 
-void DeviceManager::addDevice(Device* dev) {
-	_deviceList.add(dev);
+void DeviceManager::addDevice(Device& device) {
+	_deviceList.add(&device);
 }
 
 void DeviceManager::addStatusCb(StatusCb& statusCb) {

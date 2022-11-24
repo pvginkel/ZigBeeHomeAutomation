@@ -4,12 +4,12 @@ Device::Device(uint8_t endpointId, uint16_t deviceId)
 	: _endpointId(endpointId), _deviceId(deviceId) {
 }
 
-void Device::addInCluster(Cluster* cluster) {
-	_inClusters.add(cluster);
+void Device::addInCluster(Cluster& cluster) {
+	_inClusters.add(&cluster);
 }
 
-void Device::addOutCluster(Cluster* cluster) {
-	_outClusters.add(cluster);
+void Device::addOutCluster(Cluster& cluster) {
+	_outClusters.add(&cluster);
 }
 
 int Device::getInClusterCount() {
@@ -54,24 +54,23 @@ Cluster* Device::getOutClusterById(uint16_t clusterId) {
 	return nullptr;
 }
 
-bool Device::processGeneralCommand(Memory& frameData, ZBExplicitRxResponse& message, Memory& buffer) {
-	auto frame = Frame::read(frameData);
-	auto commandIdentifier = frame.commandIdentifier();
+bool Device::processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {
+	auto commandIdentifier = (CommandIdentifier)frame.commandIdentifier();
 
 	switch (commandIdentifier) {
 		case CommandIdentifier::ReadAttributes:
-			return processGeneralReadAttributesCommand(frame, frameData, message, buffer);
+			return processGeneralReadAttributesCommand(frame, request, message, response);
 		case CommandIdentifier::DiscoverAttributes:
-			return processGeneralDiscoverAttributesCommand(frame, frameData, message, buffer);
+			return processGeneralDiscoverAttributesCommand(frame, request, message, response);
 		case CommandIdentifier::ConfigureReporting:
-			return processGeneralConfigureReportingCommand(frame, frameData, message, buffer);
+			return processGeneralConfigureReportingCommand(frame, request, message, response);
 		default:
 			DEBUG("Received unimplemented command ", String((uint8_t)commandIdentifier, HEX));
 			return false;
 	}
 }
 
-bool Device::processGeneralReadAttributesCommand(Frame& frame, Memory& frameData, ZBExplicitRxResponse& message, Memory& buffer) {
+bool Device::processGeneralReadAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {
 	DEBUG("Reading attributes from cluster ", message.getClusterId());
 
 	auto cluster = getInClusterById(message.getClusterId());
@@ -79,26 +78,26 @@ bool Device::processGeneralReadAttributesCommand(Frame& frame, Memory& frameData
 	Frame(
 		FrameControl(FrameType::Global, Direction::ToClient, true),
 		frame.transactionSequenceNumber(),
-		CommandIdentifier::ReadAttributesResponse
-	).write(buffer);
+		(uint8_t)CommandIdentifier::ReadAttributesResponse
+	).write(response);
 
 	DEBUG("  Reading attributes");
 
 	uint16_t attributeId;
-	while (ReadAttributesFrame::readNextAttributeId(frameData, attributeId)) {
+	while (ReadAttributesFrame::readNextAttributeId(request, attributeId)) {
 		auto attribute = cluster->getAttributeById(attributeId);
 
 		if (attribute) {
 			DEBUG("  Attribute ", attributeId, " reporting ", attribute->toString());
 
-			ReadAttributesResponseFrame::writeAttribute(buffer, attributeId, Status::Success, attribute->getDataType());
+			ReadAttributesResponseFrame::writeAttribute(response, attributeId, Status::Success, attribute->getDataType());
 
-			attribute->write(buffer);
+			attribute->write(response);
 		}
 		else {
 			DEBUG("  Attribute ", attributeId, " unsupported");
 
-			ReadAttributesResponseFrame::writeAttribute(buffer, attributeId, Status::UnsupportedAttribute);
+			ReadAttributesResponseFrame::writeAttribute(response, attributeId, Status::UnsupportedAttribute);
 		}
 	}
 
@@ -135,7 +134,7 @@ bool Device::processGeneralDiscoverAttributesCommand(Frame& frame, Memory& frame
 	Frame(
 		FrameControl(FrameType::Global, Direction::ToClient, true),
 		frame.transactionSequenceNumber(),
-		CommandIdentifier::DiscoverAttributesResponse
+		(uint8_t)CommandIdentifier::DiscoverAttributesResponse
 	).write(buffer);
 
 	// Write a temporary value and get back here at the end.
@@ -214,7 +213,7 @@ bool Device::processGeneralConfigureReportingCommand(Frame& frame, Memory& frame
 	Frame(
 		FrameControl(FrameType::Global, Direction::ToClient, true),
 		frame.transactionSequenceNumber(),
-		CommandIdentifier::ConfigureReportingResponse
+		(uint8_t)CommandIdentifier::ConfigureReportingResponse
 	).write(buffer);
 
 	ConfigureReportingType type;

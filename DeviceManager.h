@@ -43,7 +43,6 @@ class DeviceManager {
 	uint16_t _shortBroadcastAddress;
 
 	/* reusable data payload */
-	Memory _buffer;
 	uint8_t _payload[MAX_FRAME_DATA_SIZE];
 
 	XBeeWithCallbacks _device;
@@ -62,7 +61,7 @@ public:
 	void performReset();
 	void update();
 
-	void addDevice(Device* dev);
+	void addDevice(Device& device);
 	void addStatusCb(StatusCb& statusCb);
 
 private:

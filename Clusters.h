@@ -1,7 +1,8 @@
 #pragma once
 
-class GenBasic: public Cluster {
-    GenBasic() : Cluster(0) {
+class GenBasicCluster: public Cluster {
+public:
+    GenBasicCluster() : Cluster(0) {
     }
 
     uint8_t getZclVersion() {
@@ -142,8 +143,9 @@ class GenBasic: public Cluster {
     }
 };
 
-class GenPowerCfg: public Cluster {
-    GenPowerCfg() : Cluster(1) {
+class GenPowerCfgCluster: public Cluster {
+public:
+    GenPowerCfgCluster() : Cluster(1) {
     }
 
     uint16_t getMainsVoltage() {
@@ -331,8 +333,9 @@ class GenPowerCfg: public Cluster {
     }
 };
 
-class GenDeviceTempCfg: public Cluster {
-    GenDeviceTempCfg() : Cluster(2) {
+class GenDeviceTempCfgCluster: public Cluster {
+public:
+    GenDeviceTempCfgCluster() : Cluster(2) {
     }
 
     int16_t getCurrentTemperature() {
@@ -408,8 +411,9 @@ class GenDeviceTempCfg: public Cluster {
     }
 };
 
-class GenIdentify: public Cluster {
-    GenIdentify() : Cluster(3) {
+class GenIdentifyCluster: public Cluster {
+public:
+    GenIdentifyCluster() : Cluster(3) {
     }
 
     uint16_t getIdentifyTime() {
@@ -480,8 +484,9 @@ class GenIdentify: public Cluster {
     }
 };
 
-class GenGroups: public Cluster {
-    GenGroups() : Cluster(4) {
+class GenGroupsCluster: public Cluster {
+public:
+    GenGroupsCluster() : Cluster(4) {
     }
 
     uint8_t getNameSupport() {
@@ -588,8 +593,9 @@ class GenGroups: public Cluster {
     }
 };
 
-class GenScenes: public Cluster {
-    GenScenes() : Cluster(5) {
+class GenScenesCluster: public Cluster {
+public:
+    GenScenesCluster() : Cluster(5) {
     }
 
     uint8_t getCount() {
@@ -824,8 +830,9 @@ class GenScenes: public Cluster {
     }
 };
 
-class GenOnOff: public Cluster {
-    GenOnOff() : Cluster(6) {
+class GenOnOffCluster: public Cluster {
+public:
+    GenOnOffCluster() : Cluster(6) {
     }
 
     bool getOnOff() {
@@ -944,8 +951,9 @@ class GenOnOff: public Cluster {
     }
 };
 
-class GenOnOffSwitchCfg: public Cluster {
-    GenOnOffSwitchCfg() : Cluster(7) {
+class GenOnOffSwitchCfgCluster: public Cluster {
+public:
+    GenOnOffSwitchCfgCluster() : Cluster(7) {
     }
 
     uint8_t getSwitchType() {
@@ -965,8 +973,9 @@ class GenOnOffSwitchCfg: public Cluster {
     }
 };
 
-class GenLevelCtrl: public Cluster {
-    GenLevelCtrl() : Cluster(8) {
+class GenLevelCtrlCluster: public Cluster {
+public:
+    GenLevelCtrlCluster() : Cluster(8) {
     }
 
     uint8_t getCurrentLevel() {
@@ -1163,8 +1172,9 @@ class GenLevelCtrl: public Cluster {
     }
 };
 
-class GenAlarms: public Cluster {
-    GenAlarms() : Cluster(9) {
+class GenAlarmsCluster: public Cluster {
+public:
+    GenAlarmsCluster() : Cluster(9) {
     }
 
     uint16_t getAlarmCount() {
@@ -1231,8 +1241,9 @@ class GenAlarms: public Cluster {
     }
 };
 
-class GenTime: public Cluster {
-    GenTime() : Cluster(10) {
+class GenTimeCluster: public Cluster {
+public:
+    GenTimeCluster() : Cluster(10) {
     }
 
     uint32_t getTime() {
@@ -1316,8 +1327,9 @@ class GenTime: public Cluster {
     }
 };
 
-class GenRssiLocation: public Cluster {
-    GenRssiLocation() : Cluster(11) {
+class GenRssiLocationCluster: public Cluster {
+public:
+    GenRssiLocationCluster() : Cluster(11) {
     }
 
     uint8_t getType() {
@@ -1483,8 +1495,9 @@ class GenRssiLocation: public Cluster {
     }
 };
 
-class GenAnalogInput: public Cluster {
-    GenAnalogInput() : Cluster(12) {
+class GenAnalogInputCluster: public Cluster {
+public:
+    GenAnalogInputCluster() : Cluster(12) {
     }
 
     String getDescription() {
@@ -1568,8 +1581,9 @@ class GenAnalogInput: public Cluster {
     }
 };
 
-class GenAnalogOutput: public Cluster {
-    GenAnalogOutput() : Cluster(13) {
+class GenAnalogOutputCluster: public Cluster {
+public:
+    GenAnalogOutputCluster() : Cluster(13) {
     }
 
     String getDescription() {
@@ -1661,8 +1675,9 @@ class GenAnalogOutput: public Cluster {
     }
 };
 
-class GenAnalogValue: public Cluster {
-    GenAnalogValue() : Cluster(14) {
+class GenAnalogValueCluster: public Cluster {
+public:
+    GenAnalogValueCluster() : Cluster(14) {
     }
 
     String getDescription() {
@@ -1730,8 +1745,9 @@ class GenAnalogValue: public Cluster {
     }
 };
 
-class GenBinaryInput: public Cluster {
-    GenBinaryInput() : Cluster(15) {
+class GenBinaryInputCluster: public Cluster {
+public:
+    GenBinaryInputCluster() : Cluster(15) {
     }
 
     String getActiveText() {
@@ -1807,8 +1823,9 @@ class GenBinaryInput: public Cluster {
     }
 };
 
-class GenBinaryOutput: public Cluster {
-    GenBinaryOutput() : Cluster(16) {
+class GenBinaryOutputCluster: public Cluster {
+public:
+    GenBinaryOutputCluster() : Cluster(16) {
     }
 
     String getActiveText() {
@@ -1908,8 +1925,9 @@ class GenBinaryOutput: public Cluster {
     }
 };
 
-class GenBinaryValue: public Cluster {
-    GenBinaryValue() : Cluster(17) {
+class GenBinaryValueCluster: public Cluster {
+public:
+    GenBinaryValueCluster() : Cluster(17) {
     }
 
     String getActiveText() {
@@ -2001,8 +2019,9 @@ class GenBinaryValue: public Cluster {
     }
 };
 
-class GenMultistateInput: public Cluster {
-    GenMultistateInput() : Cluster(18) {
+class GenMultistateInputCluster: public Cluster {
+public:
+    GenMultistateInputCluster() : Cluster(18) {
     }
 
     String getDescription() {
@@ -2062,77 +2081,9 @@ class GenMultistateInput: public Cluster {
     }
 };
 
-class GenMultistateOutput: public Cluster {
-    GenMultistateOutput() : Cluster(19) {
-    }
-
-    String getDescription() {
-        return getString(28);
-    }
-
-    void setDescription(const String& value) {
-        setString(28, value);
-    }
-
-    uint16_t getNumberOfStates() {
-        return getUInt16(74);
-    }
-
-    void setNumberOfStates(uint16_t value) {
-        setUInt16(74, value);
-    }
-
-    bool getOutOfService() {
-        return getBool(81);
-    }
-
-    void setOutOfService(bool value) {
-        setBool(81, value);
-    }
-
-    uint16_t getPresentValue() {
-        return getUInt16(85);
-    }
-
-    void setPresentValue(uint16_t value) {
-        setUInt16(85, value);
-    }
-
-    uint8_t getReliability() {
-        return getEnum8(103);
-    }
-
-    void setReliability(uint8_t value) {
-        setEnum8(103, value);
-    }
-
-    uint16_t getRelinquishDefault() {
-        return getUInt16(104);
-    }
-
-    void setRelinquishDefault(uint16_t value) {
-        setUInt16(104, value);
-    }
-
-    uint8_t getStatusFlags() {
-        return getMap8(111);
-    }
-
-    void setStatusFlags(uint8_t value) {
-        setMap8(111, value);
-    }
-
-    uint32_t getApplicationType() {
-        return getUInt32(256);
-    }
-
-    void setApplicationType(uint32_t value) {
-        setUInt32(256, value);
-    }
-};
-
-class GenMultistateValue: public Cluster {
-    GenMultistateValue() : Cluster(20) {
+class GenMultistateOutputCluster: public Cluster {
+public:
+    GenMultistateOutputCluster() : Cluster(19) {
     }
 
     String getDescription() {
@@ -2200,8 +2151,79 @@ class GenMultistateValue: public Cluster {
     }
 };
 
-class GenCommissioning: public Cluster {
-    GenCommissioning() : Cluster(21) {
+class GenMultistateValueCluster: public Cluster {
+public:
+    GenMultistateValueCluster() : Cluster(20) {
+    }
+
+    String getDescription() {
+        return getString(28);
+    }
+
+    void setDescription(const String& value) {
+        setString(28, value);
+    }
+
+    uint16_t getNumberOfStates() {
+        return getUInt16(74);
+    }
+
+    void setNumberOfStates(uint16_t value) {
+        setUInt16(74, value);
+    }
+
+    bool getOutOfService() {
+        return getBool(81);
+    }
+
+    void setOutOfService(bool value) {
+        setBool(81, value);
+    }
+
+    uint16_t getPresentValue() {
+        return getUInt16(85);
+    }
+
+    void setPresentValue(uint16_t value) {
+        setUInt16(85, value);
+    }
+
+    uint8_t getReliability() {
+        return getEnum8(103);
+    }
+
+    void setReliability(uint8_t value) {
+        setEnum8(103, value);
+    }
+
+    uint16_t getRelinquishDefault() {
+        return getUInt16(104);
+    }
+
+    void setRelinquishDefault(uint16_t value) {
+        setUInt16(104, value);
+    }
+
+    uint8_t getStatusFlags() {
+        return getMap8(111);
+    }
+
+    void setStatusFlags(uint8_t value) {
+        setMap8(111, value);
+    }
+
+    uint32_t getApplicationType() {
+        return getUInt32(256);
+    }
+
+    void setApplicationType(uint32_t value) {
+        setUInt32(256, value);
+    }
+};
+
+class GenCommissioningCluster: public Cluster {
+public:
+    GenCommissioningCluster() : Cluster(21) {
     }
 
     uint16_t getShortress() {
@@ -2426,8 +2448,9 @@ class GenCommissioning: public Cluster {
     }
 };
 
-class GenOta: public Cluster {
-    GenOta() : Cluster(25) {
+class GenOtaCluster: public Cluster {
+public:
+    GenOtaCluster() : Cluster(25) {
     }
 
     uint64_t getUpgradeServerId() {
@@ -2619,8 +2642,9 @@ class GenOta: public Cluster {
     }
 };
 
-class GenPollCtrl: public Cluster {
-    GenPollCtrl() : Cluster(32) {
+class GenPollCtrlCluster: public Cluster {
+public:
+    GenPollCtrlCluster() : Cluster(32) {
     }
 
     uint32_t getCheckinInterval() {
@@ -2728,13 +2752,15 @@ class GenPollCtrl: public Cluster {
     }
 };
 
-class GreenPower: public Cluster {
-    GreenPower() : Cluster(33) {
+class GreenPowerCluster: public Cluster {
+public:
+    GreenPowerCluster() : Cluster(33) {
     }
 };
 
-class MobileDeviceCfg: public Cluster {
-    MobileDeviceCfg() : Cluster(34) {
+class MobileDeviceCfgCluster: public Cluster {
+public:
+    MobileDeviceCfgCluster() : Cluster(34) {
     }
 
     uint16_t getKeepAliveTime() {
@@ -2754,8 +2780,9 @@ class MobileDeviceCfg: public Cluster {
     }
 };
 
-class NeighborCleaning: public Cluster {
-    NeighborCleaning() : Cluster(35) {
+class NeighborCleaningCluster: public Cluster {
+public:
+    NeighborCleaningCluster() : Cluster(35) {
     }
 
     uint16_t getNeighborCleaningTimeout() {
@@ -2767,8 +2794,9 @@ class NeighborCleaning: public Cluster {
     }
 };
 
-class NearestGateway: public Cluster {
-    NearestGateway() : Cluster(36) {
+class NearestGatewayCluster: public Cluster {
+public:
+    NearestGatewayCluster() : Cluster(36) {
     }
 
     uint16_t getNearestGateway() {
@@ -2788,8 +2816,9 @@ class NearestGateway: public Cluster {
     }
 };
 
-class ClosuresShadeCfg: public Cluster {
-    ClosuresShadeCfg() : Cluster(256) {
+class ClosuresShadeCfgCluster: public Cluster {
+public:
+    ClosuresShadeCfgCluster() : Cluster(256) {
     }
 
     uint16_t getPhysicalClosedLimit() {
@@ -2833,8 +2862,9 @@ class ClosuresShadeCfg: public Cluster {
     }
 };
 
-class ClosuresDoorLock: public Cluster {
-    ClosuresDoorLock() : Cluster(257) {
+class ClosuresDoorLockCluster: public Cluster {
+public:
+    ClosuresDoorLockCluster() : Cluster(257) {
     }
 
     uint8_t getLockState() {
@@ -3948,8 +3978,9 @@ class ClosuresDoorLock: public Cluster {
     }
 };
 
-class ClosuresWindowCovering: public Cluster {
-    ClosuresWindowCovering() : Cluster(258) {
+class ClosuresWindowCoveringCluster: public Cluster {
+public:
+    ClosuresWindowCoveringCluster() : Cluster(258) {
     }
 
     uint8_t getWindowCoveringType() {
@@ -4215,8 +4246,9 @@ class ClosuresWindowCovering: public Cluster {
     }
 };
 
-class BarrierControl: public Cluster {
-    BarrierControl() : Cluster(259) {
+class BarrierControlCluster: public Cluster {
+public:
+    BarrierControlCluster() : Cluster(259) {
     }
 
     uint8_t getMovingState() {
@@ -4327,8 +4359,9 @@ class BarrierControl: public Cluster {
     }
 };
 
-class HvacPumpCfgCtrl: public Cluster {
-    HvacPumpCfgCtrl() : Cluster(512) {
+class HvacPumpCfgCtrlCluster: public Cluster {
+public:
+    HvacPumpCfgCtrlCluster() : Cluster(512) {
     }
 
     int16_t getMaxPressure() {
@@ -4524,8 +4557,9 @@ class HvacPumpCfgCtrl: public Cluster {
     }
 };
 
-class HvacThermostat: public Cluster {
-    HvacThermostat() : Cluster(513) {
+class HvacThermostatCluster: public Cluster {
+public:
+    HvacThermostatCluster() : Cluster(513) {
     }
 
     int16_t getLocalTemp() {
@@ -4984,8 +5018,9 @@ class HvacThermostat: public Cluster {
     }
 };
 
-class HvacFanCtrl: public Cluster {
-    HvacFanCtrl() : Cluster(514) {
+class HvacFanCtrlCluster: public Cluster {
+public:
+    HvacFanCtrlCluster() : Cluster(514) {
     }
 
     uint8_t getFanMode() {
@@ -5005,8 +5040,9 @@ class HvacFanCtrl: public Cluster {
     }
 };
 
-class HvacDehumidificationCtrl: public Cluster {
-    HvacDehumidificationCtrl() : Cluster(515) {
+class HvacDehumidificationCtrlCluster: public Cluster {
+public:
+    HvacDehumidificationCtrlCluster() : Cluster(515) {
     }
 
     uint8_t getRelativeHumidity() {
@@ -5074,8 +5110,9 @@ class HvacDehumidificationCtrl: public Cluster {
     }
 };
 
-class HvacUserInterfaceCfg: public Cluster {
-    HvacUserInterfaceCfg() : Cluster(516) {
+class HvacUserInterfaceCfgCluster: public Cluster {
+public:
+    HvacUserInterfaceCfgCluster() : Cluster(516) {
     }
 
     uint8_t getTempDisplayMode() {
@@ -5103,8 +5140,9 @@ class HvacUserInterfaceCfg: public Cluster {
     }
 };
 
-class LightingColorCtrl: public Cluster {
-    LightingColorCtrl() : Cluster(768) {
+class LightingColorCtrlCluster: public Cluster {
+public:
+    LightingColorCtrlCluster() : Cluster(768) {
     }
 
     uint8_t getCurrentHue() {
@@ -5762,8 +5800,9 @@ class LightingColorCtrl: public Cluster {
     }
 };
 
-class LightingBallastCfg: public Cluster {
-    LightingBallastCfg() : Cluster(769) {
+class LightingBallastCfgCluster: public Cluster {
+public:
+    LightingBallastCfgCluster() : Cluster(769) {
     }
 
     uint8_t getPhysicalMinLevel() {
@@ -5895,8 +5934,9 @@ class LightingBallastCfg: public Cluster {
     }
 };
 
-class MsIlluminanceMeasurement: public Cluster {
-    MsIlluminanceMeasurement() : Cluster(1024) {
+class MsIlluminanceMeasurementCluster: public Cluster {
+public:
+    MsIlluminanceMeasurementCluster() : Cluster(1024) {
     }
 
     uint16_t getMeasuredValue() {
@@ -5940,8 +5980,9 @@ class MsIlluminanceMeasurement: public Cluster {
     }
 };
 
-class MsIlluminanceLevelSensing: public Cluster {
-    MsIlluminanceLevelSensing() : Cluster(1025) {
+class MsIlluminanceLevelSensingCluster: public Cluster {
+public:
+    MsIlluminanceLevelSensingCluster() : Cluster(1025) {
     }
 
     uint8_t getLevelStatus() {
@@ -5969,8 +6010,9 @@ class MsIlluminanceLevelSensing: public Cluster {
     }
 };
 
-class MsTemperatureMeasurement: public Cluster {
-    MsTemperatureMeasurement() : Cluster(1026) {
+class MsTemperatureMeasurementCluster: public Cluster {
+public:
+    MsTemperatureMeasurementCluster() : Cluster(1026) {
     }
 
     int16_t getMeasuredValue() {
@@ -6006,8 +6048,9 @@ class MsTemperatureMeasurement: public Cluster {
     }
 };
 
-class MsPressureMeasurement: public Cluster {
-    MsPressureMeasurement() : Cluster(1027) {
+class MsPressureMeasurementCluster: public Cluster {
+public:
+    MsPressureMeasurementCluster() : Cluster(1027) {
     }
 
     int16_t getMeasuredValue() {
@@ -6083,8 +6126,9 @@ class MsPressureMeasurement: public Cluster {
     }
 };
 
-class MsFlowMeasurement: public Cluster {
-    MsFlowMeasurement() : Cluster(1028) {
+class MsFlowMeasurementCluster: public Cluster {
+public:
+    MsFlowMeasurementCluster() : Cluster(1028) {
     }
 
     uint16_t getMeasuredValue() {
@@ -6120,8 +6164,9 @@ class MsFlowMeasurement: public Cluster {
     }
 };
 
-class MsRelativeHumidity: public Cluster {
-    MsRelativeHumidity() : Cluster(1029) {
+class MsRelativeHumidityCluster: public Cluster {
+public:
+    MsRelativeHumidityCluster() : Cluster(1029) {
     }
 
     uint16_t getMeasuredValue() {
@@ -6157,8 +6202,9 @@ class MsRelativeHumidity: public Cluster {
     }
 };
 
-class MsOccupancySensing: public Cluster {
-    MsOccupancySensing() : Cluster(1030) {
+class MsOccupancySensingCluster: public Cluster {
+public:
+    MsOccupancySensingCluster() : Cluster(1030) {
     }
 
     uint8_t getOccupancy() {
@@ -6226,8 +6272,9 @@ class MsOccupancySensing: public Cluster {
     }
 };
 
-class MsSoilMoisture: public Cluster {
-    MsSoilMoisture() : Cluster(1032) {
+class MsSoilMoistureCluster: public Cluster {
+public:
+    MsSoilMoistureCluster() : Cluster(1032) {
     }
 
     uint16_t getMeasuredValue() {
@@ -6263,8 +6310,9 @@ class MsSoilMoisture: public Cluster {
     }
 };
 
-class PHMeasurement: public Cluster {
-    PHMeasurement() : Cluster(1033) {
+class PHMeasurementCluster: public Cluster {
+public:
+    PHMeasurementCluster() : Cluster(1033) {
     }
 
     uint16_t getMeasuredValue() {
@@ -6300,8 +6348,9 @@ class PHMeasurement: public Cluster {
     }
 };
 
-class MsCO2: public Cluster {
-    MsCO2() : Cluster(1037) {
+class MsCO2Cluster: public Cluster {
+public:
+    MsCO2Cluster() : Cluster(1037) {
     }
 
     float getMeasuredValue() {
@@ -6329,8 +6378,9 @@ class MsCO2: public Cluster {
     }
 };
 
-class SsIasZone: public Cluster {
-    SsIasZone() : Cluster(1280) {
+class SsIasZoneCluster: public Cluster {
+public:
+    SsIasZoneCluster() : Cluster(1280) {
     }
 
     uint8_t getZoneState() {
@@ -6427,8 +6477,9 @@ class SsIasZone: public Cluster {
     }
 };
 
-class SsIasAce: public Cluster {
-    SsIasAce() : Cluster(1281) {
+class SsIasAceCluster: public Cluster {
+public:
+    SsIasAceCluster() : Cluster(1281) {
     }
 
     class ArmCommandResponse {
@@ -6673,8 +6724,9 @@ class SsIasAce: public Cluster {
     }
 };
 
-class SsIasWd: public Cluster {
-    SsIasWd() : Cluster(1282) {
+class SsIasWdCluster: public Cluster {
+public:
+    SsIasWdCluster() : Cluster(1282) {
     }
 
     uint16_t getMaxDuration() {
@@ -6717,8 +6769,9 @@ class SsIasWd: public Cluster {
     }
 };
 
-class PiGenericTunnel: public Cluster {
-    PiGenericTunnel() : Cluster(1536) {
+class PiGenericTunnelCluster: public Cluster {
+public:
+    PiGenericTunnelCluster() : Cluster(1536) {
     }
 
     uint16_t getMaxIncomeTransSize() {
@@ -6764,8 +6817,9 @@ class PiGenericTunnel: public Cluster {
     }
 };
 
-class PiBacnetProtocolTunnel: public Cluster {
-    PiBacnetProtocolTunnel() : Cluster(1537) {
+class PiBacnetProtocolTunnelCluster: public Cluster {
+public:
+    PiBacnetProtocolTunnelCluster() : Cluster(1537) {
     }
 
     virtual Status transferNpduCommand(uint8_t npdu) {
@@ -6787,8 +6841,9 @@ class PiBacnetProtocolTunnel: public Cluster {
     }
 };
 
-class PiAnalogInputReg: public Cluster {
-    PiAnalogInputReg() : Cluster(1538) {
+class PiAnalogInputRegCluster: public Cluster {
+public:
+    PiAnalogInputRegCluster() : Cluster(1538) {
     }
 
     float getCovIncrement() {
@@ -6848,8 +6903,9 @@ class PiAnalogInputReg: public Cluster {
     }
 };
 
-class PiAnalogInputExt: public Cluster {
-    PiAnalogInputExt() : Cluster(1539) {
+class PiAnalogInputExtCluster: public Cluster {
+public:
+    PiAnalogInputExtCluster() : Cluster(1539) {
     }
 
     uint8_t getAckedTransitions() {
@@ -6977,8 +7033,9 @@ class PiAnalogInputExt: public Cluster {
     }
 };
 
-class PiAnalogOutputReg: public Cluster {
-    PiAnalogOutputReg() : Cluster(1540) {
+class PiAnalogOutputRegCluster: public Cluster {
+public:
+    PiAnalogOutputRegCluster() : Cluster(1540) {
     }
 
     float getCovIncrement() {
@@ -7038,8 +7095,9 @@ class PiAnalogOutputReg: public Cluster {
     }
 };
 
-class PiAnalogOutputExt: public Cluster {
-    PiAnalogOutputExt() : Cluster(1541) {
+class PiAnalogOutputExtCluster: public Cluster {
+public:
+    PiAnalogOutputExtCluster() : Cluster(1541) {
     }
 
     uint8_t getAckedTransitions() {
@@ -7123,8 +7181,9 @@ class PiAnalogOutputExt: public Cluster {
     }
 };
 
-class PiAnalogValueReg: public Cluster {
-    PiAnalogValueReg() : Cluster(1542) {
+class PiAnalogValueRegCluster: public Cluster {
+public:
+    PiAnalogValueRegCluster() : Cluster(1542) {
     }
 
     float getCovIncrement() {
@@ -7168,8 +7227,9 @@ class PiAnalogValueReg: public Cluster {
     }
 };
 
-class PiAnalogValueExt: public Cluster {
-    PiAnalogValueExt() : Cluster(1543) {
+class PiAnalogValueExtCluster: public Cluster {
+public:
+    PiAnalogValueExtCluster() : Cluster(1543) {
     }
 
     uint8_t getAckedTransitions() {
@@ -7253,8 +7313,9 @@ class PiAnalogValueExt: public Cluster {
     }
 };
 
-class PiBinaryInputReg: public Cluster {
-    PiBinaryInputReg() : Cluster(1544) {
+class PiBinaryInputRegCluster: public Cluster {
+public:
+    PiBinaryInputRegCluster() : Cluster(1544) {
     }
 
     uint32_t getChangeOfStateCount() {
@@ -7338,8 +7399,9 @@ class PiBinaryInputReg: public Cluster {
     }
 };
 
-class PiBinaryInputExt: public Cluster {
-    PiBinaryInputExt() : Cluster(1545) {
+class PiBinaryInputExtCluster: public Cluster {
+public:
+    PiBinaryInputExtCluster() : Cluster(1545) {
     }
 
     uint8_t getAckedTransitions() {
@@ -7399,8 +7461,9 @@ class PiBinaryInputExt: public Cluster {
     }
 };
 
-class PiBinaryOutputReg: public Cluster {
-    PiBinaryOutputReg() : Cluster(1546) {
+class PiBinaryOutputRegCluster: public Cluster {
+public:
+    PiBinaryOutputRegCluster() : Cluster(1546) {
     }
 
     uint32_t getChangeOfStateCount() {
@@ -7492,8 +7555,9 @@ class PiBinaryOutputReg: public Cluster {
     }
 };
 
-class PiBinaryOutputExt: public Cluster {
-    PiBinaryOutputExt() : Cluster(1547) {
+class PiBinaryOutputExtCluster: public Cluster {
+public:
+    PiBinaryOutputExtCluster() : Cluster(1547) {
     }
 
     uint8_t getAckedTransitions() {
@@ -7545,8 +7609,9 @@ class PiBinaryOutputExt: public Cluster {
     }
 };
 
-class PiBinaryValueReg: public Cluster {
-    PiBinaryValueReg() : Cluster(1548) {
+class PiBinaryValueRegCluster: public Cluster {
+public:
+    PiBinaryValueRegCluster() : Cluster(1548) {
     }
 
     uint32_t getChangeOfStateCount() {
@@ -7622,8 +7687,9 @@ class PiBinaryValueReg: public Cluster {
     }
 };
 
-class PiBinaryValueExt: public Cluster {
-    PiBinaryValueExt() : Cluster(1549) {
+class PiBinaryValueExtCluster: public Cluster {
+public:
+    PiBinaryValueExtCluster() : Cluster(1549) {
     }
 
     uint8_t getAckedTransitions() {
@@ -7683,8 +7749,9 @@ class PiBinaryValueExt: public Cluster {
     }
 };
 
-class PiMultistateInputReg: public Cluster {
-    PiMultistateInputReg() : Cluster(1550) {
+class PiMultistateInputRegCluster: public Cluster {
+public:
+    PiMultistateInputRegCluster() : Cluster(1550) {
     }
 
     String getDeviceType() {
@@ -7728,8 +7795,9 @@ class PiMultistateInputReg: public Cluster {
     }
 };
 
-class PiMultistateInputExt: public Cluster {
-    PiMultistateInputExt() : Cluster(1551) {
+class PiMultistateInputExtCluster: public Cluster {
+public:
+    PiMultistateInputExtCluster() : Cluster(1551) {
     }
 
     uint8_t getAckedTransitions() {
@@ -7797,8 +7865,9 @@ class PiMultistateInputExt: public Cluster {
     }
 };
 
-class PiMultistateOutputReg: public Cluster {
-    PiMultistateOutputReg() : Cluster(1552) {
+class PiMultistateOutputRegCluster: public Cluster {
+public:
+    PiMultistateOutputRegCluster() : Cluster(1552) {
     }
 
     String getDeviceType() {
@@ -7850,8 +7919,9 @@ class PiMultistateOutputReg: public Cluster {
     }
 };
 
-class PiMultistateOutputExt: public Cluster {
-    PiMultistateOutputExt() : Cluster(1553) {
+class PiMultistateOutputExtCluster: public Cluster {
+public:
+    PiMultistateOutputExtCluster() : Cluster(1553) {
     }
 
     uint8_t getAckedTransitions() {
@@ -7903,8 +7973,9 @@ class PiMultistateOutputExt: public Cluster {
     }
 };
 
-class PiMultistateValueReg: public Cluster {
-    PiMultistateValueReg() : Cluster(1554) {
+class PiMultistateValueRegCluster: public Cluster {
+public:
+    PiMultistateValueRegCluster() : Cluster(1554) {
     }
 
     uint32_t getObjectId() {
@@ -7940,8 +8011,9 @@ class PiMultistateValueReg: public Cluster {
     }
 };
 
-class PiMultistateValueExt: public Cluster {
-    PiMultistateValueExt() : Cluster(1555) {
+class PiMultistateValueExtCluster: public Cluster {
+public:
+    PiMultistateValueExtCluster() : Cluster(1555) {
     }
 
     uint8_t getAckedTransitions() {
@@ -8009,8 +8081,9 @@ class PiMultistateValueExt: public Cluster {
     }
 };
 
-class Pi11073ProtocolTunnel: public Cluster {
-    Pi11073ProtocolTunnel() : Cluster(1556) {
+class Pi11073ProtocolTunnelCluster: public Cluster {
+public:
+    Pi11073ProtocolTunnelCluster() : Cluster(1556) {
     }
 
     uint64_t getManagerTarget() {
@@ -8098,8 +8171,9 @@ class Pi11073ProtocolTunnel: public Cluster {
     }
 };
 
-class PiIso7818ProtocolTunnel: public Cluster {
-    PiIso7818ProtocolTunnel() : Cluster(1557) {
+class PiIso7818ProtocolTunnelCluster: public Cluster {
+public:
+    PiIso7818ProtocolTunnelCluster() : Cluster(1557) {
     }
 
     uint8_t getStatus() {
@@ -8111,8 +8185,9 @@ class PiIso7818ProtocolTunnel: public Cluster {
     }
 };
 
-class PiRetailTunnel: public Cluster {
-    PiRetailTunnel() : Cluster(1559) {
+class PiRetailTunnelCluster: public Cluster {
+public:
+    PiRetailTunnelCluster() : Cluster(1559) {
     }
 
     uint16_t getManufacturerCode() {
@@ -8132,8 +8207,9 @@ class PiRetailTunnel: public Cluster {
     }
 };
 
-class SeMetering: public Cluster {
-    SeMetering() : Cluster(1794) {
+class SeMeteringCluster: public Cluster {
+public:
+    SeMeteringCluster() : Cluster(1794) {
     }
 
     uint64_t getCurrentSummDelivered() {
@@ -9274,8 +9350,9 @@ class SeMetering: public Cluster {
     }
 };
 
-class TelecommunicationsInformation: public Cluster {
-    TelecommunicationsInformation() : Cluster(2304) {
+class TelecommunicationsInformationCluster: public Cluster {
+public:
+    TelecommunicationsInformationCluster() : Cluster(2304) {
     }
 
     String getNodeDescription() {
@@ -9327,8 +9404,9 @@ class TelecommunicationsInformation: public Cluster {
     }
 };
 
-class TelecommunicationsVoiceOverZigbee: public Cluster {
-    TelecommunicationsVoiceOverZigbee() : Cluster(2308) {
+class TelecommunicationsVoiceOverZigbeeCluster: public Cluster {
+public:
+    TelecommunicationsVoiceOverZigbeeCluster() : Cluster(2308) {
     }
 
     uint8_t getCodecType() {
@@ -9420,8 +9498,9 @@ class TelecommunicationsVoiceOverZigbee: public Cluster {
     }
 };
 
-class TelecommunicationsChatting: public Cluster {
-    TelecommunicationsChatting() : Cluster(2309) {
+class TelecommunicationsChattingCluster: public Cluster {
+public:
+    TelecommunicationsChattingCluster() : Cluster(2309) {
     }
 
     uint16_t getUID() {
@@ -9465,8 +9544,9 @@ class TelecommunicationsChatting: public Cluster {
     }
 };
 
-class HaApplianceIdentification: public Cluster {
-    HaApplianceIdentification() : Cluster(2816) {
+class HaApplianceIdentificationCluster: public Cluster {
+public:
+    HaApplianceIdentificationCluster() : Cluster(2816) {
     }
 
     uint64_t getBasicIdentification() {
@@ -9566,8 +9646,9 @@ class HaApplianceIdentification: public Cluster {
     }
 };
 
-class HaMeterIdentification: public Cluster {
-    HaMeterIdentification() : Cluster(2817) {
+class HaMeterIdentificationCluster: public Cluster {
+public:
+    HaMeterIdentificationCluster() : Cluster(2817) {
     }
 
     String getCompanyName() {
@@ -9667,8 +9748,9 @@ class HaMeterIdentification: public Cluster {
     }
 };
 
-class HaApplianceEventsAlerts: public Cluster {
-    HaApplianceEventsAlerts() : Cluster(2818) {
+class HaApplianceEventsAlertsCluster: public Cluster {
+public:
+    HaApplianceEventsAlertsCluster() : Cluster(2818) {
     }
 
     virtual Status getAlertsCommand() {
@@ -9689,8 +9771,9 @@ class HaApplianceEventsAlerts: public Cluster {
     }
 };
 
-class HaApplianceStatistics: public Cluster {
-    HaApplianceStatistics() : Cluster(2819) {
+class HaApplianceStatisticsCluster: public Cluster {
+public:
+    HaApplianceStatisticsCluster() : Cluster(2819) {
     }
 
     uint32_t getLogMaxSize() {
@@ -9737,8 +9820,9 @@ class HaApplianceStatistics: public Cluster {
     }
 };
 
-class HaElectricalMeasurement: public Cluster {
-    HaElectricalMeasurement() : Cluster(2820) {
+class HaElectricalMeasurementCluster: public Cluster {
+public:
+    HaElectricalMeasurementCluster() : Cluster(2820) {
     }
 
     uint32_t getMeasurementType() {
@@ -10803,8 +10887,9 @@ class HaElectricalMeasurement: public Cluster {
     }
 };
 
-class HaDiagnostic: public Cluster {
-    HaDiagnostic() : Cluster(2821) {
+class HaDiagnosticCluster: public Cluster {
+public:
+    HaDiagnosticCluster() : Cluster(2821) {
     }
 
     uint16_t getNumberOfResets() {
@@ -11064,8 +11149,9 @@ class HaDiagnostic: public Cluster {
     }
 };
 
-class Touchlink: public Cluster {
-    Touchlink() : Cluster(4096) {
+class TouchlinkCluster: public Cluster {
+public:
+    TouchlinkCluster() : Cluster(4096) {
     }
 
     class ScanRequestCommandResponse {
@@ -11183,8 +11269,9 @@ class Touchlink: public Cluster {
     }
 };
 
-class WiserDeviceInfo: public Cluster {
-    WiserDeviceInfo() : Cluster(65027) {
+class WiserDeviceInfoCluster: public Cluster {
+public:
+    WiserDeviceInfoCluster() : Cluster(65027) {
     }
 
     String getDeviceInfo() {
@@ -11196,8 +11283,9 @@ class WiserDeviceInfo: public Cluster {
     }
 };
 
-class ZosungIRTransmit: public Cluster {
-    ZosungIRTransmit() : Cluster(60672) {
+class ZosungIRTransmitCluster: public Cluster {
+public:
+    ZosungIRTransmitCluster() : Cluster(60672) {
     }
 
     virtual Status zosungSendIRCode00Command(uint16_t seq, uint32_t length, uint32_t unk1, uint16_t unk2, uint8_t unk3, uint8_t cmd, uint16_t unk4) {
@@ -11291,7 +11379,8 @@ class ZosungIRTransmit: public Cluster {
     }
 };
 
-class ZosungIRControl: public Cluster {
-    ZosungIRControl() : Cluster(57348) {
+class ZosungIRControlCluster: public Cluster {
+public:
+    ZosungIRControlCluster() : Cluster(57348) {
     }
 };

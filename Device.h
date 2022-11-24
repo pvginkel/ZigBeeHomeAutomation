@@ -12,19 +12,19 @@ public:
     uint16_t getDeviceId();
     uint8_t getEndpointId();
 
-	void addInCluster(Cluster *cluster);
-    void addOutCluster(Cluster *cluster);
+	void addInCluster(Cluster& cluster);
+    void addOutCluster(Cluster& cluster);
     Cluster *getInClusterById(uint16_t clusterId);
     Cluster *getOutClusterById(uint16_t clusterId);
     int getInClusterCount();
     int getOutClusterCount();
-    Cluster *getInCluster(int num);
-    Cluster *getOutCluster(int num);
+    Cluster *getInCluster(int index);
+    Cluster *getOutCluster(int index);
 
-    bool processGeneralCommand(Memory& frameData, ZBExplicitRxResponse& message, Memory& buffer);
+    bool processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
 
 private:
-    bool processGeneralReadAttributesCommand(Frame& frame, Memory& frameData, ZBExplicitRxResponse& message, Memory& buffer);
+    bool processGeneralReadAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
     bool processGeneralDiscoverAttributesCommand(Frame& frame, Memory& frameData, ZBExplicitRxResponse& message, Memory& buffer);
     bool processGeneralConfigureReportingCommand(Frame& frame, Memory& frameData, ZBExplicitRxResponse& message, Memory& buffer);
 };

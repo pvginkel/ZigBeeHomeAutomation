@@ -19,3 +19,6 @@
 #include "DeviceManager.h"
 #include "Esp8266.h"
 #include "StatusControl.h"
+#include "Clusters.h"
+#include "PowerSource.h"
+#include "BasicDevice.h"
