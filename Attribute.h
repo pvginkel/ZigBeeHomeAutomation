@@ -3,6 +3,7 @@
 class Attribute {
 	DataType _dataType;
 	uint16_t _attributeId;
+    bool _unreported;
 
 	union Value {
 		uint64_t ui64;
@@ -16,27 +17,14 @@ class Attribute {
         ~Value() { }
     } _value = {};
 
-	// Reporting configuration
-
-	bool _reporting;
-	bool _unreported;
-	uint16_t _minimumReportingInterval;
-	uint16_t _maximumReportingInterval;
-	uint64_t _reportableChange;
-	uint16_t _timeoutPeriod;
-
-	unsigned long _lastReported;
-
 public:
 	Attribute(uint16_t attributeId);
 	~Attribute();
 	uint16_t getAttributeId();
 
-	bool isReporting();
 	bool isUnreported();
 	void markReported();
 
-	uint8_t configureReporting(uint16_t minimumInterval, uint16_t maximumInterval, uint8_t reportableChange, uint16_t timeoutPeriod);
 	DataType getDataType();
 
 // GENERATION START

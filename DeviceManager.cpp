@@ -289,23 +289,37 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 
 				Memory buffer(_payload);
 
-				if (device->processGeneralCommand(request, frameBuffer, resp, buffer)) {
-					ZBExplicitTxRequest message(
-						resp.getRemoteAddress64(),
-						resp.getRemoteAddress16(),
-						0, // broadcastRadius
-						0, // option
-						(uint8_t*)&_payload,
-						buffer.getPosition(),
-						_device.getNextFrameId(),
-						dstEndpoint,
-						srcEndpoint,
-						clusterId,
-						profileId
-					);
+				auto status = device->processGeneralCommand(request, frameBuffer, resp, buffer);
+				if (status != Status::Success) {
+					buffer.setPosition(0);
 
-					_device.send(message);
+					Frame(
+						FrameControl(FrameType::Global, Direction::ToClient, true),
+						request.transactionSequenceNumber(),
+						(uint8_t)CommandIdentifier::DefaultResponse
+					).write(buffer);
+
+					DefaultResponseFrame(
+						request.commandIdentifier(),
+						status
+					).write(buffer);
 				}
+
+				ZBExplicitTxRequest message(
+					resp.getRemoteAddress64(),
+					resp.getRemoteAddress16(),
+					0, // broadcastRadius
+					0, // option
+					buffer.getData(),
+					buffer.getPosition(),
+					_device.getNextFrameId(),
+					dstEndpoint,
+					srcEndpoint,
+					clusterId,
+					profileId
+				);
+
+				_device.send(message);
 			}
 			if (request.frameControl().frameType() == FrameType::Cluster) {
 				auto cluster = device->getInClusterById(clusterId);

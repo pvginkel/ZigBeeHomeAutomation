@@ -1,9 +1,7 @@
 #include "ZigBee.h"
 
 Attribute::Attribute(uint16_t attributeId) :
-	_dataType(DataType::NoData), _attributeId(attributeId), _reporting(false), _unreported(false),
-	_minimumReportingInterval(false), _maximumReportingInterval(false), _reportableChange(0), _timeoutPeriod(0),
-	_lastReported(0) {
+	_dataType(DataType::NoData), _attributeId(attributeId), _unreported(false) {
 }
 
 Attribute::~Attribute() {
@@ -33,25 +31,12 @@ uint16_t Attribute::getAttributeId() {
     return _attributeId;
 }
 
-bool Attribute::isReporting() {
-    return _reporting;
-}
-
 bool Attribute::isUnreported() {
     return _unreported;
 }
 
 void Attribute::markReported() {
     _unreported = false;
-}
-
-uint8_t Attribute::configureReporting(uint16_t minimumInterval, uint16_t maximumInterval, uint8_t reportableChange, uint16_t timeoutPeriod) {
-    _lastReported = 0;
-    _minimumReportingInterval = minimumInterval;
-    _maximumReportingInterval = maximumInterval;
-    _reportableChange = reportableChange;
-    _timeoutPeriod = timeoutPeriod;
-    _reporting = true;
 }
 
 DataType Attribute::getDataType() {

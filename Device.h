@@ -21,10 +21,9 @@ public:
     Cluster *getInCluster(int index);
     Cluster *getOutCluster(int index);
 
-    bool processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
+    Status processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
 
 private:
-    bool processGeneralReadAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
-    bool processGeneralDiscoverAttributesCommand(Frame& frame, Memory& frameData, ZBExplicitRxResponse& message, Memory& buffer);
-    bool processGeneralConfigureReportingCommand(Frame& frame, Memory& frameData, ZBExplicitRxResponse& message, Memory& buffer);
+    Status processGeneralReadAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
+    Status processGeneralDiscoverAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
 };
