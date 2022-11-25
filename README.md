@@ -1,13 +1,9 @@
-# XBee
+# ZigBee Home Automation
 
-Work in progress!
+This Arduino library allows you to easily build your own ZigBee lamps, switches and many other devices.
 
-## Important notes
+## Acknowledgements
 
-API mode needs to be 2 for XBee. This is now auto configured by the library.
+This library was heavily based on many other ZigBee libraries found on the Internet, but especially on https://github.com/penner42/xbee-zha-arduino.
 
-Shut down any other coordinators in the house before you start testing your own implementation.
-
-The XBee device needs to be configured as an end device in API mode. You can't switch from the AT mode to API mode. See https://alselectro.wordpress.com/2017/01/23/zigbee-xbee-s2c-how-to-configure-as-coordinator-router-end-device/ for how to use an Arduino to upload firmware.
-
-The XBee device won't be listening to all channels by default.
+The clusters generated into the Clusters.h file uses a metadata definition in [zigbee-herdsman](https://github.com/Koenkk/zigbee-herdsman/blob/master/src/zcl/definition/cluster.ts).
