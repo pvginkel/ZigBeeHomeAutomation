@@ -129,13 +129,11 @@
     <ClInclude Include="__vm\.ZigbeeHomeAutomation.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BasicDevice.cpp" />
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Clusters.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="StatusControl.cpp" />
-    <ClCompile Include="Attribute.cpp" />
     <ClCompile Include="Cluster.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
     <ClCompile Include="Device.cpp" />

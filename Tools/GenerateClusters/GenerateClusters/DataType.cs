@@ -101,6 +101,7 @@ public class DataType
     public string TypeName { get; }
     public string HerdsmanName { get; }
     public string MemoryMethodName { get; }
+    public string EndianMemoryMethodName { get; }
 
     public DataType(string specName, string dataTypeName, int id, int length, string typeName, string herdsmanName)
     {
@@ -112,32 +113,23 @@ public class DataType
         HerdsmanName = herdsmanName;
 
         if (TypeName == null)
-        {
             MemoryMethodName = null;
-        }
-        else if (DataTypeName == "String16" || DataTypeName == "Octstr16")
-        {
-            MemoryMethodName = DataTypeName + "Le";
-        }
         else if (TypeName.StartsWith("int"))
-        {
             MemoryMethodName = "Int" + (Length * 8);
-            if (Length > 1)
-                MemoryMethodName += "Le";
-        }
         else if (TypeName.StartsWith("uint"))
-        {
             MemoryMethodName = "UInt" + (Length * 8);
-            if (Length > 1)
-                MemoryMethodName += "Le";
-        }
         else if (TypeName == "bool")
-        {
             MemoryMethodName = "UInt8";
-        }
         else
-        {
             MemoryMethodName = DataTypeName;
-        }
+
+        EndianMemoryMethodName = MemoryMethodName;
+
+        if (DataTypeName == "String16" || DataTypeName == "Octstr16")
+            EndianMemoryMethodName += "Le";
+        else if (TypeName != null && TypeName.StartsWith("int") && Length > 1)
+            EndianMemoryMethodName += "Le";
+        else if (TypeName != null && TypeName.StartsWith("uint") && Length > 1)
+            EndianMemoryMethodName += "Le";
     }
 }

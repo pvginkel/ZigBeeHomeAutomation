@@ -157,256 +157,108 @@ public class Generator
         WriteFile("Memory.h", cwh.ToString(), true);
     }
 
-    public void GenerateAttributeAccessors()
+    public void GenerateAttributes()
     {
-        var cw = new CodeWriter();
         var cwh = new CodeWriter();
-        cwh.Indent();
-
-        cwh.WriteLine("String toString();");
-        cw.WriteLine("String Attribute::toString() {");
-        cw.Indent();
-        cw.WriteLine("switch (_dataType) {");
-        cw.Indent();
+        var seen = new HashSet<string>();
 
         foreach (var type in DataType.AllTypes)
         {
-            if (type.TypeName == null || type.DataTypeName == "String16" || type.DataTypeName == "Octstr16")
+            if (type.TypeName == null || type.DataTypeName == "String16" || type.DataTypeName == "Octstr16" || type.DataTypeName == "Semi")
+                continue;
+            if (!seen.Add(type.MemoryMethodName))
                 continue;
 
-            cw.WriteLine($"case DataType::{type.DataTypeName}:");
-            cw.Indent();
+            cwh.WriteLine($"class Attribute{type.MemoryMethodName}: public Attribute {{");
+
+            cwh.Indent();
+            cwh.WriteLine($"{type.TypeName} _value{{}};");
+            cwh.UnIndent();
+            cwh.WriteLine();
+
+            cwh.WriteLine("public:");
+            cwh.Indent();
+
+            cwh.WriteLine($"Attribute{type.MemoryMethodName}(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {{");
+            cwh.WriteLine("}");
+            cwh.WriteLine();
+
+            cwh.WriteLine($"{type.TypeName} getValue() {{ return _value; }}");
+            cwh.WriteLine($"void setValue({type.TypeName} value) {{ _value = value; }}");
+            cwh.WriteLine();
+
+            cwh.WriteLine("String toString() override {");
+            cwh.Indent();
 
             switch (type.TypeName)
             {
                 case "float":
-                    cw.WriteLine("return String(_value.f16);");
+                    cwh.WriteLine("return String(_value);");
                     break;
                 case "double":
-                    cw.WriteLine("return String(_value.f32);");
+                    cwh.WriteLine("return String(_value);");
                     break;
                 case "String":
-                    cw.WriteLine("if (_dataType == DataType::String || _dataType == DataType::String16) {");
-                    cw.Indent();
-                    cw.WriteLine("return _value.string;");
-                    cw.UnIndent();
-                    cw.WriteLine("}");
-                    cw.WriteLine("return String();");
+                    cwh.WriteLine("return _value;");
                     break;
                 case "Buffer":
-                    cw.WriteLine("return F(\"BUFFER\");");
+                    cwh.WriteLine("return F(\"BUFFER\");");
                     break;
                 case "DateTime":
-                    cw.WriteLine("return F(\"DATETIME\");");
+                    cwh.WriteLine("return F(\"DATETIME\");");
                     break;
                 default:
                     if (type.TypeName.StartsWith("uint"))
-                        cw.WriteLine("return String((uint32_t)_value.ui64);");
+                        cwh.WriteLine("return String((uint32_t)_value);");
                     else if (type.TypeName.StartsWith("int") || type.TypeName == "bool")
-                        cw.WriteLine("return String((int32_t)_value.i64);");
-                    else
-                        throw new NotSupportedException();
-                    break;
-            }
-            cw.UnIndent();
-        }
-        cw.WriteLine("default:");
-        cw.Indent();
-        cw.WriteLine("return F(\"NULL\");");
-        cw.UnIndent();
-        cw.UnIndent();
-        cw.WriteLine("}");
-        cw.UnIndent();
-        cw.WriteLine("}");
-        cw.WriteLine();
-
-        cwh.WriteLine("void write(Memory& memory);");
-        cw.WriteLine("void Attribute::write(Memory& memory) {");
-        cw.Indent();
-        cw.WriteLine("switch (_dataType) {");
-        cw.Indent();
-
-        foreach (var type in DataType.AllTypes)
-        {
-            if (type.TypeName == null || type.DataTypeName == "Semi")
-                continue;
-
-            cw.WriteLine($"case DataType::{type.DataTypeName}:");
-            cw.Indent();
-
-            switch (type.TypeName)
-            {
-                case "float":
-                    cw.WriteLine($"memory.write{type.DataTypeName}(_value.f16);");
-                    break;
-                case "double":
-                    cw.WriteLine($"memory.write{type.DataTypeName}(_value.f32);");
-                    break;
-                case "String":
-                    cw.WriteLine($"memory.write{type.MemoryMethodName}(_value.string);");
-                    break;
-                case "Buffer":
-                    cw.WriteLine($"memory.write{type.MemoryMethodName}(_value.buffer);");
-                    break;
-                case "DateTime":
-                    cw.WriteLine("memory.writeUInt8((uint8_t)DataType::Date);");
-                    cw.WriteLine("memory.writeUInt32Le(_value.dateTime.getDate());");
-                    cw.WriteLine("memory.writeUInt8((uint8_t)DataType::ToD);");
-                    cw.WriteLine("memory.writeUInt32Le(_value.dateTime.getTime());");
-                    break;
-                default:
-                    if (type.TypeName.StartsWith("uint"))
-                        cw.WriteLine($"memory.write{type.MemoryMethodName}(_value.ui64);");
-                    else if (type.TypeName.StartsWith("int") || type.TypeName == "bool")
-                        cw.WriteLine($"memory.write{type.MemoryMethodName}(_value.i64);");
-                    else
-                        throw new NotSupportedException();
-                    break;
-            }
-            cw.WriteLine("break;");
-            cw.UnIndent();
-        }
-        cw.UnIndent();
-        cw.WriteLine("}");
-        cw.UnIndent();
-        cw.WriteLine("}");
-        cw.WriteLine();
-
-        foreach (var type in DataType.AllTypes)
-        {
-            if (type.TypeName == null || type.DataTypeName == "String16" || type.DataTypeName == "Octstr16")
-                continue;
-
-            cwh.WriteLine($"{type.TypeName} get{type.DataTypeName}();");
-            cw.WriteLine($"{type.TypeName} Attribute::get{type.DataTypeName}() {{");
-            cw.Indent();
-
-            switch (type.TypeName)
-            {
-                case "float":
-                    cw.WriteLine("return _value.f16;");
-                    break;
-                case "double":
-                    cw.WriteLine("return _value.f32;");
-                    break;
-                case "String":
-                    cw.WriteLine("if (_dataType == DataType::String || _dataType == DataType::String16) {");
-                    cw.Indent();
-                    cw.WriteLine("return _value.string;");
-                    cw.UnIndent();
-                    cw.WriteLine("}");
-                    cw.WriteLine("return String();");
-                    break;
-                case "Buffer":
-                    cw.WriteLine("if (_dataType == DataType::Octstr || _dataType == DataType::Octstr16) {");
-                    cw.Indent();
-                    cw.WriteLine("return _value.buffer;");
-                    cw.UnIndent();
-                    cw.WriteLine("}");
-                    cw.WriteLine("return Buffer();");
-                    break;
-                case "DateTime":
-                    cw.WriteLine("return _value.dateTime;");
-                    break;
-                default:
-                    if (type.TypeName.StartsWith("uint"))
-                        cw.WriteLine("return _value.ui64;");
-                    else if (type.TypeName.StartsWith("int") || type.TypeName == "bool")
-                        cw.WriteLine("return _value.i64;");
+                        cwh.WriteLine("return String((int32_t)_value);");
                     else
                         throw new NotSupportedException();
                     break;
             }
 
-            cw.UnIndent();
-            cw.WriteLine("}");
-            cw.WriteLine();
+            cwh.UnIndent();
+            cwh.WriteLine("}");
+            cwh.WriteLine();
 
-            string argumentTypeName = GetArgumentTypeName(type.TypeName);
+            cwh.WriteLine("void write(Memory& memory) override {");
+            cwh.Indent();
 
-            cwh.WriteLine($"void set{type.DataTypeName}({argumentTypeName} value);");
-            cw.WriteLine($"void Attribute::set{type.DataTypeName}({argumentTypeName} value) {{");
-            cw.Indent();
-
-            cw.WriteLine($"setDataType(DataType::{type.DataTypeName});");
-
-            switch (type.TypeName)
+            switch (type.EndianMemoryMethodName)
             {
-                case "float":
-                    cw.WriteLine("_value.f16 = value;");
-                    break;
-                case "double":
-                    cw.WriteLine("_value.f32 = value;");
+                case "DateTime":
+                    cwh.WriteLine("memory.writeUInt8((uint8_t)DataType::Date);");
+                    cwh.WriteLine("memory.writeUInt32Le(_value.getDate());");
+                    cwh.WriteLine("memory.writeUInt8((uint8_t)DataType::ToD);");
+                    cwh.WriteLine("memory.writeUInt32Le(_value.getTime());");
                     break;
                 case "String":
-                    cw.WriteLine("_value.string = value;");
-                    break;
-                case "Buffer":
-                    cw.WriteLine("_value.buffer = value;");
-                    break;
-                case "DateTime":
-                    cw.WriteLine("_value.dateTime = value;");
+                case "Octstr":
+                    cwh.WriteLine("if (_value.length() > 254) {");
+                    cwh.Indent();
+                    cwh.WriteLine($"memory.write{type.EndianMemoryMethodName}16Le(_value);");
+                    cwh.UnIndent();
+                    cwh.WriteLine("}");
+                    cwh.WriteLine("else {");
+                    cwh.Indent();
+                    cwh.WriteLine($"memory.write{type.EndianMemoryMethodName}(_value);");
+                    cwh.UnIndent();
+                    cwh.WriteLine("}");
                     break;
                 default:
-                    if (type.TypeName.StartsWith("uint"))
-                        cw.WriteLine("_value.ui64 = value;");
-                    else if (type.TypeName.StartsWith("int") || type.TypeName == "bool")
-                        cw.WriteLine("_value.i64 = value;");
-                    else
-                        throw new NotSupportedException();
+                    cwh.WriteLine($"memory.write{type.EndianMemoryMethodName}(_value);");
                     break;
             }
 
-            cw.WriteLine("_unreported = true;");
-            cw.UnIndent();
-            cw.WriteLine("}");
-            cw.WriteLine();
+            cwh.UnIndent();
+            cwh.WriteLine("}");
+
+            cwh.UnIndent();
+            cwh.WriteLine("};");
+            cwh.WriteLine();
         }
 
-        WriteFile("Attribute.cpp", cw.ToString(), true);
         WriteFile("Attribute.h", cwh.ToString(), true);
-    }
-
-    public void GenerateClusterAttributeAccessors()
-    {
-        var cw = new CodeWriter();
-        var cwh = new CodeWriter();
-        cwh.Indent();
-
-        foreach (var type in DataType.AllTypes)
-        {
-            if (type.TypeName == null || type.DataTypeName == "String16" || type.DataTypeName == "Octstr16")
-                continue;
-
-            cwh.WriteLine($"{type.TypeName} get{type.DataTypeName}(uint16_t attributeId);");
-
-            cw.WriteLine($"{type.TypeName} Cluster::get{type.DataTypeName}(uint16_t attributeId) {{");
-            cw.Indent();
-            cw.WriteLine("auto attribute = getAttributeById(attributeId);");
-            cw.WriteLine("if (attribute) {");
-            cw.Indent();
-            cw.WriteLine($"return attribute->get{type.DataTypeName}();");
-            cw.UnIndent();
-            cw.WriteLine("}");
-            cw.WriteLine("return {};");
-            cw.UnIndent();
-            cw.WriteLine("}");
-            cw.WriteLine();
-
-            string argumentTypeName = GetArgumentTypeName(type.TypeName);
-
-            cwh.WriteLine($"void set{type.DataTypeName}(uint16_t attributeId, {argumentTypeName} value);");
-
-            cw.WriteLine($"void Cluster::set{type.DataTypeName}(uint16_t attributeId, {argumentTypeName} value) {{");
-            cw.Indent();
-            cw.WriteLine($"getAttributeById(attributeId, true)->set{type.DataTypeName}(value);");
-            cw.UnIndent();
-            cw.WriteLine("}");
-            cw.WriteLine();
-        }
-
-        WriteFile("Cluster.cpp", cw.ToString(), true);
-        WriteFile("Cluster.h", cwh.ToString(), true);
     }
 
     public void GenerateClusters()
@@ -470,18 +322,25 @@ public class Generator
 
                 var attributeType = (string)attribute["type"];
 
-                var dataType = GetDataType(attributeType, attributeName);
-                if (dataType?.TypeName == null)
+                var type = GetDataType(attributeType, attributeName);
+                if (type?.TypeName == null)
                     continue;
 
-                string argumentTypeName = GetArgumentTypeName(dataType.TypeName);
-                string methodTypeName = dataType.DataTypeName;
-                if (methodTypeName == "String16" || methodTypeName == "Octstr16")
-                    methodTypeName = methodTypeName.Substring(0, methodTypeName.Length - 2);
+                cwh.WriteLine($"Attribute{type.MemoryMethodName}* get{attributeName.ToUpperFirst()}();");
 
-                cwh.WriteLine();
-                cwh.WriteLine($"{dataType.TypeName} get{attributeName.ToUpperFirst()}() {{ return get{methodTypeName}({attribute["ID"]}); }}");
-                cwh.WriteLine($"void set{attributeName.ToUpperFirst()}({argumentTypeName} {attributeName}) {{ set{methodTypeName}({attribute["ID"]}, {attributeName}); }}");
+                cw.WriteLine();
+                cw.WriteLine($"Attribute{type.MemoryMethodName}* {key.ToUpperFirst()}Cluster::get{attributeName.ToUpperFirst()}() {{");
+                cw.Indent();
+                cw.WriteLine($"auto result = (Attribute{type.MemoryMethodName}*)getAttributeById({attribute["ID"]});");
+                cw.WriteLine("if (result == nullptr) {");
+                cw.Indent();
+                cw.WriteLine($"result = new Attribute{type.MemoryMethodName}({attribute["ID"]}, DataType::{type.DataTypeName});");
+                cw.WriteLine("addAttribute(result);");
+                cw.UnIndent();
+                cw.WriteLine("}");
+                cw.WriteLine("return result;");
+                cw.UnIndent();
+                cw.WriteLine("}");
             }
 
             // Commands.
@@ -573,7 +432,7 @@ public class Generator
                     foreach (var parameter in command.Parameters)
                     {
                         var type = GetDataType(parameter.DataType, parameter.Name);
-                        cw.WriteLine($"auto {parameter.Name} = request.read{type.MemoryMethodName}();");
+                        cw.WriteLine($"auto {parameter.Name} = request.read{type.EndianMemoryMethodName}();");
                     }
 
                     if (command.Response != null)
@@ -609,7 +468,7 @@ public class Generator
                         foreach (var parameter in command.Response.Parameters)
                         {
                             var type = GetDataType(parameter.DataType, parameter.Name);
-                            cw.WriteLine($"response.write{type.MemoryMethodName}(response_.get{parameter.Name.ToUpperFirst()}());");
+                            cw.WriteLine($"response.write{type.EndianMemoryMethodName}(response_.get{parameter.Name.ToUpperFirst()}());");
                         }
 
                         cw.UnIndent();

@@ -12,20 +12,14 @@ public class TestFixture
     }
 
     [Test]
-    public void GeneratGenerateReadersWriterseReaders()
+    public void GenerateReadersWriters()
     {
         new Generator().GenerateReadersWriters();
     }
 
     [Test]
-    public void GenerateAttributeAccessors()
+    public void GenerateAttributes()
     {
-        new Generator().GenerateAttributeAccessors();
-    }
-
-    [Test]
-    public void GenerateClusterAttributeAccessors()
-    {
-        new Generator().GenerateClusterAttributeAccessors();
+        new Generator().GenerateAttributes();
     }
 }

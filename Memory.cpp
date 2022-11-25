@@ -463,7 +463,7 @@ Buffer Memory::readOctstrData(int length) {
 }
 
 void Memory::writeOctstr(const Buffer& value) {
-	int length = value.getLength();
+	int length = value.length();
     if (length > 254) {
         ERROR(F("Writing octstr of more than 254 bytes"));
     }
@@ -472,14 +472,14 @@ void Memory::writeOctstr(const Buffer& value) {
 }
 
 void Memory::writeOctstr16Le(const Buffer& value) {
-    int length = value.getLength();
+    int length = value.length();
     writeUInt16Le(length);
     writeOctstrData(value);
 }
 
 void Memory::writeOctstrData(const Buffer& value) {
     value.getBytes(_data + _position);
-    _position += value.getLength();
+    _position += value.length();
 }
 
 String Memory::readString() {

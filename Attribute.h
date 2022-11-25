@@ -5,129 +5,451 @@ class Attribute {
 	uint16_t _attributeId;
     bool _unreported;
 
-	union Value {
-		uint64_t ui64;
-		int64_t i64;
-		String string;
-		Buffer buffer;
-		float f16;
-		double f32;
-		DateTime dateTime;
-
-        ~Value() { }
-    } _value = {};
-
 public:
-	Attribute(uint16_t attributeId);
-	~Attribute();
-	uint16_t getAttributeId();
+	Attribute(uint16_t attributeId, DataType dataType) :
+		_dataType(dataType), _attributeId(attributeId), _unreported(false) {
+	}
+	Attribute(const Attribute&) = delete;
 
-	bool isUnreported();
-	void markReported();
+	virtual ~Attribute() = default;
 
-	DataType getDataType();
+	uint16_t getAttributeId() {
+		return _attributeId;
+	}
+
+	bool isUnreported() {
+		return _unreported;
+	}
+	void markReported() {
+		_unreported = false;
+	}
+
+	DataType getDataType() {
+		return _dataType;
+	}
+
+	virtual String toString() = 0;
+	virtual void write(Memory& memory) = 0;
+
+	Attribute& operator=(const Attribute&) = delete;
+
+protected:
+	void markUnreported() {
+		_unreported = true;
+	}
+};
 
 // GENERATION START
-    String toString();
-    void write(Memory& memory);
-    uint8_t getData8();
-    void setData8(uint8_t value);
-    uint16_t getData16();
-    void setData16(uint16_t value);
-    uint32_t getData24();
-    void setData24(uint32_t value);
-    uint32_t getData32();
-    void setData32(uint32_t value);
-    uint64_t getData40();
-    void setData40(uint64_t value);
-    uint64_t getData48();
-    void setData48(uint64_t value);
-    uint64_t getData56();
-    void setData56(uint64_t value);
-    uint64_t getData64();
-    void setData64(uint64_t value);
-    bool getBool();
-    void setBool(bool value);
-    uint8_t getMap8();
-    void setMap8(uint8_t value);
-    uint16_t getMap16();
-    void setMap16(uint16_t value);
-    uint32_t getMap24();
-    void setMap24(uint32_t value);
-    uint32_t getMap32();
-    void setMap32(uint32_t value);
-    uint64_t getMap40();
-    void setMap40(uint64_t value);
-    uint64_t getMap48();
-    void setMap48(uint64_t value);
-    uint64_t getMap56();
-    void setMap56(uint64_t value);
-    uint64_t getMap64();
-    void setMap64(uint64_t value);
-    uint8_t getUInt8();
-    void setUInt8(uint8_t value);
-    uint16_t getUInt16();
-    void setUInt16(uint16_t value);
-    uint32_t getUInt24();
-    void setUInt24(uint32_t value);
-    uint32_t getUInt32();
-    void setUInt32(uint32_t value);
-    uint64_t getUInt40();
-    void setUInt40(uint64_t value);
-    uint64_t getUInt48();
-    void setUInt48(uint64_t value);
-    uint64_t getUInt56();
-    void setUInt56(uint64_t value);
-    uint64_t getUInt64();
-    void setUInt64(uint64_t value);
-    int8_t getInt8();
-    void setInt8(int8_t value);
-    int16_t getInt16();
-    void setInt16(int16_t value);
-    int32_t getInt24();
-    void setInt24(int32_t value);
-    int32_t getInt32();
-    void setInt32(int32_t value);
-    int64_t getInt40();
-    void setInt40(int64_t value);
-    int64_t getInt48();
-    void setInt48(int64_t value);
-    int64_t getInt56();
-    void setInt56(int64_t value);
-    int64_t getInt64();
-    void setInt64(int64_t value);
-    uint8_t getEnum8();
-    void setEnum8(uint8_t value);
-    uint16_t getEnum16();
-    void setEnum16(uint16_t value);
-    float getSemi();
-    void setSemi(float value);
-    float getSingle();
-    void setSingle(float value);
-    double getDouble();
-    void setDouble(double value);
-    Buffer getOctstr();
-    void setOctstr(const Buffer& value);
-    String getString();
-    void setString(const String& value);
-    DateTime getDateTime();
-    void setDateTime(const DateTime& value);
-    uint32_t getToD();
-    void setToD(uint32_t value);
-    uint32_t getDate();
-    void setDate(uint32_t value);
-    uint32_t getUTC();
-    void setUTC(uint32_t value);
-    uint16_t getClusterId();
-    void setClusterId(uint16_t value);
-    uint16_t getAttribId();
-    void setAttribId(uint16_t value);
-    uint32_t getBacOID();
-    void setBacOID(uint32_t value);
-    uint64_t getEUI64();
-    void setEUI64(uint64_t value);
-// GENERATION END
+class AttributeUInt8: public Attribute {
+    uint8_t _value{};
 
-private:
-    void setDataType(DataType dataType);
+public:
+    AttributeUInt8(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    uint8_t getValue() { return _value; }
+    void setValue(uint8_t value) { _value = value; }
+
+    String toString() override {
+        return String((uint32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeUInt8(_value);
+    }
 };
+
+class AttributeUInt16: public Attribute {
+    uint16_t _value{};
+
+public:
+    AttributeUInt16(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    uint16_t getValue() { return _value; }
+    void setValue(uint16_t value) { _value = value; }
+
+    String toString() override {
+        return String((uint32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeUInt16Le(_value);
+    }
+};
+
+class AttributeUInt24: public Attribute {
+    uint32_t _value{};
+
+public:
+    AttributeUInt24(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    uint32_t getValue() { return _value; }
+    void setValue(uint32_t value) { _value = value; }
+
+    String toString() override {
+        return String((uint32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeUInt24Le(_value);
+    }
+};
+
+class AttributeUInt32: public Attribute {
+    uint32_t _value{};
+
+public:
+    AttributeUInt32(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    uint32_t getValue() { return _value; }
+    void setValue(uint32_t value) { _value = value; }
+
+    String toString() override {
+        return String((uint32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeUInt32Le(_value);
+    }
+};
+
+class AttributeUInt40: public Attribute {
+    uint64_t _value{};
+
+public:
+    AttributeUInt40(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    uint64_t getValue() { return _value; }
+    void setValue(uint64_t value) { _value = value; }
+
+    String toString() override {
+        return String((uint32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeUInt40Le(_value);
+    }
+};
+
+class AttributeUInt48: public Attribute {
+    uint64_t _value{};
+
+public:
+    AttributeUInt48(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    uint64_t getValue() { return _value; }
+    void setValue(uint64_t value) { _value = value; }
+
+    String toString() override {
+        return String((uint32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeUInt48Le(_value);
+    }
+};
+
+class AttributeUInt56: public Attribute {
+    uint64_t _value{};
+
+public:
+    AttributeUInt56(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    uint64_t getValue() { return _value; }
+    void setValue(uint64_t value) { _value = value; }
+
+    String toString() override {
+        return String((uint32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeUInt56Le(_value);
+    }
+};
+
+class AttributeUInt64: public Attribute {
+    uint64_t _value{};
+
+public:
+    AttributeUInt64(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    uint64_t getValue() { return _value; }
+    void setValue(uint64_t value) { _value = value; }
+
+    String toString() override {
+        return String((uint32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeUInt64Le(_value);
+    }
+};
+
+class AttributeInt8: public Attribute {
+    int8_t _value{};
+
+public:
+    AttributeInt8(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    int8_t getValue() { return _value; }
+    void setValue(int8_t value) { _value = value; }
+
+    String toString() override {
+        return String((int32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeInt8(_value);
+    }
+};
+
+class AttributeInt16: public Attribute {
+    int16_t _value{};
+
+public:
+    AttributeInt16(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    int16_t getValue() { return _value; }
+    void setValue(int16_t value) { _value = value; }
+
+    String toString() override {
+        return String((int32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeInt16Le(_value);
+    }
+};
+
+class AttributeInt24: public Attribute {
+    int32_t _value{};
+
+public:
+    AttributeInt24(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    int32_t getValue() { return _value; }
+    void setValue(int32_t value) { _value = value; }
+
+    String toString() override {
+        return String((int32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeInt24Le(_value);
+    }
+};
+
+class AttributeInt32: public Attribute {
+    int32_t _value{};
+
+public:
+    AttributeInt32(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    int32_t getValue() { return _value; }
+    void setValue(int32_t value) { _value = value; }
+
+    String toString() override {
+        return String((int32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeInt32Le(_value);
+    }
+};
+
+class AttributeInt40: public Attribute {
+    int64_t _value{};
+
+public:
+    AttributeInt40(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    int64_t getValue() { return _value; }
+    void setValue(int64_t value) { _value = value; }
+
+    String toString() override {
+        return String((int32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeInt40Le(_value);
+    }
+};
+
+class AttributeInt48: public Attribute {
+    int64_t _value{};
+
+public:
+    AttributeInt48(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    int64_t getValue() { return _value; }
+    void setValue(int64_t value) { _value = value; }
+
+    String toString() override {
+        return String((int32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeInt48Le(_value);
+    }
+};
+
+class AttributeInt56: public Attribute {
+    int64_t _value{};
+
+public:
+    AttributeInt56(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    int64_t getValue() { return _value; }
+    void setValue(int64_t value) { _value = value; }
+
+    String toString() override {
+        return String((int32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeInt56Le(_value);
+    }
+};
+
+class AttributeInt64: public Attribute {
+    int64_t _value{};
+
+public:
+    AttributeInt64(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    int64_t getValue() { return _value; }
+    void setValue(int64_t value) { _value = value; }
+
+    String toString() override {
+        return String((int32_t)_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeInt64Le(_value);
+    }
+};
+
+class AttributeSingle: public Attribute {
+    float _value{};
+
+public:
+    AttributeSingle(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    float getValue() { return _value; }
+    void setValue(float value) { _value = value; }
+
+    String toString() override {
+        return String(_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeSingle(_value);
+    }
+};
+
+class AttributeDouble: public Attribute {
+    double _value{};
+
+public:
+    AttributeDouble(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    double getValue() { return _value; }
+    void setValue(double value) { _value = value; }
+
+    String toString() override {
+        return String(_value);
+    }
+
+    void write(Memory& memory) override {
+        memory.writeDouble(_value);
+    }
+};
+
+class AttributeOctstr: public Attribute {
+    Buffer _value{};
+
+public:
+    AttributeOctstr(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    Buffer getValue() { return _value; }
+    void setValue(Buffer value) { _value = value; }
+
+    String toString() override {
+        return F("BUFFER");
+    }
+
+    void write(Memory& memory) override {
+        if (_value.length() > 254) {
+            memory.writeOctstr16Le(_value);
+        }
+        else {
+            memory.writeOctstr(_value);
+        }
+    }
+};
+
+class AttributeString: public Attribute {
+    String _value{};
+
+public:
+    AttributeString(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    String getValue() { return _value; }
+    void setValue(String value) { _value = value; }
+
+    String toString() override {
+        return _value;
+    }
+
+    void write(Memory& memory) override {
+        if (_value.length() > 254) {
+            memory.writeString16Le(_value);
+        }
+        else {
+            memory.writeString(_value);
+        }
+    }
+};
+
+class AttributeDateTime: public Attribute {
+    DateTime _value{};
+
+public:
+    AttributeDateTime(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
+    }
+
+    DateTime getValue() { return _value; }
+    void setValue(DateTime value) { _value = value; }
+
+    String toString() override {
+        return F("DATETIME");
+    }
+
+    void write(Memory& memory) override {
+        memory.writeUInt8((uint8_t)DataType::Date);
+        memory.writeUInt32Le(_value.getDate());
+        memory.writeUInt8((uint8_t)DataType::ToD);
+        memory.writeUInt32Le(_value.getTime());
+    }
+};
+
+// GENERATION END

@@ -62,8 +62,8 @@ void setup()
     deviceManager.addDevice(lightBulb);
     lightBulb.addInCluster(onOffCluster);
     lightBulb.addInCluster(levelCtrlCluster);
-    lightBulb.getBasicCluster().setManufacturerName(String(F("GE_Appliances")));
-    lightBulb.getBasicCluster().setModelId(String(F("ZLL Light")));
+    lightBulb.getBasicCluster().getManufacturerName()->setValue(String(F("GE_Appliances")));
+    lightBulb.getBasicCluster().getModelId()->setValue(String(F("ZLL Light")));
 
     while (!Serial);
 
@@ -106,8 +106,8 @@ bool isOn() {
 }
 
 void setLevel(int level) {
-    onOffCluster.setOnOff(!!level);
-    levelCtrlCluster.setCurrentLevel(level);
+    onOffCluster.getOnOff()->setValue(!!level);
+    levelCtrlCluster.getCurrentLevel()->setValue(level);
     analogWrite(IO_LED, level);
     display.setBrightness(level);
 }

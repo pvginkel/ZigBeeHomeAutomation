@@ -9,8 +9,8 @@ public:
 		addInCluster(_basicCluster);
 		addInCluster(_identifyCluster);
 
-		_basicCluster.setZclVersion(1);
-		_basicCluster.setPowerSource((uint8_t)powerSource);
+		_basicCluster.getZclVersion()->setValue(1);
+		_basicCluster.getPowerSource()->setValue((uint8_t)powerSource);
 	}
 
 	GenBasicCluster& getBasicCluster() {

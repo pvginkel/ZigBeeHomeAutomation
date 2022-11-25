@@ -14,7 +14,7 @@ public:
 	Buffer& operator=(const Buffer& other);
 	Buffer& operator=(Buffer&& other) noexcept;
 
-	int getLength() const {
+	int length() const {
 		return _length;
 	}
 
