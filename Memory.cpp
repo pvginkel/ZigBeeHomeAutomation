@@ -492,7 +492,12 @@ String Memory::readString16Le() {
 
 String Memory::readStringData(int length) {
     auto result = String();
+
+    // See https://github.com/arduino/ArduinoCore-sam/blob/790ff2c852bf159787a9966bddee4d9f55352d15/cores/arduino/WString.cpp#L159.
+    // Reserve reserves the maximum string length, not the number of bytes.
+    // It'll actually allocate one extra byte.
     result.reserve(length);
+
     for (int i = 0; i < length; i++) {
         result += (char)readUInt8();
     }
