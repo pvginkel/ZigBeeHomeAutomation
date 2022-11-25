@@ -2,24 +2,23 @@
 
 class Device {
     uint8_t _endpointId;
-    LinkedList<Cluster*> _inClusters;
-    LinkedList<Cluster*> _outClusters;
+    LinkedList<Cluster*> _clusters;
     uint16_t _deviceId;
 
 public:
     Device(uint8_t endpointId, uint16_t deviceId);
 
-    uint16_t getDeviceId();
-    uint8_t getEndpointId();
+    uint8_t Device::getEndpointId() {
+        return _endpointId;
+    }
+    uint16_t Device::getDeviceId() {
+        return _deviceId;
+    }
 
-	void addInCluster(Cluster& cluster);
-    void addOutCluster(Cluster& cluster);
-    Cluster *getInClusterById(uint16_t clusterId);
-    Cluster *getOutClusterById(uint16_t clusterId);
-    int getInClusterCount();
-    int getOutClusterCount();
-    Cluster *getInCluster(int index);
-    Cluster *getOutCluster(int index);
+	void addCluster(Cluster& cluster);
+    Cluster *getClusterById(uint16_t clusterId);
+    int getClusterCount();
+    Cluster *getClusterByIndex(int index);
 
     Status processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
 

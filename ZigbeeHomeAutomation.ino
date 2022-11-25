@@ -60,8 +60,8 @@ public:
 void setup()
 {
     deviceManager.addDevice(lightBulb);
-    lightBulb.addInCluster(onOffCluster);
-    lightBulb.addInCluster(levelCtrlCluster);
+    lightBulb.addCluster(onOffCluster);
+    lightBulb.addCluster(levelCtrlCluster);
     lightBulb.getBasicCluster().getManufacturerName()->setValue(String(F("GE_Appliances")));
     lightBulb.getBasicCluster().getModelId()->setValue(String(F("ZLL Light")));
 

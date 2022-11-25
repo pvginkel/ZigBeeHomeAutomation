@@ -2,7 +2,7 @@
 
 class GenBasicCluster: public Cluster {
 public:
-    GenBasicCluster() : Cluster(0) {
+    GenBasicCluster(ClusterType type = ClusterType::Input) : Cluster(0, type) {
     }
     AttributeUInt8* getZclVersion();
     AttributeUInt8* getAppVersion();
@@ -29,7 +29,7 @@ public:
 
 class GenPowerCfgCluster: public Cluster {
 public:
-    GenPowerCfgCluster() : Cluster(1) {
+    GenPowerCfgCluster(ClusterType type = ClusterType::Input) : Cluster(1, type) {
     }
     AttributeUInt16* getMainsVoltage();
     AttributeUInt8* getMainsFrequency();
@@ -58,7 +58,7 @@ public:
 
 class GenDeviceTempCfgCluster: public Cluster {
 public:
-    GenDeviceTempCfgCluster() : Cluster(2) {
+    GenDeviceTempCfgCluster(ClusterType type = ClusterType::Input) : Cluster(2, type) {
     }
     AttributeInt16* getCurrentTemperature();
     AttributeInt16* getMinTempExperienced();
@@ -73,7 +73,7 @@ public:
 
 class GenIdentifyCluster: public Cluster {
 public:
-    GenIdentifyCluster() : Cluster(3) {
+    GenIdentifyCluster(ClusterType type = ClusterType::Input) : Cluster(3, type) {
     }
     AttributeUInt16* getIdentifyTime();
 
@@ -102,7 +102,7 @@ public:
 
 class GenGroupsCluster: public Cluster {
 public:
-    GenGroupsCluster() : Cluster(4) {
+    GenGroupsCluster(ClusterType type = ClusterType::Input) : Cluster(4, type) {
     }
     AttributeUInt8* getNameSupport();
 
@@ -157,7 +157,7 @@ public:
 
 class GenScenesCluster: public Cluster {
 public:
-    GenScenesCluster() : Cluster(5) {
+    GenScenesCluster(ClusterType type = ClusterType::Input) : Cluster(5, type) {
     }
     AttributeUInt8* getCount();
     AttributeUInt8* getCurrentScene();
@@ -267,7 +267,7 @@ public:
 
 class GenOnOffCluster: public Cluster {
 public:
-    GenOnOffCluster() : Cluster(6) {
+    GenOnOffCluster(ClusterType type = ClusterType::Input) : Cluster(6, type) {
     }
     AttributeUInt8* getOnOff();
     AttributeUInt8* getGlobalSceneCtrl();
@@ -305,7 +305,7 @@ public:
 
 class GenOnOffSwitchCfgCluster: public Cluster {
 public:
-    GenOnOffSwitchCfgCluster() : Cluster(7) {
+    GenOnOffSwitchCfgCluster(ClusterType type = ClusterType::Input) : Cluster(7, type) {
     }
     AttributeUInt8* getSwitchType();
     AttributeUInt8* getSwitchActions();
@@ -313,7 +313,7 @@ public:
 
 class GenLevelCtrlCluster: public Cluster {
 public:
-    GenLevelCtrlCluster() : Cluster(8) {
+    GenLevelCtrlCluster(ClusterType type = ClusterType::Input) : Cluster(8, type) {
     }
     AttributeUInt8* getCurrentLevel();
     AttributeUInt16* getRemainingTime();
@@ -368,7 +368,7 @@ public:
 
 class GenAlarmsCluster: public Cluster {
 public:
-    GenAlarmsCluster() : Cluster(9) {
+    GenAlarmsCluster(ClusterType type = ClusterType::Input) : Cluster(9, type) {
     }
     AttributeUInt16* getAlarmCount();
 
@@ -397,7 +397,7 @@ public:
 
 class GenTimeCluster: public Cluster {
 public:
-    GenTimeCluster() : Cluster(10) {
+    GenTimeCluster(ClusterType type = ClusterType::Input) : Cluster(10, type) {
     }
     AttributeUInt32* getTime();
     AttributeUInt8* getTimeStatus();
@@ -413,7 +413,7 @@ public:
 
 class GenRssiLocationCluster: public Cluster {
 public:
-    GenRssiLocationCluster() : Cluster(11) {
+    GenRssiLocationCluster(ClusterType type = ClusterType::Input) : Cluster(11, type) {
     }
     AttributeUInt8* getType();
     AttributeUInt8* getMethod();
@@ -450,7 +450,7 @@ public:
 
 class GenAnalogInputCluster: public Cluster {
 public:
-    GenAnalogInputCluster() : Cluster(12) {
+    GenAnalogInputCluster(ClusterType type = ClusterType::Input) : Cluster(12, type) {
     }
     AttributeString* getDescription();
     AttributeSingle* getMaxPresentValue();
@@ -466,7 +466,7 @@ public:
 
 class GenAnalogOutputCluster: public Cluster {
 public:
-    GenAnalogOutputCluster() : Cluster(13) {
+    GenAnalogOutputCluster(ClusterType type = ClusterType::Input) : Cluster(13, type) {
     }
     AttributeString* getDescription();
     AttributeSingle* getMaxPresentValue();
@@ -483,7 +483,7 @@ public:
 
 class GenAnalogValueCluster: public Cluster {
 public:
-    GenAnalogValueCluster() : Cluster(14) {
+    GenAnalogValueCluster(ClusterType type = ClusterType::Input) : Cluster(14, type) {
     }
     AttributeString* getDescription();
     AttributeUInt8* getOutOfService();
@@ -497,7 +497,7 @@ public:
 
 class GenBinaryInputCluster: public Cluster {
 public:
-    GenBinaryInputCluster() : Cluster(15) {
+    GenBinaryInputCluster(ClusterType type = ClusterType::Input) : Cluster(15, type) {
     }
     AttributeString* getActiveText();
     AttributeString* getDescription();
@@ -512,7 +512,7 @@ public:
 
 class GenBinaryOutputCluster: public Cluster {
 public:
-    GenBinaryOutputCluster() : Cluster(16) {
+    GenBinaryOutputCluster(ClusterType type = ClusterType::Input) : Cluster(16, type) {
     }
     AttributeString* getActiveText();
     AttributeString* getDescription();
@@ -530,7 +530,7 @@ public:
 
 class GenBinaryValueCluster: public Cluster {
 public:
-    GenBinaryValueCluster() : Cluster(17) {
+    GenBinaryValueCluster(ClusterType type = ClusterType::Input) : Cluster(17, type) {
     }
     AttributeString* getActiveText();
     AttributeString* getDescription();
@@ -547,7 +547,7 @@ public:
 
 class GenMultistateInputCluster: public Cluster {
 public:
-    GenMultistateInputCluster() : Cluster(18) {
+    GenMultistateInputCluster(ClusterType type = ClusterType::Input) : Cluster(18, type) {
     }
     AttributeString* getDescription();
     AttributeUInt16* getNumberOfStates();
@@ -560,7 +560,7 @@ public:
 
 class GenMultistateOutputCluster: public Cluster {
 public:
-    GenMultistateOutputCluster() : Cluster(19) {
+    GenMultistateOutputCluster(ClusterType type = ClusterType::Input) : Cluster(19, type) {
     }
     AttributeString* getDescription();
     AttributeUInt16* getNumberOfStates();
@@ -574,7 +574,7 @@ public:
 
 class GenMultistateValueCluster: public Cluster {
 public:
-    GenMultistateValueCluster() : Cluster(20) {
+    GenMultistateValueCluster(ClusterType type = ClusterType::Input) : Cluster(20, type) {
     }
     AttributeString* getDescription();
     AttributeUInt16* getNumberOfStates();
@@ -588,7 +588,7 @@ public:
 
 class GenCommissioningCluster: public Cluster {
 public:
-    GenCommissioningCluster() : Cluster(21) {
+    GenCommissioningCluster(ClusterType type = ClusterType::Input) : Cluster(21, type) {
     }
     AttributeUInt16* getShortress();
     AttributeUInt64* getExtendedPANId();
@@ -633,7 +633,7 @@ public:
 
 class GenOtaCluster: public Cluster {
 public:
-    GenOtaCluster() : Cluster(25) {
+    GenOtaCluster(ClusterType type = ClusterType::Input) : Cluster(25, type) {
     }
     AttributeUInt64* getUpgradeServerId();
     AttributeUInt32* getFileOffset();
@@ -710,7 +710,7 @@ public:
 
 class GenPollCtrlCluster: public Cluster {
 public:
-    GenPollCtrlCluster() : Cluster(32) {
+    GenPollCtrlCluster(ClusterType type = ClusterType::Input) : Cluster(32, type) {
     }
     AttributeUInt32* getCheckinInterval();
     AttributeUInt32* getLongPollInterval();
@@ -741,13 +741,13 @@ public:
 
 class GreenPowerCluster: public Cluster {
 public:
-    GreenPowerCluster() : Cluster(33) {
+    GreenPowerCluster(ClusterType type = ClusterType::Input) : Cluster(33, type) {
     }
 };
 
 class MobileDeviceCfgCluster: public Cluster {
 public:
-    MobileDeviceCfgCluster() : Cluster(34) {
+    MobileDeviceCfgCluster(ClusterType type = ClusterType::Input) : Cluster(34, type) {
     }
     AttributeUInt16* getKeepAliveTime();
     AttributeUInt16* getRejoinTimeout();
@@ -755,14 +755,14 @@ public:
 
 class NeighborCleaningCluster: public Cluster {
 public:
-    NeighborCleaningCluster() : Cluster(35) {
+    NeighborCleaningCluster(ClusterType type = ClusterType::Input) : Cluster(35, type) {
     }
     AttributeUInt16* getNeighborCleaningTimeout();
 };
 
 class NearestGatewayCluster: public Cluster {
 public:
-    NearestGatewayCluster() : Cluster(36) {
+    NearestGatewayCluster(ClusterType type = ClusterType::Input) : Cluster(36, type) {
     }
     AttributeUInt16* getNearestGateway();
     AttributeUInt16* getNewMobileNode();
@@ -770,7 +770,7 @@ public:
 
 class ClosuresShadeCfgCluster: public Cluster {
 public:
-    ClosuresShadeCfgCluster() : Cluster(256) {
+    ClosuresShadeCfgCluster(ClusterType type = ClusterType::Input) : Cluster(256, type) {
     }
     AttributeUInt16* getPhysicalClosedLimit();
     AttributeUInt8* getMotorStepSize();
@@ -781,7 +781,7 @@ public:
 
 class ClosuresDoorLockCluster: public Cluster {
 public:
-    ClosuresDoorLockCluster() : Cluster(257) {
+    ClosuresDoorLockCluster(ClusterType type = ClusterType::Input) : Cluster(257, type) {
     }
     AttributeUInt8* getLockState();
     AttributeUInt16* getLockType();
@@ -1285,7 +1285,7 @@ public:
 
 class ClosuresWindowCoveringCluster: public Cluster {
 public:
-    ClosuresWindowCoveringCluster() : Cluster(258) {
+    ClosuresWindowCoveringCluster(ClusterType type = ClusterType::Input) : Cluster(258, type) {
     }
     AttributeUInt8* getWindowCoveringType();
     AttributeUInt16* getPhysicalClosedLimitLiftCm();
@@ -1347,7 +1347,7 @@ public:
 
 class BarrierControlCluster: public Cluster {
 public:
-    BarrierControlCluster() : Cluster(259) {
+    BarrierControlCluster(ClusterType type = ClusterType::Input) : Cluster(259, type) {
     }
     AttributeUInt8* getMovingState();
     AttributeUInt16* getSafetyStatus();
@@ -1373,7 +1373,7 @@ public:
 
 class HvacPumpCfgCtrlCluster: public Cluster {
 public:
-    HvacPumpCfgCtrlCluster() : Cluster(512) {
+    HvacPumpCfgCtrlCluster(ClusterType type = ClusterType::Input) : Cluster(512, type) {
     }
     AttributeInt16* getMaxPressure();
     AttributeUInt16* getMaxSpeed();
@@ -1403,7 +1403,7 @@ public:
 
 class HvacThermostatCluster: public Cluster {
 public:
-    HvacThermostatCluster() : Cluster(513) {
+    HvacThermostatCluster(ClusterType type = ClusterType::Input) : Cluster(513, type) {
     }
     AttributeInt16* getLocalTemp();
     AttributeInt16* getOutdoorTemp();
@@ -1491,7 +1491,7 @@ public:
 
 class HvacFanCtrlCluster: public Cluster {
 public:
-    HvacFanCtrlCluster() : Cluster(514) {
+    HvacFanCtrlCluster(ClusterType type = ClusterType::Input) : Cluster(514, type) {
     }
     AttributeUInt8* getFanMode();
     AttributeUInt8* getFanModeSequence();
@@ -1499,7 +1499,7 @@ public:
 
 class HvacDehumidificationCtrlCluster: public Cluster {
 public:
-    HvacDehumidificationCtrlCluster() : Cluster(515) {
+    HvacDehumidificationCtrlCluster(ClusterType type = ClusterType::Input) : Cluster(515, type) {
     }
     AttributeUInt8* getRelativeHumidity();
     AttributeUInt8* getDehumidCooling();
@@ -1513,7 +1513,7 @@ public:
 
 class HvacUserInterfaceCfgCluster: public Cluster {
 public:
-    HvacUserInterfaceCfgCluster() : Cluster(516) {
+    HvacUserInterfaceCfgCluster(ClusterType type = ClusterType::Input) : Cluster(516, type) {
     }
     AttributeUInt8* getTempDisplayMode();
     AttributeUInt8* getKeypadLockout();
@@ -1522,7 +1522,7 @@ public:
 
 class LightingColorCtrlCluster: public Cluster {
 public:
-    LightingColorCtrlCluster() : Cluster(768) {
+    LightingColorCtrlCluster(ClusterType type = ClusterType::Input) : Cluster(768, type) {
     }
     AttributeUInt8* getCurrentHue();
     AttributeUInt8* getCurrentSaturation();
@@ -1658,7 +1658,7 @@ public:
 
 class LightingBallastCfgCluster: public Cluster {
 public:
-    LightingBallastCfgCluster() : Cluster(769) {
+    LightingBallastCfgCluster(ClusterType type = ClusterType::Input) : Cluster(769, type) {
     }
     AttributeUInt8* getPhysicalMinLevel();
     AttributeUInt8* getPhysicalMaxLevel();
@@ -1680,7 +1680,7 @@ public:
 
 class MsIlluminanceMeasurementCluster: public Cluster {
 public:
-    MsIlluminanceMeasurementCluster() : Cluster(1024) {
+    MsIlluminanceMeasurementCluster(ClusterType type = ClusterType::Input) : Cluster(1024, type) {
     }
     AttributeUInt16* getMeasuredValue();
     AttributeUInt16* getMinMeasuredValue();
@@ -1691,7 +1691,7 @@ public:
 
 class MsIlluminanceLevelSensingCluster: public Cluster {
 public:
-    MsIlluminanceLevelSensingCluster() : Cluster(1025) {
+    MsIlluminanceLevelSensingCluster(ClusterType type = ClusterType::Input) : Cluster(1025, type) {
     }
     AttributeUInt8* getLevelStatus();
     AttributeUInt8* getLightSensorType();
@@ -1700,7 +1700,7 @@ public:
 
 class MsTemperatureMeasurementCluster: public Cluster {
 public:
-    MsTemperatureMeasurementCluster() : Cluster(1026) {
+    MsTemperatureMeasurementCluster(ClusterType type = ClusterType::Input) : Cluster(1026, type) {
     }
     AttributeInt16* getMeasuredValue();
     AttributeInt16* getMinMeasuredValue();
@@ -1710,7 +1710,7 @@ public:
 
 class MsPressureMeasurementCluster: public Cluster {
 public:
-    MsPressureMeasurementCluster() : Cluster(1027) {
+    MsPressureMeasurementCluster(ClusterType type = ClusterType::Input) : Cluster(1027, type) {
     }
     AttributeInt16* getMeasuredValue();
     AttributeInt16* getMinMeasuredValue();
@@ -1725,7 +1725,7 @@ public:
 
 class MsFlowMeasurementCluster: public Cluster {
 public:
-    MsFlowMeasurementCluster() : Cluster(1028) {
+    MsFlowMeasurementCluster(ClusterType type = ClusterType::Input) : Cluster(1028, type) {
     }
     AttributeUInt16* getMeasuredValue();
     AttributeUInt16* getMinMeasuredValue();
@@ -1735,7 +1735,7 @@ public:
 
 class MsRelativeHumidityCluster: public Cluster {
 public:
-    MsRelativeHumidityCluster() : Cluster(1029) {
+    MsRelativeHumidityCluster(ClusterType type = ClusterType::Input) : Cluster(1029, type) {
     }
     AttributeUInt16* getMeasuredValue();
     AttributeUInt16* getMinMeasuredValue();
@@ -1745,7 +1745,7 @@ public:
 
 class MsOccupancySensingCluster: public Cluster {
 public:
-    MsOccupancySensingCluster() : Cluster(1030) {
+    MsOccupancySensingCluster(ClusterType type = ClusterType::Input) : Cluster(1030, type) {
     }
     AttributeUInt8* getOccupancy();
     AttributeUInt8* getOccupancySensorType();
@@ -1759,7 +1759,7 @@ public:
 
 class MsSoilMoistureCluster: public Cluster {
 public:
-    MsSoilMoistureCluster() : Cluster(1032) {
+    MsSoilMoistureCluster(ClusterType type = ClusterType::Input) : Cluster(1032, type) {
     }
     AttributeUInt16* getMeasuredValue();
     AttributeUInt16* getMinMeasuredValue();
@@ -1769,7 +1769,7 @@ public:
 
 class PHMeasurementCluster: public Cluster {
 public:
-    PHMeasurementCluster() : Cluster(1033) {
+    PHMeasurementCluster(ClusterType type = ClusterType::Input) : Cluster(1033, type) {
     }
     AttributeUInt16* getMeasuredValue();
     AttributeUInt16* getMinMeasuredValue();
@@ -1779,7 +1779,7 @@ public:
 
 class MsCO2Cluster: public Cluster {
 public:
-    MsCO2Cluster() : Cluster(1037) {
+    MsCO2Cluster(ClusterType type = ClusterType::Input) : Cluster(1037, type) {
     }
     AttributeSingle* getMeasuredValue();
     AttributeSingle* getMinMeasuredValue();
@@ -1788,7 +1788,7 @@ public:
 
 class SsIasZoneCluster: public Cluster {
 public:
-    SsIasZoneCluster() : Cluster(1280) {
+    SsIasZoneCluster(ClusterType type = ClusterType::Input) : Cluster(1280, type) {
     }
     AttributeUInt8* getZoneState();
     AttributeUInt16* getZoneType();
@@ -1815,7 +1815,7 @@ public:
 
 class SsIasAceCluster: public Cluster {
 public:
-    SsIasAceCluster() : Cluster(1281) {
+    SsIasAceCluster(ClusterType type = ClusterType::Input) : Cluster(1281, type) {
     }
 
     class ArmCommandResponse {
@@ -1975,7 +1975,7 @@ public:
 
 class SsIasWdCluster: public Cluster {
 public:
-    SsIasWdCluster() : Cluster(1282) {
+    SsIasWdCluster(ClusterType type = ClusterType::Input) : Cluster(1282, type) {
     }
     AttributeUInt16* getMaxDuration();
 
@@ -1992,7 +1992,7 @@ public:
 
 class PiGenericTunnelCluster: public Cluster {
 public:
-    PiGenericTunnelCluster() : Cluster(1536) {
+    PiGenericTunnelCluster(ClusterType type = ClusterType::Input) : Cluster(1536, type) {
     }
     AttributeUInt16* getMaxIncomeTransSize();
     AttributeUInt16* getMaxOutgoTransSize();
@@ -2007,7 +2007,7 @@ public:
 
 class PiBacnetProtocolTunnelCluster: public Cluster {
 public:
-    PiBacnetProtocolTunnelCluster() : Cluster(1537) {
+    PiBacnetProtocolTunnelCluster(ClusterType type = ClusterType::Input) : Cluster(1537, type) {
     }
 
     virtual Status transferNpduCommand(uint8_t npdu) {
@@ -2019,7 +2019,7 @@ public:
 
 class PiAnalogInputRegCluster: public Cluster {
 public:
-    PiAnalogInputRegCluster() : Cluster(1538) {
+    PiAnalogInputRegCluster(ClusterType type = ClusterType::Input) : Cluster(1538, type) {
     }
     AttributeSingle* getCovIncrement();
     AttributeString* getDeviceType();
@@ -2032,7 +2032,7 @@ public:
 
 class PiAnalogInputExtCluster: public Cluster {
 public:
-    PiAnalogInputExtCluster() : Cluster(1539) {
+    PiAnalogInputExtCluster(ClusterType type = ClusterType::Input) : Cluster(1539, type) {
     }
     AttributeUInt8* getAckedTransitions();
     AttributeUInt16* getNotificationClass();
@@ -2066,7 +2066,7 @@ public:
 
 class PiAnalogOutputRegCluster: public Cluster {
 public:
-    PiAnalogOutputRegCluster() : Cluster(1540) {
+    PiAnalogOutputRegCluster(ClusterType type = ClusterType::Input) : Cluster(1540, type) {
     }
     AttributeSingle* getCovIncrement();
     AttributeString* getDeviceType();
@@ -2079,7 +2079,7 @@ public:
 
 class PiAnalogOutputExtCluster: public Cluster {
 public:
-    PiAnalogOutputExtCluster() : Cluster(1541) {
+    PiAnalogOutputExtCluster(ClusterType type = ClusterType::Input) : Cluster(1541, type) {
     }
     AttributeUInt8* getAckedTransitions();
     AttributeUInt16* getNotificationClass();
@@ -2095,7 +2095,7 @@ public:
 
 class PiAnalogValueRegCluster: public Cluster {
 public:
-    PiAnalogValueRegCluster() : Cluster(1542) {
+    PiAnalogValueRegCluster(ClusterType type = ClusterType::Input) : Cluster(1542, type) {
     }
     AttributeSingle* getCovIncrement();
     AttributeUInt32* getObjectId();
@@ -2106,7 +2106,7 @@ public:
 
 class PiAnalogValueExtCluster: public Cluster {
 public:
-    PiAnalogValueExtCluster() : Cluster(1543) {
+    PiAnalogValueExtCluster(ClusterType type = ClusterType::Input) : Cluster(1543, type) {
     }
     AttributeUInt8* getAckedTransitions();
     AttributeUInt16* getNotificationClass();
@@ -2122,7 +2122,7 @@ public:
 
 class PiBinaryInputRegCluster: public Cluster {
 public:
-    PiBinaryInputRegCluster() : Cluster(1544) {
+    PiBinaryInputRegCluster(ClusterType type = ClusterType::Input) : Cluster(1544, type) {
     }
     AttributeUInt32* getChangeOfStateCount();
     AttributeDateTime* getChangeOfStateTime();
@@ -2138,7 +2138,7 @@ public:
 
 class PiBinaryInputExtCluster: public Cluster {
 public:
-    PiBinaryInputExtCluster() : Cluster(1545) {
+    PiBinaryInputExtCluster(ClusterType type = ClusterType::Input) : Cluster(1545, type) {
     }
     AttributeUInt8* getAckedTransitions();
     AttributeUInt8* getAlarmValue();
@@ -2151,7 +2151,7 @@ public:
 
 class PiBinaryOutputRegCluster: public Cluster {
 public:
-    PiBinaryOutputRegCluster() : Cluster(1546) {
+    PiBinaryOutputRegCluster(ClusterType type = ClusterType::Input) : Cluster(1546, type) {
     }
     AttributeUInt32* getChangeOfStateCount();
     AttributeDateTime* getChangeOfStateTime();
@@ -2168,7 +2168,7 @@ public:
 
 class PiBinaryOutputExtCluster: public Cluster {
 public:
-    PiBinaryOutputExtCluster() : Cluster(1547) {
+    PiBinaryOutputExtCluster(ClusterType type = ClusterType::Input) : Cluster(1547, type) {
     }
     AttributeUInt8* getAckedTransitions();
     AttributeUInt16* getNotificationClass();
@@ -2180,7 +2180,7 @@ public:
 
 class PiBinaryValueRegCluster: public Cluster {
 public:
-    PiBinaryValueRegCluster() : Cluster(1548) {
+    PiBinaryValueRegCluster(ClusterType type = ClusterType::Input) : Cluster(1548, type) {
     }
     AttributeUInt32* getChangeOfStateCount();
     AttributeDateTime* getChangeOfStateTime();
@@ -2195,7 +2195,7 @@ public:
 
 class PiBinaryValueExtCluster: public Cluster {
 public:
-    PiBinaryValueExtCluster() : Cluster(1549) {
+    PiBinaryValueExtCluster(ClusterType type = ClusterType::Input) : Cluster(1549, type) {
     }
     AttributeUInt8* getAckedTransitions();
     AttributeUInt8* getAlarmValue();
@@ -2208,7 +2208,7 @@ public:
 
 class PiMultistateInputRegCluster: public Cluster {
 public:
-    PiMultistateInputRegCluster() : Cluster(1550) {
+    PiMultistateInputRegCluster(ClusterType type = ClusterType::Input) : Cluster(1550, type) {
     }
     AttributeString* getDeviceType();
     AttributeUInt32* getObjectId();
@@ -2219,7 +2219,7 @@ public:
 
 class PiMultistateInputExtCluster: public Cluster {
 public:
-    PiMultistateInputExtCluster() : Cluster(1551) {
+    PiMultistateInputExtCluster(ClusterType type = ClusterType::Input) : Cluster(1551, type) {
     }
     AttributeUInt8* getAckedTransitions();
     AttributeUInt16* getAlarmValue();
@@ -2233,7 +2233,7 @@ public:
 
 class PiMultistateOutputRegCluster: public Cluster {
 public:
-    PiMultistateOutputRegCluster() : Cluster(1552) {
+    PiMultistateOutputRegCluster(ClusterType type = ClusterType::Input) : Cluster(1552, type) {
     }
     AttributeString* getDeviceType();
     AttributeUInt8* getFeedBackValue();
@@ -2245,7 +2245,7 @@ public:
 
 class PiMultistateOutputExtCluster: public Cluster {
 public:
-    PiMultistateOutputExtCluster() : Cluster(1553) {
+    PiMultistateOutputExtCluster(ClusterType type = ClusterType::Input) : Cluster(1553, type) {
     }
     AttributeUInt8* getAckedTransitions();
     AttributeUInt16* getNotificationClass();
@@ -2257,7 +2257,7 @@ public:
 
 class PiMultistateValueRegCluster: public Cluster {
 public:
-    PiMultistateValueRegCluster() : Cluster(1554) {
+    PiMultistateValueRegCluster(ClusterType type = ClusterType::Input) : Cluster(1554, type) {
     }
     AttributeUInt32* getObjectId();
     AttributeString* getObjectName();
@@ -2267,7 +2267,7 @@ public:
 
 class PiMultistateValueExtCluster: public Cluster {
 public:
-    PiMultistateValueExtCluster() : Cluster(1555) {
+    PiMultistateValueExtCluster(ClusterType type = ClusterType::Input) : Cluster(1555, type) {
     }
     AttributeUInt8* getAckedTransitions();
     AttributeUInt16* getAlarmValue();
@@ -2281,7 +2281,7 @@ public:
 
 class Pi11073ProtocolTunnelCluster: public Cluster {
 public:
-    Pi11073ProtocolTunnelCluster() : Cluster(1556) {
+    Pi11073ProtocolTunnelCluster(ClusterType type = ClusterType::Input) : Cluster(1556, type) {
     }
     AttributeUInt64* getManagerTarget();
     AttributeUInt8* getManagerEndpoint();
@@ -2310,14 +2310,14 @@ public:
 
 class PiIso7818ProtocolTunnelCluster: public Cluster {
 public:
-    PiIso7818ProtocolTunnelCluster() : Cluster(1557) {
+    PiIso7818ProtocolTunnelCluster(ClusterType type = ClusterType::Input) : Cluster(1557, type) {
     }
     AttributeUInt8* getStatus();
 };
 
 class PiRetailTunnelCluster: public Cluster {
 public:
-    PiRetailTunnelCluster() : Cluster(1559) {
+    PiRetailTunnelCluster(ClusterType type = ClusterType::Input) : Cluster(1559, type) {
     }
     AttributeUInt16* getManufacturerCode();
     AttributeUInt16* getMsProfile();
@@ -2325,7 +2325,7 @@ public:
 
 class SeMeteringCluster: public Cluster {
 public:
-    SeMeteringCluster() : Cluster(1794) {
+    SeMeteringCluster(ClusterType type = ClusterType::Input) : Cluster(1794, type) {
     }
     AttributeUInt48* getCurrentSummDelivered();
     AttributeUInt48* getCurrentSummReceived();
@@ -2500,7 +2500,7 @@ public:
 
 class TelecommunicationsInformationCluster: public Cluster {
 public:
-    TelecommunicationsInformationCluster() : Cluster(2304) {
+    TelecommunicationsInformationCluster(ClusterType type = ClusterType::Input) : Cluster(2304, type) {
     }
     AttributeString* getNodeDescription();
     AttributeUInt8* getDeliveryEnable();
@@ -2512,7 +2512,7 @@ public:
 
 class TelecommunicationsVoiceOverZigbeeCluster: public Cluster {
 public:
-    TelecommunicationsVoiceOverZigbeeCluster() : Cluster(2308) {
+    TelecommunicationsVoiceOverZigbeeCluster(ClusterType type = ClusterType::Input) : Cluster(2308, type) {
     }
     AttributeUInt8* getCodecType();
     AttributeUInt8* getSamplingFrequency();
@@ -2529,7 +2529,7 @@ public:
 
 class TelecommunicationsChattingCluster: public Cluster {
 public:
-    TelecommunicationsChattingCluster() : Cluster(2309) {
+    TelecommunicationsChattingCluster(ClusterType type = ClusterType::Input) : Cluster(2309, type) {
     }
     AttributeUInt16* getUID();
     AttributeString* getNickname();
@@ -2540,7 +2540,7 @@ public:
 
 class HaApplianceIdentificationCluster: public Cluster {
 public:
-    HaApplianceIdentificationCluster() : Cluster(2816) {
+    HaApplianceIdentificationCluster(ClusterType type = ClusterType::Input) : Cluster(2816, type) {
     }
     AttributeUInt56* getBasicIdentification();
     AttributeString* getCompanyName();
@@ -2558,7 +2558,7 @@ public:
 
 class HaMeterIdentificationCluster: public Cluster {
 public:
-    HaMeterIdentificationCluster() : Cluster(2817) {
+    HaMeterIdentificationCluster(ClusterType type = ClusterType::Input) : Cluster(2817, type) {
     }
     AttributeString* getCompanyName();
     AttributeUInt16* getMeterTypeId();
@@ -2576,7 +2576,7 @@ public:
 
 class HaApplianceEventsAlertsCluster: public Cluster {
 public:
-    HaApplianceEventsAlertsCluster() : Cluster(2818) {
+    HaApplianceEventsAlertsCluster(ClusterType type = ClusterType::Input) : Cluster(2818, type) {
     }
 
     virtual Status getAlertsCommand() {
@@ -2588,7 +2588,7 @@ public:
 
 class HaApplianceStatisticsCluster: public Cluster {
 public:
-    HaApplianceStatisticsCluster() : Cluster(2819) {
+    HaApplianceStatisticsCluster(ClusterType type = ClusterType::Input) : Cluster(2819, type) {
     }
     AttributeUInt32* getLogMaxSize();
     AttributeUInt8* getLogQueueMaxSize();
@@ -2606,7 +2606,7 @@ public:
 
 class HaElectricalMeasurementCluster: public Cluster {
 public:
-    HaElectricalMeasurementCluster() : Cluster(2820) {
+    HaElectricalMeasurementCluster(ClusterType type = ClusterType::Input) : Cluster(2820, type) {
     }
     AttributeUInt32* getMeasurementType();
     AttributeInt16* getDcVoltage();
@@ -2751,7 +2751,7 @@ public:
 
 class HaDiagnosticCluster: public Cluster {
 public:
-    HaDiagnosticCluster() : Cluster(2821) {
+    HaDiagnosticCluster(ClusterType type = ClusterType::Input) : Cluster(2821, type) {
     }
     AttributeUInt16* getNumberOfResets();
     AttributeUInt16* getPersistentMemoryWrites();
@@ -2789,7 +2789,7 @@ public:
 
 class TouchlinkCluster: public Cluster {
 public:
-    TouchlinkCluster() : Cluster(4096) {
+    TouchlinkCluster(ClusterType type = ClusterType::Input) : Cluster(4096, type) {
     }
 
     class ScanRequestCommandResponse {
@@ -2866,14 +2866,14 @@ public:
 
 class WiserDeviceInfoCluster: public Cluster {
 public:
-    WiserDeviceInfoCluster() : Cluster(65027) {
+    WiserDeviceInfoCluster(ClusterType type = ClusterType::Input) : Cluster(65027, type) {
     }
     AttributeString* getDeviceInfo();
 };
 
 class ZosungIRTransmitCluster: public Cluster {
 public:
-    ZosungIRTransmitCluster() : Cluster(60672) {
+    ZosungIRTransmitCluster(ClusterType type = ClusterType::Input) : Cluster(60672, type) {
     }
 
     virtual Status zosungSendIRCode00Command(uint16_t seq, uint32_t length, uint32_t unk1, uint16_t unk2, uint8_t unk3, uint8_t cmd, uint16_t unk4) {
@@ -2905,6 +2905,6 @@ public:
 
 class ZosungIRControlCluster: public Cluster {
 public:
-    ZosungIRControlCluster() : Cluster(57348) {
+    ZosungIRControlCluster(ClusterType type = ClusterType::Input) : Cluster(57348, type) {
     }
 };

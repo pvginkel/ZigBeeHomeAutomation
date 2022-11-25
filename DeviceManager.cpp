@@ -64,8 +64,18 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 
 		Device* dev = getDeviceByEndpoint(frameData[3]);
 		if (dev) {
-			uint8_t numInClusters = dev->getInClusterCount();
-			uint8_t numOutClusters = dev->getOutClusterCount();
+			uint8_t numInClusters = 0;
+			uint8_t numOutClusters = 0;
+
+			for (int i = 0; i < dev->getClusterCount(); i++) {
+				if (dev->getClusterByIndex(i)->getType() == ClusterType::Input) {
+					numInClusters++;
+				}
+				else {
+					numOutClusters++;
+				}
+			}
+
 			Memory memory(_payload);
 			memory.writeUInt8(frameData[0]);
 			memory.writeUInt8((uint8_t)Status::Success);
@@ -77,13 +87,23 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 			memory.writeUInt16Le(dev->getDeviceId());
 			memory.writeUInt8(0x40);
 			memory.writeUInt8(numInClusters);
-			for (uint8_t i = 0; i < numInClusters; i++) {
-				memory.writeUInt16Le(dev->getInCluster(i)->getClusterId());
+
+			for (int i = 0; i < dev->getClusterCount(); i++) {
+				auto cluster = dev->getClusterByIndex(i);
+				if (cluster->getType() == ClusterType::Input) {
+					memory.writeUInt16Le(cluster->getClusterId());
+				}
 			}
+
 			memory.writeUInt8(numOutClusters);
-			for (uint8_t i = 0; i < numOutClusters; i++) {
-				memory.writeUInt16Le(dev->getOutCluster(i)->getClusterId());
+
+			for (int i = 0; i < dev->getClusterCount(); i++) {
+				auto cluster = dev->getClusterByIndex(i);
+				if (cluster->getType() == ClusterType::Output) {
+					memory.writeUInt16Le(cluster->getClusterId());
+				}
 			}
+
 			auto length = memory.getPosition();
 			memory.setPosition(lengthPosition);
 			memory.writeUInt8(length - 5);
@@ -322,7 +342,7 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 				_device.send(message);
 			}
 			if (request.frameControl().frameType() == FrameType::Cluster) {
-				auto cluster = device->getInClusterById(clusterId);
+				auto cluster = device->getClusterById(clusterId);
 				auto commandId = request.commandIdentifier();
 
 				DEBUG(F("Cluster "), clusterId, F(" specific command ID "), commandId);
@@ -366,8 +386,8 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 void DeviceManager::reportAttributes() {
 	for (auto devs = 0; devs < _deviceList.size(); devs++) {
 		auto dev = _deviceList.get(devs);
-		for (auto ics = 0; ics < dev->getInClusterCount(); ics++) {
-			auto ic = dev->getInCluster(ics);
+		for (auto ics = 0; ics < dev->getClusterCount(); ics++) {
+			auto ic = dev->getClusterByIndex(ics);
 			for (auto ats = 0; ats < ic->getAttributeCount(); ats++) {
 				auto at = ic->getAttributeByIndex(ats);
 				if (at->isUnreported()) {

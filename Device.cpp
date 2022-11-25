@@ -4,51 +4,22 @@ Device::Device(uint8_t endpointId, uint16_t deviceId)
 	: _endpointId(endpointId), _deviceId(deviceId) {
 }
 
-void Device::addInCluster(Cluster& cluster) {
-	_inClusters.add(&cluster);
+void Device::addCluster(Cluster& cluster) {
+	_clusters.add(&cluster);
 }
 
-void Device::addOutCluster(Cluster& cluster) {
-	_outClusters.add(&cluster);
+int Device::getClusterCount() {
+	return _clusters.size();
 }
 
-int Device::getInClusterCount() {
-	return _inClusters.size();
+Cluster* Device::getClusterByIndex(int index) {
+	return _clusters.get(index);
 }
 
-int Device::getOutClusterCount() {
-	return _outClusters.size();
-}
-
-Cluster* Device::getInCluster(int index) {
-	return _inClusters.get(index);
-}
-
-Cluster* Device::getOutCluster(int index) {
-	return _outClusters.get(index);
-}
-
-uint8_t Device::getEndpointId() {
-	return _endpointId;
-}
-
-uint16_t Device::getDeviceId() {
-	return _deviceId;
-}
-
-Cluster* Device::getInClusterById(uint16_t clusterId) {
-	for (uint8_t i = 0; i < _inClusters.size(); i++) {
-		if (_inClusters.get(i)->getClusterId() == clusterId) {
-			return _inClusters.get(i);
-		}
-	}
-	return nullptr;
-}
-
-Cluster* Device::getOutClusterById(uint16_t clusterId) {
-	for (uint8_t i = 0; i < _outClusters.size(); i++) {
-		if (_outClusters.get(i)->getClusterId() == clusterId) {
-			return _outClusters.get(i);
+Cluster* Device::getClusterById(uint16_t clusterId) {
+	for (uint8_t i = 0; i < _clusters.size(); i++) {
+		if (_clusters.get(i)->getClusterId() == clusterId) {
+			return _clusters.get(i);
 		}
 	}
 	return nullptr;
@@ -71,7 +42,7 @@ Status Device::processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRx
 Status Device::processGeneralReadAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {
 	DEBUG(F("Reading attributes from cluster "), message.getClusterId());
 
-	auto cluster = getInClusterById(message.getClusterId());
+	auto cluster = getClusterById(message.getClusterId());
 
 	Frame(
 		FrameControl(FrameType::Global, Direction::ToClient, true),
@@ -127,7 +98,7 @@ Status Device::processGeneralDiscoverAttributesCommand(Frame& frame, Memory& req
 	  ----------------------------
 	*/
 
-	auto cluster = getInClusterById(message.getClusterId());
+	auto cluster = getClusterById(message.getClusterId());
 
 	Frame(
 		FrameControl(FrameType::Global, Direction::ToClient, true),

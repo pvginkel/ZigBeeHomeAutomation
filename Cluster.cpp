@@ -1,16 +1,12 @@
 #include "ZigBee.h"
 
-Cluster::Cluster(uint16_t clusterId) : _clusterId(clusterId) {
+Cluster::Cluster(uint16_t clusterId, ClusterType type) : _clusterId(clusterId), _type(type) {
 }
 
 Cluster::~Cluster() {
 	while (_attributes.size() > 0) {
 		delete _attributes.shift();
 	}
-}
-
-uint16_t Cluster::getClusterId() {
-	return _clusterId;
 }
 
 Attribute* Cluster::getAttributeById(uint16_t attributeId) {

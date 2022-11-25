@@ -309,7 +309,7 @@ public class Generator
 
             // Constructor.
 
-            cwh.WriteLine($"{key.ToUpperFirst()}Cluster() : Cluster({cluster["ID"]}) {{");
+            cwh.WriteLine($"{key.ToUpperFirst()}Cluster(ClusterType type = ClusterType::Input) : Cluster({cluster["ID"]}, type) {{");
             cwh.WriteLine("}");
 
             // Attribute getters and setters.

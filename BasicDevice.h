@@ -6,8 +6,8 @@ class BasicDevice: public Device {
 
 public:
 	BasicDevice(uint8_t endpointId, uint16_t deviceId, PowerSource powerSource) : Device(endpointId, deviceId) {
-		addInCluster(_basicCluster);
-		addInCluster(_identifyCluster);
+		addCluster(_basicCluster);
+		addCluster(_identifyCluster);
 
 		_basicCluster.getZclVersion()->setValue(1);
 		_basicCluster.getPowerSource()->setValue((uint8_t)powerSource);
