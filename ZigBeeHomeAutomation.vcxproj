@@ -14,7 +14,7 @@
     <ProjectGuid>{C5F80730-F44F-4478-BDAE-6634EFC2CA88}</ProjectGuid>
     <RootNamespace>
     </RootNamespace>
-    <ProjectName>ZigbeeHomeAutomation</ProjectName>
+    <ProjectName>ZigBeeHomeAutomation</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -71,11 +71,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <ForcedIncludeFiles>$(ProjectDir)__vm\.ZigbeeHomeAutomation.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles>$(ProjectDir)__vm\.ZigBeeHomeAutomation.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <PreprocessorDefinitions>__AVR_atmega4809__;__MEGAAVR_ATmega4809__;__AVR_ATmega4809__;F_CPU=16000000L;ARDUINO=108010;ARDUINO_AVR_NANO_EVERY;ARDUINO_ARCH_MEGAAVR;AVR_NANO_4809_328MODE;MILLIS_USE_TIMERB3;NO_EXTERNAL_I2C_PULLUP;__cplusplus=201103L;_VMICRO_INTELLISENSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\ZigbeeHomeAutomation;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\variants\nona4809;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\cores\arduino;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\cores\arduino\api;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\cores\arduino\api\deprecated;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include-fixed;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include\avr;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\ZigBeeHomeAutomation;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\variants\nona4809;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\cores\arduino;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\cores\arduino\api;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\cores\arduino\api\deprecated;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include-fixed;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include\avr;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -88,8 +88,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\ZigbeeHomeAutomation;$(ProjectDir)..\libraries\Bounce2\src;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\libraries\SoftwareSerial\src;$(ProjectDir)..\libraries\LinkedList;$(ProjectDir)..\libraries\XBee-Arduino_library;$(ProjectDir)..\libraries\U8g2\src;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\libraries\SPI\src;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\libraries\Wire\src;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\variants\nona4809;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\cores\arduino;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\cores\arduino\api;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\cores\arduino\api\deprecated;$(ProjectDir)..\ZIGBEE~1;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include-fixed;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include\avr;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ForcedIncludeFiles>$(ProjectDir)__vm\.ZigbeeHomeAutomation.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\ZigBeeHomeAutomation;$(ProjectDir)..\libraries\Bounce2\src;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\libraries\SoftwareSerial\src;$(ProjectDir)..\libraries\LinkedList;$(ProjectDir)..\libraries\XBee-Arduino_library;$(ProjectDir)..\libraries\U8g2\src;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\libraries\SPI\src;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\libraries\Wire\src;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\variants\nona4809;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\cores\arduino;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\cores\arduino\api;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\hardware\megaavr\1.8.7\cores\arduino\api\deprecated;$(ProjectDir)..\ZigBee~1;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include-fixed;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include\avr;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\Users\Pieter\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ProjectDir)__vm\.ZigBeeHomeAutomation.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <PreprocessorDefinitions>__AVR_atmega4809__;__MEGAAVR_ATmega4809__;__AVR_ATmega4809__;_VMDEBUG=1;F_CPU=16000000L;ARDUINO=108010;ARDUINO_AVR_NANO_EVERY;ARDUINO_ARCH_MEGAAVR;AVR_NANO_4809_328MODE;MILLIS_USE_TIMERB3;NO_EXTERNAL_I2C_PULLUP;__cplusplus=201103L;_VMICRO_INTELLISENSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -103,7 +103,7 @@
     <ProjectCapability Include="VisualMicro" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ZigbeeHomeAutomation.ino" />
+    <None Include="ZigBeeHomeAutomation.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicDevice.h" />
@@ -126,7 +126,7 @@
     <ClInclude Include="DeviceManager.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="ZigBee.h" />
-    <ClInclude Include="__vm\.ZigbeeHomeAutomation.vsarduino.h" />
+    <ClInclude Include="__vm\.ZigBeeHomeAutomation.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
@@ -139,7 +139,7 @@
     <ClCompile Include="Device.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="ZigbeeHomeAutomation.rc" />
+    <ResourceCompile Include="ZigBeeHomeAutomation.rc" />
   </ItemGroup>
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>

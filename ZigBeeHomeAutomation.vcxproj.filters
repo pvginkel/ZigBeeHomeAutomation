@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ZigbeeHomeAutomation.ino" />
+    <None Include="ZigBeeHomeAutomation.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="XBeeConfig.h">
@@ -72,7 +72,7 @@
     <ClInclude Include="Display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="__vm\.ZigbeeHomeAutomation.vsarduino.h">
+    <ClInclude Include="__vm\.ZigBeeHomeAutomation.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StatusControl.h">
