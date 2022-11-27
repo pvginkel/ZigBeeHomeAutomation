@@ -7,11 +7,11 @@ const e = exposes.presets;
 const ea = exposes.access;
 
 const definition = {
-  zigbeeModel: ["Lamp"],
-  model: "Lamp",
+  zigbeeModel: ["The Big Clock"],
+  model: "The Big Clock",
   vendor: "Pieter",
-  description: "Dimmable lamp",
-  extend: extend.light_onoff_brightness(),
+  description: "The Big Clock",
+  extend: extend.switch(),
 };
 
 module.exports = definition;
