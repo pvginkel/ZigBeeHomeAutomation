@@ -36,9 +36,6 @@
     <ClInclude Include="StatusControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StatusCb.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Clusters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -107,10 +104,5 @@
     <ClCompile Include="Device.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="ZigBeeHomeAutomation.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

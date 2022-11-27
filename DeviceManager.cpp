@@ -59,6 +59,16 @@ Device* DeviceManager::getDeviceByEndpoint(uint8_t endpointId) {
 }
 
 void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clusterId, uint8_t* frameData, uint8_t frameDataLength) {
+#if LOG_DEBUG
+	DEBUG(F("ZDO:"));
+	DEBUG(F("  Dst64 "), String(dst64.getMsb(), HEX), F(" "), String(dst64.getLsb(), HEX));
+	DEBUG(F("  Dst16 "), dst16);
+	DEBUG(F("  ClusterId "), clusterId);
+	DEBUG(F("  FrameDataLength "), frameDataLength);
+#endif
+
+	DEBUG("a1 ", (uint16_t)ZdoCommand::SimpleDescriptorRequest);
+
 	if (clusterId == (uint16_t)ZdoCommand::SimpleDescriptorRequest) {
 		DEBUG(F("ZDO Simple Descriptor Request"));
 
@@ -242,7 +252,6 @@ void DeviceManager::atCommandCallback(AtCommandResponse& command) {
 }
 
 void DeviceManager::modemStatusCallback(ModemStatusResponse& status) {
-
 	switch (status.getStatus()) {
 		case HARDWARE_RESET:
 			DEBUG(F("Modem reset."));
@@ -285,6 +294,9 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 			frameDataLength);
 	}
 	else if (profileId == ZhaProfileId) {
+		auto frameBuffer = Memory(frameData, frameDataLength);
+		auto request = Frame::read(frameBuffer);
+
 		Device* device = getDeviceByEndpoint(dstEndpoint);
 		if (device) {
 			/* Frame layout
@@ -300,9 +312,6 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 		  | Reserverd | Disable Default Response | Direction | MFR specific | Frame Type |
 		  --------------------------------------------------------------------------------
 		*/
-			auto frameBuffer = Memory(frameData, frameDataLength);
-
-			auto request = Frame::read(frameBuffer);
 
 			if (request.frameControl().frameType() == FrameType::Global) {
 		        DEBUG(F("General command"));
@@ -378,7 +387,37 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 				);
 
 				_device.send(message);
-			}	
+			}
+		}
+		else {
+			Memory buffer(_payload);
+
+			Frame(
+				FrameControl(FrameType::Global, Direction::ToClient, true),
+				request.transactionSequenceNumber(),
+				(uint8_t)CommandIdentifier::DefaultResponse
+			).write(buffer);
+
+			DefaultResponseFrame(
+				request.commandIdentifier(),
+				Status::NotFound
+			).write(buffer);
+
+			ZBExplicitTxRequest message(
+				resp.getRemoteAddress64(),
+				resp.getRemoteAddress16(),
+				0, // broadcastRadius
+				0, // option
+				buffer.getData(),
+				buffer.getPosition(),
+				_device.getNextFrameId(),
+				dstEndpoint,
+				srcEndpoint,
+				clusterId,
+				profileId
+			);
+
+			_device.send(message);
 		}
 	}
 }
