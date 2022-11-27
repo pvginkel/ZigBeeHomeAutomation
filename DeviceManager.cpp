@@ -59,7 +59,7 @@ Device* DeviceManager::getDeviceByEndpoint(uint8_t endpointId) {
 }
 
 void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clusterId, uint8_t* frameData, uint8_t frameDataLength) {
-	if (clusterId == ZDO_SIMPLE_DESCRIPTOR_REQUEST) {
+	if (clusterId == (uint16_t)ZdoCommand::SimpleDescriptorRequest) {
 		DEBUG(F("ZDO Simple Descriptor Request"));
 
 		Device* dev = getDeviceByEndpoint(frameData[3]);
@@ -118,13 +118,13 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 				_device.getNextFrameId(),
 				0,
 				0,
-				ZDO_SIMPLE_DESCRIPTOR_RESPONSE,
+				(uint16_t)ZdoCommand::SimpleDescriptorResponse,
 				0
 			);
 			_device.send(message);
 		}
 	}
-	else if (clusterId == ZDO_ACTIVE_ENDPOINTS_REQUEST) {
+	else if (clusterId == (uint16_t)ZdoCommand::ActiveEndpointsRequest) {
 		DEBUG(F("ZDO Active Endpoints Request"));
 
 		Memory memory(_payload);
@@ -147,12 +147,12 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 			_device.getNextFrameId(),
 			0,
 			0,
-			ZDO_ACTIVE_ENDPOINTS_RESPONSE,
+			(uint16_t)ZdoCommand::ActiveEndpointsResponse,
 			0
 		);
 		_device.send(message);
 	}
-	else if (clusterId == ZDO_MATCH_DESCRIPTOR_REQUEST) {
+	else if (clusterId == (uint16_t)ZdoCommand::MatchDescriptorRequest) {
 		DEBUG(F("ZDO Match Descriptor Request"));
 
 		uint16_t profile_id = ((uint16_t)frameData[4] << 8) | frameData[3];
@@ -185,7 +185,7 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 			_device.getNextFrameId(),
 			0,
 			0,
-			ZDO_MATCH_DESCRIPTOR_RESPONSE,
+			(uint16_t)ZdoCommand::MatchDescriptorResponse,
 			0
 		);
 		_device.send(message);
@@ -284,7 +284,7 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 		processZDO(resp.getRemoteAddress64(), resp.getRemoteAddress16(), clusterId, frameData,
 			frameDataLength);
 	}
-	else if (profileId == ZHA_PROFILE_ID) {
+	else if (profileId == ZhaProfileId) {
 		Device* device = getDeviceByEndpoint(dstEndpoint);
 		if (device) {
 			/* Frame layout
@@ -415,7 +415,7 @@ void DeviceManager::reportAttributes() {
 						dev->getEndpointId(),
 						1, // destination endpoint
 						ic->getClusterId(),
-						ZHA_PROFILE_ID
+						ZhaProfileId
 					);
 					_device.send(message);
 
@@ -428,10 +428,6 @@ void DeviceManager::reportAttributes() {
 
 void DeviceManager::addDevice(Device& device) {
 	_deviceList.add(&device);
-}
-
-void DeviceManager::addStatusCb(StatusCb& statusCb) {
-	_statusCbs.add(&statusCb);
 }
 
 void DeviceManager::begin(Stream& stream) {
@@ -526,18 +522,6 @@ void DeviceManager::retrieveConfiguration() {
 	setStatus(F("Connecting..."));
 
 	setCommandBuilder(buildRetrieveConfigurationCommand);
-}
-
-void DeviceManager::setStatus(const String& status) {
-	for (int i = 0; i < _statusCbs.size(); i++) {
-		_statusCbs[i]->setStatus(status);
-	}
-}
-
-void DeviceManager::setConnected(ConnectionStatus connected) {
-	for (int i = 0; i < _statusCbs.size(); i++) {
-		_statusCbs[i]->setConnected(connected);
-	}
 }
 
 String DeviceManager::getAssociationIndicationDescription(uint8_t associationIndication) {

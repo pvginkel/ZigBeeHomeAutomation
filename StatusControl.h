@@ -1,6 +1,6 @@
 #pragma once
 
-class StatusControl : public StatusCb
+class StatusControl
 {
 	int _led = -1;
 	Bounce _bounce;
@@ -24,8 +24,7 @@ public:
 
 	void setLed(int pin);
 	void setBounce(Bounce bounce);
-	void setConnected(ConnectionStatus connected) override;
-	void setStatus(const String& status) override;
+	void setConnected(ConnectionStatus connected);
 	void reportRemaining(int remaining);
 	void update();
 

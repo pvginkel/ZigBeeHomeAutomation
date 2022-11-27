@@ -26,6 +26,8 @@ static void toggle(uintptr_t);
 static void updateButton();
 static void reset(uintptr_t);
 static void resetCountdown(int remaining, uintptr_t);
+static void onConnected(ConnectionStatus connectionStatus, uintptr_t);
+static void onStatus(const String& message, uintptr_t);
 
 class : public GenOnOffCluster {
 public:
@@ -83,8 +85,8 @@ void setup()
 
     xbeeSerial.begin(9600);
 
-    deviceManager.addStatusCb(display);
-    deviceManager.addStatusCb(status);
+    deviceManager.setConnectedCallback(onConnected);
+    deviceManager.setStatusCallback(onStatus);
 
     deviceManager.begin(xbeeSerial);
 
@@ -102,7 +104,7 @@ void toggle(uintptr_t) {
 }
 
 bool isOn() {
-    return onOffCluster.getOnOff();
+    return onOffCluster.getOnOff()->getValue();
 }
 
 void setLevel(int level) {
@@ -126,4 +128,13 @@ void resetCountdown(int remaining, uintptr_t) {
     else {
         display.setStatus(String());
     }
+}
+
+static void onConnected(ConnectionStatus connectionStatus, uintptr_t) {
+    display.setConnected(connectionStatus);
+    status.setConnected(connectionStatus);
+}
+
+static void onStatus(const String& message, uintptr_t) {
+    display.setStatus(message);
 }

@@ -48,7 +48,11 @@ public:
     }
 
     uint8_t getValue() { return _value; }
-    void setValue(uint8_t value) { _value = value; }
+
+    void setValue(uint8_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((uint32_t)_value);
@@ -67,7 +71,11 @@ public:
     }
 
     uint16_t getValue() { return _value; }
-    void setValue(uint16_t value) { _value = value; }
+
+    void setValue(uint16_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((uint32_t)_value);
@@ -86,7 +94,11 @@ public:
     }
 
     uint32_t getValue() { return _value; }
-    void setValue(uint32_t value) { _value = value; }
+
+    void setValue(uint32_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((uint32_t)_value);
@@ -105,7 +117,11 @@ public:
     }
 
     uint32_t getValue() { return _value; }
-    void setValue(uint32_t value) { _value = value; }
+
+    void setValue(uint32_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((uint32_t)_value);
@@ -124,7 +140,11 @@ public:
     }
 
     uint64_t getValue() { return _value; }
-    void setValue(uint64_t value) { _value = value; }
+
+    void setValue(uint64_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((uint32_t)_value);
@@ -143,7 +163,11 @@ public:
     }
 
     uint64_t getValue() { return _value; }
-    void setValue(uint64_t value) { _value = value; }
+
+    void setValue(uint64_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((uint32_t)_value);
@@ -162,7 +186,11 @@ public:
     }
 
     uint64_t getValue() { return _value; }
-    void setValue(uint64_t value) { _value = value; }
+
+    void setValue(uint64_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((uint32_t)_value);
@@ -181,7 +209,11 @@ public:
     }
 
     uint64_t getValue() { return _value; }
-    void setValue(uint64_t value) { _value = value; }
+
+    void setValue(uint64_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((uint32_t)_value);
@@ -200,7 +232,11 @@ public:
     }
 
     int8_t getValue() { return _value; }
-    void setValue(int8_t value) { _value = value; }
+
+    void setValue(int8_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((int32_t)_value);
@@ -219,7 +255,11 @@ public:
     }
 
     int16_t getValue() { return _value; }
-    void setValue(int16_t value) { _value = value; }
+
+    void setValue(int16_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((int32_t)_value);
@@ -238,7 +278,11 @@ public:
     }
 
     int32_t getValue() { return _value; }
-    void setValue(int32_t value) { _value = value; }
+
+    void setValue(int32_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((int32_t)_value);
@@ -257,7 +301,11 @@ public:
     }
 
     int32_t getValue() { return _value; }
-    void setValue(int32_t value) { _value = value; }
+
+    void setValue(int32_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((int32_t)_value);
@@ -276,7 +324,11 @@ public:
     }
 
     int64_t getValue() { return _value; }
-    void setValue(int64_t value) { _value = value; }
+
+    void setValue(int64_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((int32_t)_value);
@@ -295,7 +347,11 @@ public:
     }
 
     int64_t getValue() { return _value; }
-    void setValue(int64_t value) { _value = value; }
+
+    void setValue(int64_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((int32_t)_value);
@@ -314,7 +370,11 @@ public:
     }
 
     int64_t getValue() { return _value; }
-    void setValue(int64_t value) { _value = value; }
+
+    void setValue(int64_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((int32_t)_value);
@@ -333,7 +393,11 @@ public:
     }
 
     int64_t getValue() { return _value; }
-    void setValue(int64_t value) { _value = value; }
+
+    void setValue(int64_t value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String((int32_t)_value);
@@ -352,7 +416,11 @@ public:
     }
 
     float getValue() { return _value; }
-    void setValue(float value) { _value = value; }
+
+    void setValue(float value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String(_value);
@@ -371,7 +439,11 @@ public:
     }
 
     double getValue() { return _value; }
-    void setValue(double value) { _value = value; }
+
+    void setValue(double value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return String(_value);
@@ -390,7 +462,11 @@ public:
     }
 
     Buffer getValue() { return _value; }
-    void setValue(Buffer value) { _value = value; }
+
+    void setValue(Buffer value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return F("BUFFER");
@@ -414,7 +490,11 @@ public:
     }
 
     String getValue() { return _value; }
-    void setValue(String value) { _value = value; }
+
+    void setValue(String value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return _value;
@@ -438,7 +518,11 @@ public:
     }
 
     DateTime getValue() { return _value; }
-    void setValue(DateTime value) { _value = value; }
+
+    void setValue(DateTime value) {
+        _value = value;
+        markUnreported();
+    }
 
     String toString() override {
         return F("DATETIME");

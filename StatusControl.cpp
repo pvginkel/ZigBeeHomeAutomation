@@ -17,10 +17,6 @@ void StatusControl::setConnected(ConnectionStatus connected) {
 	}
 }
 
-void StatusControl::setStatus(const String&) {
-	// Ignore.
-}
-
 void StatusControl::reportRemaining(int remaining) {
 	if (_remainingReported != remaining) {
 		_remainingReported = remaining;
