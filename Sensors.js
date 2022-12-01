@@ -6,6 +6,24 @@ const extend = require("zigbee-herdsman-converters/lib/extend");
 const e = exposes.presets;
 const ea = exposes.access;
 
+const definition = {
+  zigbeeModel: ["Sensors"],
+  model: "Sensors",
+  vendor: "Pieter",
+  description: "Temperature, humidity and photoresistor sensors",
+  fromZigbee: [fz.temperature, fz.humidity, fz.illuminance],
+  toZigbee: [],
+  exposes: [
+    e.temperature(),
+    e.humidity(),
+    e.illuminance(),
+    e.illuminance_lux(),
+  ],
+};
+
+module.exports = definition;
+
+/*
 const fzLocal = {
   illuminance_33k: {
     cluster: "msIlluminanceMeasurement",
@@ -139,6 +157,7 @@ const definition = {
   ],
   configure: async (device, coordinatorEndpoint, logger) => {
     const endpoint2 = device.getEndpoint(2);
+    endpoint2.bind()
     await reporting.bind(endpoint2, coordinatorEndpoint, [
       "msIlluminanceMeasurement",
     ]);
@@ -146,3 +165,4 @@ const definition = {
 };
 
 module.exports = definition;
+*/
