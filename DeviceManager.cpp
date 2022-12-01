@@ -67,8 +67,6 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 	DEBUG(F("  FrameDataLength "), frameDataLength);
 #endif
 
-	DEBUG("a1 ", (uint16_t)ZdoCommand::SimpleDescriptorRequest);
-
 	if (clusterId == (uint16_t)ZdoCommand::SimpleDescriptorRequest) {
 		DEBUG(F("ZDO Simple Descriptor Request"));
 
