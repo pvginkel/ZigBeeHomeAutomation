@@ -5,6 +5,10 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZigBeeHomeAutomation", "ZigBeeHomeAutomation.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DHT_sensor_library-1.4.4", "..\libraries\DHT_sensor_library\DHT_sensor_library-1.4.4.vcxitems", "{F63058CF-9444-4893-9605-F252A3AA60C3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Adafruit_Unified_Sensor-1.1.6", "..\libraries\Adafruit_Unified_Sensor\Adafruit_Unified_Sensor-1.1.6.vcxitems", "{6DF05EE2-3BBF-4E2F-B6BD-631E825A3C00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -21,5 +25,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {90479F07-295B-49C4-9E4C-47E61D496E39}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\libraries\Adafruit_Unified_Sensor\Adafruit_Unified_Sensor-1.1.6.vcxitems*{6df05ee2-3bbf-4e2f-b6bd-631e825a3c00}*SharedItemsImports = 9
+		..\libraries\DHT_sensor_library\DHT_sensor_library-1.4.4.vcxitems*{f63058cf-9444-4893-9605-f252a3aa60c3}*SharedItemsImports = 9
 	EndGlobalSection
 EndGlobal
