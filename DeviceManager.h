@@ -31,6 +31,8 @@ class DeviceManager {
 	static constexpr int AT_COMMAND_RETRY_MS = 1000;
 	static constexpr int ASSOCIATION_INDICATION_REFRESH_MS = 1000;
 
+	static constexpr int REPORT_ATTRIBUTES_DELAY_MS = 1000;
+
 	static XBeeAddress64 BROADCAST_ADDR64;
 	static constexpr uint16_t BROADCAST_ADDR16 = 0;
 	static constexpr uint16_t ANNOUNCE_BROADCAST_ADDR16 = 0xfffc;
@@ -50,6 +52,8 @@ class DeviceManager {
 	time_t _lastSendMillis;
 	uint8_t _associationIndication;
 	time_t _associationIndicationMillis;
+
+	time_t _lastReportAttributes;
 
 	CallbackArgs<const String&> _setStatus;
 	CallbackArgs<ConnectionStatus> _setConnected;
