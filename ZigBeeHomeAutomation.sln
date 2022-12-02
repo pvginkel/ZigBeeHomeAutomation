@@ -28,6 +28,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\libraries\Adafruit_Unified_Sensor\Adafruit_Unified_Sensor-1.1.6.vcxitems*{6df05ee2-3bbf-4e2f-b6bd-631e825a3c00}*SharedItemsImports = 9
+		..\libraries\Adafruit_Unified_Sensor\Adafruit_Unified_Sensor-1.1.6.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\libraries\DHT_sensor_library\DHT_sensor_library-1.4.4.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
 		..\libraries\DHT_sensor_library\DHT_sensor_library-1.4.4.vcxitems*{f63058cf-9444-4893-9605-f252a3aa60c3}*SharedItemsImports = 9
 	EndGlobalSection
 EndGlobal

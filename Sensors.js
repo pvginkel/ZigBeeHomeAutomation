@@ -6,163 +6,68 @@ const extend = require("zigbee-herdsman-converters/lib/extend");
 const e = exposes.presets;
 const ea = exposes.access;
 
+const fzLocal = {
+  illuminance: {
+    cluster: 'msIlluminanceMeasurement',
+    type: ['attributeReport', 'readResponse'],
+    options: [
+      exposes.options.calibration('illuminance', 'percentual'),
+      exposes.options.calibration('illuminance_lux', 'percentual'),
+      exposes.options.calibration('illuminance_33k', 'percentual'),
+      exposes.options.calibration('illuminance_33k_lux', 'percentual'),
+      exposes.options.calibration('illuminance_60k', 'percentual'),
+      exposes.options.calibration('illuminance_60k_lux', 'percentual'),
+      exposes.options.calibration('illuminance_200k', 'percentual'),
+      exposes.options.calibration('illuminance_200k_lux', 'percentual'),
+    ],
+    convert: (model, msg, publish, options, meta) => {
+      const readValue = (attribute, name) => {
+        if (msg.data.hasOwnProperty(attribute)) {
+          const raw = msg.data[attribute];
+          const VIN = 5.0;
+          const R = 10000;
+          
+          // Conversion analog to voltage
+          const Vout = raw * (VIN / 1023);
+          // Conversion voltage to resistance
+          const RLDR = (R * (VIN - Vout)) / Vout;
+          // Conversion resitance to lumen
+          const phys = 500 / (RLDR / 1000);
+  
+          result[name] = RLDR | 0;
+          result[name + '_lux'] = phys | 0;
+        }
+      };
+
+      const result = {};
+      readValue('measuredValue', 'illuminance');
+      readValue(0x0201, 'illuminance_33k');
+      readValue(0x0202, 'illuminance_60k');
+      readValue(0x0203, 'illuminance_200k');
+      return result;
+    }
+  }
+};
+
 const definition = {
   zigbeeModel: ["Sensors"],
   model: "Sensors",
   vendor: "Pieter",
   description: "Temperature, humidity and photoresistor sensors",
-  fromZigbee: [fz.temperature, fz.humidity, fz.illuminance],
+  fromZigbee: [fz.temperature, fz.humidity, fzLocal.illuminance],
   toZigbee: [],
   exposes: [
     e.temperature(),
     e.humidity(),
     e.illuminance(),
     e.illuminance_lux(),
+    exposes.numeric('illuminance_33k', ea.STATE).withDescription('Raw measured illuminance for 33K Ω photoresistor'),
+    exposes.numeric('illuminance_33k_lux', ea.STATE).withUnit('lx').withDescription('Measured illuminance in lux for 33K Ω photoresistor'),
+    exposes.numeric('illuminance_60k', ea.STATE).withDescription('Raw measured illuminance for 60K Ω photoresistor'),
+    exposes.numeric('illuminance_60k_lux', ea.STATE).withUnit('lx').withDescription('Measured illuminance in lux for 60K Ω photoresistor'),
+    exposes.numeric('illuminance_200k', ea.STATE).withDescription('Raw measured illuminance for 200K Ω photoresistor'),
+    exposes.numeric('illuminance_200k_lux', ea.STATE).withUnit('lx').withDescription('Measured illuminance in lux for 200K Ω photoresistor'),
   ],
 };
 
 module.exports = definition;
-
-/*
-const fzLocal = {
-  illuminance_33k: {
-    cluster: "msIlluminanceMeasurement",
-    type: ["attributeReport", "readResponse"],
-    options: [
-      exposes.options.calibration("illuminance_33k", "percentual"),
-      exposes.options.calibration("illuminance_33k_lux", "percentual"),
-    ],
-    convert: (model, msg, publish, options, meta) => {
-      // DEPRECATED: only return lux here (change illuminance_lux -> illuminance)
-      const illuminance = msg.data["measuredValue"];
-      const illuminanceLux =
-        illuminance === 0 ? 0 : Math.pow(10, (illuminance - 1) / 10000);
-      return {
-        illuminance: calibrateAndPrecisionRoundOptions(
-          illuminance,
-          options,
-          "illuminance_33k"
-        ),
-        illuminance_lux: calibrateAndPrecisionRoundOptions(
-          illuminanceLux,
-          options,
-          "illuminance_33k_lux"
-        ),
-      };
-    },
-  },
-  illuminance_60k: {
-    cluster: "msIlluminanceMeasurement",
-    type: ["attributeReport", "readResponse"],
-    options: [
-      exposes.options.calibration("illuminance_60k", "percentual"),
-      exposes.options.calibration("illuminance_60k_lux", "percentual"),
-    ],
-    convert: (model, msg, publish, options, meta) => {
-      // DEPRECATED: only return lux here (change illuminance_lux -> illuminance)
-      const illuminance = msg.data["measuredValue"];
-      const illuminanceLux =
-        illuminance === 0 ? 0 : Math.pow(10, (illuminance - 1) / 10000);
-      return {
-        illuminance: calibrateAndPrecisionRoundOptions(
-          illuminance,
-          options,
-          "illuminance_60k"
-        ),
-        illuminance_lux: calibrateAndPrecisionRoundOptions(
-          illuminanceLux,
-          options,
-          "illuminance_60k_lux"
-        ),
-      };
-    },
-  },
-  illuminance_200k: {
-    cluster: "msIlluminanceMeasurement",
-    type: ["attributeReport", "readResponse"],
-    options: [
-      exposes.options.calibration("illuminance_200k", "percentual"),
-      exposes.options.calibration("illuminance_200k_lux", "percentual"),
-    ],
-    convert: (model, msg, publish, options, meta) => {
-      // DEPRECATED: only return lux here (change illuminance_lux -> illuminance)
-      const illuminance = msg.data["measuredValue"];
-      const illuminanceLux =
-        illuminance === 0 ? 0 : Math.pow(10, (illuminance - 1) / 10000);
-      return {
-        illuminance: calibrateAndPrecisionRoundOptions(
-          illuminance,
-          options,
-          "illuminance_200k"
-        ),
-        illuminance_lux: calibrateAndPrecisionRoundOptions(
-          illuminanceLux,
-          options,
-          "illuminance_200k_lux"
-        ),
-      };
-    },
-  },
-};
-
-const eLocal = {
-  illuminance_33k: () =>
-    new Numeric("illuminance_33k", access.STATE).withDescription(
-      "Raw measured illuminance of 33K photo resistor"
-    ),
-  illuminance_33k_lux: () =>
-    new Numeric("illuminance_33k_lux", access.STATE)
-      .withUnit("lx")
-      .withDescription("Measured illuminance in lux of 33K photo resistor"),
-  illuminance_60k: () =>
-    new Numeric("illuminance_60k", access.STATE).withDescription(
-      "Raw measured illuminance of 60K photo resistor"
-    ),
-  illuminance_60k_lux: () =>
-    new Numeric("illuminance_60k_lux", access.STATE)
-      .withUnit("lx")
-      .withDescription("Measured illuminance in lux of 60K photo resistor"),
-  illuminance_200k: () =>
-    new Numeric("illuminance_200k", access.STATE).withDescription(
-      "Raw measured illuminance of 200K photo resistor"
-    ),
-  illuminance_200k_lux: () =>
-    new Numeric("illuminance_200k_lux", access.STATE)
-      .withUnit("lx")
-      .withDescription("Measured illuminance in lux of 200K photo resistor"),
-};
-
-const definition = {
-  zigbeeModel: ["Sensors"],
-  model: "Sensors",
-  vendor: "Pieter",
-  description: "Temperature and humidity sensors",
-  fromZigbee: [
-    fz.temperature,
-    fz.humidity,
-    fzLocal.illuminance_33k,
-    fzLocal.illuminance_60k,
-    fzLocal.illuminance_200k,
-  ],
-  toZigbee: [],
-  exposes: [
-    e.temperature(),
-    e.humidity(),
-    eLocal.illuminance_33k(),
-    eLocal.illuminance_33k_lux(),
-    eLocal.illuminance_60k(),
-    eLocal.illuminance_60k_lux(),
-    eLocal.illuminance_200k(),
-    eLocal.illuminance_200k_lux(),
-  ],
-  configure: async (device, coordinatorEndpoint, logger) => {
-    const endpoint2 = device.getEndpoint(2);
-    endpoint2.bind()
-    await reporting.bind(endpoint2, coordinatorEndpoint, [
-      "msIlluminanceMeasurement",
-    ]);
-  },
-};
-
-module.exports = definition;
-*/
