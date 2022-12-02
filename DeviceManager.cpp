@@ -8,11 +8,22 @@ static AtCommandRequest buildRetrieveConfigurationCommand(int index);
 static AtCommandRequest buildReadDiagnosticsCommand(int index);
 static AtCommandRequest associationIndicationCommand();
 
-DeviceManager::DeviceManager() : _address(0), _shortAddress(0), _broadcastAddress(0) {
+XBeeAddress64 DeviceManager::BROADCAST_ADDR64;
+
+DeviceManager::DeviceManager() : _address(0), _shortAddress(0) {
 	//    onResponse(printResponseCb, (uintptr_t) (Print * ) & Serial);
-	_device.onZBExplicitRxResponse(explicitRxCallbackThunk, (uintptr_t)this);
-	_device.onModemStatusResponse(modemStatusCallbackThunk, (uintptr_t)this);
-	_device.onAtCommandResponse(atCommandCallbackThunk, (uintptr_t)this);
+	_device.onZBExplicitRxResponse(
+		[](ZBExplicitRxResponse& status, uintptr_t data) { ((DeviceManager*)data)->explicitRxCallback(status); },
+		(uintptr_t)this
+	);
+	_device.onModemStatusResponse(
+		[](ModemStatusResponse& status, uintptr_t data) { ((DeviceManager*)data)->modemStatusCallback(status); },
+		(uintptr_t)this
+	);
+	_device.onAtCommandResponse(
+		[](AtCommandResponse& command, uintptr_t data) { ((DeviceManager*)data)->atCommandCallback(command); },
+		(uintptr_t)this
+	);
 #if LOG_ERROR
 	_device.onPacketError(printErrorCb, (uintptr_t)(Print*)&Serial);
 #endif
@@ -34,8 +45,8 @@ void DeviceManager::sendAnnounce() {
 	memory.writeUInt8(capability);
 
 	ZBExplicitTxRequest announce(
-		_broadcastAddress,
-		0xFFFC,
+		BROADCAST_ADDR64,
+		ANNOUNCE_BROADCAST_ADDR16,
 		0,
 		0,
 		memory.getData(),
@@ -442,8 +453,8 @@ void DeviceManager::reportAttributes() {
 					at->write(buffer);
 
 					ZBExplicitTxRequest message(
-						_broadcastAddress,
-						_shortBroadcastAddress,
+						BROADCAST_ADDR64,
+						BROADCAST_ADDR16,
 						0, // broadcastRadius
 						0, // option
 						buffer.getData(),

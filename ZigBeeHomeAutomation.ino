@@ -33,35 +33,15 @@ BasicDevice sensorDevice(1, 1, PowerSource::DCSource);
 StatusControl status;
 DHT dht(IO_DHT, DHT22);
 time_t lastReport;
+Bounce dip1(IO_DIP_1, 50);
+Bounce dip2(IO_DIP_2, 50);
+Bounce dip3(IO_DIP_3, 50);
 
-static void updateButton();
-static void reset(uintptr_t);
-static void onConnected(ConnectionStatus connectionStatus, uintptr_t);
 static void reportSensors();
 
-class MyMsTemperatureMeasurementCluster : public MsTemperatureMeasurementCluster {
-public:
-	MyMsTemperatureMeasurementCluster() : MsTemperatureMeasurementCluster(ClusterType::Output) {
-	}
-};
-
-MyMsTemperatureMeasurementCluster temperatureMeasurementCluster;
-
-class MyMsRelativeHumidityCluster : public MsRelativeHumidityCluster {
-public:
-	MyMsRelativeHumidityCluster() : MsRelativeHumidityCluster(ClusterType::Output) {
-	}
-};
-
-MyMsRelativeHumidityCluster relativeHumidityCluster;
-
-class MyMsIlluminanceMeasurementCluster : public MsIlluminanceMeasurementCluster {
-public:
-	MyMsIlluminanceMeasurementCluster() : MsIlluminanceMeasurementCluster(ClusterType::Output) {
-	}
-};
-
-MyMsIlluminanceMeasurementCluster photoResistorCluster;
+MsTemperatureMeasurementCluster temperatureMeasurementCluster(ClusterType::Output);
+MsRelativeHumidityCluster relativeHumidityCluster(ClusterType::Output);
+MsIlluminanceMeasurementCluster photoResistorCluster(ClusterType::Output);
 
 AttributeUInt16* photoResistor33kMeasuredValue;
 AttributeUInt16* photoResistor60kMeasuredValue;
@@ -93,7 +73,7 @@ void setup() {
 
 	DEBUG(F("Serial ready"));
 
-	status.onReset(reset);
+	status.onReset([](uintptr_t) { deviceManager.performReset(); });
 	status.setBounce(Bounce(IO_PB, 50));
 	status.setLed(IO_STATUS_LED);
 
@@ -107,7 +87,9 @@ void setup() {
 
 	xbeeSerial.begin(9600);
 
-	deviceManager.setConnectedCallback(onConnected);
+	deviceManager.setConnectedCallback(
+		[](ConnectionStatus connectionStatus, uintptr_t) { status.setConnected(connectionStatus); }
+	);
 
 	deviceManager.begin(xbeeSerial);
 
@@ -121,12 +103,12 @@ void loop() {
 }
 
 static void reportSensors() {
-	bool dip1 = digitalRead(IO_DIP_1);
-	bool dip2 = digitalRead(IO_DIP_2);
-	bool dip3 = digitalRead(IO_DIP_3);
+	dip1.update();
+	dip2.update();
+	dip3.update();
 
 	// Verify that just one of the dip switches is in the on position.
-	if ((dip1 ? 1 : 0) + (dip2 ? 1 : 0) + (dip3 ? 1 : 0) != 1) {
+	if ((dip1.read() ? 1 : 0) + (dip2.read() ? 1 : 0) + (dip3.read() ? 1 : 0) != 1) {
 		// Reset last report so we report immediately when the DIP switches change.
 		lastReport = 0;
 		return;
@@ -145,6 +127,8 @@ static void reportSensors() {
 	float humidity = dht.readHumidity();
 	relativeHumidityCluster.getMeasuredValue()->setValue((uint16_t)(humidity * SCALE_TEMPERATURE));
 
+	DEBUG(F("Temperature "), temperature, F(", humidity "), humidity);
+
 	auto photoResistor33 = analogRead(IO_PHOTO_RESISTOR_33);
 	photoResistor33kMeasuredValue->setValue(photoResistor33);
 
@@ -155,16 +139,8 @@ static void reportSensors() {
 	photoResistor200kMeasuredValue->setValue(photoResistor200);
 
 	auto photoResistorReport =
-		dip1
+		dip1.read()
 		? photoResistor33
-		: (dip2 ? photoResistor60 : photoResistor200);
+		: (dip2.read() ? photoResistor60 : photoResistor200);
 	photoResistorCluster.getMeasuredValue()->setValue(photoResistorReport);
-}
-
-void reset(uintptr_t) {
-	deviceManager.performReset();
-}
-
-static void onConnected(ConnectionStatus connectionStatus, uintptr_t) {
-	status.setConnected(connectionStatus);
 }
