@@ -7,8 +7,6 @@ enum class ConnectionStatus {
 };
 
 class DeviceManager {
-	static constexpr uint16_t ZhaProfileId = 0x0104;
-
 	enum class ZdoCommand : uint16_t {
 		SimpleDescriptorRequest = 0x0004,
 		SimpleDescriptorResponse = 0x8004,
@@ -31,8 +29,6 @@ class DeviceManager {
 	static constexpr int AT_COMMAND_RETRY_MS = 1000;
 	static constexpr int ASSOCIATION_INDICATION_REFRESH_MS = 1000;
 
-	static constexpr int REPORT_ATTRIBUTES_DELAY_MS = 1000;
-
 	static XBeeAddress64 BROADCAST_ADDR64;
 	static constexpr uint16_t BROADCAST_ADDR16 = 0;
 	static constexpr uint16_t ANNOUNCE_BROADCAST_ADDR16 = 0xfffc;
@@ -53,12 +49,12 @@ class DeviceManager {
 	uint8_t _associationIndication;
 	time_t _associationIndicationMillis;
 
-	time_t _lastReportAttributes;
-
 	CallbackArgs<const String&> _setStatus;
 	CallbackArgs<ConnectionStatus> _setConnected;
 
 public:
+	static constexpr uint16_t ZHA_PROFILE_ID = 0x0104;
+
 	DeviceManager();
 	void begin(Stream& stream);
 	void performReset();

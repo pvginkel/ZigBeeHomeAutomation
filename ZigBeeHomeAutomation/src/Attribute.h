@@ -1,42 +1,40 @@
 #pragma once
 
 class Attribute {
-	DataType _dataType;
+    struct Reporting {
+        XBeeAddress64 destinationAddress;
+        uint16_t destinationShortAddress;
+        uint8_t destinationEndpoint;
+        uint16_t minimumInterval;
+        uint16_t maximumInterval;
+    };
+
+    DataType _dataType;
 	uint16_t _attributeId;
-    bool _unreported;
+    bool _dirty;
+    Reporting* _reporting;
 
 public:
 	Attribute(uint16_t attributeId, DataType dataType) :
-		_dataType(dataType), _attributeId(attributeId), _unreported(false) {
+		_dataType(dataType), _attributeId(attributeId), _dirty(false), _reporting(nullptr) {
 	}
 	Attribute(const Attribute&) = delete;
+	virtual ~Attribute();
 
-	virtual ~Attribute() = default;
-
-	uint16_t getAttributeId() {
-		return _attributeId;
-	}
-
-	bool isUnreported() {
-		return _unreported;
-	}
-	void markReported() {
-		_unreported = false;
-	}
-
-	DataType getDataType() {
-		return _dataType;
-	}
+	uint16_t getAttributeId() { return _attributeId; }
+	DataType getDataType() { return _dataType; }
 
 	virtual String toString() = 0;
-	virtual void writeValue(Memory& memory) = 0;
+
+    void configureReporting(const XBeeAddress64& destinationAddress, uint16_t destinationShortAddress, uint8_t destinationEndpoint, uint16_t minimumInterval, uint16_t maximumInterval, Memory& memory);
+    void report(XBee& device, uint8_t endpointId, uint16_t clusterId, Memory& buffer);
+    virtual void writeValue(Memory& memory) = 0;
 
 	Attribute& operator=(const Attribute&) = delete;
 
 protected:
-	void markUnreported() {
-		_unreported = true;
-	}
+	void markDirty() { _dirty = true; }
+    virtual void configureReportableChange(Memory& memory) = 0;
 };
 
 // GENERATION START
@@ -51,7 +49,7 @@ public:
 
     void setValue(uint8_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -60,6 +58,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeUInt8(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 1);
     }
 };
 
@@ -74,7 +78,7 @@ public:
 
     void setValue(uint16_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -83,6 +87,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeUInt16Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 2);
     }
 };
 
@@ -97,7 +107,7 @@ public:
 
     void setValue(uint32_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -106,6 +116,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeUInt24Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 3);
     }
 };
 
@@ -120,7 +136,7 @@ public:
 
     void setValue(uint32_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -129,6 +145,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeUInt32Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 4);
     }
 };
 
@@ -143,7 +165,7 @@ public:
 
     void setValue(uint64_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -152,6 +174,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeUInt40Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 5);
     }
 };
 
@@ -166,7 +194,7 @@ public:
 
     void setValue(uint64_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -175,6 +203,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeUInt48Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 6);
     }
 };
 
@@ -189,7 +223,7 @@ public:
 
     void setValue(uint64_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -198,6 +232,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeUInt56Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 7);
     }
 };
 
@@ -212,7 +252,7 @@ public:
 
     void setValue(uint64_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -221,6 +261,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeUInt64Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 8);
     }
 };
 
@@ -235,7 +281,7 @@ public:
 
     void setValue(int8_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -244,6 +290,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeInt8(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 1);
     }
 };
 
@@ -258,7 +310,7 @@ public:
 
     void setValue(int16_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -267,6 +319,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeInt16Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 2);
     }
 };
 
@@ -281,7 +339,7 @@ public:
 
     void setValue(int32_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -290,6 +348,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeInt24Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 3);
     }
 };
 
@@ -304,7 +368,7 @@ public:
 
     void setValue(int32_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -313,6 +377,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeInt32Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 4);
     }
 };
 
@@ -327,7 +397,7 @@ public:
 
     void setValue(int64_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -336,6 +406,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeInt40Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 5);
     }
 };
 
@@ -350,7 +426,7 @@ public:
 
     void setValue(int64_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -359,6 +435,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeInt48Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 6);
     }
 };
 
@@ -373,7 +455,7 @@ public:
 
     void setValue(int64_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -382,6 +464,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeInt56Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 7);
     }
 };
 
@@ -396,7 +484,7 @@ public:
 
     void setValue(int64_t value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -405,6 +493,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeInt64Le(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 8);
     }
 };
 
@@ -419,7 +513,7 @@ public:
 
     void setValue(float value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -428,6 +522,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeSingle(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 4);
     }
 };
 
@@ -442,7 +542,7 @@ public:
 
     void setValue(double value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -451,6 +551,12 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeDouble(_value);
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 8);
     }
 };
 
@@ -465,7 +571,7 @@ public:
 
     void setValue(Buffer value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -480,6 +586,14 @@ public:
             memory.writeOctstr(_value);
         }
     }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        // TODO: No proper support for String16/Octstr16 yet.
+        auto length = memory.readUInt8();
+        memory.setPosition(memory.getPosition() + length);
+    }
 };
 
 class AttributeString: public Attribute {
@@ -493,7 +607,7 @@ public:
 
     void setValue(String value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -508,6 +622,14 @@ public:
             memory.writeString(_value);
         }
     }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        // TODO: No proper support for String16/Octstr16 yet.
+        auto length = memory.readUInt8();
+        memory.setPosition(memory.getPosition() + length);
+    }
 };
 
 class AttributeDateTime: public Attribute {
@@ -521,7 +643,7 @@ public:
 
     void setValue(DateTime value) {
         _value = value;
-        markUnreported();
+        markDirty();
     }
 
     String toString() override {
@@ -533,6 +655,12 @@ public:
         memory.writeUInt32Le(_value.getDate());
         memory.writeUInt8((uint8_t)DataType::ToD);
         memory.writeUInt32Le(_value.getTime());
+    }
+
+protected:
+    void configureReportableChange(Memory& memory) override {
+        // TODO: Store reportable change value somewhere.
+        memory.setPosition(memory.getPosition() + 10);
     }
 };
 

@@ -33,9 +33,21 @@ Status Device::processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRx
 			return processGeneralReadAttributesCommand(frame, request, message, response);
 		case CommandIdentifier::DiscoverAttributes:
 			return processGeneralDiscoverAttributesCommand(frame, request, message, response);
+		case CommandIdentifier::ConfigureReporting:
+			return processGeneralConfigureReportingCommand(frame, request, message, response);
+		case CommandIdentifier::DefaultResponse:
+			auto x = DefaultResponseFrame::read(request);
+			DEBUG(F("Default response "), frame.transactionSequenceNumber(), ", ", x.getCommandId(), " ", (int)x.getStatus());
+			return Status::UnsupportedGeneralCommand;
 		default:
 			DEBUG(F("Received unimplemented command "), String((uint8_t)commandIdentifier, HEX));
 			return Status::UnsupportedGeneralCommand;
+	}
+}
+
+void Device::reportAttributes(XBee& device, Memory& buffer) {
+	for (auto i = 0; i < getClusterCount(); i++) {
+		getClusterByIndex(i)->reportAttributes(device, _endpointId, buffer);
 	}
 }
 
@@ -135,6 +147,94 @@ Status Device::processGeneralDiscoverAttributesCommand(Frame& frame, Memory& req
 	}
 
 	DEBUG(F("  Done"));
+
+	return Status::Success;
+}
+
+Status Device::processGeneralConfigureReportingCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {
+
+	/*
+	  Command
+	  --------------------------------------------------------------------------------------
+	  |  Bits: 24  |      Variable       |      Variable       | ... |      Variable       |
+	  |-------------------------------------------------------------------------------------
+	  | ZCL Header |  Attribute Record 1 |  Attribute Record 2 | ... |  Attribute Record n |
+	  --------------------------------------------------------------------------------------
+	  Attribute Record
+	  ----------------------------------------------------------------------------------------------------------------------------------------
+	  |  Bits: 8  |     16       |    0/8    |           0/16             |            0/16            |     0/Variable     |      0/16      |
+	  |---------------------------------------------------------------------------------------------------------------------------------------
+	  | Direction | Attribute ID | Data Type | Minimum Reporting Interval | Maximum Reporting Interval | Reeportable Change | Timeout Period |
+	  |---------------------------------------------------------------------------------------------------------------------------------------
+	  If Direction is 0x00: Uses fields Attribute Id, Data Type, Minimum Reporting Interval, Maximum Reporting Interval, Reportable Change
+							Doesn't use field Timeout Period
+	  If Direction is 0x01: Uses field Timeout Period
+							Doesn't use fields Data Type, Minimum Reporting Interval, Maximum Reporting Interval, Reportable Change
+	  For discrete (non-analog) data types, Reportable Change field is omitted.
+
+	  Response payload
+	  -----------------------------------------------------------------------------------
+	  |  Bits: 24  |         32         |         32         | ... |         32         |
+	  |----------------------------------------------------------------------------------
+	  | ZCL Header | Attribute Record 1 | Attribute Record 2 | ... | Attribute Record n |
+	  -----------------------------------------------------------------------------------
+	  Attribute Record
+	  --------------------------------------
+	  | Bits: 8 |     8     |      16      |
+	  --------------------------------------
+	  | Status  | Direction | Attribute ID |
+	  --------------------------------------
+	  TODO:
+	  If all attributes are configured for reporting successfully, just return a single record with status SUCCESS.
+	*/
+
+	DEBUG(F("Configure reporting for attribute"));
+
+	auto cluster = getClusterById(message.getClusterId());
+
+	Frame(
+		FrameControl(FrameType::Global, Direction::ToClient, true),
+		frame.transactionSequenceNumber(),
+		(uint8_t)CommandIdentifier::ConfigureReportingResponse
+	).write(response);
+
+	ConfigureReportingType type;
+	while (ConfigureReportingFrame::readNextElementType(request, type)) {
+		if (type == ConfigureReportingType::Receive) {
+			ERROR(F("NOT IMPLEMENTED"));
+			break;
+		}
+
+		if (type == ConfigureReportingType::Send) {
+			auto element = ConfigureReportingFrame::readSendElement(request);
+
+			auto attribute = cluster->getAttributeById(element.getAttributeId());
+
+			if (attribute) {
+				DEBUG(F("  Configuring reporting for attribute "), element.getAttributeId(), F(" data type "), String((int)element.getDataType(), HEX), F(" minimum interval "), element.getMinimumInterval(), F(" maximum interval "), element.getMaximumInterval());
+
+				if (element.getDataType() != attribute->getDataType()) {
+					ConfigureReportingResponseFrame::writeAttribute(response, Status::InvalidDataType, type, element.getAttributeId());
+				}
+				else {
+					attribute->configureReporting(
+						message.getRemoteAddress64(),
+						message.getRemoteAddress16(),
+						message.getSrcEndpoint(),
+						element.getMinimumInterval(),
+						element.getMaximumInterval(),
+						request
+					);
+					ConfigureReportingResponseFrame::writeAttribute(response, Status::Success, type, element.getAttributeId());
+				}
+			}
+			else {
+				DEBUG(F("  Unsupported attribute "), element.getAttributeId());
+
+				ConfigureReportingResponseFrame::writeAttribute(response, Status::UnsupportedAttribute, type, element.getAttributeId());
+			}
+		}
+	}
 
 	return Status::Success;
 }

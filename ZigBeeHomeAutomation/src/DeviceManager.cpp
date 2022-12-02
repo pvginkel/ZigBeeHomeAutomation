@@ -10,7 +10,9 @@ static AtCommandRequest associationIndicationCommand();
 
 XBeeAddress64 DeviceManager::BROADCAST_ADDR64;
 
-DeviceManager::DeviceManager() : _shortAddress(0), _associationIndication(0xff) {
+DeviceManager::DeviceManager() :
+	_shortAddress(0), _payload{}, _commandBuilder(nullptr), _commandBuilderOffset(0),
+	_state(State::Connected), _lastSendMillis(0), _associationIndication(0xff), _associationIndicationMillis(0) {
 	//    onResponse(printResponseCb, (uintptr_t) (Print * ) & Serial);
 	_device.onZBExplicitRxResponse(
 		[](ZBExplicitRxResponse& status, uintptr_t data) { ((DeviceManager*)data)->explicitRxCallback(status); },
@@ -302,7 +304,7 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 		processZDO(resp.getRemoteAddress64(), resp.getRemoteAddress16(), clusterId, frameData,
 			frameDataLength);
 	}
-	else if (profileId == ZhaProfileId) {
+	else if (profileId == ZHA_PROFILE_ID) {
 		auto frameBuffer = Memory(frameData, frameDataLength);
 		auto request = Frame::read(frameBuffer);
 
@@ -436,67 +438,10 @@ void DeviceManager::reportAttributes() {
 		return;
 	}
 
-	auto currentMillis = millis();
-	if (currentMillis - _lastReportAttributes < REPORT_ATTRIBUTES_DELAY_MS) {
-		return;
-	}
-
 	Memory buffer(_payload);
 
-	for (auto devs = 0; devs < _deviceList.size(); devs++) {
-		auto dev = _deviceList.get(devs);
-		for (auto ics = 0; ics < dev->getClusterCount(); ics++) {
-			auto ic = dev->getClusterByIndex(ics);
-
-			bool hadOne = false;
-
-			for (auto ats = 0; ats < ic->getAttributeCount(); ats++) {
-				auto at = ic->getAttributeByIndex(ats);
-				if (at->isUnreported()) {
-					DEBUG(F("Reporting attribute endpoint "), dev->getEndpointId(), F(" cluster "), ic->getClusterId(), F(" attribute "), at->getAttributeId(), F(" value "), at->toString());
-
-					if (!hadOne) {
-						hadOne = true;
-
-						buffer.setPosition(0);
-
-						Frame(
-							FrameControl(FrameType::Global, Direction::ToClient, true),
-							0,
-							(uint8_t)CommandIdentifier::ReportAttributes
-						).write(buffer);
-					}
-
-					ReportAttributesFrame::writeAttribute(buffer, at->getAttributeId(), at->getDataType());
-					at->writeValue(buffer);
-
-					at->markReported();
-				}
-			}
-
-			if (hadOne) {
-				DEBUG(F("  Sending attribute report"));
-
-				ZBExplicitTxRequest message(
-					BROADCAST_ADDR64,
-					BROADCAST_ADDR16,
-					0, // broadcastRadius
-					0, // option
-					buffer.getData(),
-					buffer.getPosition(),
-					_device.getNextFrameId(),
-					dev->getEndpointId(),
-					1, // destination endpoint
-					ic->getClusterId(),
-					ZhaProfileId
-				);
-				_device.send(message);
-
-				_lastReportAttributes = currentMillis;
-
-				return;
-			}
-		}
+	for (auto i = 0; i < _deviceList.size(); i++) {
+		_deviceList.get(i)->reportAttributes(_device, buffer);
 	}
 }
 

@@ -188,7 +188,7 @@ public class Generator
             cwh.WriteLine($"void setValue({type.TypeName} value) {{");
             cwh.Indent();
             cwh.WriteLine("_value = value;");
-            cwh.WriteLine("markUnreported();");
+            cwh.WriteLine("markDirty();");
             cwh.UnIndent();
             cwh.WriteLine("}");
             cwh.WriteLine();
@@ -259,6 +259,32 @@ public class Generator
             cwh.UnIndent();
             cwh.WriteLine("}");
 
+            cwh.WriteLine();
+            cwh.UnIndent();
+            cwh.WriteLine("protected:");
+            cwh.Indent();
+            cwh.WriteLine("void configureReportableChange(Memory& memory) override {");
+            cwh.Indent();
+            cwh.WriteLine("// TODO: Store reportable change value somewhere.");
+
+            switch (type.EndianMemoryMethodName)
+            {
+                case "DateTime":
+                    cwh.WriteLine("memory.setPosition(memory.getPosition() + 10);");
+                    break;
+                case "String":
+                case "Octstr":
+                    cwh.WriteLine("// TODO: No proper support for String16/Octstr16 yet.");
+                    cwh.WriteLine("auto length = memory.readUInt8();");
+                    cwh.WriteLine("memory.setPosition(memory.getPosition() + length);");
+                    break;
+                default:
+                    cwh.WriteLine($"memory.setPosition(memory.getPosition() + {type.Length});");
+                    break;
+            }
+
+            cwh.UnIndent();
+            cwh.WriteLine("}");
             cwh.UnIndent();
             cwh.WriteLine("};");
             cwh.WriteLine();

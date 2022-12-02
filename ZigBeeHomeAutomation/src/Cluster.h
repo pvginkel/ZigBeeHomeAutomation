@@ -32,5 +32,7 @@ public:
         response.writeUInt8((uint8_t)Status::UnsupportedAttribute);
     }
 
+    void reportAttributes(XBee& device, uint8_t endpointId, Memory& buffer);
+
     Cluster& operator=(const Cluster&) = delete;
 };
