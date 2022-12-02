@@ -22,7 +22,8 @@ public:
         return _clusterId;
     }
 
-	Attribute* getAttributeById(uint16_t attributeId);
+    void addAttribute(Attribute* attribute);
+    Attribute* getAttributeById(uint16_t attributeId);
     int getAttributeIndex(uint16_t attrId);
     Attribute* getAttributeByIndex(int index);
     int getAttributeCount() { return _attributes.size(); }
@@ -32,7 +33,4 @@ public:
     }
 
     Cluster& operator=(const Cluster&) = delete;
-
-protected:
-    void addAttribute(Attribute* attribute);
 };
