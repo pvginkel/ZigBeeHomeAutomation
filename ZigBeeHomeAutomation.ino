@@ -121,17 +121,19 @@ void loop() {
 }
 
 static void reportSensors() {
-	auto currentMillis = millis();
-	if (currentMillis - lastReport < REPORT_INTERVAL_MS) {
-		return;
-	}
-
 	bool dip1 = digitalRead(IO_DIP_1);
 	bool dip2 = digitalRead(IO_DIP_2);
 	bool dip3 = digitalRead(IO_DIP_3);
 
 	// Verify that just one of the dip switches is in the on position.
 	if ((dip1 ? 1 : 0) + (dip2 ? 1 : 0) + (dip3 ? 1 : 0) != 1) {
+		// Reset last report so we report immediately when the DIP switches change.
+		lastReport = 0;
+		return;
+	}
+
+	auto currentMillis = millis();
+	if (lastReport != 0 && currentMillis - lastReport < REPORT_INTERVAL_MS) {
 		return;
 	}
 
