@@ -46,4 +46,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Memory.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\StatusControl.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)README.md" />
+  </ItemGroup>
 </Project>
