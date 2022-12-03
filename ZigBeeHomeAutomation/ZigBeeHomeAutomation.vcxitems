@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{0afe8a92-dcc3-4a87-ad96-adcac3684697}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="$(MSBuildThisFileDirectory)library.properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- <ClInclude Include="$(MSBuildThisFileDirectory)ZigBeeHomeAutomation.h" /> -->
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Attribute.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\BasicDevice.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Buffer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Callback.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Cluster.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Clusters.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\DataType.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\DateTime.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Device.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\DeviceManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Esp8266.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\FrameParsing.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Memory.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\PowerSource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Status.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\StatusControl.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Support.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\ZigBee.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Buffer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Cluster.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Clusters.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Device.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\DeviceManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Memory.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\StatusControl.cpp" />
+  </ItemGroup>
+</Project>

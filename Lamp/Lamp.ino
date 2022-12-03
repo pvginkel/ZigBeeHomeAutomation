@@ -1,12 +1,19 @@
+#define DISPLAY 1
+
 #include <Bounce2.h>
 #include <SoftwareSerial.h>
 #include "ZigBee.h"
+
+#if DISPLAY
 #include "Display.h"
 
 U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0);
 
 #define SCREEN_HEIGHT 32
 #define SCREEN_WIDTH 128
+
+Display display;
+#endif
 
 #define IO_XBEE_RX 2
 #define IO_XBEE_TX 3
@@ -17,7 +24,6 @@ U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0);
 SoftwareSerial xbeeSerial(IO_XBEE_RX, IO_XBEE_TX);
 DeviceManager deviceManager;
 BasicDevice lightBulb(1, 1, PowerSource::DCSource);
-Display display;
 StatusControl status;
 
 static bool isOn();
@@ -26,6 +32,8 @@ static void toggle(uintptr_t);
 static void updateButton();
 static void reset(uintptr_t);
 static void resetCountdown(int remaining, uintptr_t);
+static void onConnected(ConnectionStatus connectionStatus, uintptr_t);
+static void onStatus(const String& message, uintptr_t);
 
 class : public GenOnOffCluster {
 public:
@@ -62,15 +70,17 @@ void setup()
     deviceManager.addDevice(lightBulb);
     lightBulb.addCluster(onOffCluster);
     lightBulb.addCluster(levelCtrlCluster);
-    lightBulb.getBasicCluster().getManufacturerName()->setValue(String(F("GE_Appliances")));
-    lightBulb.getBasicCluster().getModelId()->setValue(String(F("ZLL Light")));
+    lightBulb.getBasicCluster().getManufacturerName()->setValue(String(F("Pieter")));
+    lightBulb.getBasicCluster().getModelId()->setValue(String(F("Lamp")));
 
     while (!Serial);
 
     DEBUG(F("Serial ready"));
 
+#if DISPLAY
     u8g2.begin();
     display.begin(u8g2, SCREEN_WIDTH, SCREEN_HEIGHT);
+#endif
 
     status.onClick(toggle);
     status.onReset(reset);
@@ -83,8 +93,8 @@ void setup()
 
     xbeeSerial.begin(9600);
 
-    deviceManager.addStatusCb(display);
-    deviceManager.addStatusCb(status);
+    deviceManager.setConnectedCallback(onConnected);
+    deviceManager.setStatusCallback(onStatus);
 
     deviceManager.begin(xbeeSerial);
 
@@ -94,7 +104,9 @@ void setup()
 void loop() {
     status.update();
     deviceManager.update();
+#if DISPLAY
     display.update();
+#endif
 }
 
 void toggle(uintptr_t) {
@@ -102,14 +114,16 @@ void toggle(uintptr_t) {
 }
 
 bool isOn() {
-    return onOffCluster.getOnOff();
+    return onOffCluster.getOnOff()->getValue();
 }
 
 void setLevel(int level) {
     onOffCluster.getOnOff()->setValue(!!level);
     levelCtrlCluster.getCurrentLevel()->setValue(level);
     analogWrite(IO_LED, level);
+#if DISPLAY
     display.setBrightness(level);
+#endif
 }
 
 void reset(uintptr_t) {
@@ -117,6 +131,7 @@ void reset(uintptr_t) {
 }
 
 void resetCountdown(int remaining, uintptr_t) {
+#if DISPLAY
     if (remaining > 0) {
         display.setStatus(String(F("Resetting in ")) + remaining);
     }
@@ -126,4 +141,18 @@ void resetCountdown(int remaining, uintptr_t) {
     else {
         display.setStatus(String());
     }
+#endif
+}
+
+static void onConnected(ConnectionStatus connectionStatus, uintptr_t) {
+#if DISPLAY
+    display.setConnected(connectionStatus);
+#endif
+    status.setConnected(connectionStatus);
+}
+
+static void onStatus(const String& message, uintptr_t) {
+#if DISPLAY
+    display.setStatus(message);
+#endif
 }

@@ -13,7 +13,6 @@
 #include "Memory.h"
 #include "Attribute.h"
 #include "Cluster.h"
-#include "StatusCb.h"
 #include "FrameParsing.h"
 #include "Device.h"
 #include "DeviceManager.h"

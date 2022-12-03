@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.3.32929.385
+VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZigBeeHomeAutomation", "ZigBeeHomeAutomation.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lamp", "Lamp\Lamp.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZigBeeHomeAutomation", "ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems", "{0AFE8A92-DCC3-4A87-AD96-ADCAC3684697}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sensors", "Sensors\Sensors.vcxproj", "{C4401942-A693-4607-AD0E-7CDA97525E22}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Clock", "Clock\Clock.vcxproj", "{677EA60B-DCEB-4830-A89E-14803D1EFD9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,11 +21,25 @@ Global
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Debug|x86.Build.0 = Debug|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.ActiveCfg = Release|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.Build.0 = Release|Win32
+		{C4401942-A693-4607-AD0E-7CDA97525E22}.Debug|x86.ActiveCfg = Debug|Win32
+		{C4401942-A693-4607-AD0E-7CDA97525E22}.Debug|x86.Build.0 = Debug|Win32
+		{C4401942-A693-4607-AD0E-7CDA97525E22}.Release|x86.ActiveCfg = Release|Win32
+		{C4401942-A693-4607-AD0E-7CDA97525E22}.Release|x86.Build.0 = Release|Win32
+		{677EA60B-DCEB-4830-A89E-14803D1EFD9D}.Debug|x86.ActiveCfg = Debug|Win32
+		{677EA60B-DCEB-4830-A89E-14803D1EFD9D}.Debug|x86.Build.0 = Debug|Win32
+		{677EA60B-DCEB-4830-A89E-14803D1EFD9D}.Release|x86.ActiveCfg = Release|Win32
+		{677EA60B-DCEB-4830-A89E-14803D1EFD9D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {90479F07-295B-49C4-9E4C-47E61D496E39}
+		SolutionGuid = {54F7BF8A-707B-491B-81BF-BE5D83194544}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{0afe8a92-dcc3-4a87-ad96-adcac3684697}*SharedItemsImports = 9
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{677ea60b-dceb-4830-a89e-14803d1efd9d}*SharedItemsImports = 4
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{c4401942-a693-4607-ad0e-7cda97525e22}*SharedItemsImports = 4
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal

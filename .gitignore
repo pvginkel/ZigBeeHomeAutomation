@@ -1,5 +1,6 @@
-/.vs
-/__vm
+.vs
+__vm
 /Debug
 /Release
 *.user
+*.aps

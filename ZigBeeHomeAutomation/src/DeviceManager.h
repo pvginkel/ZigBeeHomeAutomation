@@ -1,18 +1,24 @@
 #pragma once
 
-#include "ZigBee.h"
-
-#define ZHA_PROFILE_ID 0x0104
-
-#define ZDO_SIMPLE_DESCRIPTOR_REQUEST             0x0004
-#define ZDO_SIMPLE_DESCRIPTOR_RESPONSE            0x8004
-#define ZDO_ACTIVE_ENDPOINTS_REQUEST              0x0005
-#define ZDO_ACTIVE_ENDPOINTS_RESPONSE             0x8005
-#define ZDO_MATCH_DESCRIPTOR_REQUEST              0x0006
-#define ZDO_MATCH_DESCRIPTOR_RESPONSE             0x8006
-#define ZDO_DEVICE_ANNOUNCE                       0x0013
+enum class ConnectionStatus {
+	NotConnected,
+	Connecting,
+	Connected
+};
 
 class DeviceManager {
+	static constexpr uint16_t ZhaProfileId = 0x0104;
+
+	enum class ZdoCommand : uint16_t {
+		SimpleDescriptorRequest = 0x0004,
+		SimpleDescriptorResponse = 0x8004,
+		ActiveEndpointsRequest = 0x0005,
+		ActiveEndpointsResponse = 0x8005,
+		MatchDescriptorRequest = 0x0006,
+		MatchDescriptorResponse = 0x8006,
+		DeviceAnnounce = 0x0013,
+	};
+
 	typedef AtCommandRequest(*command_builder_t)(int);
 
 	enum class State {
@@ -25,22 +31,15 @@ class DeviceManager {
 	static constexpr int AT_COMMAND_RETRY_MS = 1000;
 	static constexpr int ASSOCIATION_INDICATION_REFRESH_MS = 1000;
 
-	static void atCommandCallbackThunk(AtCommandResponse& command, uintptr_t data) {
-		((DeviceManager*)data)->atCommandCallback(command);
-	}
-	static void modemStatusCallbackThunk(ModemStatusResponse& status, uintptr_t data) {
-		((DeviceManager*)data)->modemStatusCallback(status);
-	}
-	static void explicitRxCallbackThunk(ZBExplicitRxResponse& status, uintptr_t data) {
-		((DeviceManager*)data)->explicitRxCallback(status);
-	}
+	static constexpr int REPORT_ATTRIBUTES_DELAY_MS = 1000;
+
+	static XBeeAddress64 BROADCAST_ADDR64;
+	static constexpr uint16_t BROADCAST_ADDR16 = 0;
+	static constexpr uint16_t ANNOUNCE_BROADCAST_ADDR16 = 0xfffc;
 
 	LinkedList<Device*> _deviceList;
 	XBeeAddress64 _address;
 	uint16_t _shortAddress;
-
-	XBeeAddress64 _broadcastAddress;
-	uint16_t _shortBroadcastAddress;
 
 	/* reusable data payload */
 	uint8_t _payload[MAX_FRAME_DATA_SIZE];
@@ -53,7 +52,11 @@ class DeviceManager {
 	time_t _lastSendMillis;
 	uint8_t _associationIndication;
 	time_t _associationIndicationMillis;
-	LinkedList<StatusCb*> _statusCbs;
+
+	time_t _lastReportAttributes;
+
+	CallbackArgs<const String&> _setStatus;
+	CallbackArgs<ConnectionStatus> _setConnected;
 
 public:
 	DeviceManager();
@@ -62,7 +65,13 @@ public:
 	void update();
 
 	void addDevice(Device& device);
-	void addStatusCb(StatusCb& statusCb);
+
+	void setStatusCallback(CallbackArgs<const String&>::Func func, uintptr_t data = 0) {
+		_setStatus.set(func, data);
+	}
+	void setConnectedCallback(CallbackArgs<ConnectionStatus>::Func func, uintptr_t data = 0) {
+		_setConnected.set(func, data);
+	}
 
 private:
 	void sendAnnounce();
@@ -81,8 +90,13 @@ private:
 	void sendCurrentCommand();
 	void retrieveAssociationIndication();	
 	void retrieveConfiguration();
-	void setStatus(const String& status);
-	void setConnected(ConnectionStatus connected);
+
+	void setStatus(const String& status) {
+		_setStatus.call(status);
+	}
+	void setConnected(ConnectionStatus connected) {
+		_setConnected.call(connected);
+	}
 
 	static String getAssociationIndicationDescription(uint8_t associationIndication);
 	static String getShortAssociationIndicationDescription(uint8_t associationIndication);

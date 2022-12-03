@@ -17,10 +17,6 @@ void StatusControl::setConnected(ConnectionStatus connected) {
 	}
 }
 
-void StatusControl::setStatus(const String&) {
-	// Ignore.
-}
-
 void StatusControl::reportRemaining(int remaining) {
 	if (_remainingReported != remaining) {
 		_remainingReported = remaining;
@@ -99,30 +95,21 @@ void StatusControl::update() {
 				digitalWrite(_led, !digitalRead(_led));
 			}
 		}
-		else {
-			switch (_connected) {
-			case ConnectionStatus::NotConnected:
-				digitalWrite(_led, LOW);
-				break;
+		else if (_connected == ConnectionStatus::Connecting) {
+			// Fade the led in and out while we're connecting.
 
-			case ConnectionStatus::Connecting:
-				// Fade the led in and out while we're connecting.
+			auto duration = currentMillis - _lastStatusChange;
+			auto progress = duration % _fadePeriod;
+			bool inverse = (duration / _fadePeriod) % 2 == 0;
+			auto level = progress * 255 / _fadePeriod;
 
-				auto duration = currentMillis - _lastStatusChange;
-				auto progress = duration % _fadePeriod;
-				bool inverse = (duration / _fadePeriod) % 2 == 0;
-				auto level = progress * 255 / _fadePeriod;
-
-				if (inverse) {
-					level = 255 - level;
-				}
-				analogWrite(_led, level);
-				break;
-
-			case ConnectionStatus::Connected:
-				digitalWrite(_led, HIGH);
-				break;
+			if (inverse) {
+				level = 255 - level;
 			}
+			analogWrite(_led, level);
+		}
+		else {
+			digitalWrite(_led, LOW);
 		}
 	}
 }

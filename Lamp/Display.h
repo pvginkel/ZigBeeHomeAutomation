@@ -1,10 +1,9 @@
 #pragma once
 
 #include <U8g2lib.h>
-#include "StatusCb.h"
+#include "ZigBee.h"
 
-class Display : public StatusCb
-{
+class Display {
 	U8G2* _screen{};
 	bool _dirty{};
 	ConnectionStatus _connected{};
@@ -23,7 +22,7 @@ public:
 
 	void update();
 
-	void setConnected(ConnectionStatus connected) override {
+	void setConnected(ConnectionStatus connected) {
 		_connected = connected;
 		_dirty = true;
 	}
@@ -33,7 +32,7 @@ public:
 		_dirty = true;
 	}
 
-	void setStatus(const String& status) override {
+	void setStatus(const String& status) {
 		_status = status;
 		_dirty = true;
 	}
