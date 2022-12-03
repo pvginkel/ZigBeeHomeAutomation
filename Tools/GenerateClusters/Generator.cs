@@ -184,7 +184,13 @@ public class Generator
             cwh.WriteLine();
 
             cwh.WriteLine($"{type.TypeName} getValue() {{ return _value; }}");
-            cwh.WriteLine($"void setValue({type.TypeName} value) {{ _value = value; }}");
+            cwh.WriteLine();
+            cwh.WriteLine($"void setValue({type.TypeName} value) {{");
+            cwh.Indent();
+            cwh.WriteLine("_value = value;");
+            cwh.WriteLine("markUnreported();");
+            cwh.UnIndent();
+            cwh.WriteLine("}");
             cwh.WriteLine();
 
             cwh.WriteLine("String toString() override {");
@@ -221,7 +227,7 @@ public class Generator
             cwh.WriteLine("}");
             cwh.WriteLine();
 
-            cwh.WriteLine("void write(Memory& memory) override {");
+            cwh.WriteLine("void writeValue(Memory& memory) override {");
             cwh.Indent();
 
             switch (type.EndianMemoryMethodName)
@@ -279,7 +285,7 @@ public class Generator
 
         cwh.WriteLine("#pragma once");
 
-        cw.WriteLine("#include \"ZigBee.h\"");
+        cw.WriteLine("#include \"ZigBeeHomeAutomation.h\"");
 
         foreach (var (key, _) in obj)
         {
@@ -543,7 +549,7 @@ public class Generator
 
     private void WriteFile(string fileName, string code, bool rewrite = false)
     {
-        string target = Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), "..", "..", "..", "..", "..", "..", fileName);
+        string target = Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), "..", "..", "..", "..", "..", "ZigBeeHomeAutomation", "src", fileName);
 
         if (rewrite)
         {

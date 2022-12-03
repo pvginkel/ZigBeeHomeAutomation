@@ -29,7 +29,7 @@ public:
 	}
 
 	virtual String toString() = 0;
-	virtual void write(Memory& memory) = 0;
+	virtual void writeValue(Memory& memory) = 0;
 
 	Attribute& operator=(const Attribute&) = delete;
 
@@ -58,7 +58,7 @@ public:
         return String((uint32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeUInt8(_value);
     }
 };
@@ -81,7 +81,7 @@ public:
         return String((uint32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeUInt16Le(_value);
     }
 };
@@ -104,7 +104,7 @@ public:
         return String((uint32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeUInt24Le(_value);
     }
 };
@@ -127,7 +127,7 @@ public:
         return String((uint32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeUInt32Le(_value);
     }
 };
@@ -150,7 +150,7 @@ public:
         return String((uint32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeUInt40Le(_value);
     }
 };
@@ -173,7 +173,7 @@ public:
         return String((uint32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeUInt48Le(_value);
     }
 };
@@ -196,7 +196,7 @@ public:
         return String((uint32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeUInt56Le(_value);
     }
 };
@@ -219,7 +219,7 @@ public:
         return String((uint32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeUInt64Le(_value);
     }
 };
@@ -242,7 +242,7 @@ public:
         return String((int32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeInt8(_value);
     }
 };
@@ -265,7 +265,7 @@ public:
         return String((int32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeInt16Le(_value);
     }
 };
@@ -288,7 +288,7 @@ public:
         return String((int32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeInt24Le(_value);
     }
 };
@@ -311,7 +311,7 @@ public:
         return String((int32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeInt32Le(_value);
     }
 };
@@ -334,7 +334,7 @@ public:
         return String((int32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeInt40Le(_value);
     }
 };
@@ -357,7 +357,7 @@ public:
         return String((int32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeInt48Le(_value);
     }
 };
@@ -380,7 +380,7 @@ public:
         return String((int32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeInt56Le(_value);
     }
 };
@@ -403,7 +403,7 @@ public:
         return String((int32_t)_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeInt64Le(_value);
     }
 };
@@ -426,7 +426,7 @@ public:
         return String(_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeSingle(_value);
     }
 };
@@ -449,7 +449,7 @@ public:
         return String(_value);
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeDouble(_value);
     }
 };
@@ -472,7 +472,7 @@ public:
         return F("BUFFER");
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         if (_value.length() > 254) {
             memory.writeOctstr16Le(_value);
         }
@@ -500,7 +500,7 @@ public:
         return _value;
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         if (_value.length() > 254) {
             memory.writeString16Le(_value);
         }
@@ -528,7 +528,7 @@ public:
         return F("DATETIME");
     }
 
-    void write(Memory& memory) override {
+    void writeValue(Memory& memory) override {
         memory.writeUInt8((uint8_t)DataType::Date);
         memory.writeUInt32Le(_value.getDate());
         memory.writeUInt8((uint8_t)DataType::ToD);

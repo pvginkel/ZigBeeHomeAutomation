@@ -1,4 +1,4 @@
-#include "ZigBee.h"
+#include "ZigBeeHomeAutomation.h"
 
 Cluster::Cluster(uint16_t clusterId, ClusterType type) : _clusterId(clusterId), _type(type) {
 }

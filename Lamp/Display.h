@@ -1,7 +1,7 @@
 #pragma once
 
 #include <U8g2lib.h>
-#include "ZigBee.h"
+#include <ZigBeeHomeAutomation.h>
 
 class Display {
 	U8G2* _screen{};

@@ -1,6 +1,6 @@
-/.vs
-/__vm
-/Debug
-/Release
+/*/Debug
+/*/Release
+.vs
+__vm
 *.user
 *.aps
