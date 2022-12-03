@@ -8,11 +8,22 @@ static AtCommandRequest buildRetrieveConfigurationCommand(int index);
 static AtCommandRequest buildReadDiagnosticsCommand(int index);
 static AtCommandRequest associationIndicationCommand();
 
-DeviceManager::DeviceManager() : _address(0), _shortAddress(0), _broadcastAddress(0) {
+XBeeAddress64 DeviceManager::BROADCAST_ADDR64;
+
+DeviceManager::DeviceManager() : _shortAddress(0), _associationIndication(0xff) {
 	//    onResponse(printResponseCb, (uintptr_t) (Print * ) & Serial);
-	_device.onZBExplicitRxResponse(explicitRxCallbackThunk, (uintptr_t)this);
-	_device.onModemStatusResponse(modemStatusCallbackThunk, (uintptr_t)this);
-	_device.onAtCommandResponse(atCommandCallbackThunk, (uintptr_t)this);
+	_device.onZBExplicitRxResponse(
+		[](ZBExplicitRxResponse& status, uintptr_t data) { ((DeviceManager*)data)->explicitRxCallback(status); },
+		(uintptr_t)this
+	);
+	_device.onModemStatusResponse(
+		[](ModemStatusResponse& status, uintptr_t data) { ((DeviceManager*)data)->modemStatusCallback(status); },
+		(uintptr_t)this
+	);
+	_device.onAtCommandResponse(
+		[](AtCommandResponse& command, uintptr_t data) { ((DeviceManager*)data)->atCommandCallback(command); },
+		(uintptr_t)this
+	);
 #if LOG_ERROR
 	_device.onPacketError(printErrorCb, (uintptr_t)(Print*)&Serial);
 #endif
@@ -34,8 +45,8 @@ void DeviceManager::sendAnnounce() {
 	memory.writeUInt8(capability);
 
 	ZBExplicitTxRequest announce(
-		_broadcastAddress,
-		0xFFFC,
+		BROADCAST_ADDR64,
+		ANNOUNCE_BROADCAST_ADDR16,
 		0,
 		0,
 		memory.getData(),
@@ -66,8 +77,6 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 	DEBUG(F("  ClusterId "), clusterId);
 	DEBUG(F("  FrameDataLength "), frameDataLength);
 #endif
-
-	DEBUG("a1 ", (uint16_t)ZdoCommand::SimpleDescriptorRequest);
 
 	if (clusterId == (uint16_t)ZdoCommand::SimpleDescriptorRequest) {
 		DEBUG(F("ZDO Simple Descriptor Request"));
@@ -423,43 +432,69 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 }
 
 void DeviceManager::reportAttributes() {
+	if (_associationIndication != 0) {
+		return;
+	}
+
+	auto currentMillis = millis();
+	if (currentMillis - _lastReportAttributes < REPORT_ATTRIBUTES_DELAY_MS) {
+		return;
+	}
+
+	Memory buffer(_payload);
+
 	for (auto devs = 0; devs < _deviceList.size(); devs++) {
 		auto dev = _deviceList.get(devs);
 		for (auto ics = 0; ics < dev->getClusterCount(); ics++) {
 			auto ic = dev->getClusterByIndex(ics);
+
+			bool hadOne = false;
+
 			for (auto ats = 0; ats < ic->getAttributeCount(); ats++) {
 				auto at = ic->getAttributeByIndex(ats);
 				if (at->isUnreported()) {
 					DEBUG(F("Reporting attribute endpoint "), dev->getEndpointId(), F(" cluster "), ic->getClusterId(), F(" attribute "), at->getAttributeId(), F(" value "), at->toString());
 
-					Memory buffer(_payload);
+					if (!hadOne) {
+						hadOne = true;
 
-					Frame(
-						FrameControl(FrameType::Global, Direction::ToClient, true),
-						0,
-						(uint8_t)CommandIdentifier::ReportAttributes
-					).write(buffer);
+						buffer.setPosition(0);
+
+						Frame(
+							FrameControl(FrameType::Global, Direction::ToClient, true),
+							0,
+							(uint8_t)CommandIdentifier::ReportAttributes
+						).write(buffer);
+					}
 
 					ReportAttributesFrame::writeAttribute(buffer, at->getAttributeId(), at->getDataType());
 					at->write(buffer);
 
-					ZBExplicitTxRequest message(
-						_broadcastAddress,
-						_shortBroadcastAddress,
-						0, // broadcastRadius
-						0, // option
-						buffer.getData(),
-						buffer.getPosition(),
-						_device.getNextFrameId(),
-						dev->getEndpointId(),
-						1, // destination endpoint
-						ic->getClusterId(),
-						ZhaProfileId
-					);
-					_device.send(message);
-
 					at->markReported();
 				}
+			}
+
+			if (hadOne) {
+				DEBUG(F("  Sending attribute report"));
+
+				ZBExplicitTxRequest message(
+					BROADCAST_ADDR64,
+					BROADCAST_ADDR16,
+					0, // broadcastRadius
+					0, // option
+					buffer.getData(),
+					buffer.getPosition(),
+					_device.getNextFrameId(),
+					dev->getEndpointId(),
+					1, // destination endpoint
+					ic->getClusterId(),
+					ZhaProfileId
+				);
+				_device.send(message);
+
+				_lastReportAttributes = currentMillis;
+
+				return;
 			}
 		}
 	}

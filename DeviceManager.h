@@ -31,22 +31,15 @@ class DeviceManager {
 	static constexpr int AT_COMMAND_RETRY_MS = 1000;
 	static constexpr int ASSOCIATION_INDICATION_REFRESH_MS = 1000;
 
-	static void atCommandCallbackThunk(AtCommandResponse& command, uintptr_t data) {
-		((DeviceManager*)data)->atCommandCallback(command);
-	}
-	static void modemStatusCallbackThunk(ModemStatusResponse& status, uintptr_t data) {
-		((DeviceManager*)data)->modemStatusCallback(status);
-	}
-	static void explicitRxCallbackThunk(ZBExplicitRxResponse& status, uintptr_t data) {
-		((DeviceManager*)data)->explicitRxCallback(status);
-	}
+	static constexpr int REPORT_ATTRIBUTES_DELAY_MS = 1000;
+
+	static XBeeAddress64 BROADCAST_ADDR64;
+	static constexpr uint16_t BROADCAST_ADDR16 = 0;
+	static constexpr uint16_t ANNOUNCE_BROADCAST_ADDR16 = 0xfffc;
 
 	LinkedList<Device*> _deviceList;
 	XBeeAddress64 _address;
 	uint16_t _shortAddress;
-
-	XBeeAddress64 _broadcastAddress;
-	uint16_t _shortBroadcastAddress;
 
 	/* reusable data payload */
 	uint8_t _payload[MAX_FRAME_DATA_SIZE];
@@ -59,6 +52,8 @@ class DeviceManager {
 	time_t _lastSendMillis;
 	uint8_t _associationIndication;
 	time_t _associationIndicationMillis;
+
+	time_t _lastReportAttributes;
 
 	CallbackArgs<const String&> _setStatus;
 	CallbackArgs<ConnectionStatus> _setConnected;

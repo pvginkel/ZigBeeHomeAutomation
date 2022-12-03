@@ -8,10 +8,10 @@ class Device {
 public:
     Device(uint8_t endpointId, uint16_t deviceId);
 
-    uint8_t Device::getEndpointId() {
+    uint8_t getEndpointId() {
         return _endpointId;
     }
-    uint16_t Device::getDeviceId() {
+    uint16_t getDeviceId() {
         return _deviceId;
     }
 
