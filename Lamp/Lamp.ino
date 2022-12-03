@@ -1,8 +1,7 @@
 #define DISPLAY 1
 
-#include <Bounce2.h>
 #include <SoftwareSerial.h>
-#include "ZigBee.h"
+#include <ZigBeeHomeAutomation.h>
 
 #if DISPLAY
 #include "Display.h"

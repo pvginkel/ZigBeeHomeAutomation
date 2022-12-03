@@ -1,5 +1,5 @@
 #include <SoftwareSerial.h>
-#include "ZigBee.h"
+#include <ZigBeeHomeAutomation.h>
 
 #define IO_XBEE_RX 2
 #define IO_XBEE_TX 3

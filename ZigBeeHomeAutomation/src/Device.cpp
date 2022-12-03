@@ -1,4 +1,4 @@
-#include "ZigBee.h"
+#include "ZigBeeHomeAutomation.h"
 
 Device::Device(uint8_t endpointId, uint16_t deviceId)
 	: _endpointId(endpointId), _deviceId(deviceId) {

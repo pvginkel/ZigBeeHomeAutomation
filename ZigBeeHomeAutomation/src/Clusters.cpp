@@ -1,4 +1,4 @@
-#include "ZigBee.h"
+#include "ZigBeeHomeAutomation.h"
 
 AttributeUInt8* GenBasicCluster::getZclVersion() {
     auto result = (AttributeUInt8*)getAttributeById(0);

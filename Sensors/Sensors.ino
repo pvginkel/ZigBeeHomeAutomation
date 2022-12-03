@@ -1,8 +1,7 @@
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
-#include <Bounce2.h>
 #include <SoftwareSerial.h>
-#include "ZigBee.h"
+#include <ZigBeeHomeAutomation.h>
 
 #define IO_XBEE_RX 2
 #define IO_XBEE_TX 3

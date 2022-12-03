@@ -65,7 +65,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Support.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\ZigBee.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\ZigBeeHomeAutomation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,5 @@
 #include <Printers.h>
-#include "ZigBee.h"
+#include "ZigBeeHomeAutomation.h"
 
 #define IS_COMMAND(c, n) ((c).getCommand()[0] == (n)[0] && (c).getCommand()[1] == (n)[1])
 

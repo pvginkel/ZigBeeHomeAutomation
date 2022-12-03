@@ -35,7 +35,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Status.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\StatusControl.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Support.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\ZigBee.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\ZigBeeHomeAutomation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Buffer.cpp" />
