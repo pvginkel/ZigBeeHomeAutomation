@@ -468,7 +468,7 @@ void DeviceManager::reportAttributes() {
 					}
 
 					ReportAttributesFrame::writeAttribute(buffer, at->getAttributeId(), at->getDataType());
-					at->write(buffer);
+					at->writeValue(buffer);
 
 					at->markReported();
 				}

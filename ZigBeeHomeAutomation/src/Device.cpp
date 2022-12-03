@@ -61,7 +61,7 @@ Status Device::processGeneralReadAttributesCommand(Frame& frame, Memory& request
 
 			ReadAttributesResponseFrame::writeAttribute(response, attributeId, Status::Success, attribute->getDataType());
 
-			attribute->write(response);
+			attribute->writeValue(response);
 		}
 		else {
 			DEBUG(F("  Attribute "), attributeId, F(" unsupported"));
