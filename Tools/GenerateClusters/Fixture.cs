@@ -1,9 +1,14 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using NUnit.Framework;
 
-namespace GenerateClusters.Test;
+namespace GenerateClusters;
 
 [TestFixture]
-public class TestFixture
+public class Fixture
 {
     [Test]
     public void GenerateClusters()
