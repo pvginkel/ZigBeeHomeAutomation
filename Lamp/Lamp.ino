@@ -72,6 +72,7 @@ void setup()
     lightBulb.getBasicCluster().getManufacturerName()->setValue(String(F("Pieter")));
     lightBulb.getBasicCluster().getModelId()->setValue(String(F("Lamp")));
 
+    Serial.begin(115200);
     while (!Serial);
 
     DEBUG(F("Serial ready"));

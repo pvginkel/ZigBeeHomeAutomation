@@ -68,6 +68,7 @@ void setup() {
 	photoResistor200kMeasuredValue = new AttributeUInt16(0x0203, DataType::UInt16);
 	photoResistorCluster.addAttribute(photoResistor200kMeasuredValue);
 
+	Serial.begin(115200);
 	while (!Serial);
 
 	DEBUG(F("Serial ready"));
