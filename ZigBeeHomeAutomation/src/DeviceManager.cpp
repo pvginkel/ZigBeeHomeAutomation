@@ -12,7 +12,8 @@ XBeeAddress64 DeviceManager::BROADCAST_ADDR64;
 
 DeviceManager::DeviceManager() :
 	_shortAddress(0), _payload{}, _commandBuilder(nullptr), _commandBuilderOffset(0),
-	_state(State::Connected), _lastSendMillis(0), _associationIndication(0xff), _associationIndicationMillis(0) {
+	_state(State::Connected), _lastSendMillis(0), _associationIndication(0xff), _associationIndicationMillis(0),
+	_pendingDefaultResponseAttribute(nullptr), _pendingDefaultResponseExpiration(0) {
 	//    onResponse(printResponseCb, (uintptr_t) (Print * ) & Serial);
 	_device.onZBExplicitRxResponse(
 		[](ZBExplicitRxResponse& status, uintptr_t data) { ((DeviceManager*)data)->explicitRxCallback(status); },
@@ -329,6 +330,29 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 
 				Memory buffer(_payload);
 
+				if (request.commandIdentifier() == (int)CommandIdentifier::DefaultResponse) {
+					bool handled = false;
+
+					if (_pendingDefaultResponseAttribute) {
+						auto defaultResponseFrame = DefaultResponseFrame::read(frameBuffer);
+
+						if (_pendingDefaultResponseAttribute->processDefaultResponse(
+							request.transactionSequenceNumber(),
+							defaultResponseFrame.getCommandId(),
+							defaultResponseFrame.getStatus()
+						)) {
+							_pendingDefaultResponseAttribute = nullptr;
+							handled = true;
+						}
+					}
+
+					if (!handled) {
+						WARN(F("Received a default response without a recipient"));
+					}
+
+					return;
+				}
+
 				auto status = device->processGeneralCommand(request, frameBuffer, resp, buffer);
 				if (status != Status::Success) {
 					buffer.setPosition(0);
@@ -433,16 +457,21 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 	}
 }
 
-void DeviceManager::reportAttributes() {
+Attribute* DeviceManager::reportAttribute() {
 	if (_associationIndication != 0) {
-		return;
+		return nullptr;
 	}
 
 	Memory buffer(_payload);
 
 	for (auto i = 0; i < _deviceList.size(); i++) {
-		_deviceList.get(i)->reportAttributes(_device, buffer);
+		auto attribute = _deviceList.get(i)->reportAttribute(_device, buffer);
+		if (attribute) {
+			return attribute;
+		}
 	}
+
+	return nullptr;
 }
 
 void DeviceManager::addDevice(Device& device) {
@@ -471,7 +500,25 @@ void DeviceManager::setCommandBuilder(command_builder_t commandBuilder) {
 void DeviceManager::update() {
 	_device.loop();
 
-	reportAttributes();
+	auto currentMillis = millis();
+	if (_pendingDefaultResponseAttribute) {
+		if (currentMillis < _pendingDefaultResponseExpiration) {
+			Memory buffer(_payload);
+			_pendingDefaultResponseAttribute->resendReport(_device, buffer);
+		}
+		else {
+			DEBUG(F("Clearing pending default response attribute"));
+
+			_pendingDefaultResponseAttribute = nullptr;
+			_pendingDefaultResponseExpiration = 0;
+		}
+	}
+	else {
+		_pendingDefaultResponseAttribute = reportAttribute();
+		if (_pendingDefaultResponseAttribute) {
+			_pendingDefaultResponseExpiration = currentMillis + WAIT_FOR_DEFAULT_RESPONSE_TIMEOUT_MS;
+		}
+	}
 
 	esp8266_yield();
 

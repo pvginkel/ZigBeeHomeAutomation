@@ -21,7 +21,7 @@ public:
     Cluster *getClusterByIndex(int index);
 
     Status processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
-    void reportAttributes(XBee& device, Memory& buffer);
+    Attribute* reportAttribute(XBee& device, Memory& buffer);
 
 private:
     Status processGeneralReadAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);

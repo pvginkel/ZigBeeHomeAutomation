@@ -28,6 +28,7 @@ class DeviceManager {
 
 	static constexpr int AT_COMMAND_RETRY_MS = 1000;
 	static constexpr int ASSOCIATION_INDICATION_REFRESH_MS = 1000;
+	static constexpr time_t WAIT_FOR_DEFAULT_RESPONSE_TIMEOUT_MS = 120000ul; // 2 minutes
 
 	static XBeeAddress64 BROADCAST_ADDR64;
 	static constexpr uint16_t BROADCAST_ADDR16 = 0;
@@ -48,6 +49,9 @@ class DeviceManager {
 	time_t _lastSendMillis;
 	uint8_t _associationIndication;
 	time_t _associationIndicationMillis;
+
+	Attribute* _pendingDefaultResponseAttribute;
+	time_t _pendingDefaultResponseExpiration;
 
 	CallbackArgs<const String&> _setStatus;
 	CallbackArgs<ConnectionStatus> _setConnected;
@@ -71,15 +75,15 @@ public:
 
 private:
 	void sendAnnounce();
-	void processZDO(XBeeAddress64 remoteAddr64, uint16_t remoteAddr16, uint16_t clusterId, uint8_t* frameData, uint8_t frameDataLength);
+	void processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clusterId, uint8_t* frameData, uint8_t frameDataLength);
 
 	Device* getDeviceByEndpoint(uint8_t endpointId);
 
-	void reportAttributes();
+	Attribute* reportAttribute();
 
-	void atCommandCallback(AtCommandResponse& at);
+	void atCommandCallback(AtCommandResponse& command);
 	void modemStatusCallback(ModemStatusResponse& status);
-	void explicitRxCallback(ZBExplicitRxResponse& status);
+	void explicitRxCallback(ZBExplicitRxResponse& resp);
 
 	void setCommandBuilder(command_builder_t commandBuilder);
 	bool sendNextCommand();

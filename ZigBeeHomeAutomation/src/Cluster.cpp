@@ -33,10 +33,15 @@ Attribute* Cluster::getAttributeByIndex(int index) {
 	return _attributes.get(index);
 }
 
-void Cluster::reportAttributes(XBee& device, uint8_t endpointId, Memory& buffer) {
+Attribute* Cluster::reportAttribute(XBee& device, uint8_t endpointId, Memory& buffer) {
 	for (auto i = 0; i < getAttributeCount(); i++) {
-		getAttributeByIndex(i)->report(device, endpointId, _clusterId, buffer);
+		auto attribute = getAttributeByIndex(i);
+		if (attribute->report(device, endpointId, _clusterId, buffer) == AttributeReportStatus::Reported) {
+			return attribute;
+		}
 	}
+
+	return nullptr;
 }
 
 void Cluster::addAttribute(Attribute* attribute) {

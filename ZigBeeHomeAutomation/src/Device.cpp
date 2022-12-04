@@ -35,20 +35,21 @@ Status Device::processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRx
 			return processGeneralDiscoverAttributesCommand(frame, request, message, response);
 		case CommandIdentifier::ConfigureReporting:
 			return processGeneralConfigureReportingCommand(frame, request, message, response);
-		case CommandIdentifier::DefaultResponse:
-			auto x = DefaultResponseFrame::read(request);
-			DEBUG(F("Default response "), frame.transactionSequenceNumber(), ", ", x.getCommandId(), " ", (int)x.getStatus());
-			return Status::UnsupportedGeneralCommand;
 		default:
 			DEBUG(F("Received unimplemented command "), String((uint8_t)commandIdentifier, HEX));
 			return Status::UnsupportedGeneralCommand;
 	}
 }
 
-void Device::reportAttributes(XBee& device, Memory& buffer) {
+Attribute* Device::reportAttribute(XBee& device, Memory& buffer) {
 	for (auto i = 0; i < getClusterCount(); i++) {
-		getClusterByIndex(i)->reportAttributes(device, _endpointId, buffer);
+		auto attribute = getClusterByIndex(i)->reportAttribute(device, _endpointId, buffer);
+		if (attribute) {
+			return attribute;
+		}
 	}
+
+	return nullptr;
 }
 
 Status Device::processGeneralReadAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {

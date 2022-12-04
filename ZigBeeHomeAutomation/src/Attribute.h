@@ -1,12 +1,24 @@
 #pragma once
 
+enum class AttributeReportStatus {
+    None,
+    Reported
+};
+
 class Attribute {
+    static constexpr time_t RESEND_DELAY_MS = 5000;
+
     struct Reporting {
         XBeeAddress64 destinationAddress;
         uint16_t destinationShortAddress;
         uint8_t destinationEndpoint;
         uint16_t minimumInterval;
         uint16_t maximumInterval;
+        uint16_t clusterId;
+        uint8_t sourceEndpoint;
+        uint8_t transactionSequenceNumber;
+        time_t defaultResponseTimeout;
+        uint16_t defaultResponseBackoff;
     };
 
     DataType _dataType;
@@ -21,16 +33,21 @@ public:
 	Attribute(const Attribute&) = delete;
 	virtual ~Attribute();
 
-	uint16_t getAttributeId() { return _attributeId; }
+    uint16_t getAttributeId() { return _attributeId; }
 	DataType getDataType() { return _dataType; }
 
 	virtual String toString() = 0;
 
     void configureReporting(const XBeeAddress64& destinationAddress, uint16_t destinationShortAddress, uint8_t destinationEndpoint, uint16_t minimumInterval, uint16_t maximumInterval, Memory& memory);
-    void report(XBee& device, uint8_t endpointId, uint16_t clusterId, Memory& buffer);
+    AttributeReportStatus report(XBee& device, uint8_t endpointId, uint16_t clusterId, Memory& buffer);
+    void resendReport(XBee& device, Memory& buffer);
+    bool processDefaultResponse(uint8_t transactionSequenceNumber, uint8_t commandId, Status status);
     virtual void writeValue(Memory& memory) = 0;
 
 	Attribute& operator=(const Attribute&) = delete;
+
+private:
+    void resetPendingDefaultResponse();
 
 protected:
 	void markDirty() { _dirty = true; }

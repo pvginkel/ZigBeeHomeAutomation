@@ -38,6 +38,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\ZigBeeHomeAutomation.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Attribute.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Buffer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Cluster.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Clusters.cpp" />
