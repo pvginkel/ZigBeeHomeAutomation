@@ -94,7 +94,7 @@ const definition = {
     const createReport = (attribute) => {
       return {
         attribute: attribute,
-        minimumReportInterval: 0,
+        minimumReportInterval: 1,
         maximumReportInterval: 3600,
         reportableChange: 0,
       };
