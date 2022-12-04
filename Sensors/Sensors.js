@@ -123,6 +123,26 @@ const definition = {
       msIlluminanceMeasurementReporting
     );
   },
+  onEvent: async (type, data, device, options, state) => {
+    /**
+     * The Arduino isn't storing reporting configuration. We use the announce
+     * event to send the reporting configuration again.
+     */
+    if (type === "deviceAnnounce") {
+      for (const endpoint of device.endpoints) {
+        for (const c of endpoint.configuredReportings) {
+          await endpoint.configureReporting(c.cluster.name, [
+            {
+              attribute: c.attribute.name,
+              minimumReportInterval: c.minimumReportInterval,
+              maximumReportInterval: c.maximumReportInterval,
+              reportableChange: c.reportableChange,
+            },
+          ]);
+        }
+      }
+    }
+  },
 };
 
 module.exports = definition;
