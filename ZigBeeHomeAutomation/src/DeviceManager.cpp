@@ -660,6 +660,7 @@ AT_BUILDER(serialNumberHighCommand, "SH");
 AT_BUILDER(serialNumberLowCommand, "SL");
 AT_BUILDER(networkAddressCommand, "MY");
 AT_BUILDER(apiModeCommand, "AP", 2);
+AT_BUILDER(sleepModeCommand, "SM", 0);
 AT_BUILDER(operatingChannelCommand, "CH");
 AT_BUILDER(operatingPanIdCommand, "OI");
 AT_BUILDER(associationIndicationCommand, "AI");
@@ -679,8 +680,9 @@ AtCommandRequest buildResetCommand(int index) {
 	case 9: return dio6RtsCommand();
 	case 10: return scanChannelsCommand();
 	case 11: return apiModeCommand();
-	case 12: return writeCommand();
-	case 13: return softwareResetCommand();
+	case 12: return sleepModeCommand();
+	case 13: return writeCommand();
+	case 14: return softwareResetCommand();
 	default: return {};
 	}
 }
