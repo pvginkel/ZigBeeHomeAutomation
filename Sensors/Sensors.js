@@ -96,7 +96,8 @@ const definition = {
         attribute: attribute,
         minimumReportInterval: 1,
         maximumReportInterval: 3600,
-        reportableChange: 0,
+        // This fails when using custom attributes.
+        // reportableChange: 0,
       };
     };
 
