@@ -218,9 +218,9 @@ public:
 		list.add(44);
 		list.add(45);
 
-		auto result = list.remove(0);
+		bool result = list.remove(42);
 
-		Assert::AreEqual(42, result);
+		Assert::IsTrue(result);
 		Assert::AreEqual(3, (int)list.size());
 		Assert::AreEqual(43, list[0]);
 		Assert::AreEqual(44, list[1]);
@@ -237,9 +237,9 @@ public:
 		list.add(44);
 		list.add(45);
 
-		auto result = list.remove(1);
+		bool result = list.remove(43);
 
-		Assert::AreEqual(43, result);
+		Assert::IsTrue(result);
 		Assert::AreEqual(3, (int)list.size());
 		Assert::AreEqual(42, list[0]);
 		Assert::AreEqual(44, list[1]);
@@ -256,13 +256,33 @@ public:
 		list.add(44);
 		list.add(45);
 
-		auto result = list.remove(3);
+		bool result = list.remove(45);
 
-		Assert::AreEqual(45, result);
+		Assert::IsTrue(result);
 		Assert::AreEqual(3, (int)list.size());
 		Assert::AreEqual(42, list[0]);
 		Assert::AreEqual(43, list[1]);
 		Assert::AreEqual(44, list[2]);
+	}
+
+	TEST_METHOD(RemoveNonExisting) {
+		ArrayList<int> list;
+
+		Assert::AreEqual(0, (int)list.size());
+
+		list.add(42);
+		list.add(43);
+		list.add(44);
+		list.add(45);
+
+		bool result = list.remove(49);
+
+		Assert::IsFalse(result);
+		Assert::AreEqual(4, (int)list.size());
+		Assert::AreEqual(42, list[0]);
+		Assert::AreEqual(43, list[1]);
+		Assert::AreEqual(44, list[2]);
+		Assert::AreEqual(45, list[3]);
 	}
 
 	TEST_METHOD(Iterate) {

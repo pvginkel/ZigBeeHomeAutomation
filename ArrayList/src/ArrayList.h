@@ -54,12 +54,14 @@ public:
 		return true;
 	}
 
-	T remove(size_t index) {
-		auto result = _data[index];
+	bool remove(const T& value) {
+		auto index = indexOf(value);
+		if (index == -1) {
+			return false;
+		}
 
 		removeAt(index);
-
-		return result;
+		return true;
 	}
 
 	bool removeAt(size_t index) {
