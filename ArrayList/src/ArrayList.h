@@ -80,6 +80,28 @@ public:
 		_size = 0;
 	}
 
+	int indexOf(const T& value) const {
+		for (int i = 0; i < _size; i++) {
+			if (_data[i] == value) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	int lastIndexOf(const T& value) const {
+		for (int i = _size; i >= 0; i--) {
+			if (_data[i] == value) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	bool contains(const T& value) const {
+		return indexOf(value) != -1;
+	}
+
 	const T& operator[](size_t index) const { return _data[index]; }
 	T& operator[](size_t index) { return _data[index]; }
 

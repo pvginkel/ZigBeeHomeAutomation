@@ -338,4 +338,92 @@ public:
 		Assert::AreEqual(0, (int)list.size());
 		Assert::AreEqual(4, (int)list.capacity());
 	}
+
+	TEST_METHOD(IndexExisting) {
+		ArrayList<int> list;
+
+		list.add(42);
+		list.add(43);
+		list.add(44);
+		list.add(45);
+
+		Assert::AreEqual(1, list.indexOf(43));
+	}
+
+	TEST_METHOD(IndexWithDuplicatesExisting) {
+		ArrayList<int> list;
+
+		list.add(42);
+		list.add(43);
+		list.add(43);
+		list.add(45);
+
+		Assert::AreEqual(1, list.indexOf(43));
+	}
+
+	TEST_METHOD(IndexNonExisting) {
+		ArrayList<int> list;
+
+		list.add(42);
+		list.add(43);
+		list.add(44);
+		list.add(45);
+
+		Assert::AreEqual(-1, list.indexOf(49));
+	}
+
+	TEST_METHOD(LastIndexExisting) {
+		ArrayList<int> list;
+
+		list.add(42);
+		list.add(43);
+		list.add(44);
+		list.add(45);
+
+		Assert::AreEqual(1, list.lastIndexOf(43));
+	}
+
+	TEST_METHOD(LastIndexWithDuplicatesExisting) {
+		ArrayList<int> list;
+
+		list.add(42);
+		list.add(43);
+		list.add(43);
+		list.add(45);
+
+		Assert::AreEqual(2, list.lastIndexOf(43));
+	}
+
+	TEST_METHOD(LastIndexNonExisting) {
+		ArrayList<int> list;
+
+		list.add(42);
+		list.add(43);
+		list.add(44);
+		list.add(45);
+
+		Assert::AreEqual(-1, list.lastIndexOf(49));
+	}
+
+	TEST_METHOD(ContainsExisting) {
+		ArrayList<int> list;
+
+		list.add(42);
+		list.add(43);
+		list.add(44);
+		list.add(45);
+
+		Assert::IsTrue(list.contains(43));
+	}
+
+	TEST_METHOD(ContainsNonExisting) {
+		ArrayList<int> list;
+
+		list.add(42);
+		list.add(43);
+		list.add(44);
+		list.add(45);
+
+		Assert::IsFalse(list.contains(49));
+	}
 };
