@@ -257,9 +257,14 @@ void DeviceManager::atCommandCallback(AtCommandResponse& command) {
 		retrieveAssociationIndication();
 	}
 	else if (_state == State::RetrievingConfiguration) {
-		_state = State::Connected;
+		if (_associationIndication) {
+			retrieveAssociationIndication();
+		}
+		else {
+			_state = State::Connected;
 
-		sendAnnounce();
+			sendAnnounce();
+		}
 	}
 }
 
