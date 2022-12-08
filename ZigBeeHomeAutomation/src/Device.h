@@ -2,7 +2,7 @@
 
 class Device {
     uint8_t _endpointId;
-    LinkedList<Cluster*> _clusters;
+    ArrayList<Cluster*> _clusters;
     uint16_t _deviceId;
 
 public:

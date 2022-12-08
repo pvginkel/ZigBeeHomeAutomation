@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 
-#include "src/ArrayList.h"
+#include "../ZigBeeHomeAutomation/src/ArrayList.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

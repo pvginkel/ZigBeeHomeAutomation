@@ -13,13 +13,13 @@ int Device::getClusterCount() {
 }
 
 Cluster* Device::getClusterByIndex(int index) {
-	return _clusters.get(index);
+	return _clusters[index];
 }
 
 Cluster* Device::getClusterById(uint16_t clusterId) {
-	for (uint8_t i = 0; i < _clusters.size(); i++) {
-		if (_clusters.get(i)->getClusterId() == clusterId) {
-			return _clusters.get(i);
+	for (auto cluster : _clusters) {
+		if (cluster->getClusterId() == clusterId) {
+			return cluster;
 		}
 	}
 	return nullptr;

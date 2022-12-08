@@ -13,8 +13,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Clock", "Clock\Clock.vcxpro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateClusters", "Tools\GenerateClusters\GenerateClusters.csproj", "{5693971A-8021-4D10-94B3-472F130A76B4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ArrayList", "ArrayList\ArrayList.vcxitems", "{6A8A9C3E-452C-4E4E-A6B1-49DA381CC235}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ArrayListTest", "ArrayListTest\ArrayListTest.vcxproj", "{45D1225C-C91A-44E5-B56C-66DB713946CE}"
 EndProject
 Global
@@ -96,10 +94,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{0afe8a92-dcc3-4a87-ad96-adcac3684697}*SharedItemsImports = 9
-		ArrayList\ArrayList.vcxitems*{45d1225c-c91a-44e5-b56c-66db713946ce}*SharedItemsImports = 4
-		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{677ea60b-dceb-4830-a89e-14803d1efd9d}*SharedItemsImports = 4
-		ArrayList\ArrayList.vcxitems*{6a8a9c3e-452c-4e4e-a6b1-49da381cc235}*SharedItemsImports = 9
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{c4401942-a693-4607-ad0e-7cda97525e22}*SharedItemsImports = 4
-		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal

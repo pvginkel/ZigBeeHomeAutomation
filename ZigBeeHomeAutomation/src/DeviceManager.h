@@ -34,7 +34,7 @@ class DeviceManager {
 	static constexpr uint16_t BROADCAST_ADDR16 = 0;
 	static constexpr uint16_t ANNOUNCE_BROADCAST_ADDR16 = 0xfffc;
 
-	LinkedList<Device*> _deviceList;
+	ArrayList<Device*> _deviceList;
 	XBeeAddress64 _address;
 	uint16_t _shortAddress;
 

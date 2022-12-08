@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 
-#include "src/ArrayList.h"
+#include "../ZigBeeHomeAutomation/src/ArrayList.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -188,7 +188,7 @@ public:
 		Assert::AreEqual(44, list[2]);
 	}
 
-	TEST_METHOD(RemoveBeyondEnd) {
+	TEST_METHOD(removeBeyondEnd) {
 		ArrayList<int> list;
 
 		Assert::AreEqual(0, (int)list.size());
@@ -445,5 +445,13 @@ public:
 		list.add(45);
 
 		Assert::IsFalse(list.contains(49));
+	}
+
+	TEST_METHOD(pointerList) {
+		ArrayList<int*> list;
+
+		list.add(new int(7));
+
+		delete list[0];
 	}
 };

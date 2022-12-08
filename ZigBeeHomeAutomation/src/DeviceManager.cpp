@@ -64,9 +64,9 @@ void DeviceManager::sendAnnounce() {
 }
 
 Device* DeviceManager::getDeviceByEndpoint(uint8_t endpointId) {
-	for (auto i = 0; i < _deviceList.size(); i++) {
-		if (endpointId == _deviceList.get(i)->getEndpointId()) {
-			return _deviceList.get(i);
+	for (auto device : _deviceList) {
+		if (device->getEndpointId() == endpointId) {
+			return device;
 		}
 	}
 	return nullptr;
@@ -156,7 +156,7 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 		memory.writeUInt16Le(_shortAddress);
 		memory.writeUInt8(_deviceList.size());
 		for (auto i = 0; i < _deviceList.size(); i++) {
-			memory.writeUInt8(_deviceList.get(i)->getEndpointId());
+			memory.writeUInt8(_deviceList[i]->getEndpointId());
 		}
 
 		ZBExplicitTxRequest message(
@@ -464,8 +464,8 @@ Attribute* DeviceManager::reportAttribute() {
 
 	Memory buffer(_payload);
 
-	for (auto i = 0; i < _deviceList.size(); i++) {
-		auto attribute = _deviceList.get(i)->reportAttribute(_device, buffer);
+	for (auto device : _deviceList) {
+		auto attribute = device->reportAttribute(_device, buffer);
 		if (attribute) {
 			return attribute;
 		}

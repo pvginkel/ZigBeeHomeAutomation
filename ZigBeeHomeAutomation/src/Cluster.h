@@ -6,7 +6,7 @@ enum class ClusterType {
 };
 
 class Cluster {
-    LinkedList<Attribute*> _attributes;
+    ArrayList<Attribute*> _attributes;
     uint16_t _clusterId;
     ClusterType _type;
 

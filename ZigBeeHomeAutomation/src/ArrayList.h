@@ -1,12 +1,26 @@
 #pragma once
 
+#if defined(ARDUINO)
+// Placement new is not defined by standard for Arduino. See
+// https://forum.arduino.cc/t/reason-for-missing-new-delete/73429/7 for more info.
+inline void* operator new(size_t, void* ptr) {
+	return ptr;
+}
+#endif
+
 template <typename T>
 class ArrayList {
-	static constexpr size_t DEFAULT_CAPACITY = 2;
+#if defined(__AVR__)
+	typedef uint16_t size_type;
+#else
+	typedef size_t size_type;
+#endif
+
+	static constexpr size_type DEFAULT_CAPACITY = 2;
 
 	T* _data;
-	size_t _size;
-	size_t _capacity;
+	size_type _size;
+	size_type _capacity;
 
 public:
 	typedef T* iterator;
@@ -16,7 +30,7 @@ public:
 		reserve(DEFAULT_CAPACITY);
 	}
 
-	ArrayList(size_t capacity) : _data(nullptr), _size(0), _capacity(0) {
+	ArrayList(size_type capacity) : _data(nullptr), _size(0), _capacity(0) {
 		reserve(capacity);
 	}
 
@@ -42,7 +56,7 @@ public:
 		new (&_data[_size++]) T(item);
 	}
 
-	bool insert(size_t index, const T& item) {
+	bool insert(size_type index, const T& item) {
 		if (index > _size) {
 			return false;
 		}
@@ -71,7 +85,7 @@ public:
 		return true;
 	}
 
-	bool removeAt(size_t index) {
+	bool removeAt(size_type index) {
 		if (index >= _size) {
 			return false;
 		}
@@ -113,11 +127,11 @@ public:
 		return indexOf(value) != -1;
 	}
 
-	const T& operator[](size_t index) const { return _data[index]; }
-	T& operator[](size_t index) { return _data[index]; }
+	const T& operator[](size_type index) const { return _data[index]; }
+	T& operator[](size_type index) { return _data[index]; }
 
-	size_t size() const { return _size; }
-	size_t capacity() const { return _capacity; }
+	size_type size() const { return _size; }
+	size_type capacity() const { return _capacity; }
 
 	iterator begin() { return &_data[0]; }
 	const_iterator begin() const { return &_data[0]; }
@@ -125,7 +139,7 @@ public:
 	const_iterator end() const { return &_data[_size]; }
 
 private:
-	void reserve(size_t capacity) {
+	void reserve(size_type capacity) {
 		if (capacity <= _capacity) {
 			return;
 		}
