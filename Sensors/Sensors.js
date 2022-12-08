@@ -3,6 +3,7 @@ const tz = require("zigbee-herdsman-converters/converters/toZigbee");
 const exposes = require("zigbee-herdsman-converters/lib/exposes");
 const reporting = require("zigbee-herdsman-converters/lib/reporting");
 const extend = require("zigbee-herdsman-converters/lib/extend");
+const utils = require("zigbee-herdsman-converters/lib/utils");
 const e = exposes.presets;
 const ea = exposes.access;
 
@@ -13,37 +14,29 @@ const fzLocal = {
     options: [
       exposes.options.calibration("illuminance", "percentual"),
       exposes.options.calibration("illuminance_lux", "percentual"),
-      exposes.options.calibration("illuminance_33k", "percentual"),
-      exposes.options.calibration("illuminance_33k_lux", "percentual"),
-      exposes.options.calibration("illuminance_60k", "percentual"),
-      exposes.options.calibration("illuminance_60k_lux", "percentual"),
-      exposes.options.calibration("illuminance_200k", "percentual"),
-      exposes.options.calibration("illuminance_200k_lux", "percentual"),
     ],
     convert: (model, msg, publish, options, meta) => {
-      const readValue = (attribute, name) => {
-        if (msg.data.hasOwnProperty(attribute)) {
-          const raw = msg.data[attribute];
-          const VIN = 5.0;
-          const R = 10000;
-
-          // Conversion analog to voltage
-          const Vout = raw * (VIN / 1023);
-          // Conversion voltage to resistance
-          const RLDR = (R * (VIN - Vout)) / Vout;
-          // Conversion resitance to lumen
-          const phys = 500 / (RLDR / 1000);
-
-          result[name] = RLDR | 0;
-          result[name + "_lux"] = phys | 0;
-        }
-      };
-
       const result = {};
-      readValue("measuredValue", "illuminance");
-      readValue(0x0201, "illuminance_33k");
-      readValue(0x0202, "illuminance_60k");
-      readValue(0x0203, "illuminance_200k");
+
+      if (msg.data.hasOwnProperty("measuredValue")) {
+        const raw = msg.data["measuredValue"];
+        const VIN = 5.0;
+        const R = 10000;
+
+        // Conversion analog to voltage
+        const Vout = raw * (VIN / 1023);
+        // Conversion voltage to resistance
+        const RLDR = (R * (VIN - Vout)) / Vout;
+        // Conversion resitance to lumen
+        const phys = 500 / (RLDR / 1000);
+
+        result[utils.postfixWithEndpointName("illuminance", msg, model, meta)] =
+          RLDR | 0;
+        result[
+          utils.postfixWithEndpointName("illuminance_lux", msg, model, meta)
+        ] = phys | 0;
+      }
+
       return result;
     },
   },
@@ -56,35 +49,25 @@ const definition = {
   description: "Temperature, humidity and photoresistor sensors",
   fromZigbee: [fz.temperature, fz.humidity, fzLocal.illuminance],
   toZigbee: [],
+  meta: { multiEndpoint: true },
   exposes: [
     e.temperature(),
     e.humidity(),
-    e.illuminance(),
-    e.illuminance_lux(),
-    exposes
-      .numeric("illuminance_33k", ea.STATE)
-      .withDescription("Raw measured illuminance for 33K Ω photoresistor"),
-    exposes
-      .numeric("illuminance_33k_lux", ea.STATE)
-      .withUnit("lx")
-      .withDescription("Measured illuminance in lux for 33K Ω photoresistor"),
-    exposes
-      .numeric("illuminance_60k", ea.STATE)
-      .withDescription("Raw measured illuminance for 60K Ω photoresistor"),
-    exposes
-      .numeric("illuminance_60k_lux", ea.STATE)
-      .withUnit("lx")
-      .withDescription("Measured illuminance in lux for 60K Ω photoresistor"),
-    exposes
-      .numeric("illuminance_200k", ea.STATE)
-      .withDescription("Raw measured illuminance for 200K Ω photoresistor"),
-    exposes
-      .numeric("illuminance_200k_lux", ea.STATE)
-      .withUnit("lx")
-      .withDescription("Measured illuminance in lux for 200K Ω photoresistor"),
+    e.illuminance().withEndpoint("33k"),
+    e.illuminance_lux().withEndpoint("33k"),
+    e.illuminance().withEndpoint("60k"),
+    e.illuminance_lux().withEndpoint("60k"),
+    e.illuminance().withEndpoint("200k"),
+    e.illuminance_lux().withEndpoint("200k"),
   ],
+  endpoint: (device) => {
+    return { "33k": 2, "60k": 3, "200k": 4 };
+  },
   configure: async (device, coordinatorEndpoint, logger) => {
     const endpoint = device.getEndpoint(1);
+    const endpoint33k = device.getEndpoint(2);
+    const endpoint60k = device.getEndpoint(3);
+    const endpoint200k = device.getEndpoint(4);
 
     await reporting.bind(endpoint, coordinatorEndpoint, [
       "msTemperatureMeasurement",
@@ -113,13 +96,16 @@ const definition = {
       msRelativeHumidityReporting
     );
 
-    const msIlluminanceMeasurementReporting = [
-      createReport("measuredValue"),
-      createReport({ ID: 0x0201, type: 0x21 }),
-      createReport({ ID: 0x0202, type: 0x21 }),
-      createReport({ ID: 0x0203, type: 0x21 }),
-    ];
-    await endpoint.configureReporting(
+    const msIlluminanceMeasurementReporting = [createReport("measuredValue")];
+    await endpoint33k.configureReporting(
+      "msIlluminanceMeasurement",
+      msIlluminanceMeasurementReporting
+    );
+    await endpoint60k.configureReporting(
+      "msIlluminanceMeasurement",
+      msIlluminanceMeasurementReporting
+    );
+    await endpoint200k.configureReporting(
       "msIlluminanceMeasurement",
       msIlluminanceMeasurementReporting
     );
