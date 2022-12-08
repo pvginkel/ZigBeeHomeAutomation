@@ -24,7 +24,14 @@ public:
 	ArrayList(ArrayList&&) = delete;
 
 	~ArrayList() {
-		delete _data;
+		for (auto i = 0; i < _size; i++) {
+			_data[i].~T();
+		}
+
+		if (_data) {
+			free(_data);
+			_data = nullptr;
+		}
 	}
 
 	ArrayList& operator=(const ArrayList&) = delete;
@@ -32,7 +39,7 @@ public:
 
 	void add(const T& item) {
 		reserve(_size + 1);
-		_data[_size++] = item;
+		new (&_data[_size++]) T(item);
 	}
 
 	bool insert(size_t index, const T& item) {
@@ -47,7 +54,7 @@ public:
 			reserve(_size + 1);
 			memmove(_data + index + 1, _data + index, (_size - index) * sizeof(T));
 
-			_data[index] = item;
+			new (&_data[index]) T(item);
 			_size++;
 		}
 
@@ -68,6 +75,8 @@ public:
 		if (index >= _size) {
 			return false;
 		}
+
+		_data[index].~T();
 
 		if (index < _size - 1) {
 			memmove(_data + index, _data + index + 1, (_size - index - 1) * sizeof(T));
@@ -124,10 +133,13 @@ private:
 			capacity = _capacity * 2;
 		}
 
-		auto data = new T[capacity];
-		// Only copy the memory that's in use.
-		memcpy(data, _data, _size * sizeof(T));
-		delete _data;
+		auto data = (T*)malloc(capacity * sizeof(T));
+
+		if (_data) {
+			// Only copy the memory that's in use.
+			memcpy(data, _data, _size * sizeof(T));
+			free(_data);
+		}
 
 		_data = data;
 		_capacity = capacity;
