@@ -7,21 +7,21 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 TEST_CLASS(ArrayListTest) {
 public:
-	TEST_METHOD(Instantiate) {
+	TEST_METHOD(instantiate) {
 		ArrayList<int> list;
 
 		Assert::AreEqual(0, (int)list.size());
 		Assert::AreEqual(2, (int)list.capacity());
 	}
 
-	TEST_METHOD(InstantiateWithCapacity) {
+	TEST_METHOD(instantiateWithCapacity) {
 		ArrayList<int> list(4);
 
 		Assert::AreEqual(0, (int)list.size());
 		Assert::AreEqual(4, (int)list.capacity());
 	}
 
-	TEST_METHOD(SimpleAdd) {
+	TEST_METHOD(simpleAdd) {
 		ArrayList<int> list;
 
 		Assert::AreEqual(0, (int)list.size());
@@ -32,7 +32,7 @@ public:
 		Assert::AreEqual(42, list[0]);
 	}
 
-	TEST_METHOD(AddMultiple) {
+	TEST_METHOD(addMultiple) {
 		ArrayList<int> list(4);
 
 		Assert::AreEqual(0, (int)list.size());
@@ -49,7 +49,7 @@ public:
 		Assert::AreEqual(45, list[3]);
 	}
 
-	TEST_METHOD(AddWithResize) {
+	TEST_METHOD(addWithResize) {
 		ArrayList<int> list(2);
 
 		Assert::AreEqual(0, (int)list.size());
@@ -68,7 +68,7 @@ public:
 		Assert::AreEqual(45, list[3]);
 	}
 
-	TEST_METHOD(InsertStart) {
+	TEST_METHOD(insertStart) {
 		ArrayList<int> list(2);
 
 		Assert::AreEqual(0, (int)list.size());
@@ -89,7 +89,7 @@ public:
 		Assert::AreEqual(45, list[3]);
 	}
 
-	TEST_METHOD(InsertMiddle) {
+	TEST_METHOD(insertMiddle) {
 		ArrayList<int> list(2);
 
 		Assert::AreEqual(0, (int)list.size());
@@ -110,7 +110,7 @@ public:
 		Assert::AreEqual(45, list[3]);
 	}
 
-	TEST_METHOD(InsertEnd) {
+	TEST_METHOD(insertEnd) {
 		ArrayList<int> list(2);
 
 		Assert::AreEqual(0, (int)list.size());
@@ -131,7 +131,7 @@ public:
 		Assert::AreEqual(45, list[3]);
 	}
 
-	TEST_METHOD(RemoveAtStart) {
+	TEST_METHOD(removeAtStart) {
 		ArrayList<int> list;
 
 		Assert::AreEqual(0, (int)list.size());
@@ -150,7 +150,7 @@ public:
 		Assert::AreEqual(45, list[2]);
 	}
 
-	TEST_METHOD(RemoveAtMiddle) {
+	TEST_METHOD(removeAtMiddle) {
 		ArrayList<int> list;
 
 		Assert::AreEqual(0, (int)list.size());
@@ -169,7 +169,7 @@ public:
 		Assert::AreEqual(45, list[2]);
 	}
 
-	TEST_METHOD(RemoveAtEnd) {
+	TEST_METHOD(removeAtEnd) {
 		ArrayList<int> list;
 
 		Assert::AreEqual(0, (int)list.size());
@@ -208,7 +208,7 @@ public:
 		Assert::AreEqual(45, list[3]);
 	}
 
-	TEST_METHOD(RemoveStart) {
+	TEST_METHOD(removeStart) {
 		ArrayList<int> list;
 
 		Assert::AreEqual(0, (int)list.size());
@@ -227,7 +227,7 @@ public:
 		Assert::AreEqual(45, list[2]);
 	}
 
-	TEST_METHOD(RemoveMiddle) {
+	TEST_METHOD(removeMiddle) {
 		ArrayList<int> list;
 
 		Assert::AreEqual(0, (int)list.size());
@@ -246,7 +246,7 @@ public:
 		Assert::AreEqual(45, list[2]);
 	}
 
-	TEST_METHOD(RemoveEnd) {
+	TEST_METHOD(removeEnd) {
 		ArrayList<int> list;
 
 		Assert::AreEqual(0, (int)list.size());
@@ -265,7 +265,7 @@ public:
 		Assert::AreEqual(44, list[2]);
 	}
 
-	TEST_METHOD(RemoveNonExisting) {
+	TEST_METHOD(removeNonExisting) {
 		ArrayList<int> list;
 
 		Assert::AreEqual(0, (int)list.size());
@@ -285,7 +285,7 @@ public:
 		Assert::AreEqual(45, list[3]);
 	}
 
-	TEST_METHOD(Iterate) {
+	TEST_METHOD(iterate) {
 		ArrayList<int> list;
 
 		Assert::AreEqual(0, (int)list.size());
@@ -310,7 +310,7 @@ public:
 		Assert::AreEqual(4, index);
 	}
 
-	TEST_METHOD(IterateEmpty) {
+	TEST_METHOD(iterateEmpty) {
 		ArrayList<int> list;
 
 		Assert::AreEqual(0, (int)list.size());
@@ -326,7 +326,7 @@ public:
 		Assert::AreEqual(0, index);
 	}
 
-	TEST_METHOD(Replace) {
+	TEST_METHOD(replace) {
 		ArrayList<int> list;
 
 		list.add(42);
@@ -345,7 +345,7 @@ public:
 		Assert::AreEqual(45, list[3]);
 	}
 
-	TEST_METHOD(Clear) {
+	TEST_METHOD(clear) {
 		ArrayList<int> list;
 
 		list.add(42);
@@ -359,7 +359,7 @@ public:
 		Assert::AreEqual(4, (int)list.capacity());
 	}
 
-	TEST_METHOD(IndexExisting) {
+	TEST_METHOD(indexExisting) {
 		ArrayList<int> list;
 
 		list.add(42);
@@ -370,7 +370,7 @@ public:
 		Assert::AreEqual(1, list.indexOf(43));
 	}
 
-	TEST_METHOD(IndexWithDuplicatesExisting) {
+	TEST_METHOD(indexWithDuplicatesExisting) {
 		ArrayList<int> list;
 
 		list.add(42);
@@ -381,7 +381,7 @@ public:
 		Assert::AreEqual(1, list.indexOf(43));
 	}
 
-	TEST_METHOD(IndexNonExisting) {
+	TEST_METHOD(indexNonExisting) {
 		ArrayList<int> list;
 
 		list.add(42);
@@ -392,7 +392,7 @@ public:
 		Assert::AreEqual(-1, list.indexOf(49));
 	}
 
-	TEST_METHOD(LastIndexExisting) {
+	TEST_METHOD(lastIndexExisting) {
 		ArrayList<int> list;
 
 		list.add(42);
@@ -403,7 +403,7 @@ public:
 		Assert::AreEqual(1, list.lastIndexOf(43));
 	}
 
-	TEST_METHOD(LastIndexWithDuplicatesExisting) {
+	TEST_METHOD(lastIndexWithDuplicatesExisting) {
 		ArrayList<int> list;
 
 		list.add(42);
@@ -414,7 +414,7 @@ public:
 		Assert::AreEqual(2, list.lastIndexOf(43));
 	}
 
-	TEST_METHOD(LastIndexNonExisting) {
+	TEST_METHOD(lastIndexNonExisting) {
 		ArrayList<int> list;
 
 		list.add(42);
@@ -425,7 +425,7 @@ public:
 		Assert::AreEqual(-1, list.lastIndexOf(49));
 	}
 
-	TEST_METHOD(ContainsExisting) {
+	TEST_METHOD(containsExisting) {
 		ArrayList<int> list;
 
 		list.add(42);
@@ -436,7 +436,7 @@ public:
 		Assert::IsTrue(list.contains(43));
 	}
 
-	TEST_METHOD(ContainsNonExisting) {
+	TEST_METHOD(containsNonExisting) {
 		ArrayList<int> list;
 
 		list.add(42);
