@@ -14,11 +14,11 @@ U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0);
 Display display;
 #endif
 
-#define IO_XBEE_RX 2
-#define IO_XBEE_TX 3
-#define IO_PB 4
-#define IO_LED 5
-#define IO_STATUS_LED 6
+#define IO_XBEE_RX 6
+#define IO_XBEE_TX 5
+#define IO_PB 7
+#define IO_LED 3
+#define IO_STATUS_LED 11
 
 SoftwareSerial xbeeSerial(IO_XBEE_RX, IO_XBEE_TX);
 DeviceManager deviceManager;
@@ -97,7 +97,7 @@ void setup()
 
     deviceManager.begin(xbeeSerial);
 
-    setLevel(255);
+    setLevel(0);
 }
 
 void loop() {
