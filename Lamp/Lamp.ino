@@ -72,6 +72,9 @@ void setup()
     lightBulb.getBasicCluster().getManufacturerName()->setValue(String(F("Pieter")));
     lightBulb.getBasicCluster().getModelId()->setValue(String(F("Lamp")));
 
+    onOffCluster.getOnOff()->configureBroadcastReporting();
+    levelCtrlCluster.getCurrentLevel()->configureBroadcastReporting();
+
     Serial.begin(115200);
     while (!Serial);
 

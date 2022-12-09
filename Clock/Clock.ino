@@ -47,6 +47,8 @@ void setup()
     clockDevice.getBasicCluster().getManufacturerName()->setValue(String(F("Pieter")));
     clockDevice.getBasicCluster().getModelId()->setValue(String(F("The Big Clock")));
 
+    onOffCluster.getOnOff()->configureBroadcastReporting();
+
     Serial.begin(115200);
     while (!Serial);
 
