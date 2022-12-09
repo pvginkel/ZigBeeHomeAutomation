@@ -5,6 +5,12 @@ Attribute::~Attribute() {
 }
 
 void Attribute::configureReporting(const XBeeAddress64& destinationAddress, uint16_t destinationShortAddress, uint8_t destinationEndpoint, uint16_t minimumInterval, uint16_t maximumInterval, Memory& memory) {
+	// Clear reporting if maximum interval is 0, and minimum interval is max-value.
+	if (maximumInterval == 0 && minimumInterval == 0xffff) {
+		disableReporting();
+		return;
+	}
+
 	if (!_reporting) {
 		_reporting = new Reporting();
 	}
@@ -17,6 +23,32 @@ void Attribute::configureReporting(const XBeeAddress64& destinationAddress, uint
 	resetPendingDefaultResponse();
 
 	configureReportableChange(memory);
+}
+
+void Attribute::configureBroadcastReporting(uint16_t minimumInterval, uint16_t maximumInterval) {// Clear reporting if maximum interval is 0, and minimum interval is max-value.
+	// Clear reporting if maximum interval is 0, and minimum interval is max-value.
+	if (maximumInterval == 0 && minimumInterval == 0xffff) {
+		disableReporting();
+		return;
+	}
+
+	if (!_reporting) {
+		_reporting = new Reporting();
+	}
+	// Broadcast destination address is all zeroes.
+	_reporting->destinationAddress = XBeeAddress64();
+	_reporting->destinationShortAddress = 0;
+	// Attribute reports go to endpoint 1.
+	_reporting->destinationEndpoint = 1;
+	_reporting->minimumInterval = minimumInterval;
+	_reporting->maximumInterval = maximumInterval;
+
+	resetPendingDefaultResponse();
+}
+
+void Attribute::disableReporting() {
+	delete _reporting;
+	_reporting = nullptr;
 }
 
 void Attribute::resetPendingDefaultResponse() {
@@ -60,7 +92,7 @@ AttributeReportStatus Attribute::resendReport(XBee& device, Memory& buffer) {
 		return AttributeReportStatus::Pending;
 	}
 
-	DEBUG(F("Resending status report because the default response wasn't received within "), _reporting->defaultResponseBackoff, "ms");
+	DEBUG(F("Resending status report because the default response wasn't received within "), _reporting->defaultResponseBackoff * RESEND_DELAY_MS, "ms");
 
 	report(device, buffer, true);
 
@@ -113,9 +145,9 @@ void Attribute::report(XBee& device, Memory& buffer, bool resend) {
 		_reporting->defaultResponseBackoff = _reporting->defaultResponseBackoff * 2;
 	}
 	else {
-		_reporting->defaultResponseBackoff = RESEND_DELAY_MS;
+		_reporting->defaultResponseBackoff = 1;
 	}
-	_reporting->defaultResponseTimeout = millis() + _reporting->defaultResponseBackoff;
+	_reporting->defaultResponseTimeout = millis() + _reporting->defaultResponseBackoff * RESEND_DELAY_MS;
 }
 
 bool Attribute::processDefaultResponse(uint8_t transactionSequenceNumber, uint8_t commandId, Status status) {

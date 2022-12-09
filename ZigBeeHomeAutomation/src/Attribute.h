@@ -44,6 +44,8 @@ public:
 	virtual String toString() = 0;
 
     void configureReporting(const XBeeAddress64& destinationAddress, uint16_t destinationShortAddress, uint8_t destinationEndpoint, uint16_t minimumInterval, uint16_t maximumInterval, Memory& memory);
+    void configureBroadcastReporting(uint16_t minimumInterval = 1, uint16_t maximumInterval = 3600);
+    void disableReporting();
     AttributeReportStatus report(XBee& device, Memory& buffer);
     AttributeReportStatus resendReport(XBee& device, Memory& buffer);
     bool processDefaultResponse(uint8_t transactionSequenceNumber, uint8_t commandId, Status status);
