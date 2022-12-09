@@ -5,6 +5,7 @@ Device::Device(uint8_t endpointId, uint16_t deviceId)
 }
 
 void Device::addCluster(Cluster& cluster) {
+	cluster._device = this;
 	_clusters.add(&cluster);
 }
 
@@ -42,8 +43,8 @@ Status Device::processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRx
 }
 
 Attribute* Device::reportAttribute(XBee& device, Memory& buffer) {
-	for (auto i = 0; i < getClusterCount(); i++) {
-		auto attribute = getClusterByIndex(i)->reportAttribute(device, _endpointId, buffer);
+	for (auto cluster : _clusters) {
+		auto attribute = cluster->reportAttribute(device, buffer);
 		if (attribute) {
 			return attribute;
 		}

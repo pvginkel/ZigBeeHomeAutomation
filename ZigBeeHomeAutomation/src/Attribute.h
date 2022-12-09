@@ -5,6 +5,8 @@ enum class AttributeReportStatus {
     Reported
 };
 
+class Cluster;
+
 class Attribute {
     static constexpr time_t RESEND_DELAY_MS = 5000;
 
@@ -14,8 +16,6 @@ class Attribute {
         uint8_t destinationEndpoint;
         uint16_t minimumInterval;
         uint16_t maximumInterval;
-        uint16_t clusterId;
-        uint8_t sourceEndpoint;
         uint8_t transactionSequenceNumber;
         time_t defaultResponseTimeout;
         uint16_t defaultResponseBackoff;
@@ -25,6 +25,9 @@ class Attribute {
 	uint16_t _attributeId;
     bool _dirty;
     Reporting* _reporting;
+    Cluster* _cluster;
+
+    friend Cluster;
 
 public:
 	Attribute(uint16_t attributeId, DataType dataType) :
@@ -33,13 +36,14 @@ public:
 	Attribute(const Attribute&) = delete;
 	virtual ~Attribute();
 
+    Cluster* getCluster() { return _cluster; }
     uint16_t getAttributeId() { return _attributeId; }
 	DataType getDataType() { return _dataType; }
 
 	virtual String toString() = 0;
 
     void configureReporting(const XBeeAddress64& destinationAddress, uint16_t destinationShortAddress, uint8_t destinationEndpoint, uint16_t minimumInterval, uint16_t maximumInterval, Memory& memory);
-    AttributeReportStatus report(XBee& device, uint8_t endpointId, uint16_t clusterId, Memory& buffer);
+    AttributeReportStatus report(XBee& device, Memory& buffer);
     void resendReport(XBee& device, Memory& buffer);
     bool processDefaultResponse(uint8_t transactionSequenceNumber, uint8_t commandId, Status status);
     virtual void writeValue(Memory& memory) = 0;

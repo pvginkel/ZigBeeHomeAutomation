@@ -8,12 +8,8 @@ class Device {
 public:
     Device(uint8_t endpointId, uint16_t deviceId);
 
-    uint8_t getEndpointId() {
-        return _endpointId;
-    }
-    uint16_t getDeviceId() {
-        return _deviceId;
-    }
+    uint8_t getEndpointId() { return _endpointId; }
+    uint16_t getDeviceId() { return _deviceId; }
 
 	void addCluster(Cluster& cluster);
     Cluster *getClusterById(uint16_t clusterId);

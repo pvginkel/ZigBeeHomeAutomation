@@ -20,14 +20,12 @@ void Attribute::configureReporting(const XBeeAddress64& destinationAddress, uint
 }
 
 void Attribute::resetPendingDefaultResponse() {
-	_reporting->sourceEndpoint = 0;
-	_reporting->clusterId = 0;
 	_reporting->transactionSequenceNumber = 0;
 	_reporting->defaultResponseTimeout = 0;
 	_reporting->defaultResponseBackoff = 0;
 }
 
-AttributeReportStatus Attribute::report(XBee& device, uint8_t endpointId, uint16_t clusterId, Memory& buffer) {
+AttributeReportStatus Attribute::report(XBee& device, Memory& buffer) {
 	if (!_reporting) {
 		return AttributeReportStatus::None;
 	}
@@ -50,8 +48,8 @@ AttributeReportStatus Attribute::report(XBee& device, uint8_t endpointId, uint16
 	}
 
 	DEBUG(
-		F("Reporting attribute endpoint "), endpointId,
-		F(" cluster "), clusterId,
+		F("Reporting attribute endpoint "), _cluster->getDevice()->getEndpointId(),
+		F(" cluster "), _cluster->getClusterId(),
 		F(" attribute "), getAttributeId(),
 		F(" value "), toString(),
 		F(" to "), String(_reporting->destinationAddress.getMsb(), HEX), String(_reporting->destinationAddress.getLsb(), HEX),
@@ -81,15 +79,13 @@ AttributeReportStatus Attribute::report(XBee& device, uint8_t endpointId, uint16
 		buffer.getData(),
 		buffer.getPosition(),
 		transactionSequenceNumber,
-		endpointId,
+		_cluster->getDevice()->getEndpointId(),
 		_reporting->destinationEndpoint,
-		clusterId,
+		_cluster->getClusterId(),
 		DeviceManager::ZHA_PROFILE_ID
 	);
 	device.send(message);
 
-	_reporting->clusterId = clusterId;
-	_reporting->sourceEndpoint = endpointId;
 	_reporting->transactionSequenceNumber = transactionSequenceNumber;
 	// Exponential backoff on resend.
 	if (resend) {
@@ -105,7 +101,7 @@ AttributeReportStatus Attribute::report(XBee& device, uint8_t endpointId, uint16
 
 void Attribute::resendReport(XBee& device, Memory& buffer) {
 	if (_reporting) {
-		report(device, _reporting->sourceEndpoint, _reporting->clusterId, buffer);
+		report(device, buffer);
 	}
 }
 
