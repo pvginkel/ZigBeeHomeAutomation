@@ -3,6 +3,7 @@
 #include <SoftwareSerial.h>
 #include <ZigBeeHomeAutomation.h>
 
+#include "Light.h"
 #if DISPLAY
 #include "Display.h"
 
@@ -24,9 +25,9 @@ SoftwareSerial xbeeSerial(IO_XBEE_RX, IO_XBEE_TX);
 DeviceManager deviceManager;
 BasicDevice lightBulb(1, 1, PowerSource::DCSource);
 StatusControl status;
+Light light;
 
 static bool isOn();
-static void setLevel(int level);
 static void toggle(uintptr_t);
 static void updateButton();
 static void reset(uintptr_t);
@@ -38,19 +39,19 @@ class : public GenOnOffCluster {
 public:
     Status offCommand() override {
         INFO(F("Lamp on"));
-        setLevel(0);
+        light.setLevel(0, 1000);
         return Status::Success;
     }
 
     Status onCommand() override {
         INFO(F("Lamp off"));
-        setLevel(255);
+        light.setLevel(255, 1000);
         return Status::Success;
     }
 
     Status toggleCommand() override {
         INFO(F("Lamp toggle"));
-        setLevel(isOn() ? 0 : 255);
+        light.setLevel(isOn() ? 0 : 255, 1000);
         return Status::Success;
     }
 } onOffCluster;
@@ -58,8 +59,8 @@ public:
 class : public GenLevelCtrlCluster {
 public:
     Status moveToLevelWithOnOffCommand(uint8_t level, uint16_t transtime) override {
-        INFO(F("Level change to "), level);
-        setLevel(level);
+        INFO(F("Level change to "), level, F(" transition time "), (transtime * 100), F(" ms"));
+        light.setLevel(level, transtime * 100);
         return Status::Success;
     }
 } levelCtrlCluster;
@@ -74,6 +75,14 @@ void setup()
 
     onOffCluster.getOnOff()->configureBroadcastReporting();
     levelCtrlCluster.getCurrentLevel()->configureBroadcastReporting();
+
+    light.onLevelChanged([](int level, uintptr_t) {
+        onOffCluster.getOnOff()->setValue(!!level);
+        levelCtrlCluster.getCurrentLevel()->setValue(level);
+#if DISPLAY
+        display.setBrightness(level);
+#endif
+    });
 
     Serial.begin(115200);
     while (!Serial);
@@ -91,9 +100,6 @@ void setup()
     status.setBounce(Bounce(IO_PB, 50));
     status.setLed(IO_STATUS_LED);
 
-    pinMode(IO_PB, INPUT);
-    pinMode(IO_LED, OUTPUT);
-
     xbeeSerial.begin(9600);
 
     deviceManager.setConnectedCallback(onConnected);
@@ -101,11 +107,13 @@ void setup()
 
     deviceManager.begin(xbeeSerial);
 
-    setLevel(0);
+    light.begin(IO_LED);
+    light.setLevel(0);
 }
 
 void loop() {
     status.update();
+    light.update();
     deviceManager.update();
 #if DISPLAY
     display.update();
@@ -113,20 +121,11 @@ void loop() {
 }
 
 void toggle(uintptr_t) {
-    setLevel(isOn() ? 0 : 255);
+    light.setLevel(isOn() ? 0 : 255, 1000);
 }
 
 bool isOn() {
     return onOffCluster.getOnOff()->getValue();
-}
-
-void setLevel(int level) {
-    onOffCluster.getOnOff()->setValue(!!level);
-    levelCtrlCluster.getCurrentLevel()->setValue(level);
-    analogWrite(IO_LED, level);
-#if DISPLAY
-    display.setBrightness(level);
-#endif
 }
 
 void reset(uintptr_t) {

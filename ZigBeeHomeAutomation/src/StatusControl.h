@@ -1,7 +1,6 @@
 #pragma once
 
-class StatusControl
-{
+class StatusControl {
 	int _led = -1;
 	Bounce _bounce;
 	bool _isHigh = false;
