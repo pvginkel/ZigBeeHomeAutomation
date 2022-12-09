@@ -26,6 +26,22 @@ class DeviceManager {
 		RetrievingAssociationIndication
 	};
 
+	class ReportingAttribute {
+		Attribute* _attribute;
+		time_t _defaultResponseExpiration;
+
+	public:
+		ReportingAttribute() : _attribute(nullptr), _defaultResponseExpiration(0) {
+		}
+
+		ReportingAttribute(Attribute* attribute, time_t defaultResponseExpiration)
+			: _attribute(attribute), _defaultResponseExpiration(attribute ? defaultResponseExpiration : 0) {
+		}
+
+		Attribute* getAttribute() const { return _attribute; }
+		time_t getDefaultResponseExpiration() const { return _defaultResponseExpiration; }
+	};
+
 	static constexpr int AT_COMMAND_RETRY_MS = 1000;
 	static constexpr int ASSOCIATION_INDICATION_REFRESH_MS = 1000;
 	static constexpr time_t WAIT_FOR_DEFAULT_RESPONSE_TIMEOUT_MS = 120000ul; // 2 minutes
@@ -50,8 +66,7 @@ class DeviceManager {
 	uint8_t _associationIndication;
 	time_t _associationIndicationMillis;
 
-	Attribute* _pendingDefaultResponseAttribute;
-	time_t _pendingDefaultResponseExpiration;
+	ReportingAttribute _reportingAttribute;
 
 	CallbackArgs<const String&> _setStatus;
 	CallbackArgs<ConnectionStatus> _setConnected;
@@ -79,6 +94,7 @@ private:
 
 	Device* getDeviceByEndpoint(uint8_t endpointId);
 
+	void sendAttributeReport();
 	Attribute* reportAttribute();
 
 	void atCommandCallback(AtCommandResponse& command);

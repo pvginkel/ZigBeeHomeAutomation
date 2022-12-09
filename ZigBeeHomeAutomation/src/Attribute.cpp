@@ -30,23 +30,44 @@ AttributeReportStatus Attribute::report(XBee& device, Memory& buffer) {
 		return AttributeReportStatus::None;
 	}
 
-	// Detect whether the timeout for the default response expired.
+	// Anything to report?
 
-	bool resend = false;
-
-	if (_reporting->transactionSequenceNumber != 0) {
-		if (millis() >= _reporting->defaultResponseTimeout) {
-			DEBUG(F("Resending status report because the default response wasn't received within "), _reporting->defaultResponseBackoff, "ms");
-			resend = true;
-		}
-	}
-
-	// Only send something when the attribute is dirty or when we're resending.
-
-	if (!(_dirty || resend)) {
+	if (!_dirty) {
 		return AttributeReportStatus::None;
 	}
 
+	// Reset backoff.
+
+	report(device, buffer, false);
+
+	return AttributeReportStatus::Reported;
+}
+
+AttributeReportStatus Attribute::resendReport(XBee& device, Memory& buffer) {
+	if (!_reporting) {
+		return AttributeReportStatus::None;
+	}
+
+	// No resend pending?
+
+	if (_reporting->transactionSequenceNumber == 0) {
+		return AttributeReportStatus::None;
+	}
+
+	// Too early still?
+
+	if (millis() < _reporting->defaultResponseTimeout) {
+		return AttributeReportStatus::Pending;
+	}
+
+	DEBUG(F("Resending status report because the default response wasn't received within "), _reporting->defaultResponseBackoff, "ms");
+
+	report(device, buffer, true);
+
+	return AttributeReportStatus::Reported;
+}
+
+void Attribute::report(XBee& device, Memory& buffer, bool resend) {
 	DEBUG(
 		F("Reporting attribute endpoint "), _cluster->getDevice()->getEndpointId(),
 		F(" cluster "), _cluster->getClusterId(),
@@ -95,14 +116,6 @@ AttributeReportStatus Attribute::report(XBee& device, Memory& buffer) {
 		_reporting->defaultResponseBackoff = RESEND_DELAY_MS;
 	}
 	_reporting->defaultResponseTimeout = millis() + _reporting->defaultResponseBackoff;
-
-	return AttributeReportStatus::Reported;
-}
-
-void Attribute::resendReport(XBee& device, Memory& buffer) {
-	if (_reporting) {
-		report(device, buffer);
-	}
 }
 
 bool Attribute::processDefaultResponse(uint8_t transactionSequenceNumber, uint8_t commandId, Status status) {

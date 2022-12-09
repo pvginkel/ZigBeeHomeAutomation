@@ -12,8 +12,7 @@ XBeeAddress64 DeviceManager::BROADCAST_ADDR64;
 
 DeviceManager::DeviceManager() :
 	_shortAddress(0), _payload{}, _commandBuilder(nullptr), _commandBuilderOffset(0),
-	_state(State::Connected), _lastSendMillis(0), _associationIndication(0xff), _associationIndicationMillis(0),
-	_pendingDefaultResponseAttribute(nullptr), _pendingDefaultResponseExpiration(0) {
+	_state(State::Connected), _lastSendMillis(0), _associationIndication(0xff), _associationIndicationMillis(0) {
 	//    onResponse(printResponseCb, (uintptr_t) (Print * ) & Serial);
 	_device.onZBExplicitRxResponse(
 		[](ZBExplicitRxResponse& status, uintptr_t data) { ((DeviceManager*)data)->explicitRxCallback(status); },
@@ -338,15 +337,15 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 				if (request.commandIdentifier() == (int)CommandIdentifier::DefaultResponse) {
 					bool handled = false;
 
-					if (_pendingDefaultResponseAttribute) {
+					if (_reportingAttribute.getAttribute()) {
 						auto defaultResponseFrame = DefaultResponseFrame::read(frameBuffer);
 
-						if (_pendingDefaultResponseAttribute->processDefaultResponse(
+						if (_reportingAttribute.getAttribute()->processDefaultResponse(
 							request.transactionSequenceNumber(),
 							defaultResponseFrame.getCommandId(),
 							defaultResponseFrame.getStatus()
 						)) {
-							_pendingDefaultResponseAttribute = nullptr;
+							_reportingAttribute = ReportingAttribute();
 							handled = true;
 						}
 					}
@@ -505,25 +504,7 @@ void DeviceManager::setCommandBuilder(command_builder_t commandBuilder) {
 void DeviceManager::update() {
 	_device.loop();
 
-	auto currentMillis = millis();
-	if (_pendingDefaultResponseAttribute) {
-		if (currentMillis < _pendingDefaultResponseExpiration) {
-			Memory buffer(_payload);
-			_pendingDefaultResponseAttribute->resendReport(_device, buffer);
-		}
-		else {
-			DEBUG(F("Clearing pending default response attribute"));
-
-			_pendingDefaultResponseAttribute = nullptr;
-			_pendingDefaultResponseExpiration = 0;
-		}
-	}
-	else {
-		_pendingDefaultResponseAttribute = reportAttribute();
-		if (_pendingDefaultResponseAttribute) {
-			_pendingDefaultResponseExpiration = currentMillis + WAIT_FOR_DEFAULT_RESPONSE_TIMEOUT_MS;
-		}
-	}
+	sendAttributeReport();
 
 	esp8266_yield();
 
@@ -546,6 +527,36 @@ void DeviceManager::update() {
 			auto command = associationIndicationCommand();
 			_device.send(command);
 		}
+	}
+}
+
+void DeviceManager::sendAttributeReport() {
+	auto currentMillis = millis();
+
+	// Did we pass the resend expiration?
+
+	if (currentMillis >= _reportingAttribute.getDefaultResponseExpiration()) {
+		_reportingAttribute = ReportingAttribute();
+	}
+
+	// Resend a pending attribute and clear if it didn't resend.
+
+	if (_reportingAttribute.getAttribute()) {
+		Memory buffer(_payload);
+		if (_reportingAttribute.getAttribute()->resendReport(_device, buffer) == AttributeReportStatus::None) {
+			_reportingAttribute = ReportingAttribute();
+		}
+	}
+
+	// Report a new attribute if we're not resending.
+
+	if (!_reportingAttribute.getAttribute()) {
+		auto attribute = reportAttribute();
+
+		_reportingAttribute = ReportingAttribute(
+			attribute,
+			currentMillis + WAIT_FOR_DEFAULT_RESPONSE_TIMEOUT_MS
+		);
 	}
 }
 

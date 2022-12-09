@@ -2,6 +2,7 @@
 
 enum class AttributeReportStatus {
     None,
+    Pending,
     Reported
 };
 
@@ -44,13 +45,14 @@ public:
 
     void configureReporting(const XBeeAddress64& destinationAddress, uint16_t destinationShortAddress, uint8_t destinationEndpoint, uint16_t minimumInterval, uint16_t maximumInterval, Memory& memory);
     AttributeReportStatus report(XBee& device, Memory& buffer);
-    void resendReport(XBee& device, Memory& buffer);
+    AttributeReportStatus resendReport(XBee& device, Memory& buffer);
     bool processDefaultResponse(uint8_t transactionSequenceNumber, uint8_t commandId, Status status);
     virtual void writeValue(Memory& memory) = 0;
 
 	Attribute& operator=(const Attribute&) = delete;
 
 private:
+    void report(XBee& device, Memory& buffer, bool resend);
     void resetPendingDefaultResponse();
 
 protected:
