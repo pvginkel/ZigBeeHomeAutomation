@@ -2,18 +2,14 @@
 
 class Device {
     uint8_t _endpointId;
-    LinkedList<Cluster*> _clusters;
+    ArrayList<Cluster*> _clusters;
     uint16_t _deviceId;
 
 public:
     Device(uint8_t endpointId, uint16_t deviceId);
 
-    uint8_t getEndpointId() {
-        return _endpointId;
-    }
-    uint16_t getDeviceId() {
-        return _deviceId;
-    }
+    uint8_t getEndpointId() { return _endpointId; }
+    uint16_t getDeviceId() { return _deviceId; }
 
 	void addCluster(Cluster& cluster);
     Cluster *getClusterById(uint16_t clusterId);
@@ -21,8 +17,10 @@ public:
     Cluster *getClusterByIndex(int index);
 
     Status processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
+    Attribute* reportAttribute(XBee& device, Memory& buffer);
 
 private:
     Status processGeneralReadAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
     Status processGeneralDiscoverAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
+    Status processGeneralConfigureReportingCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
 };

@@ -40,11 +40,15 @@ static void reportSensors();
 
 MsTemperatureMeasurementCluster temperatureMeasurementCluster(ClusterType::Output);
 MsRelativeHumidityCluster relativeHumidityCluster(ClusterType::Output);
-MsIlluminanceMeasurementCluster photoResistorCluster(ClusterType::Output);
 
-AttributeUInt16* photoResistor33kMeasuredValue;
-AttributeUInt16* photoResistor60kMeasuredValue;
-AttributeUInt16* photoResistor200kMeasuredValue;
+Device photoResistorDevice33k(2, 2);
+MsIlluminanceMeasurementCluster photoResistorCluster33k(ClusterType::Output);
+
+Device photoResistorDevice60k(3, 2);
+MsIlluminanceMeasurementCluster photoResistorCluster60k(ClusterType::Output);
+
+Device photoResistorDevice200k(4, 2);
+MsIlluminanceMeasurementCluster photoResistorCluster200k(ClusterType::Output);
 
 void setup() {
 	deviceManager.addDevice(sensorDevice);
@@ -57,21 +61,32 @@ void setup() {
 	sensorDevice.addCluster(relativeHumidityCluster);
 	relativeHumidityCluster.getMinMeasuredValue()->setValue(MIN_HUMIDITY * SCALE_HUMIDITY);
 	relativeHumidityCluster.getMaxMeasuredValue()->setValue(MAX_HUMIDITY * SCALE_HUMIDITY);
-	sensorDevice.addCluster(photoResistorCluster);
-	photoResistorCluster.getMinMeasuredValue()->setValue(0);
-	photoResistorCluster.getMaxMeasuredValue()->setValue(1023);
 
-	photoResistor33kMeasuredValue = new AttributeUInt16(0x0201, DataType::UInt16);
-	photoResistorCluster.addAttribute(photoResistor33kMeasuredValue);
-	photoResistor60kMeasuredValue = new AttributeUInt16(0x0202, DataType::UInt16);
-	photoResistorCluster.addAttribute(photoResistor60kMeasuredValue);
-	photoResistor200kMeasuredValue = new AttributeUInt16(0x0203, DataType::UInt16);
-	photoResistorCluster.addAttribute(photoResistor200kMeasuredValue);
+	deviceManager.addDevice(photoResistorDevice33k);
 
+	photoResistorDevice33k.addCluster(photoResistorCluster33k);
+	photoResistorCluster33k.getMinMeasuredValue()->setValue(0);
+	photoResistorCluster33k.getMaxMeasuredValue()->setValue(1023);
+
+	deviceManager.addDevice(photoResistorDevice60k);
+
+	photoResistorDevice60k.addCluster(photoResistorCluster60k);
+	photoResistorCluster60k.getMinMeasuredValue()->setValue(0);
+	photoResistorCluster60k.getMaxMeasuredValue()->setValue(1023);
+
+	deviceManager.addDevice(photoResistorDevice200k);
+
+	photoResistorDevice200k.addCluster(photoResistorCluster200k);
+	photoResistorCluster200k.getMinMeasuredValue()->setValue(0);
+	photoResistorCluster200k.getMaxMeasuredValue()->setValue(1023);
+
+	Serial.begin(115200);
 	while (!Serial);
 
 	DEBUG(F("Serial ready"));
 
+	// Force a report if the status button is clicked.
+	status.onClick([](uintptr_t) { lastReport = 0; });
 	status.onReset([](uintptr_t) { deviceManager.performReset(); });
 	status.setBounce(Bounce(IO_PB, 50));
 	status.setLed(IO_STATUS_LED);
@@ -129,17 +144,11 @@ static void reportSensors() {
 	DEBUG(F("Temperature "), temperature, F(", humidity "), humidity);
 
 	auto photoResistor33 = analogRead(IO_PHOTO_RESISTOR_33);
-	photoResistor33kMeasuredValue->setValue(photoResistor33);
+	photoResistorCluster33k.getMeasuredValue()->setValue(photoResistor33);
 
 	auto photoResistor60 = analogRead(IO_PHOTO_RESISTOR_60);
-	photoResistor60kMeasuredValue->setValue(photoResistor60);
+	photoResistorCluster60k.getMeasuredValue()->setValue(photoResistor60);
 
 	auto photoResistor200 = analogRead(IO_PHOTO_RESISTOR_200);
-	photoResistor200kMeasuredValue->setValue(photoResistor200);
-
-	auto photoResistorReport =
-		dip1.read()
-		? photoResistor33
-		: (dip2.read() ? photoResistor60 : photoResistor200);
-	photoResistorCluster.getMeasuredValue()->setValue(photoResistorReport);
+	photoResistorCluster200k.getMeasuredValue()->setValue(photoResistor200);
 }

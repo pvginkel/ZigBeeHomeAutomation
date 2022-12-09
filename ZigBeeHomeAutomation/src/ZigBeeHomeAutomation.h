@@ -1,11 +1,11 @@
 #pragma once
 
-#include <LinkedList.h>
 #include <XBee.h>
 #include <Bounce2.h>
 
 #include "Arduino.h"
 
+#include "ArrayList.h"
 #include "Support.h"
 #include "Buffer.h"
 #include "DataType.h"

@@ -7,8 +7,6 @@ enum class ConnectionStatus {
 };
 
 class DeviceManager {
-	static constexpr uint16_t ZhaProfileId = 0x0104;
-
 	enum class ZdoCommand : uint16_t {
 		SimpleDescriptorRequest = 0x0004,
 		SimpleDescriptorResponse = 0x8004,
@@ -28,16 +26,31 @@ class DeviceManager {
 		RetrievingAssociationIndication
 	};
 
+	class ReportingAttribute {
+		Attribute* _attribute;
+		time_t _defaultResponseExpiration;
+
+	public:
+		ReportingAttribute() : _attribute(nullptr), _defaultResponseExpiration(0) {
+		}
+
+		ReportingAttribute(Attribute* attribute, time_t defaultResponseExpiration)
+			: _attribute(attribute), _defaultResponseExpiration(attribute ? defaultResponseExpiration : 0) {
+		}
+
+		Attribute* getAttribute() const { return _attribute; }
+		time_t getDefaultResponseExpiration() const { return _defaultResponseExpiration; }
+	};
+
 	static constexpr int AT_COMMAND_RETRY_MS = 1000;
 	static constexpr int ASSOCIATION_INDICATION_REFRESH_MS = 1000;
-
-	static constexpr int REPORT_ATTRIBUTES_DELAY_MS = 1000;
+	static constexpr time_t WAIT_FOR_DEFAULT_RESPONSE_TIMEOUT_MS = 120000ul; // 2 minutes
 
 	static XBeeAddress64 BROADCAST_ADDR64;
 	static constexpr uint16_t BROADCAST_ADDR16 = 0;
 	static constexpr uint16_t ANNOUNCE_BROADCAST_ADDR16 = 0xfffc;
 
-	LinkedList<Device*> _deviceList;
+	ArrayList<Device*> _deviceList;
 	XBeeAddress64 _address;
 	uint16_t _shortAddress;
 
@@ -53,12 +66,14 @@ class DeviceManager {
 	uint8_t _associationIndication;
 	time_t _associationIndicationMillis;
 
-	time_t _lastReportAttributes;
+	ReportingAttribute _reportingAttribute;
 
 	CallbackArgs<const String&> _setStatus;
 	CallbackArgs<ConnectionStatus> _setConnected;
 
 public:
+	static constexpr uint16_t ZHA_PROFILE_ID = 0x0104;
+
 	DeviceManager();
 	void begin(Stream& stream);
 	void performReset();
@@ -75,15 +90,16 @@ public:
 
 private:
 	void sendAnnounce();
-	void processZDO(XBeeAddress64 remoteAddr64, uint16_t remoteAddr16, uint16_t clusterId, uint8_t* frameData, uint8_t frameDataLength);
+	void processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clusterId, uint8_t* frameData, uint8_t frameDataLength);
 
 	Device* getDeviceByEndpoint(uint8_t endpointId);
 
-	void reportAttributes();
+	void sendAttributeReport();
+	Attribute* reportAttribute();
 
-	void atCommandCallback(AtCommandResponse& at);
+	void atCommandCallback(AtCommandResponse& command);
 	void modemStatusCallback(ModemStatusResponse& status);
-	void explicitRxCallback(ZBExplicitRxResponse& status);
+	void explicitRxCallback(ZBExplicitRxResponse& resp);
 
 	void setCommandBuilder(command_builder_t commandBuilder);
 	bool sendNextCommand();

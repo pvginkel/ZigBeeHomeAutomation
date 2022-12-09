@@ -47,6 +47,7 @@ void setup()
     clockDevice.getBasicCluster().getManufacturerName()->setValue(String(F("Pieter")));
     clockDevice.getBasicCluster().getModelId()->setValue(String(F("The Big Clock")));
 
+    Serial.begin(115200);
     while (!Serial);
 
     DEBUG(F("Serial ready"));

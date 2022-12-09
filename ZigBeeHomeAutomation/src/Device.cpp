@@ -5,6 +5,7 @@ Device::Device(uint8_t endpointId, uint16_t deviceId)
 }
 
 void Device::addCluster(Cluster& cluster) {
+	cluster._device = this;
 	_clusters.add(&cluster);
 }
 
@@ -13,13 +14,13 @@ int Device::getClusterCount() {
 }
 
 Cluster* Device::getClusterByIndex(int index) {
-	return _clusters.get(index);
+	return _clusters[index];
 }
 
 Cluster* Device::getClusterById(uint16_t clusterId) {
-	for (uint8_t i = 0; i < _clusters.size(); i++) {
-		if (_clusters.get(i)->getClusterId() == clusterId) {
-			return _clusters.get(i);
+	for (auto cluster : _clusters) {
+		if (cluster->getClusterId() == clusterId) {
+			return cluster;
 		}
 	}
 	return nullptr;
@@ -33,10 +34,23 @@ Status Device::processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRx
 			return processGeneralReadAttributesCommand(frame, request, message, response);
 		case CommandIdentifier::DiscoverAttributes:
 			return processGeneralDiscoverAttributesCommand(frame, request, message, response);
+		case CommandIdentifier::ConfigureReporting:
+			return processGeneralConfigureReportingCommand(frame, request, message, response);
 		default:
 			DEBUG(F("Received unimplemented command "), String((uint8_t)commandIdentifier, HEX));
 			return Status::UnsupportedGeneralCommand;
 	}
+}
+
+Attribute* Device::reportAttribute(XBee& device, Memory& buffer) {
+	for (auto cluster : _clusters) {
+		auto attribute = cluster->reportAttribute(device, buffer);
+		if (attribute) {
+			return attribute;
+		}
+	}
+
+	return nullptr;
 }
 
 Status Device::processGeneralReadAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {
@@ -135,6 +149,94 @@ Status Device::processGeneralDiscoverAttributesCommand(Frame& frame, Memory& req
 	}
 
 	DEBUG(F("  Done"));
+
+	return Status::Success;
+}
+
+Status Device::processGeneralConfigureReportingCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {
+
+	/*
+	  Command
+	  --------------------------------------------------------------------------------------
+	  |  Bits: 24  |      Variable       |      Variable       | ... |      Variable       |
+	  |-------------------------------------------------------------------------------------
+	  | ZCL Header |  Attribute Record 1 |  Attribute Record 2 | ... |  Attribute Record n |
+	  --------------------------------------------------------------------------------------
+	  Attribute Record
+	  ----------------------------------------------------------------------------------------------------------------------------------------
+	  |  Bits: 8  |     16       |    0/8    |           0/16             |            0/16            |     0/Variable     |      0/16      |
+	  |---------------------------------------------------------------------------------------------------------------------------------------
+	  | Direction | Attribute ID | Data Type | Minimum Reporting Interval | Maximum Reporting Interval | Reeportable Change | Timeout Period |
+	  |---------------------------------------------------------------------------------------------------------------------------------------
+	  If Direction is 0x00: Uses fields Attribute Id, Data Type, Minimum Reporting Interval, Maximum Reporting Interval, Reportable Change
+							Doesn't use field Timeout Period
+	  If Direction is 0x01: Uses field Timeout Period
+							Doesn't use fields Data Type, Minimum Reporting Interval, Maximum Reporting Interval, Reportable Change
+	  For discrete (non-analog) data types, Reportable Change field is omitted.
+
+	  Response payload
+	  -----------------------------------------------------------------------------------
+	  |  Bits: 24  |         32         |         32         | ... |         32         |
+	  |----------------------------------------------------------------------------------
+	  | ZCL Header | Attribute Record 1 | Attribute Record 2 | ... | Attribute Record n |
+	  -----------------------------------------------------------------------------------
+	  Attribute Record
+	  --------------------------------------
+	  | Bits: 8 |     8     |      16      |
+	  --------------------------------------
+	  | Status  | Direction | Attribute ID |
+	  --------------------------------------
+	  TODO:
+	  If all attributes are configured for reporting successfully, just return a single record with status SUCCESS.
+	*/
+
+	DEBUG(F("Configure reporting for attribute"));
+
+	auto cluster = getClusterById(message.getClusterId());
+
+	Frame(
+		FrameControl(FrameType::Global, Direction::ToClient, true),
+		frame.transactionSequenceNumber(),
+		(uint8_t)CommandIdentifier::ConfigureReportingResponse
+	).write(response);
+
+	ConfigureReportingType type;
+	while (ConfigureReportingFrame::readNextElementType(request, type)) {
+		if (type == ConfigureReportingType::Receive) {
+			ERROR(F("NOT IMPLEMENTED"));
+			break;
+		}
+
+		if (type == ConfigureReportingType::Send) {
+			auto element = ConfigureReportingFrame::readSendElement(request);
+
+			auto attribute = cluster->getAttributeById(element.getAttributeId());
+
+			if (attribute) {
+				DEBUG(F("  Configuring reporting for attribute "), element.getAttributeId(), F(" data type "), String((int)element.getDataType(), HEX), F(" minimum interval "), element.getMinimumInterval(), F(" maximum interval "), element.getMaximumInterval());
+
+				if (element.getDataType() != attribute->getDataType()) {
+					ConfigureReportingResponseFrame::writeAttribute(response, Status::InvalidDataType, type, element.getAttributeId());
+				}
+				else {
+					attribute->configureReporting(
+						message.getRemoteAddress64(),
+						message.getRemoteAddress16(),
+						message.getSrcEndpoint(),
+						element.getMinimumInterval(),
+						element.getMaximumInterval(),
+						request
+					);
+					ConfigureReportingResponseFrame::writeAttribute(response, Status::Success, type, element.getAttributeId());
+				}
+			}
+			else {
+				DEBUG(F("  Unsupported attribute "), element.getAttributeId());
+
+				ConfigureReportingResponseFrame::writeAttribute(response, Status::UnsupportedAttribute, type, element.getAttributeId());
+			}
+		}
+	}
 
 	return Status::Success;
 }
