@@ -32,7 +32,7 @@ class Attribute {
 
 public:
 	Attribute(uint16_t attributeId, DataType dataType) :
-		_dataType(dataType), _attributeId(attributeId), _dirty(false), _reporting(nullptr) {
+		_dataType(dataType), _attributeId(attributeId), _dirty(false), _reporting(nullptr), _cluster(nullptr) {
 	}
 	Attribute(const Attribute&) = delete;
 	virtual ~Attribute();

@@ -1,6 +1,6 @@
 #include "ZigBeeHomeAutomation.h"
 
-Cluster::Cluster(uint16_t clusterId, ClusterType type) : _clusterId(clusterId), _type(type) {
+Cluster::Cluster(uint16_t clusterId, ClusterType type) : _clusterId(clusterId), _type(type), _device(nullptr) {
 }
 
 Cluster::~Cluster() {
