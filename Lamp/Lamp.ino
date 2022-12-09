@@ -25,7 +25,7 @@ SoftwareSerial xbeeSerial(IO_XBEE_RX, IO_XBEE_TX);
 DeviceManager deviceManager;
 BasicDevice lightBulb(1, 1, PowerSource::DCSource);
 StatusControl status;
-Light light;
+Light light(5);
 
 static bool isOn();
 static void toggle(uintptr_t);
