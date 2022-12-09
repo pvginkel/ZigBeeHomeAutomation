@@ -8,9 +8,6 @@
 #define IO_PB 4
 #define IO_STATUS_LED 6
 #define IO_DHT 7
-#define IO_DIP_1 10
-#define IO_DIP_2 11
-#define IO_DIP_3 12
 #define IO_PHOTO_RESISTOR_33 A0
 #define IO_PHOTO_RESISTOR_60 A1
 #define IO_PHOTO_RESISTOR_200 A2
@@ -32,9 +29,6 @@ BasicDevice sensorDevice(1, 1, PowerSource::DCSource);
 StatusControl status;
 DHT dht(IO_DHT, DHT22);
 time_t lastReport;
-Bounce dip1(IO_DIP_1, 50);
-Bounce dip2(IO_DIP_2, 50);
-Bounce dip3(IO_DIP_3, 50);
 
 static void reportSensors();
 
@@ -91,10 +85,6 @@ void setup() {
 	status.setBounce(Bounce(IO_PB, 50));
 	status.setLed(IO_STATUS_LED);
 
-	pinMode(IO_PB, INPUT);
-	pinMode(IO_DIP_1, INPUT);
-	pinMode(IO_DIP_2, INPUT);
-	pinMode(IO_DIP_3, INPUT);
 	pinMode(IO_PHOTO_RESISTOR_33, INPUT);
 	pinMode(IO_PHOTO_RESISTOR_60, INPUT);
 	pinMode(IO_PHOTO_RESISTOR_200, INPUT);
@@ -117,17 +107,6 @@ void loop() {
 }
 
 static void reportSensors() {
-	dip1.update();
-	dip2.update();
-	dip3.update();
-
-	// Verify that just one of the dip switches is in the on position.
-	if ((dip1.read() ? 1 : 0) + (dip2.read() ? 1 : 0) + (dip3.read() ? 1 : 0) != 1) {
-		// Reset last report so we report immediately when the DIP switches change.
-		lastReport = 0;
-		return;
-	}
-
 	auto currentMillis = millis();
 	if (lastReport != 0 && currentMillis - lastReport < REPORT_INTERVAL_MS) {
 		return;
