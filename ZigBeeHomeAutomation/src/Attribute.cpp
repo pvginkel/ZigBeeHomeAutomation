@@ -111,11 +111,13 @@ void Attribute::report(XBee& device, Memory& buffer, bool resend) {
 
 	buffer.setPosition(0);
 
-	uint8_t transactionSequenceNumber = device.getNextFrameId();
+	bool broadcasting = _reporting->destinationAddress.getMsb() == 0 && _reporting->destinationAddress.getLsb() == 0;
+
+	uint8_t frameId = device.getNextFrameId();
 
 	Frame(
-		FrameControl(FrameType::Global, Direction::ToClient, false),
-		transactionSequenceNumber,
+		FrameControl(FrameType::Global, Direction::ToClient, broadcasting),
+		broadcasting ? 0 : frameId,
 		(uint8_t)CommandIdentifier::ReportAttributes
 	).write(buffer);
 
@@ -131,7 +133,7 @@ void Attribute::report(XBee& device, Memory& buffer, bool resend) {
 		0, // option
 		buffer.getData(),
 		buffer.getPosition(),
-		transactionSequenceNumber,
+		frameId,
 		_cluster->getDevice()->getEndpointId(),
 		_reporting->destinationEndpoint,
 		_cluster->getClusterId(),
@@ -139,15 +141,20 @@ void Attribute::report(XBee& device, Memory& buffer, bool resend) {
 	);
 	device.send(message);
 
-	_reporting->transactionSequenceNumber = transactionSequenceNumber;
-	// Exponential backoff on resend.
-	if (resend) {
-		_reporting->defaultResponseBackoff = _reporting->defaultResponseBackoff * 2;
+	if (broadcasting) {
+		resetPendingDefaultResponse();
 	}
 	else {
-		_reporting->defaultResponseBackoff = 1;
+		_reporting->transactionSequenceNumber = frameId;
+		// Exponential backoff on resend.
+		if (resend) {
+			_reporting->defaultResponseBackoff = _reporting->defaultResponseBackoff * 2;
+		}
+		else {
+			_reporting->defaultResponseBackoff = 1;
+		}
+		_reporting->defaultResponseTimeout = millis() + _reporting->defaultResponseBackoff * RESEND_DELAY_MS;
 	}
-	_reporting->defaultResponseTimeout = millis() + _reporting->defaultResponseBackoff * RESEND_DELAY_MS;
 }
 
 bool Attribute::processDefaultResponse(uint8_t transactionSequenceNumber, uint8_t commandId, Status status) {
