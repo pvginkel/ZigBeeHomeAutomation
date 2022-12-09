@@ -10,8 +10,27 @@
 #define FONT _FONT(FONT_WIDTH, FONT_HEIGHT)
 
 void Display::update() {
+    // If the auto shutdown timer is configured, and we've been on
+    // for too long, and the lamp isn't on, clear the screen.
+
+    auto currentMillis = millis();
+
+    if (
+        _screen &&
+        _lastUpdate &&
+        _autoOffTime &&
+        !_brightness &&
+        (_lastUpdate + _autoOffTime) < currentMillis
+    ) {
+        _lastUpdate = 0;
+        _screen->clearBuffer();
+        _screen->sendBuffer();
+        return;
+    }
+
 	if (_screen && _dirty) {
 		paint();
+        _lastUpdate = currentMillis;
 		_dirty = false;
 	}
 }

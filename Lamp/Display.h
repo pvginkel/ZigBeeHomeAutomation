@@ -11,12 +11,15 @@ class Display {
 	String _status;
 	int _width{};
 	int _height{};
+	time_t _lastUpdate{};
+	time_t _autoOffTime{};
 
 public:
-	void begin(U8G2& screen, int width, int height) {
+	void begin(U8G2& screen, int width, int height, time_t autoOffTime) {
 		_screen = &screen;
 		_width = width;
 		_height = height;
+		_autoOffTime = autoOffTime;
 		_dirty = true;
 	}
 

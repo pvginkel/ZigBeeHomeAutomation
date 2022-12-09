@@ -91,7 +91,7 @@ void setup()
 
 #if DISPLAY
     u8g2.begin();
-    display.begin(u8g2, SCREEN_WIDTH, SCREEN_HEIGHT);
+    display.begin(u8g2, SCREEN_WIDTH, SCREEN_HEIGHT, 5000ul);
 #endif
 
     status.onClick(toggle);
