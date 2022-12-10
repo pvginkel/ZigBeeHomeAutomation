@@ -18,6 +18,7 @@
   </ItemGroup>
   <ItemGroup>
     <!-- <ClInclude Include="$(MSBuildThisFileDirectory)ZigBeeHomeAutomation.h" /> -->
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\ArrayList.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Attribute.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\BasicDevice.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Buffer.h" />
@@ -46,6 +47,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\DeviceManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Memory.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\StatusControl.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Support.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)README.md" />
