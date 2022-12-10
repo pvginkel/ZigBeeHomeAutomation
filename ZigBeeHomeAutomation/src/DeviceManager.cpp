@@ -239,7 +239,7 @@ void DeviceManager::atCommandCallback(AtCommandResponse& command) {
 			setStatus(getShortAssociationIndicationDescription(_associationIndication));
 		}
 		else {
-			setStatus(String());
+			setStatus(F(""));
 		}
 
 		if (_state == State::RetrievingAssociationIndication && _associationIndication == 0) {
@@ -606,7 +606,7 @@ void DeviceManager::retrieveConfiguration() {
 	setCommandBuilder(buildRetrieveConfigurationCommand);
 }
 
-String DeviceManager::getAssociationIndicationDescription(uint8_t associationIndication) {
+const __FlashStringHelper* DeviceManager::getAssociationIndicationDescription(uint8_t associationIndication) {
 	switch (associationIndication) {
 	case 0x00: return F("Successfully formed or joined a network. (Coordinators form a network, routers and end devices join a network.)");
 	case 0x21: return F("Scan found no PANs");
@@ -627,7 +627,7 @@ String DeviceManager::getAssociationIndicationDescription(uint8_t associationInd
 	}
 }
 
-String DeviceManager::getShortAssociationIndicationDescription(uint8_t associationIndication) {
+const __FlashStringHelper* DeviceManager::getShortAssociationIndicationDescription(uint8_t associationIndication) {
 	switch (associationIndication) {
 	case 0x21: return F("No PANs found");
 	case 0x22: return F("No valid PANs found");
@@ -644,7 +644,7 @@ String DeviceManager::getShortAssociationIndicationDescription(uint8_t associati
 	case 0xAF:
 		return F("Secure join error");
 	case 0xFF: return F("Scanning");
-	default: return String(F("Unknown status 0x")) + String(associationIndication, HEX);
+	default: return F("Unknown status");
 	}
 }
 

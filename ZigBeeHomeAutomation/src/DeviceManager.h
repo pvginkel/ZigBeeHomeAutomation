@@ -68,7 +68,7 @@ class DeviceManager {
 
 	ReportingAttribute _reportingAttribute;
 
-	CallbackArgs<const String&> _setStatus;
+	CallbackArgs<const __FlashStringHelper*> _setStatus;
 	CallbackArgs<ConnectionStatus> _setConnected;
 
 public:
@@ -81,7 +81,7 @@ public:
 
 	void addDevice(Device& device);
 
-	void setStatusCallback(CallbackArgs<const String&>::Func func, uintptr_t data = 0) {
+	void setStatusCallback(CallbackArgs<const __FlashStringHelper*>::Func func, uintptr_t data = 0) {
 		_setStatus.set(func, data);
 	}
 	void setConnectedCallback(CallbackArgs<ConnectionStatus>::Func func, uintptr_t data = 0) {
@@ -108,12 +108,13 @@ private:
 	void retrieveConfiguration();
 
 	void setStatus(const String& status) {
+	void setStatus(const __FlashStringHelper* status) {
 		_setStatus.call(status);
 	}
 	void setConnected(ConnectionStatus connected) {
 		_setConnected.call(connected);
 	}
 
-	static String getAssociationIndicationDescription(uint8_t associationIndication);
-	static String getShortAssociationIndicationDescription(uint8_t associationIndication);
+	static const __FlashStringHelper* getAssociationIndicationDescription(uint8_t associationIndication);
+	static const __FlashStringHelper* getShortAssociationIndicationDescription(uint8_t associationIndication);
 };
