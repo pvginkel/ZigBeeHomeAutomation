@@ -1,6 +1,6 @@
 #include "ZigBeeHomeAutomation.h"
 
-Cluster::Cluster(uint16_t clusterId, ClusterType type) : _clusterId(clusterId), _type(type), _device(nullptr) {
+Cluster::Cluster(uint16_t clusterId, ClusterType type) : _clusterId(clusterId), _type(type) {
 }
 
 Cluster::~Cluster() {
@@ -32,17 +32,6 @@ Attribute* Cluster::getAttributeByIndex(int index) {
 	return _attributes[index];
 }
 
-Attribute* Cluster::reportAttribute(XBee& device, Memory& buffer) {
-	for (auto attribute : _attributes) {
-		if (attribute->report(device, buffer) == AttributeReportStatus::Reported) {
-			return attribute;
-		}
-	}
-
-	return nullptr;
-}
-
 void Cluster::addAttribute(Attribute* attribute) {
-	attribute->_cluster = this;
 	_attributes.add(attribute);
 }

@@ -94,9 +94,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\StatusControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\Attribute.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Support.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

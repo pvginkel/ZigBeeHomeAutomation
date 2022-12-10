@@ -5,7 +5,6 @@ Device::Device(uint8_t endpointId, uint16_t deviceId)
 }
 
 void Device::addCluster(Cluster& cluster) {
-	cluster._device = this;
 	_clusters.add(&cluster);
 }
 
@@ -26,7 +25,7 @@ Cluster* Device::getClusterById(uint16_t clusterId) {
 	return nullptr;
 }
 
-Status Device::processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {
+Status Device::processGeneralCommand(DeviceManager& deviceManager, Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {
 	auto commandIdentifier = (CommandIdentifier)frame.commandIdentifier();
 
 	switch (commandIdentifier) {
@@ -35,22 +34,11 @@ Status Device::processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRx
 		case CommandIdentifier::DiscoverAttributes:
 			return processGeneralDiscoverAttributesCommand(frame, request, message, response);
 		case CommandIdentifier::ConfigureReporting:
-			return processGeneralConfigureReportingCommand(frame, request, message, response);
+			return processGeneralConfigureReportingCommand(deviceManager, frame, request, message, response);
 		default:
 			DEBUG(F("Received unimplemented command "), String((uint8_t)commandIdentifier, HEX));
 			return Status::UnsupportedGeneralCommand;
 	}
-}
-
-Attribute* Device::reportAttribute(XBee& device, Memory& buffer) {
-	for (auto cluster : _clusters) {
-		auto attribute = cluster->reportAttribute(device, buffer);
-		if (attribute) {
-			return attribute;
-		}
-	}
-
-	return nullptr;
 }
 
 Status Device::processGeneralReadAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {
@@ -153,7 +141,7 @@ Status Device::processGeneralDiscoverAttributesCommand(Frame& frame, Memory& req
 	return Status::Success;
 }
 
-Status Device::processGeneralConfigureReportingCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {
+Status Device::processGeneralConfigureReportingCommand(DeviceManager& deviceManager, Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {
 
 	/*
 	  Command
@@ -215,25 +203,56 @@ Status Device::processGeneralConfigureReportingCommand(Frame& frame, Memory& req
 			if (attribute) {
 				DEBUG(F("  Configuring reporting for attribute "), element.getAttributeId(), F(" data type "), String((int)element.getDataType(), HEX), F(" minimum interval "), element.getMinimumInterval(), F(" maximum interval "), element.getMaximumInterval());
 
-				if (element.getDataType() != attribute->getDataType()) {
+				if (
+					element.getDataType() != DataType::NoData &&
+					element.getDataType() != attribute->getDataType()
+				) {
+					DEBUG(F("  Requested data type "), (int)element.getDataType(), F(" did not match attribute data type "), (int)attribute->getDataType());
 					ConfigureReportingResponseFrame::writeAttribute(response, Status::InvalidDataType, type, element.getAttributeId());
+
+					if (element.getDataType() != DataType::NoData) {
+						// Prevent processing of any further report configurations because
+						// we don't know how to skip the data.
+						break;
+					}
+				}
+				else if (element.getMinimumInterval() == 0 && element.getMaximumInterval() == 0xffff) {
+					DEBUG(F("  Disabling attribute reporting"));
+					attribute->setReportingEndpointId(0);
 				}
 				else {
-					attribute->configureReporting(
-						message.getRemoteAddress64(),
-						message.getRemoteAddress16(),
-						message.getSrcEndpoint(),
-						element.getMinimumInterval(),
-						element.getMaximumInterval(),
-						request
-					);
+					auto operatingPanId = deviceManager.getOperatingPanId();
+
+					if (
+						message.getRemoteAddress64().getMsb() == operatingPanId->getMsb() &&
+						message.getRemoteAddress64().getLsb() == operatingPanId->getLsb() &&
+						message.getRemoteAddress16() == 0 &&
+						message.getSrcEndpoint() != 0
+					) {
+						DEBUG(F("  Configuring reporting to coordinator endpoint "), message.getSrcEndpoint());
+						attribute->setReportingEndpointId(message.getSrcEndpoint());
+					}
+					else {
+						DEBUG(F("  Configure report request did not match the default criteria; configuring broadcast reporting"));
+						attribute->setReportingEndpointId(Attribute::REPORT_BROADCAST);
+					}
 					ConfigureReportingResponseFrame::writeAttribute(response, Status::Success, type, element.getAttributeId());
+
+					if (element.getDataType() != DataType::NoData) {
+						attribute->skipValue(request);
+					}
 				}
 			}
 			else {
 				DEBUG(F("  Unsupported attribute "), element.getAttributeId());
 
 				ConfigureReportingResponseFrame::writeAttribute(response, Status::UnsupportedAttribute, type, element.getAttributeId());
+
+				if (element.getDataType() != DataType::NoData) {
+					// Prevent processing of any further report configurations because
+					// we don't know how to skip the data.
+					break;
+				}
 			}
 		}
 	}

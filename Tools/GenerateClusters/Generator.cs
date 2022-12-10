@@ -260,12 +260,9 @@ public class Generator
             cwh.WriteLine("}");
 
             cwh.WriteLine();
-            cwh.UnIndent();
-            cwh.WriteLine("protected:");
+            cwh.WriteLine("void skipValue(Memory& memory) override {");
             cwh.Indent();
-            cwh.WriteLine("void configureReportableChange(Memory& memory) override {");
-            cwh.Indent();
-            cwh.WriteLine("// TODO: Store reportable change value somewhere.");
+            cwh.WriteLine("// TODO: Store reportable change value somewhere. For now, just skip it.");
 
             switch (type.EndianMemoryMethodName)
             {

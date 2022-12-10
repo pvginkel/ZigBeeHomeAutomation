@@ -10,6 +10,7 @@ static AtCommandRequest associationIndicationCommand();
 static AtCommandRequest serialNumberHighCommand();
 static AtCommandRequest serialNumberLowCommand();
 static AtCommandRequest networkAddressCommand();
+static AtCommandRequest operatingPanIdCommand();
 
 DeviceManager::DeviceManager() :
 	_shortAddress(0), _payload{}, _commandBuilder(nullptr), _commandBuilderOffset(0),
@@ -257,6 +258,12 @@ void DeviceManager::atCommandCallback(AtCommandResponse& command) {
 	if (IS_COMMAND(command, "MY")) {
 		_shortAddress = memory.readUInt16Be();
 	}
+	else if (IS_COMMAND(command, "OP")) {
+		_operatingPanId.setMsb(memory.readUInt32Be());
+		_operatingPanId.setLsb(memory.readUInt32Be());
+
+		DEBUG(F("Operating pan ID is 0x"), String(_operatingPanId.getMsb(), HEX), String(_operatingPanId.getLsb(), HEX));
+	}
 	else if (IS_COMMAND(command, "AI")) {
 		_associationIndication = memory.readUInt8();
 		DEBUG(F("Association indication is now: "), getAssociationIndicationDescription(_associationIndication));
@@ -363,29 +370,11 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 				Memory buffer(_payload);
 
 				if (request.commandIdentifier() == (int)CommandIdentifier::DefaultResponse) {
-					bool handled = false;
-
-					if (_reportingAttribute.getAttribute()) {
-						auto defaultResponseFrame = DefaultResponseFrame::read(frameBuffer);
-
-						if (_reportingAttribute.getAttribute()->processDefaultResponse(
-							request.transactionSequenceNumber(),
-							defaultResponseFrame.getCommandId(),
-							defaultResponseFrame.getStatus()
-						)) {
-							_reportingAttribute = ReportingAttribute();
-							handled = true;
-						}
-					}
-
-					if (!handled) {
-						WARN(F("Received a default response without a recipient"));
-					}
-
+					WARN(F("Received a default response without a recipient"));
 					return;
 				}
 
-				auto status = device->processGeneralCommand(request, frameBuffer, resp, buffer);
+				auto status = device->processGeneralCommand(*this, request, frameBuffer, resp, buffer);
 				if (status != Status::Success) {
 					buffer.setPosition(0);
 
@@ -489,21 +478,84 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 	}
 }
 
-Attribute* DeviceManager::reportAttribute() {
+void DeviceManager::reportAttributes() {
 	if (_associationIndication != 0) {
-		return nullptr;
+		return;
 	}
+
+	for (auto device : _deviceList) {
+		for (int i = 0; i < device->getClusterCount(); i++) {
+			auto cluster = device->getClusterByIndex(i);
+			for (int j = 0; j < cluster->getAttributeCount(); j++) {
+				reportAttribute(device, cluster, cluster->getAttributeByIndex(j));
+			}
+		}
+	}
+}
+
+void DeviceManager::reportAttribute(Device* device, Cluster* cluster, Attribute* attribute) {
+	auto reportingEndpointId = attribute->getReportingEndpointId();
+
+	if (!reportingEndpointId) {
+		return;
+	}
+
+	// Anything to report?
+
+	if (!attribute->isDirty()) {
+		return;
+	}
+
+	DEBUG(
+		F("Reporting attribute endpoint "), device->getEndpointId(),
+		F(" cluster "), cluster->getClusterId(),
+		F(" attribute "), attribute->getAttributeId(),
+		F(" value "), attribute->toString(),
+		F(" to "), (reportingEndpointId == Attribute::REPORT_BROADCAST ? F("broadcast") : F("coordinator")),
+		F(" endpoint "), (reportingEndpointId == Attribute::REPORT_BROADCAST ? 1 : reportingEndpointId));
 
 	Memory buffer(_payload);
 
-	for (auto device : _deviceList) {
-		auto attribute = device->reportAttribute(_device, buffer);
-		if (attribute) {
-			return attribute;
-		}
+	Frame(
+		FrameControl(FrameType::Global, Direction::ToClient, true),
+		0,
+		(uint8_t)CommandIdentifier::ReportAttributes
+	).write(buffer);
+
+	ReportAttributesFrame::writeAttribute(buffer, attribute->getAttributeId(), attribute->getDataType());
+	attribute->writeValue(buffer);
+
+	attribute->markClean();
+
+	XBeeAddress64 destinationAddress;
+	uint16_t destinationShortAddress;
+	uint8_t destinationEndpoint;
+
+	if (reportingEndpointId == Attribute::REPORT_BROADCAST) {
+		destinationAddress = BROADCAST_ADDR64;
+		destinationShortAddress = 0;
+		destinationEndpoint = 1;
+	}
+	else {
+		destinationAddress = _operatingPanId;
+		destinationShortAddress = 0;
+		destinationEndpoint = reportingEndpointId;
 	}
 
-	return nullptr;
+	ZBExplicitTxRequest message(
+		destinationAddress,
+		destinationShortAddress,
+		0, // broadcastRadius
+		0, // option
+		buffer.getData(),
+		buffer.getPosition(),
+		_device.getNextFrameId(),
+		device->getEndpointId(),
+		destinationEndpoint,
+		cluster->getClusterId(),
+		DeviceManager::ZHA_PROFILE_ID
+	);
+	_device.send(message);
 }
 
 void DeviceManager::addDevice(Device& device) {
@@ -532,7 +584,7 @@ void DeviceManager::setCommandBuilder(command_builder_t commandBuilder) {
 void DeviceManager::update() {
 	_device.loop();
 
-	sendAttributeReport();
+	reportAttributes();
 
 	esp8266_yield();
 
@@ -555,36 +607,6 @@ void DeviceManager::update() {
 			auto command = associationIndicationCommand();
 			_device.send(command);
 		}
-	}
-}
-
-void DeviceManager::sendAttributeReport() {
-	auto currentMillis = millis();
-
-	// Did we pass the resend expiration?
-
-	if (currentMillis >= _reportingAttribute.getDefaultResponseExpiration()) {
-		_reportingAttribute = ReportingAttribute();
-	}
-
-	// Resend a pending attribute and clear if it didn't resend.
-
-	if (_reportingAttribute.getAttribute()) {
-		Memory buffer(_payload);
-		if (_reportingAttribute.getAttribute()->resendReport(_device, buffer) == AttributeReportStatus::None) {
-			_reportingAttribute = ReportingAttribute();
-		}
-	}
-
-	// Report a new attribute if we're not resending.
-
-	if (!_reportingAttribute.getAttribute()) {
-		auto attribute = reportAttribute();
-
-		_reportingAttribute = ReportingAttribute(
-			attribute,
-			currentMillis + WAIT_FOR_DEFAULT_RESPONSE_TIMEOUT_MS
-		);
 	}
 }
 
@@ -706,7 +728,8 @@ AT_BUILDER(networkAddressCommand, "MY");
 AT_BUILDER(apiModeCommand, "AP", 2);
 AT_BUILDER(sleepModeCommand, "SM", 0);
 AT_BUILDER(operatingChannelCommand, "CH");
-AT_BUILDER(operatingPanIdCommand, "OI");
+AT_BUILDER(operatingPanIdCommand, "OP");
+AT_BUILDER(operatingPanIdShortCommand, "OI");
 AT_BUILDER(associationIndicationCommand, "AI");
 AT_BUILDER(parentNetworkAddressCommand, "MP");
 
@@ -734,7 +757,8 @@ AtCommandRequest buildResetCommand(uint8_t index) {
 AtCommandRequest buildRetrieveConfigurationCommand(uint8_t index) {
 	switch (index) {
 	case 0: return networkAddressCommand();
-	case 1: return associationIndicationCommand();
+	case 1: return operatingPanIdCommand();
+	case 2: return associationIndicationCommand();
 	default: return {};
 	}
 }
@@ -743,7 +767,7 @@ AtCommandRequest buildReadDiagnosticsCommand(uint8_t index) {
 	switch (index) {
 	case 0: return associationIndicationCommand();
 	case 1: return operatingChannelCommand();
-	case 2: return operatingPanIdCommand();
+	case 2: return operatingPanIdShortCommand();
 	case 3: return parentNetworkAddressCommand();
 	default: return {};
 	}

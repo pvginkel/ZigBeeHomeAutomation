@@ -1,65 +1,39 @@
 #pragma once
 
-enum class AttributeReportStatus {
-    None,
-    Pending,
-    Reported
-};
-
 class Cluster;
 
 class Attribute {
-    static constexpr time_t RESEND_DELAY_MS = 5000;
-
-    struct Reporting {
-        XBeeAddress64 destinationAddress;
-        uint16_t destinationShortAddress;
-        uint8_t destinationEndpoint;
-        uint16_t minimumInterval;
-        uint16_t maximumInterval;
-        uint8_t transactionSequenceNumber;
-        time_t defaultResponseTimeout;
-        uint16_t defaultResponseBackoff;
-    };
-
     DataType _dataType;
 	uint16_t _attributeId;
     bool _dirty;
-    Reporting* _reporting;
-    Cluster* _cluster;
-
-    friend Cluster;
+    uint8_t _reportingEndpointId;
 
 public:
+    static constexpr uint8_t REPORT_BROADCAST = 0xff;
+
 	Attribute(uint16_t attributeId, DataType dataType) :
-		_dataType(dataType), _attributeId(attributeId), _dirty(false), _reporting(nullptr), _cluster(nullptr) {
+		_dataType(dataType), _attributeId(attributeId), _dirty(false), _reportingEndpointId(0) {
 	}
 	Attribute(const Attribute&) = delete;
-	virtual ~Attribute();
+    virtual ~Attribute() = default;
 
-    Cluster* getCluster() { return _cluster; }
     uint16_t getAttributeId() { return _attributeId; }
 	DataType getDataType() { return _dataType; }
 
+    uint8_t getReportingEndpointId() { return _reportingEndpointId; }
+    void setReportingEndpointId(uint8_t reportingEndpointId) { _reportingEndpointId = reportingEndpointId; }
+    bool isDirty() { return _dirty; }
+    void markClean() { _dirty = false; }
+
 	virtual String toString() = 0;
 
-    void configureReporting(const XBeeAddress64& destinationAddress, uint16_t destinationShortAddress, uint8_t destinationEndpoint, uint16_t minimumInterval, uint16_t maximumInterval, Memory& memory);
-    void configureBroadcastReporting(uint16_t minimumInterval = 1, uint16_t maximumInterval = 3600);
-    void disableReporting();
-    AttributeReportStatus report(XBee& device, Memory& buffer);
-    AttributeReportStatus resendReport(XBee& device, Memory& buffer);
-    bool processDefaultResponse(uint8_t transactionSequenceNumber, uint8_t commandId, Status status);
     virtual void writeValue(Memory& memory) = 0;
+    virtual void skipValue(Memory& memory) = 0;
 
 	Attribute& operator=(const Attribute&) = delete;
 
-private:
-    void report(XBee& device, Memory& buffer, bool resend);
-    void resetPendingDefaultResponse();
-
 protected:
 	void markDirty() { _dirty = true; }
-    virtual void configureReportableChange(Memory& memory) = 0;
 };
 
 // GENERATION START
@@ -85,9 +59,8 @@ public:
         memory.writeUInt8(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 1);
     }
 };
@@ -114,9 +87,8 @@ public:
         memory.writeUInt16Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 2);
     }
 };
@@ -143,9 +115,8 @@ public:
         memory.writeUInt24Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 3);
     }
 };
@@ -172,9 +143,8 @@ public:
         memory.writeUInt32Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 4);
     }
 };
@@ -201,9 +171,8 @@ public:
         memory.writeUInt40Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 5);
     }
 };
@@ -230,9 +199,8 @@ public:
         memory.writeUInt48Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 6);
     }
 };
@@ -259,9 +227,8 @@ public:
         memory.writeUInt56Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 7);
     }
 };
@@ -288,9 +255,8 @@ public:
         memory.writeUInt64Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 8);
     }
 };
@@ -317,9 +283,8 @@ public:
         memory.writeInt8(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 1);
     }
 };
@@ -346,9 +311,8 @@ public:
         memory.writeInt16Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 2);
     }
 };
@@ -375,9 +339,8 @@ public:
         memory.writeInt24Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 3);
     }
 };
@@ -404,9 +367,8 @@ public:
         memory.writeInt32Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 4);
     }
 };
@@ -433,9 +395,8 @@ public:
         memory.writeInt40Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 5);
     }
 };
@@ -462,9 +423,8 @@ public:
         memory.writeInt48Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 6);
     }
 };
@@ -491,9 +451,8 @@ public:
         memory.writeInt56Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 7);
     }
 };
@@ -520,9 +479,8 @@ public:
         memory.writeInt64Le(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 8);
     }
 };
@@ -549,9 +507,8 @@ public:
         memory.writeSingle(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 4);
     }
 };
@@ -578,9 +535,8 @@ public:
         memory.writeDouble(_value);
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 8);
     }
 };
@@ -612,9 +568,8 @@ public:
         }
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         // TODO: No proper support for String16/Octstr16 yet.
         auto length = memory.readUInt8();
         memory.setPosition(memory.getPosition() + length);
@@ -648,9 +603,8 @@ public:
         }
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         // TODO: No proper support for String16/Octstr16 yet.
         auto length = memory.readUInt8();
         memory.setPosition(memory.getPosition() + length);
@@ -682,9 +636,8 @@ public:
         memory.writeUInt32Le(_value.getTime());
     }
 
-protected:
-    void configureReportableChange(Memory& memory) override {
-        // TODO: Store reportable change value somewhere.
+    void skipValue(Memory& memory) override {
+        // TODO: Store reportable change value somewhere. For now, just skip it.
         memory.setPosition(memory.getPosition() + 10);
     }
 };

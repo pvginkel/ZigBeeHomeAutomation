@@ -100,7 +100,15 @@ void setup() {
 	dht.begin();
 }
 
+int lastFreeMemory = 0;
+
 void loop() {
+	int currentFreeMemory = freeMemory();
+	if (currentFreeMemory != lastFreeMemory) {
+		ERROR(F("Free memory: "), currentFreeMemory);
+		lastFreeMemory = currentFreeMemory;
+	}
+
 	reportSensors();
 	status.update();
 	deviceManager.update();

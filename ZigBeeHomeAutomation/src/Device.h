@@ -1,5 +1,7 @@
 #pragma once
 
+class DeviceManager;
+
 class Device {
     uint8_t _endpointId;
     ArrayList<Cluster*> _clusters;
@@ -16,11 +18,10 @@ public:
     int getClusterCount();
     Cluster *getClusterByIndex(int index);
 
-    Status processGeneralCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
-    Attribute* reportAttribute(XBee& device, Memory& buffer);
+    Status processGeneralCommand(DeviceManager& deviceManager, Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
 
 private:
     Status processGeneralReadAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
     Status processGeneralDiscoverAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
-    Status processGeneralConfigureReportingCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
+    Status processGeneralConfigureReportingCommand(DeviceManager& deviceManager, Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
 };

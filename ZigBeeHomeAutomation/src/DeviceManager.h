@@ -26,32 +26,14 @@ class DeviceManager {
 		RetrievingAssociationIndication
 	};
 
-	class ReportingAttribute {
-		Attribute* _attribute;
-		time_t _defaultResponseExpiration;
-
-	public:
-		ReportingAttribute() : _attribute(nullptr), _defaultResponseExpiration(0) {
-		}
-
-		ReportingAttribute(Attribute* attribute, time_t defaultResponseExpiration)
-			: _attribute(attribute), _defaultResponseExpiration(attribute ? defaultResponseExpiration : 0) {
-		}
-
-		Attribute* getAttribute() const { return _attribute; }
-		time_t getDefaultResponseExpiration() const { return _defaultResponseExpiration; }
-	};
 
 	static constexpr int AT_COMMAND_RETRY_MS = 1000;
 	static constexpr int ASSOCIATION_INDICATION_REFRESH_MS = 1000;
 	static constexpr time_t WAIT_FOR_DEFAULT_RESPONSE_TIMEOUT_MS = 120000ul; // 2 minutes
 
-	static constexpr XBeeAddress64 BROADCAST_ADDR64 = {};
-	static constexpr uint16_t BROADCAST_ADDR16 = 0;
-	static constexpr uint16_t ANNOUNCE_BROADCAST_ADDR16 = 0xfffc;
-
 	ArrayList<Device*> _deviceList;
 	uint16_t _shortAddress;
+	XBeeAddress64 _operatingPanId;
 
 	/* reusable data payload */
 	uint8_t _payload[MAX_FRAME_DATA_SIZE];
@@ -65,15 +47,18 @@ class DeviceManager {
 	uint8_t _associationIndication;
 	time_t _associationIndicationMillis;
 
-	ReportingAttribute _reportingAttribute;
-
 	CallbackArgs<const __FlashStringHelper*> _setStatus;
 	CallbackArgs<ConnectionStatus> _setConnected;
 
 public:
 	static constexpr uint16_t ZHA_PROFILE_ID = 0x0104;
 
+	static constexpr XBeeAddress64 BROADCAST_ADDR64 = {};
+	static constexpr uint16_t BROADCAST_ADDR16 = 0;
+	static constexpr uint16_t ANNOUNCE_BROADCAST_ADDR16 = 0xfffc;
+
 	DeviceManager();
+
 	void begin(Stream& stream);
 	void performReset();
 	void update();
@@ -86,6 +71,9 @@ public:
 	void setConnectedCallback(CallbackArgs<ConnectionStatus>::Func func, uintptr_t data = 0) {
 		_setConnected.set(func, data);
 	}
+	XBeeAddress64* getOperatingPanId() {
+		return &_operatingPanId;
+	}
 
 private:
 	void sendAnnounce();
@@ -93,8 +81,8 @@ private:
 
 	Device* getDeviceByEndpoint(uint8_t endpointId);
 
-	void sendAttributeReport();
-	Attribute* reportAttribute();
+	void reportAttributes();
+	void reportAttribute(Device* device, Cluster* cluster, Attribute* attribute);
 
 	void atCommandCallback(AtCommandResponse& command);
 	void modemStatusCallback(ModemStatusResponse& status);
