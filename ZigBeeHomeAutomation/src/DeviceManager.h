@@ -17,9 +17,9 @@ class DeviceManager {
 		DeviceAnnounce = 0x0013,
 	};
 
-	typedef AtCommandRequest(*command_builder_t)(int);
+	typedef AtCommandRequest(*command_builder_t)(uint8_t);
 
-	enum class State {
+	enum class State : uint8_t {
 		Connected,
 		Resetting,
 		RetrievingConfiguration,
@@ -46,12 +46,11 @@ class DeviceManager {
 	static constexpr int ASSOCIATION_INDICATION_REFRESH_MS = 1000;
 	static constexpr time_t WAIT_FOR_DEFAULT_RESPONSE_TIMEOUT_MS = 120000ul; // 2 minutes
 
-	static XBeeAddress64 BROADCAST_ADDR64;
+	static constexpr XBeeAddress64 BROADCAST_ADDR64 = {};
 	static constexpr uint16_t BROADCAST_ADDR16 = 0;
 	static constexpr uint16_t ANNOUNCE_BROADCAST_ADDR16 = 0xfffc;
 
 	ArrayList<Device*> _deviceList;
-	XBeeAddress64 _address;
 	uint16_t _shortAddress;
 
 	/* reusable data payload */
@@ -60,7 +59,7 @@ class DeviceManager {
 	XBeeWithCallbacks _device;
 
 	command_builder_t _commandBuilder;
-	int _commandBuilderOffset;
+	uint8_t _commandBuilderOffset;
 	State _state;
 	time_t _lastSendMillis;
 	uint8_t _associationIndication;
@@ -107,7 +106,8 @@ private:
 	void retrieveAssociationIndication();	
 	void retrieveConfiguration();
 
-	void setStatus(const String& status) {
+	XBeeAddress64 getAddress();
+
 	void setStatus(const __FlashStringHelper* status) {
 		_setStatus.call(status);
 	}

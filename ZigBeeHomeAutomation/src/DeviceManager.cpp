@@ -3,12 +3,13 @@
 
 #define IS_COMMAND(c, n) ((c).getCommand()[0] == (n)[0] && (c).getCommand()[1] == (n)[1])
 
-static AtCommandRequest buildResetCommand(int index);
-static AtCommandRequest buildRetrieveConfigurationCommand(int index);
-static AtCommandRequest buildReadDiagnosticsCommand(int index);
+static AtCommandRequest buildResetCommand(uint8_t index);
+static AtCommandRequest buildRetrieveConfigurationCommand(uint8_t index);
+static AtCommandRequest buildReadDiagnosticsCommand(uint8_t index);
 static AtCommandRequest associationIndicationCommand();
-
-XBeeAddress64 DeviceManager::BROADCAST_ADDR64;
+static AtCommandRequest serialNumberHighCommand();
+static AtCommandRequest serialNumberLowCommand();
+static AtCommandRequest networkAddressCommand();
 
 DeviceManager::DeviceManager() :
 	_shortAddress(0), _payload{}, _commandBuilder(nullptr), _commandBuilderOffset(0),
@@ -26,8 +27,10 @@ DeviceManager::DeviceManager() :
 		[](AtCommandResponse& command, uintptr_t data) { ((DeviceManager*)data)->atCommandCallback(command); },
 		(uintptr_t)this
 	);
-#if LOG_ERROR
+#if LOG_WARN
 	_device.onPacketError(printErrorCb, (uintptr_t)(Print*)&Serial);
+	_device.onTxStatusResponse(printErrorCb, (uintptr_t)(Print*)&Serial);
+	_device.onZBTxStatusResponse(printErrorCb, (uintptr_t)(Print*)&Serial);
 #endif
 }
 
@@ -35,19 +38,24 @@ DeviceManager::DeviceManager() :
 void DeviceManager::sendAnnounce() {
 	DEBUG(F("Sending announce"));
 
+	auto address = getAddress();
+
 	auto frameId = _device.getNextFrameId();
 
 	uint8_t capability = 0b00001000; /* For now, just receiver on during idle times */
-	uint8_t announce_cluster = 0x13;
+	uint8_t announceCluster = 0x13;
+
 	Memory memory(_payload, 0);
 	memory.writeUInt8(frameId);
 	memory.writeUInt16Le(_shortAddress);
-	memory.writeUInt32Le(_address.getLsb());
-	memory.writeUInt32Le(_address.getMsb());
+	memory.writeUInt32Le(address.getLsb());
+	memory.writeUInt32Le(address.getMsb());
 	memory.writeUInt8(capability);
 
+	auto broadcastAddress = BROADCAST_ADDR64;
+
 	ZBExplicitTxRequest announce(
-		BROADCAST_ADDR64,
+		broadcastAddress,
 		ANNOUNCE_BROADCAST_ADDR16,
 		0,
 		0,
@@ -56,10 +64,36 @@ void DeviceManager::sendAnnounce() {
 		frameId,
 		0,
 		0,
-		announce_cluster,
+		announceCluster,
 		0
 	);
 	_device.send(announce);
+}
+
+XBeeAddress64 DeviceManager::getAddress() {
+	DEBUG(F("Getting device address"));
+
+	XBeeAddress64 address;
+
+	auto command = serialNumberHighCommand();
+	if (_device.sendAndWait(command, 5000) != XBEE_WAIT_TIMEOUT) {
+		AtCommandResponse response;
+		_device.getResponse(response);
+
+		Memory memory(response.getValue(), response.getValueLength());
+		address.setMsb(memory.readUInt32Be());
+	}
+
+	command = serialNumberLowCommand();
+	if (_device.sendAndWait(command, 5000) != XBEE_WAIT_TIMEOUT) {
+		AtCommandResponse response;
+		_device.getResponse(response);
+
+		Memory memory(response.getValue(), response.getValueLength());
+		address.setLsb(memory.readUInt32Be());
+	}
+
+	return address;
 }
 
 Device* DeviceManager::getDeviceByEndpoint(uint8_t endpointId) {
@@ -220,13 +254,7 @@ void DeviceManager::atCommandCallback(AtCommandResponse& command) {
 
 	Memory memory(command.getValue(), command.getValueLength());
 
-	if (IS_COMMAND(command, "SH")) {
-		_address.setMsb(memory.readUInt32Be());
-	}
-	else if (IS_COMMAND(command, "SL")) {
-		_address.setLsb(memory.readUInt32Be());
-	}
-	else if (IS_COMMAND(command, "MY")) {
+	if (IS_COMMAND(command, "MY")) {
 		_shortAddress = memory.readUInt16Be();
 	}
 	else if (IS_COMMAND(command, "AI")) {
@@ -682,7 +710,7 @@ AT_BUILDER(operatingPanIdCommand, "OI");
 AT_BUILDER(associationIndicationCommand, "AI");
 AT_BUILDER(parentNetworkAddressCommand, "MP");
 
-AtCommandRequest buildResetCommand(int index) {
+AtCommandRequest buildResetCommand(uint8_t index) {
 	switch (index) {
 	case 0: return restoreDefaultsCommand();
 	case 1: return apiOptionsCommand();
@@ -703,17 +731,15 @@ AtCommandRequest buildResetCommand(int index) {
 	}
 }
 
-AtCommandRequest buildRetrieveConfigurationCommand(int index) {
+AtCommandRequest buildRetrieveConfigurationCommand(uint8_t index) {
 	switch (index) {
-	case 0: return serialNumberHighCommand();
-	case 1: return serialNumberLowCommand();
-	case 2: return networkAddressCommand();
-	case 3: return associationIndicationCommand();
+	case 0: return networkAddressCommand();
+	case 1: return associationIndicationCommand();
 	default: return {};
 	}
 }
 
-AtCommandRequest buildReadDiagnosticsCommand(int index) {
+AtCommandRequest buildReadDiagnosticsCommand(uint8_t index) {
 	switch (index) {
 	case 0: return associationIndicationCommand();
 	case 1: return operatingChannelCommand();
