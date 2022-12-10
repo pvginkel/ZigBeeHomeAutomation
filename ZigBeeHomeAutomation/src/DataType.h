@@ -60,3 +60,5 @@ enum class DataType {
 	Key128 = 0xf1,
 	Unk = 0xff,
 };
+
+bool skipValue(Memory& memory, DataType dataType);

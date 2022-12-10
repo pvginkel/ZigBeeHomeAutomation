@@ -27,4 +27,10 @@ public class Fixture
     {
         new Generator().GenerateAttributes();
     }
+
+    [Test]
+    public void GenerateDataType()
+    {
+        new Generator().GenerateDataType();
+    }
 }

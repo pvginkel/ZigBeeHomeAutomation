@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.WebSockets;
+using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -259,35 +261,74 @@ public class Generator
             cwh.UnIndent();
             cwh.WriteLine("}");
 
-            cwh.WriteLine();
-            cwh.WriteLine("void skipValue(Memory& memory) override {");
-            cwh.Indent();
-            cwh.WriteLine("// TODO: Store reportable change value somewhere. For now, just skip it.");
-
-            switch (type.EndianMemoryMethodName)
-            {
-                case "DateTime":
-                    cwh.WriteLine("memory.setPosition(memory.getPosition() + 10);");
-                    break;
-                case "String":
-                case "Octstr":
-                    cwh.WriteLine("// TODO: No proper support for String16/Octstr16 yet.");
-                    cwh.WriteLine("auto length = memory.readUInt8();");
-                    cwh.WriteLine("memory.setPosition(memory.getPosition() + length);");
-                    break;
-                default:
-                    cwh.WriteLine($"memory.setPosition(memory.getPosition() + {type.Length});");
-                    break;
-            }
-
-            cwh.UnIndent();
-            cwh.WriteLine("}");
             cwh.UnIndent();
             cwh.WriteLine("};");
             cwh.WriteLine();
         }
 
         WriteFile("Attribute.h", cwh.ToString(), true);
+    }
+
+    public void GenerateDataType()
+    {
+        var cw = new CodeWriter();
+
+        cw.WriteLine("bool skipValue(Memory& memory, DataType dataType) {");
+
+        cw.Indent();
+        cw.WriteLine("switch (dataType) {");
+
+        foreach (var typeGroup in DataType.AllTypes
+                     .Where(p => p.Length != -1 && p.TypeName != null && p.DataTypeName != "Semi")
+                     .GroupBy(p => p.Length))
+        {
+            foreach (var type in typeGroup)
+            {
+                cw.WriteLine($"case DataType::{type.DataTypeName}:");
+            }
+
+            cw.Indent();
+            cw.WriteLine($"memory.setPosition(memory.getPosition() + {typeGroup.Key});");
+            cw.WriteLine("return true;");
+            cw.UnIndent();
+        }
+
+        cw.WriteLine("case DataType::NoData:");
+        cw.Indent();
+        cw.WriteLine("return true;");
+        cw.UnIndent();
+
+        cw.WriteLine("case DataType::DateTime:");
+        cw.Indent();
+        cw.WriteLine($"memory.setPosition(memory.getPosition() + 10);");
+        cw.WriteLine("return true;");
+        cw.UnIndent();
+
+        cw.WriteLine("case DataType::String:");
+        cw.WriteLine("case DataType::Octstr:");
+        cw.Indent();
+        cw.WriteLine($"memory.setPosition(memory.getPosition() + memory.readUInt8());");
+        cw.WriteLine("return true;");
+        cw.UnIndent();
+
+        cw.WriteLine("case DataType::String16:");
+        cw.WriteLine("case DataType::Octstr16:");
+        cw.Indent();
+        cw.WriteLine($"memory.setPosition(memory.getPosition() + memory.readUInt16Le());");
+        cw.WriteLine("return true;");
+        cw.UnIndent();
+
+        cw.WriteLine("default:");
+        cw.Indent();
+        cw.WriteLine("return false;");
+        cw.UnIndent();
+
+        cw.WriteLine("}");
+        cw.UnIndent();
+
+        cw.WriteLine("}");
+
+        WriteFile("DataType.cpp", cw.ToString(), true);
     }
 
     public void GenerateClusters()

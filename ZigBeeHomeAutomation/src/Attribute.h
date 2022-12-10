@@ -28,7 +28,6 @@ public:
 	virtual String toString() = 0;
 
     virtual void writeValue(Memory& memory) = 0;
-    virtual void skipValue(Memory& memory) = 0;
 
 	Attribute& operator=(const Attribute&) = delete;
 
@@ -58,11 +57,6 @@ public:
     void writeValue(Memory& memory) override {
         memory.writeUInt8(_value);
     }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 1);
-    }
 };
 
 class AttributeUInt16: public Attribute {
@@ -85,11 +79,6 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeUInt16Le(_value);
-    }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 2);
     }
 };
 
@@ -114,11 +103,6 @@ public:
     void writeValue(Memory& memory) override {
         memory.writeUInt24Le(_value);
     }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 3);
-    }
 };
 
 class AttributeUInt32: public Attribute {
@@ -141,11 +125,6 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeUInt32Le(_value);
-    }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 4);
     }
 };
 
@@ -170,11 +149,6 @@ public:
     void writeValue(Memory& memory) override {
         memory.writeUInt40Le(_value);
     }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 5);
-    }
 };
 
 class AttributeUInt48: public Attribute {
@@ -197,11 +171,6 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeUInt48Le(_value);
-    }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 6);
     }
 };
 
@@ -226,11 +195,6 @@ public:
     void writeValue(Memory& memory) override {
         memory.writeUInt56Le(_value);
     }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 7);
-    }
 };
 
 class AttributeUInt64: public Attribute {
@@ -253,11 +217,6 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeUInt64Le(_value);
-    }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 8);
     }
 };
 
@@ -282,11 +241,6 @@ public:
     void writeValue(Memory& memory) override {
         memory.writeInt8(_value);
     }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 1);
-    }
 };
 
 class AttributeInt16: public Attribute {
@@ -309,11 +263,6 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeInt16Le(_value);
-    }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 2);
     }
 };
 
@@ -338,11 +287,6 @@ public:
     void writeValue(Memory& memory) override {
         memory.writeInt24Le(_value);
     }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 3);
-    }
 };
 
 class AttributeInt32: public Attribute {
@@ -365,11 +309,6 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeInt32Le(_value);
-    }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 4);
     }
 };
 
@@ -394,11 +333,6 @@ public:
     void writeValue(Memory& memory) override {
         memory.writeInt40Le(_value);
     }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 5);
-    }
 };
 
 class AttributeInt48: public Attribute {
@@ -421,11 +355,6 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeInt48Le(_value);
-    }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 6);
     }
 };
 
@@ -450,11 +379,6 @@ public:
     void writeValue(Memory& memory) override {
         memory.writeInt56Le(_value);
     }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 7);
-    }
 };
 
 class AttributeInt64: public Attribute {
@@ -477,11 +401,6 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeInt64Le(_value);
-    }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 8);
     }
 };
 
@@ -506,11 +425,6 @@ public:
     void writeValue(Memory& memory) override {
         memory.writeSingle(_value);
     }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 4);
-    }
 };
 
 class AttributeDouble: public Attribute {
@@ -533,11 +447,6 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeDouble(_value);
-    }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 8);
     }
 };
 
@@ -567,13 +476,6 @@ public:
             memory.writeOctstr(_value);
         }
     }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        // TODO: No proper support for String16/Octstr16 yet.
-        auto length = memory.readUInt8();
-        memory.setPosition(memory.getPosition() + length);
-    }
 };
 
 class AttributeString: public Attribute {
@@ -602,13 +504,6 @@ public:
             memory.writeString(_value);
         }
     }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        // TODO: No proper support for String16/Octstr16 yet.
-        auto length = memory.readUInt8();
-        memory.setPosition(memory.getPosition() + length);
-    }
 };
 
 class AttributeDateTime: public Attribute {
@@ -634,11 +529,6 @@ public:
         memory.writeUInt32Le(_value.getDate());
         memory.writeUInt8((uint8_t)DataType::ToD);
         memory.writeUInt32Le(_value.getTime());
-    }
-
-    void skipValue(Memory& memory) override {
-        // TODO: Store reportable change value somewhere. For now, just skip it.
-        memory.setPosition(memory.getPosition() + 10);
     }
 };
 

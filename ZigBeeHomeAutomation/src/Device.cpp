@@ -198,62 +198,49 @@ Status Device::processGeneralConfigureReportingCommand(DeviceManager& deviceMana
 		if (type == ConfigureReportingType::Send) {
 			auto element = ConfigureReportingFrame::readSendElement(request);
 
+			DEBUG(F("  Configuring reporting for attribute "), element.getAttributeId(), F(" data type "), String((int)element.getDataType(), HEX), F(" minimum interval "), element.getMinimumInterval(), F(" maximum interval "), element.getMaximumInterval());
+
 			auto attribute = cluster->getAttributeById(element.getAttributeId());
 
-			if (attribute) {
-				DEBUG(F("  Configuring reporting for attribute "), element.getAttributeId(), F(" data type "), String((int)element.getDataType(), HEX), F(" minimum interval "), element.getMinimumInterval(), F(" maximum interval "), element.getMaximumInterval());
-
-				if (
-					element.getDataType() != DataType::NoData &&
-					element.getDataType() != attribute->getDataType()
-				) {
-					DEBUG(F("  Requested data type "), (int)element.getDataType(), F(" did not match attribute data type "), (int)attribute->getDataType());
-					ConfigureReportingResponseFrame::writeAttribute(response, Status::InvalidDataType, type, element.getAttributeId());
-
-					if (element.getDataType() != DataType::NoData) {
-						// Prevent processing of any further report configurations because
-						// we don't know how to skip the data.
-						break;
-					}
-				}
-				else if (element.getMinimumInterval() == 0 && element.getMaximumInterval() == 0xffff) {
-					DEBUG(F("  Disabling attribute reporting"));
-					attribute->setReportingEndpointId(0);
-				}
-				else {
-					auto operatingPanId = deviceManager.getOperatingPanId();
-
-					if (
-						message.getRemoteAddress64().getMsb() == operatingPanId->getMsb() &&
-						message.getRemoteAddress64().getLsb() == operatingPanId->getLsb() &&
-						message.getRemoteAddress16() == 0 &&
-						message.getSrcEndpoint() != 0
-					) {
-						DEBUG(F("  Configuring reporting to coordinator endpoint "), message.getSrcEndpoint());
-						attribute->setReportingEndpointId(message.getSrcEndpoint());
-					}
-					else {
-						DEBUG(F("  Configure report request did not match the default criteria; configuring broadcast reporting"));
-						attribute->setReportingEndpointId(Attribute::REPORT_BROADCAST);
-					}
-					ConfigureReportingResponseFrame::writeAttribute(response, Status::Success, type, element.getAttributeId());
-
-					if (element.getDataType() != DataType::NoData) {
-						attribute->skipValue(request);
-					}
-				}
-			}
-			else {
+			if (!attribute) {
 				DEBUG(F("  Unsupported attribute "), element.getAttributeId());
 
 				ConfigureReportingResponseFrame::writeAttribute(response, Status::UnsupportedAttribute, type, element.getAttributeId());
-
-				if (element.getDataType() != DataType::NoData) {
-					// Prevent processing of any further report configurations because
-					// we don't know how to skip the data.
-					break;
-				}
 			}
+			else if (
+				element.getDataType() != DataType::NoData &&
+				element.getDataType() != attribute->getDataType()
+			) {
+				DEBUG(F("  Requested data type "), (int)element.getDataType(), F(" did not match attribute data type "), (int)attribute->getDataType());
+
+				ConfigureReportingResponseFrame::writeAttribute(response, Status::InvalidDataType, type, element.getAttributeId());
+			}
+			else if (element.getMinimumInterval() == 0 && element.getMaximumInterval() == 0xffff) {
+				DEBUG(F("  Disabling attribute reporting"));
+
+				attribute->setReportingEndpointId(0);
+			}
+			else {
+				auto operatingPanId = deviceManager.getOperatingPanId();
+
+				if (
+					message.getRemoteAddress64().getMsb() == operatingPanId->getMsb() &&
+					message.getRemoteAddress64().getLsb() == operatingPanId->getLsb() &&
+					message.getRemoteAddress16() == 0 &&
+					message.getSrcEndpoint() != 0
+				) {
+					DEBUG(F("  Configuring reporting to coordinator endpoint "), message.getSrcEndpoint());
+					attribute->setReportingEndpointId(message.getSrcEndpoint());
+				}
+				else {
+					DEBUG(F("  Configure report request did not match the default criteria; configuring broadcast reporting"));
+					attribute->setReportingEndpointId(Attribute::REPORT_BROADCAST);
+				}
+
+				ConfigureReportingResponseFrame::writeAttribute(response, Status::Success, type, element.getAttributeId());
+			}
+
+			skipValue(request, element.getDataType());
 		}
 	}
 
