@@ -22,6 +22,7 @@ public:
 
     uint8_t getReportingEndpointId() { return _reportingEndpointId; }
     void setReportingEndpointId(uint8_t reportingEndpointId) { _reportingEndpointId = reportingEndpointId; }
+    void configureBroadcastReporting() { setReportingEndpointId(REPORT_BROADCAST); }
     bool isDirty() { return _dirty; }
     void markClean() { _dirty = false; }
 

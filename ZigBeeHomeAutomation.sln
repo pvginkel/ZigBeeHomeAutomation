@@ -113,6 +113,7 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{0afe8a92-dcc3-4a87-ad96-adcac3684697}*SharedItemsImports = 9
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{677ea60b-dceb-4830-a89e-14803d1efd9d}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{c4401942-a693-4607-ad0e-7cda97525e22}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{f7047cd8-9532-424e-9ec9-130c702e557d}*SharedItemsImports = 4
 	EndGlobalSection
