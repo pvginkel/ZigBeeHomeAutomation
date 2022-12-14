@@ -28,6 +28,7 @@ public:
 
 	virtual String toString() = 0;
 
+    virtual void readValue(Memory& memory) = 0;
     virtual void writeValue(Memory& memory) = 0;
 
 	Attribute& operator=(const Attribute&) = delete;
@@ -55,6 +56,10 @@ public:
         return String((uint32_t)_value);
     }
 
+    void readValue(Memory& memory) override {
+        _value = memory.readUInt8();
+    }
+
     void writeValue(Memory& memory) override {
         memory.writeUInt8(_value);
     }
@@ -76,6 +81,10 @@ public:
 
     String toString() override {
         return String((uint32_t)_value);
+    }
+
+    void readValue(Memory& memory) override {
+        _value = memory.readUInt16Le();
     }
 
     void writeValue(Memory& memory) override {
@@ -101,6 +110,10 @@ public:
         return String((uint32_t)_value);
     }
 
+    void readValue(Memory& memory) override {
+        _value = memory.readUInt24Le();
+    }
+
     void writeValue(Memory& memory) override {
         memory.writeUInt24Le(_value);
     }
@@ -122,6 +135,10 @@ public:
 
     String toString() override {
         return String((uint32_t)_value);
+    }
+
+    void readValue(Memory& memory) override {
+        _value = memory.readUInt32Le();
     }
 
     void writeValue(Memory& memory) override {
@@ -147,6 +164,10 @@ public:
         return String((uint32_t)_value);
     }
 
+    void readValue(Memory& memory) override {
+        _value = memory.readUInt40Le();
+    }
+
     void writeValue(Memory& memory) override {
         memory.writeUInt40Le(_value);
     }
@@ -168,6 +189,10 @@ public:
 
     String toString() override {
         return String((uint32_t)_value);
+    }
+
+    void readValue(Memory& memory) override {
+        _value = memory.readUInt48Le();
     }
 
     void writeValue(Memory& memory) override {
@@ -193,6 +218,10 @@ public:
         return String((uint32_t)_value);
     }
 
+    void readValue(Memory& memory) override {
+        _value = memory.readUInt56Le();
+    }
+
     void writeValue(Memory& memory) override {
         memory.writeUInt56Le(_value);
     }
@@ -214,6 +243,10 @@ public:
 
     String toString() override {
         return String((uint32_t)_value);
+    }
+
+    void readValue(Memory& memory) override {
+        _value = memory.readUInt64Le();
     }
 
     void writeValue(Memory& memory) override {
@@ -239,6 +272,10 @@ public:
         return String((int32_t)_value);
     }
 
+    void readValue(Memory& memory) override {
+        _value = memory.readInt8();
+    }
+
     void writeValue(Memory& memory) override {
         memory.writeInt8(_value);
     }
@@ -260,6 +297,10 @@ public:
 
     String toString() override {
         return String((int32_t)_value);
+    }
+
+    void readValue(Memory& memory) override {
+        _value = memory.readInt16Le();
     }
 
     void writeValue(Memory& memory) override {
@@ -285,6 +326,10 @@ public:
         return String((int32_t)_value);
     }
 
+    void readValue(Memory& memory) override {
+        _value = memory.readInt24Le();
+    }
+
     void writeValue(Memory& memory) override {
         memory.writeInt24Le(_value);
     }
@@ -306,6 +351,10 @@ public:
 
     String toString() override {
         return String((int32_t)_value);
+    }
+
+    void readValue(Memory& memory) override {
+        _value = memory.readInt32Le();
     }
 
     void writeValue(Memory& memory) override {
@@ -331,6 +380,10 @@ public:
         return String((int32_t)_value);
     }
 
+    void readValue(Memory& memory) override {
+        _value = memory.readInt40Le();
+    }
+
     void writeValue(Memory& memory) override {
         memory.writeInt40Le(_value);
     }
@@ -352,6 +405,10 @@ public:
 
     String toString() override {
         return String((int32_t)_value);
+    }
+
+    void readValue(Memory& memory) override {
+        _value = memory.readInt48Le();
     }
 
     void writeValue(Memory& memory) override {
@@ -377,6 +434,10 @@ public:
         return String((int32_t)_value);
     }
 
+    void readValue(Memory& memory) override {
+        _value = memory.readInt56Le();
+    }
+
     void writeValue(Memory& memory) override {
         memory.writeInt56Le(_value);
     }
@@ -398,6 +459,10 @@ public:
 
     String toString() override {
         return String((int32_t)_value);
+    }
+
+    void readValue(Memory& memory) override {
+        _value = memory.readInt64Le();
     }
 
     void writeValue(Memory& memory) override {
@@ -423,6 +488,10 @@ public:
         return String(_value);
     }
 
+    void readValue(Memory& memory) override {
+        _value = memory.readSingle();
+    }
+
     void writeValue(Memory& memory) override {
         memory.writeSingle(_value);
     }
@@ -446,6 +515,10 @@ public:
         return String(_value);
     }
 
+    void readValue(Memory& memory) override {
+        _value = memory.readDouble();
+    }
+
     void writeValue(Memory& memory) override {
         memory.writeDouble(_value);
     }
@@ -467,6 +540,10 @@ public:
 
     String toString() override {
         return F("BUFFER");
+    }
+
+    void readValue(Memory& memory) override {
+        _value = memory.readOctstr();
     }
 
     void writeValue(Memory& memory) override {
@@ -497,6 +574,10 @@ public:
         return _value;
     }
 
+    void readValue(Memory& memory) override {
+        _value = memory.readString();
+    }
+
     void writeValue(Memory& memory) override {
         if (_value.length() > 254) {
             memory.writeString16Le(_value);
@@ -523,6 +604,16 @@ public:
 
     String toString() override {
         return F("DATETIME");
+    }
+
+    void readValue(Memory& memory) override {
+        // Has the date data type.
+        memory.readUInt8();
+        auto date = memory.readUInt32Le();
+        // Has the time of day data type.
+        memory.readUInt8();
+        auto time = memory.readUInt32Le();
+        _value = DateTime(date, time);
     }
 
     void writeValue(Memory& memory) override {

@@ -31,6 +31,8 @@ Status Device::processGeneralCommand(DeviceManager& deviceManager, Frame& frame,
 	switch (commandIdentifier) {
 		case CommandIdentifier::ReadAttributes:
 			return processGeneralReadAttributesCommand(frame, request, message, response);
+		case CommandIdentifier::WriteAttributes:
+			return processGeneralWriteAttributesCommand(frame, request, message, response);
 		case CommandIdentifier::DiscoverAttributes:
 			return processGeneralDiscoverAttributesCommand(frame, request, message, response);
 		case CommandIdentifier::ConfigureReporting:
@@ -73,6 +75,49 @@ Status Device::processGeneralReadAttributesCommand(Frame& frame, Memory& request
 	}
 
 	DEBUG(F("  Done"));
+
+	return Status::Success;
+}
+
+Status Device::processGeneralWriteAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response) {
+	DEBUG(F("Write attributes command"));
+
+	auto cluster = getClusterById(message.getClusterId());
+
+	uint16_t attributeId;
+	DataType dataType;
+
+	Frame(
+		FrameControl(FrameType::Global, Direction::ToClient, true),
+		frame.transactionSequenceNumber(),
+		(uint8_t)CommandIdentifier::WriteAttributesResponse
+	).write(response);
+
+	while (WriteAttributesFrame::readNextWriteAttribute(request, attributeId, dataType)) {
+		auto attribute = cluster->getAttributeById(attributeId);
+
+		if (!attribute) {
+			WARN(F("Tried to write non-existing attribute "), attributeId, F(" on cluster "), message.getClusterId());
+
+			skipValue(request, dataType);
+
+			WriteAttributeResponseFrame::writeAttributeResponse(response, Status::UnsupportedAttribute, attributeId);
+		}
+		else if (dataType != attribute->getDataType()) {
+			WARN(F("Tried to write attribute "), attributeId, F(" on cluster "), message.getClusterId(), F(" with incorrect data type "), (int)dataType);
+
+			skipValue(request, dataType);
+
+			WriteAttributeResponseFrame::writeAttributeResponse(response, Status::InvalidDataType, attributeId);
+		}
+		else {
+			DEBUG(F("Writing value to attribute "), attributeId, F(" on cluster "), message.getClusterId());
+
+			attribute->readValue(request);
+
+			WriteAttributeResponseFrame::writeAttributeResponse(response, Status::Success, attributeId);
+		}
+	}
 
 	return Status::Success;
 }

@@ -245,6 +245,26 @@ public:
 	}
 };
 
+class WriteAttributesFrame {
+public:
+	static bool readNextWriteAttribute(Memory& buffer, uint16_t& attributeId, DataType& dataType) {
+		if (buffer.getPosition() < buffer.getLength()) {
+			attributeId = buffer.readUInt16Le();
+			dataType = (DataType)buffer.readUInt8();
+			return true;
+		}
+		return false;
+	}
+};
+
+class WriteAttributeResponseFrame {
+public:
+	static void writeAttributeResponse(Memory& buffer, Status status, uint16_t& attributeId) {
+		buffer.writeUInt8((uint8_t)status);
+		buffer.writeUInt16Le(attributeId);
+	}
+};
+
 class DiscoverAttributesFrame {
 public:
 	static DiscoverAttributesFrame read(Memory& buffer) {

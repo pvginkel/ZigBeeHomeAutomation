@@ -229,6 +229,33 @@ public class Generator
             cwh.WriteLine("}");
             cwh.WriteLine();
 
+            cwh.WriteLine("void readValue(Memory& memory) override {");
+            cwh.Indent();
+
+            switch (type.EndianMemoryMethodName)
+            {
+                case "DateTime":
+                    cwh.WriteLine("// Has the date data type.");
+                    cwh.WriteLine("memory.readUInt8();");
+                    cwh.WriteLine("auto date = memory.readUInt32Le();");
+                    cwh.WriteLine("// Has the time of day data type.");
+                    cwh.WriteLine("memory.readUInt8();");
+                    cwh.WriteLine("auto time = memory.readUInt32Le();");
+                    cwh.WriteLine("_value = DateTime(date, time);");
+                    break;
+                case "String":
+                case "Octstr":
+                    cwh.WriteLine($"_value = memory.read{type.EndianMemoryMethodName}();");
+                    break;
+                default:
+                    cwh.WriteLine($"_value = memory.read{type.EndianMemoryMethodName}();");
+                    break;
+            }
+
+            cwh.UnIndent();
+            cwh.WriteLine("}");
+
+            cwh.WriteLine();
             cwh.WriteLine("void writeValue(Memory& memory) override {");
             cwh.Indent();
 

@@ -22,6 +22,7 @@ public:
 
 private:
     Status processGeneralReadAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
+    Status processGeneralWriteAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
     Status processGeneralDiscoverAttributesCommand(Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
     Status processGeneralConfigureReportingCommand(DeviceManager& deviceManager, Frame& frame, Memory& request, ZBExplicitRxResponse& message, Memory& response);
 };
