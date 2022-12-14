@@ -60,6 +60,7 @@ public:
 	DeviceManager();
 
 	void begin(Stream& stream);
+	void sendAnnounce();
 	void performReset();
 	void update();
 
@@ -76,7 +77,6 @@ public:
 	}
 
 private:
-	void sendAnnounce();
 	void processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clusterId, uint8_t* frameData, uint8_t frameDataLength);
 
 	Device* getDeviceByEndpoint(uint8_t endpointId);
