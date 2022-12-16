@@ -3,20 +3,20 @@
 
 #include "ClockDevice.h"
 
-#define DATA_PIN  2  // DS
-#define LATCH_PIN 3  // ST_CP
-#define CLOCK_PIN 4 // SH_CP
-#define OE_PIN 5
+#define DATA_PIN  5  // DS
+#define LATCH_PIN 6  // ST_CP
+#define CLOCK_PIN 7 // SH_CP
+#define OE_PIN 9
 
-#define RTC_CLK 6
-#define RTC_DAT 7
-#define RTC_RST 8
+#define RTC_CLK 4
+#define RTC_DAT 3
+#define RTC_RST 2
 
-#define IO_XBEE_RX 9
-#define IO_XBEE_TX 10
+#define IO_XBEE_RX 20
+#define IO_XBEE_TX 21
 
-#define IO_PB 11
-#define IO_STATUS_LED 12
+#define IO_PB 19
+#define IO_STATUS_LED 18
 
 SoftwareSerial xbeeSerial(IO_XBEE_RX, IO_XBEE_TX);
 DeviceManager deviceManager;

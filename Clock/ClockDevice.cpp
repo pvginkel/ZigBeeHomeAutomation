@@ -56,10 +56,10 @@ void ClockDevice::update() {
 	digitalWrite(_clockPin, LOW);
 	digitalWrite(_latchPin, LOW);
 
-	shiftOut(_dataPin, _clockPin, MSBFIRST, minutesLow);
-	shiftOut(_dataPin, _clockPin, MSBFIRST, minutesHigh);
-	shiftOut(_dataPin, _clockPin, MSBFIRST, hoursLow);
-	shiftOut(_dataPin, _clockPin, MSBFIRST, hoursHigh);
+	shiftOut(_dataPin, _clockPin, MSBFIRST, ~getDigit(minutesLow));
+	shiftOut(_dataPin, _clockPin, MSBFIRST, ~getDigit(minutesHigh));
+	shiftOut(_dataPin, _clockPin, MSBFIRST, ~getDigit(hoursLow));
+	shiftOut(_dataPin, _clockPin, MSBFIRST, ~getDigit(hoursHigh));
 
 	digitalWrite(_latchPin, HIGH);
 }
@@ -92,7 +92,15 @@ void ClockDevice::setLevel(uint8_t level, time_t transitionTime) {
 	if (level != _level) {
 		_level = level;
 
-		analogWrite(_outputEnablePin, 255 - level);
+		if (level >= 254) {
+			digitalWrite(_outputEnablePin, 0);
+		}
+		else if (level == 0) {
+			digitalWrite(_outputEnablePin, 1);
+		}
+		else {
+			analogWrite(_outputEnablePin, 255 - level);
+		}
 
 		_levelChanged.call(level);
 	}
