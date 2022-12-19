@@ -3,14 +3,14 @@
 #include <SoftwareSerial.h>
 #include <ZigBeeHomeAutomation.h>
 
-#define IO_XBEE_RX 2
-#define IO_XBEE_TX 3
-#define IO_PB 4
+#define IO_XBEE_RX 12
+#define IO_XBEE_TX 11
+#define IO_PB 13
 #define IO_STATUS_LED 6
-#define IO_DHT 7
-#define IO_PHOTO_RESISTOR_33 A0
-#define IO_PHOTO_RESISTOR_60 A1
-#define IO_PHOTO_RESISTOR_200 A2
+#define IO_DHT 9
+#define IO_PHOTO_RESISTOR_33 A3
+#define IO_PHOTO_RESISTOR_60 A2
+#define IO_PHOTO_RESISTOR_200 A1
 
 //#define REPORT_INTERVAL_MS 1000
 #define REPORT_INTERVAL_MS 60000ul
@@ -100,15 +100,7 @@ void setup() {
 	dht.begin();
 }
 
-int lastFreeMemory = 0;
-
 void loop() {
-	int currentFreeMemory = freeMemory();
-	if (currentFreeMemory != lastFreeMemory) {
-		ERROR(F("Free memory: "), currentFreeMemory);
-		lastFreeMemory = currentFreeMemory;
-	}
-
 	reportSensors();
 	status.update();
 	deviceManager.update();
