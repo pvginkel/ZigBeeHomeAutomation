@@ -91,8 +91,8 @@ void setup() {
     deviceManager.addDevice(clockDevice);
     clockDevice.addCluster(onOffCluster);
     clockDevice.addCluster(levelCtrlCluster);
-    clockDevice.getBasicCluster().getManufacturerName()->setValue(String(F("Pieter")));
-    clockDevice.getBasicCluster().getModelId()->setValue(String(F("The Big Clock")));
+    clockDevice.getBasicCluster().getManufacturerName()->setValue(F("Pieter"));
+    clockDevice.getBasicCluster().getModelId()->setValue(F("The Big Clock"));
 
     onOffCluster.getOnOff()->configureBroadcastReporting();
     levelCtrlCluster.getCurrentLevel()->configureBroadcastReporting();
@@ -109,7 +109,9 @@ void setup() {
 
     xbeeSerial.begin(9600);
 
-    deviceManager.setConnectedCallback([](ConnectionStatus connectionStatus, uintptr_t) { status.setConnected(connectionStatus); });
+    deviceManager.setConnectedCallback(
+        [](ConnectionStatus connectionStatus, uintptr_t) { status.setConnected(connectionStatus); }
+    );
 
     deviceManager.begin(xbeeSerial);
 

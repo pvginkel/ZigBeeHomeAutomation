@@ -29,6 +29,10 @@ public:
         _position = value;
     }
 
+    bool atEnd() {
+        return _position >= _length;
+    }
+
     int8_t readInt8() {
         return (int8_t)_data[_position++];
     }

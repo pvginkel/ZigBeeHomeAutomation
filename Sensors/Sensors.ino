@@ -47,8 +47,8 @@ MsIlluminanceMeasurementCluster photoResistorCluster200k(ClusterType::Output);
 void setup() {
 	deviceManager.addDevice(sensorDevice);
 
-	sensorDevice.getBasicCluster().getManufacturerName()->setValue(String(F("Pieter")));
-	sensorDevice.getBasicCluster().getModelId()->setValue(String(F("Sensors")));
+	sensorDevice.getBasicCluster().getManufacturerName()->setValue(F("Pieter"));
+	sensorDevice.getBasicCluster().getModelId()->setValue(F("Sensors"));
 	sensorDevice.addCluster(temperatureMeasurementCluster);
 	temperatureMeasurementCluster.getMinMeasuredValue()->setValue(MIN_TEMPERATURE * SCALE_TEMPERATURE);
 	temperatureMeasurementCluster.getMaxMeasuredValue()->setValue(MAX_TEMPERATURE * SCALE_TEMPERATURE);

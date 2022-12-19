@@ -14,8 +14,8 @@ StatusControl status;
 void setup() {
 	deviceManager.addDevice(basicDevice);
 
-	basicDevice.getBasicCluster().getManufacturerName()->setValue(String(F("Pieter")));
-	basicDevice.getBasicCluster().getModelId()->setValue(String(F("Basic Device")));
+	basicDevice.getBasicCluster().getManufacturerName()->setValue(F("Pieter"));
+	basicDevice.getBasicCluster().getModelId()->setValue(F("Basic Device"));
 
 	Serial.begin(115200);
 	while (!Serial);

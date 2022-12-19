@@ -1,6 +1,6 @@
 #pragma once
 
-enum class Status {
+enum class Status : uint8_t {
 	// Operation was successful.
 	Success = 0x00,
 	// Operation was not successful.

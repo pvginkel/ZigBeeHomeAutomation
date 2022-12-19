@@ -1,11 +1,11 @@
 #pragma once
 
-enum class FrameType {
+enum class FrameType : uint8_t {
 	Global = 0,
 	Cluster = 1
 };
 
-enum class Direction {
+enum class Direction : uint8_t {
 	ToServer = 0,
 	ToClient = 1
 };
@@ -76,7 +76,7 @@ public:
 	}
 };
 
-enum class CommandIdentifier {
+enum class CommandIdentifier : uint8_t {
 	ReadAttributes = 0x00,
 	ReadAttributesResponse = 0x01,
 	WriteAttributes = 0x02,
@@ -238,11 +238,6 @@ public:
 		buffer.writeUInt16Le(attributeId);
 		buffer.writeUInt8((uint8_t)status);
 	}
-
-	static void writeAttribute(Memory& buffer, uint16_t attributeId, Status status, DataType dataType) {
-		writeAttribute(buffer, attributeId, status);
-		buffer.writeUInt8((uint8_t)dataType);
-	}
 };
 
 class WriteAttributesFrame {
@@ -327,7 +322,7 @@ public:
 	}
 };
 
-enum class ConfigureReportingType {
+enum class ConfigureReportingType : uint8_t {
 	Send = 0,
 	Receive = 1
 };
@@ -395,8 +390,25 @@ public:
 
 class ReportAttributesFrame {
 public:
-	static void writeAttribute(Memory& buffer, uint16_t attributeId, DataType dataType) {
+	static void writeAttribute(Memory& buffer, uint16_t attributeId) {
 		buffer.writeUInt16Le(attributeId);
+	}
+};
+
+class FrameParsingHelpers {
+public:
+	static void writeAttributeWithValue(Memory& buffer, Attribute* attribute) {
+		// To keep program size down, we always write long strings.
+
+		auto dataType = attribute->getDataType();
+		if (dataType == DataType::String) {
+			dataType = DataType::String16;
+		}
+		else if (dataType == DataType::Octstr) {
+			dataType = DataType::Octstr16;
+		}
+
 		buffer.writeUInt8((uint8_t)dataType);
+		attribute->writeValue(buffer);
 	}
 };

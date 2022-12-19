@@ -1,6 +1,6 @@
 #pragma once
 
-enum class ClusterType {
+enum class ClusterType : uint8_t {
     Input,
     Output
 };

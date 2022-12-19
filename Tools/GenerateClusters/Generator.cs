@@ -166,7 +166,14 @@ public class Generator
 
         foreach (var type in DataType.AllTypes)
         {
-            if (type.TypeName == null || type.DataTypeName == "String16" || type.DataTypeName == "Octstr16" || type.DataTypeName == "Semi")
+            if (
+                type.TypeName == null ||
+                type.DataTypeName == "String16" ||
+                type.DataTypeName == "String" ||
+                type.DataTypeName == "Octstr16" ||
+                type.DataTypeName == "Octstr" ||
+                type.DataTypeName == "Semi"
+            )
                 continue;
             if (!seen.Add(type.MemoryMethodName))
                 continue;
@@ -243,9 +250,17 @@ public class Generator
                     cwh.WriteLine("auto time = memory.readUInt32Le();");
                     cwh.WriteLine("_value = DateTime(date, time);");
                     break;
-                case "String":
                 case "Octstr":
-                    cwh.WriteLine($"_value = memory.read{type.EndianMemoryMethodName}();");
+                    cwh.WriteLine("if (dataType == DataType::Octstr16) {");
+                    cwh.Indent();
+                    cwh.WriteLine("_value = memory.readOctstr16Le();");
+                    cwh.UnIndent();
+                    cwh.WriteLine("}");
+                    cwh.WriteLine("else {");
+                    cwh.Indent();
+                    cwh.WriteLine("_value = memory.readOctstr();");
+                    cwh.UnIndent();
+                    cwh.WriteLine("}");
                     break;
                 default:
                     cwh.WriteLine($"_value = memory.read{type.EndianMemoryMethodName}();");
@@ -267,18 +282,8 @@ public class Generator
                     cwh.WriteLine("memory.writeUInt8((uint8_t)DataType::ToD);");
                     cwh.WriteLine("memory.writeUInt32Le(_value.getTime());");
                     break;
-                case "String":
                 case "Octstr":
-                    cwh.WriteLine("if (_value.length() > 254) {");
-                    cwh.Indent();
-                    cwh.WriteLine($"memory.write{type.EndianMemoryMethodName}16Le(_value);");
-                    cwh.UnIndent();
-                    cwh.WriteLine("}");
-                    cwh.WriteLine("else {");
-                    cwh.Indent();
-                    cwh.WriteLine($"memory.write{type.EndianMemoryMethodName}(_value);");
-                    cwh.UnIndent();
-                    cwh.WriteLine("}");
+                    cwh.WriteLine("memory.writeOctstr16Le(_value);");
                     break;
                 default:
                     cwh.WriteLine($"memory.write{type.EndianMemoryMethodName}(_value);");
@@ -431,7 +436,10 @@ public class Generator
                 cw.WriteLine($"auto result = (Attribute{type.MemoryMethodName}*)getAttributeById({attribute["ID"]});");
                 cw.WriteLine("if (result == nullptr) {");
                 cw.Indent();
-                cw.WriteLine($"result = new Attribute{type.MemoryMethodName}({attribute["ID"]}, DataType::{type.DataTypeName});");
+                if (type.DataTypeName == "String" || type.DataTypeName == "Octstr")
+                    cw.WriteLine($"result = new Attribute{type.MemoryMethodName}({attribute["ID"]});");
+                else
+                    cw.WriteLine($"result = new Attribute{type.MemoryMethodName}({attribute["ID"]}, DataType::{type.DataTypeName});");
                 cw.WriteLine("addAttribute(result);");
                 cw.UnIndent();
                 cw.WriteLine("}");

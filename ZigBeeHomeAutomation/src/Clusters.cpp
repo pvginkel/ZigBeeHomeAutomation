@@ -39,7 +39,7 @@ AttributeUInt8* GenBasicCluster::getHwVersion() {
 AttributeString* GenBasicCluster::getManufacturerName() {
     auto result = (AttributeString*)getAttributeById(4);
     if (result == nullptr) {
-        result = new AttributeString(4, DataType::String);
+        result = new AttributeString(4);
         addAttribute(result);
     }
     return result;
@@ -48,7 +48,7 @@ AttributeString* GenBasicCluster::getManufacturerName() {
 AttributeString* GenBasicCluster::getModelId() {
     auto result = (AttributeString*)getAttributeById(5);
     if (result == nullptr) {
-        result = new AttributeString(5, DataType::String);
+        result = new AttributeString(5);
         addAttribute(result);
     }
     return result;
@@ -57,7 +57,7 @@ AttributeString* GenBasicCluster::getModelId() {
 AttributeString* GenBasicCluster::getDateCode() {
     auto result = (AttributeString*)getAttributeById(6);
     if (result == nullptr) {
-        result = new AttributeString(6, DataType::String);
+        result = new AttributeString(6);
         addAttribute(result);
     }
     return result;
@@ -84,7 +84,7 @@ AttributeUInt8* GenBasicCluster::getAppProfileVersion() {
 AttributeString* GenBasicCluster::getSwBuildId() {
     auto result = (AttributeString*)getAttributeById(16384);
     if (result == nullptr) {
-        result = new AttributeString(16384, DataType::String);
+        result = new AttributeString(16384);
         addAttribute(result);
     }
     return result;
@@ -93,7 +93,7 @@ AttributeString* GenBasicCluster::getSwBuildId() {
 AttributeString* GenBasicCluster::getLocationDesc() {
     auto result = (AttributeString*)getAttributeById(16);
     if (result == nullptr) {
-        result = new AttributeString(16, DataType::String);
+        result = new AttributeString(16);
         addAttribute(result);
     }
     return result;
@@ -223,7 +223,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryPercentageRemaining() {
 AttributeString* GenPowerCfgCluster::getBatteryManufacturer() {
     auto result = (AttributeString*)getAttributeById(48);
     if (result == nullptr) {
-        result = new AttributeString(48, DataType::String);
+        result = new AttributeString(48);
         addAttribute(result);
     }
     return result;
@@ -1262,7 +1262,7 @@ void GenRssiLocationCluster::processCommand(uint8_t commandId, Memory& request, 
 AttributeString* GenAnalogInputCluster::getDescription() {
     auto result = (AttributeString*)getAttributeById(28);
     if (result == nullptr) {
-        result = new AttributeString(28, DataType::String);
+        result = new AttributeString(28);
         addAttribute(result);
     }
     return result;
@@ -1352,7 +1352,7 @@ AttributeUInt32* GenAnalogInputCluster::getApplicationType() {
 AttributeString* GenAnalogOutputCluster::getDescription() {
     auto result = (AttributeString*)getAttributeById(28);
     if (result == nullptr) {
-        result = new AttributeString(28, DataType::String);
+        result = new AttributeString(28);
         addAttribute(result);
     }
     return result;
@@ -1451,7 +1451,7 @@ AttributeUInt32* GenAnalogOutputCluster::getApplicationType() {
 AttributeString* GenAnalogValueCluster::getDescription() {
     auto result = (AttributeString*)getAttributeById(28);
     if (result == nullptr) {
-        result = new AttributeString(28, DataType::String);
+        result = new AttributeString(28);
         addAttribute(result);
     }
     return result;
@@ -1523,7 +1523,7 @@ AttributeUInt32* GenAnalogValueCluster::getApplicationType() {
 AttributeString* GenBinaryInputCluster::getActiveText() {
     auto result = (AttributeString*)getAttributeById(4);
     if (result == nullptr) {
-        result = new AttributeString(4, DataType::String);
+        result = new AttributeString(4);
         addAttribute(result);
     }
     return result;
@@ -1532,7 +1532,7 @@ AttributeString* GenBinaryInputCluster::getActiveText() {
 AttributeString* GenBinaryInputCluster::getDescription() {
     auto result = (AttributeString*)getAttributeById(28);
     if (result == nullptr) {
-        result = new AttributeString(28, DataType::String);
+        result = new AttributeString(28);
         addAttribute(result);
     }
     return result;
@@ -1541,7 +1541,7 @@ AttributeString* GenBinaryInputCluster::getDescription() {
 AttributeString* GenBinaryInputCluster::getInactiveText() {
     auto result = (AttributeString*)getAttributeById(46);
     if (result == nullptr) {
-        result = new AttributeString(46, DataType::String);
+        result = new AttributeString(46);
         addAttribute(result);
     }
     return result;
@@ -1604,7 +1604,7 @@ AttributeUInt32* GenBinaryInputCluster::getApplicationType() {
 AttributeString* GenBinaryOutputCluster::getActiveText() {
     auto result = (AttributeString*)getAttributeById(4);
     if (result == nullptr) {
-        result = new AttributeString(4, DataType::String);
+        result = new AttributeString(4);
         addAttribute(result);
     }
     return result;
@@ -1613,7 +1613,7 @@ AttributeString* GenBinaryOutputCluster::getActiveText() {
 AttributeString* GenBinaryOutputCluster::getDescription() {
     auto result = (AttributeString*)getAttributeById(28);
     if (result == nullptr) {
-        result = new AttributeString(28, DataType::String);
+        result = new AttributeString(28);
         addAttribute(result);
     }
     return result;
@@ -1622,7 +1622,7 @@ AttributeString* GenBinaryOutputCluster::getDescription() {
 AttributeString* GenBinaryOutputCluster::getInactiveText() {
     auto result = (AttributeString*)getAttributeById(46);
     if (result == nullptr) {
-        result = new AttributeString(46, DataType::String);
+        result = new AttributeString(46);
         addAttribute(result);
     }
     return result;
@@ -1712,7 +1712,7 @@ AttributeUInt32* GenBinaryOutputCluster::getApplicationType() {
 AttributeString* GenBinaryValueCluster::getActiveText() {
     auto result = (AttributeString*)getAttributeById(4);
     if (result == nullptr) {
-        result = new AttributeString(4, DataType::String);
+        result = new AttributeString(4);
         addAttribute(result);
     }
     return result;
@@ -1721,7 +1721,7 @@ AttributeString* GenBinaryValueCluster::getActiveText() {
 AttributeString* GenBinaryValueCluster::getDescription() {
     auto result = (AttributeString*)getAttributeById(28);
     if (result == nullptr) {
-        result = new AttributeString(28, DataType::String);
+        result = new AttributeString(28);
         addAttribute(result);
     }
     return result;
@@ -1730,7 +1730,7 @@ AttributeString* GenBinaryValueCluster::getDescription() {
 AttributeString* GenBinaryValueCluster::getInactiveText() {
     auto result = (AttributeString*)getAttributeById(46);
     if (result == nullptr) {
-        result = new AttributeString(46, DataType::String);
+        result = new AttributeString(46);
         addAttribute(result);
     }
     return result;
@@ -1811,7 +1811,7 @@ AttributeUInt32* GenBinaryValueCluster::getApplicationType() {
 AttributeString* GenMultistateInputCluster::getDescription() {
     auto result = (AttributeString*)getAttributeById(28);
     if (result == nullptr) {
-        result = new AttributeString(28, DataType::String);
+        result = new AttributeString(28);
         addAttribute(result);
     }
     return result;
@@ -1874,7 +1874,7 @@ AttributeUInt32* GenMultistateInputCluster::getApplicationType() {
 AttributeString* GenMultistateOutputCluster::getDescription() {
     auto result = (AttributeString*)getAttributeById(28);
     if (result == nullptr) {
-        result = new AttributeString(28, DataType::String);
+        result = new AttributeString(28);
         addAttribute(result);
     }
     return result;
@@ -1946,7 +1946,7 @@ AttributeUInt32* GenMultistateOutputCluster::getApplicationType() {
 AttributeString* GenMultistateValueCluster::getDescription() {
     auto result = (AttributeString*)getAttributeById(28);
     if (result == nullptr) {
-        result = new AttributeString(28, DataType::String);
+        result = new AttributeString(28);
         addAttribute(result);
     }
     return result;
@@ -2741,7 +2741,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getEnableLogging() {
 AttributeString* ClosuresDoorLockCluster::getLanguage() {
     auto result = (AttributeString*)getAttributeById(33);
     if (result == nullptr) {
-        result = new AttributeString(33, DataType::String);
+        result = new AttributeString(33);
         addAttribute(result);
     }
     return result;
@@ -3439,7 +3439,7 @@ AttributeUInt8* ClosuresWindowCoveringCluster::getWindowCoveringMode() {
 AttributeOctstr* ClosuresWindowCoveringCluster::getIntermediateSetpointsLift() {
     auto result = (AttributeOctstr*)getAttributeById(24);
     if (result == nullptr) {
-        result = new AttributeOctstr(24, DataType::Octstr);
+        result = new AttributeOctstr(24);
         addAttribute(result);
     }
     return result;
@@ -3448,7 +3448,7 @@ AttributeOctstr* ClosuresWindowCoveringCluster::getIntermediateSetpointsLift() {
 AttributeOctstr* ClosuresWindowCoveringCluster::getIntermediateSetpointsTilt() {
     auto result = (AttributeOctstr*)getAttributeById(25);
     if (result == nullptr) {
-        result = new AttributeOctstr(25, DataType::Octstr);
+        result = new AttributeOctstr(25);
         addAttribute(result);
     }
     return result;
@@ -4479,7 +4479,7 @@ AttributeUInt8* LightingColorCtrlCluster::getDriftCompensation() {
 AttributeString* LightingColorCtrlCluster::getCompensationText() {
     auto result = (AttributeString*)getAttributeById(6);
     if (result == nullptr) {
-        result = new AttributeString(6, DataType::String);
+        result = new AttributeString(6);
         addAttribute(result);
     }
     return result;
@@ -5145,7 +5145,7 @@ AttributeUInt8* LightingBallastCfgCluster::getLampQuantity() {
 AttributeString* LightingBallastCfgCluster::getLampType() {
     auto result = (AttributeString*)getAttributeById(48);
     if (result == nullptr) {
-        result = new AttributeString(48, DataType::String);
+        result = new AttributeString(48);
         addAttribute(result);
     }
     return result;
@@ -5154,7 +5154,7 @@ AttributeString* LightingBallastCfgCluster::getLampType() {
 AttributeString* LightingBallastCfgCluster::getLampManufacturer() {
     auto result = (AttributeString*)getAttributeById(49);
     if (result == nullptr) {
-        result = new AttributeString(49, DataType::String);
+        result = new AttributeString(49);
         addAttribute(result);
     }
     return result;
@@ -5710,6 +5710,12 @@ void SsIasZoneCluster::processCommand(uint8_t commandId, Memory& request, Memory
             response.writeUInt8((uint8_t)status_);
             return;
         }
+        case 243: {
+            auto data = request.readUInt8();
+            auto status_ = boschTestTamperCommand(data);
+            response.writeUInt8((uint8_t)status_);
+            return;
+        }
         default:
             Cluster::processCommand(commandId, request, response);
             return;
@@ -5858,7 +5864,7 @@ AttributeUInt16* PiGenericTunnelCluster::getMaxOutgoTransSize() {
 AttributeOctstr* PiGenericTunnelCluster::getProtocolAddr() {
     auto result = (AttributeOctstr*)getAttributeById(3);
     if (result == nullptr) {
-        result = new AttributeOctstr(3, DataType::Octstr);
+        result = new AttributeOctstr(3);
         addAttribute(result);
     }
     return result;
@@ -5904,7 +5910,7 @@ AttributeSingle* PiAnalogInputRegCluster::getCovIncrement() {
 AttributeString* PiAnalogInputRegCluster::getDeviceType() {
     auto result = (AttributeString*)getAttributeById(31);
     if (result == nullptr) {
-        result = new AttributeString(31, DataType::String);
+        result = new AttributeString(31);
         addAttribute(result);
     }
     return result;
@@ -5922,7 +5928,7 @@ AttributeUInt32* PiAnalogInputRegCluster::getObjectId() {
 AttributeString* PiAnalogInputRegCluster::getObjectName() {
     auto result = (AttributeString*)getAttributeById(77);
     if (result == nullptr) {
-        result = new AttributeString(77, DataType::String);
+        result = new AttributeString(77);
         addAttribute(result);
     }
     return result;
@@ -5949,7 +5955,7 @@ AttributeUInt8* PiAnalogInputRegCluster::getUpdateInterval() {
 AttributeString* PiAnalogInputRegCluster::getProfileName() {
     auto result = (AttributeString*)getAttributeById(168);
     if (result == nullptr) {
-        result = new AttributeString(168, DataType::String);
+        result = new AttributeString(168);
         addAttribute(result);
     }
     return result;
@@ -6085,7 +6091,7 @@ AttributeSingle* PiAnalogOutputRegCluster::getCovIncrement() {
 AttributeString* PiAnalogOutputRegCluster::getDeviceType() {
     auto result = (AttributeString*)getAttributeById(31);
     if (result == nullptr) {
-        result = new AttributeString(31, DataType::String);
+        result = new AttributeString(31);
         addAttribute(result);
     }
     return result;
@@ -6103,7 +6109,7 @@ AttributeUInt32* PiAnalogOutputRegCluster::getObjectId() {
 AttributeString* PiAnalogOutputRegCluster::getObjectName() {
     auto result = (AttributeString*)getAttributeById(77);
     if (result == nullptr) {
-        result = new AttributeString(77, DataType::String);
+        result = new AttributeString(77);
         addAttribute(result);
     }
     return result;
@@ -6130,7 +6136,7 @@ AttributeUInt8* PiAnalogOutputRegCluster::getUpdateInterval() {
 AttributeString* PiAnalogOutputRegCluster::getProfileName() {
     auto result = (AttributeString*)getAttributeById(168);
     if (result == nullptr) {
-        result = new AttributeString(168, DataType::String);
+        result = new AttributeString(168);
         addAttribute(result);
     }
     return result;
@@ -6247,7 +6253,7 @@ AttributeUInt32* PiAnalogValueRegCluster::getObjectId() {
 AttributeString* PiAnalogValueRegCluster::getObjectName() {
     auto result = (AttributeString*)getAttributeById(77);
     if (result == nullptr) {
-        result = new AttributeString(77, DataType::String);
+        result = new AttributeString(77);
         addAttribute(result);
     }
     return result;
@@ -6265,7 +6271,7 @@ AttributeUInt16* PiAnalogValueRegCluster::getObjectType() {
 AttributeString* PiAnalogValueRegCluster::getProfileName() {
     auto result = (AttributeString*)getAttributeById(168);
     if (result == nullptr) {
-        result = new AttributeString(168, DataType::String);
+        result = new AttributeString(168);
         addAttribute(result);
     }
     return result;
@@ -6382,7 +6388,7 @@ AttributeDateTime* PiBinaryInputRegCluster::getChangeOfStateTime() {
 AttributeString* PiBinaryInputRegCluster::getDeviceType() {
     auto result = (AttributeString*)getAttributeById(31);
     if (result == nullptr) {
-        result = new AttributeString(31, DataType::String);
+        result = new AttributeString(31);
         addAttribute(result);
     }
     return result;
@@ -6409,7 +6415,7 @@ AttributeUInt32* PiBinaryInputRegCluster::getObjectIdentifier() {
 AttributeString* PiBinaryInputRegCluster::getObjectName() {
     auto result = (AttributeString*)getAttributeById(77);
     if (result == nullptr) {
-        result = new AttributeString(77, DataType::String);
+        result = new AttributeString(77);
         addAttribute(result);
     }
     return result;
@@ -6445,7 +6451,7 @@ AttributeDateTime* PiBinaryInputRegCluster::getTimeOfSCReset() {
 AttributeString* PiBinaryInputRegCluster::getProfileName() {
     auto result = (AttributeString*)getAttributeById(168);
     if (result == nullptr) {
-        result = new AttributeString(168, DataType::String);
+        result = new AttributeString(168);
         addAttribute(result);
     }
     return result;
@@ -6535,7 +6541,7 @@ AttributeDateTime* PiBinaryOutputRegCluster::getChangeOfStateTime() {
 AttributeString* PiBinaryOutputRegCluster::getDeviceType() {
     auto result = (AttributeString*)getAttributeById(31);
     if (result == nullptr) {
-        result = new AttributeString(31, DataType::String);
+        result = new AttributeString(31);
         addAttribute(result);
     }
     return result;
@@ -6571,7 +6577,7 @@ AttributeUInt32* PiBinaryOutputRegCluster::getObjectIdentifier() {
 AttributeString* PiBinaryOutputRegCluster::getObjectName() {
     auto result = (AttributeString*)getAttributeById(77);
     if (result == nullptr) {
-        result = new AttributeString(77, DataType::String);
+        result = new AttributeString(77);
         addAttribute(result);
     }
     return result;
@@ -6607,7 +6613,7 @@ AttributeDateTime* PiBinaryOutputRegCluster::getTimeOfSCReset() {
 AttributeString* PiBinaryOutputRegCluster::getProfileName() {
     auto result = (AttributeString*)getAttributeById(168);
     if (result == nullptr) {
-        result = new AttributeString(168, DataType::String);
+        result = new AttributeString(168);
         addAttribute(result);
     }
     return result;
@@ -6706,7 +6712,7 @@ AttributeUInt32* PiBinaryValueRegCluster::getObjectIdentifier() {
 AttributeString* PiBinaryValueRegCluster::getObjectName() {
     auto result = (AttributeString*)getAttributeById(77);
     if (result == nullptr) {
-        result = new AttributeString(77, DataType::String);
+        result = new AttributeString(77);
         addAttribute(result);
     }
     return result;
@@ -6742,7 +6748,7 @@ AttributeDateTime* PiBinaryValueRegCluster::getTimeOfSCReset() {
 AttributeString* PiBinaryValueRegCluster::getProfileName() {
     auto result = (AttributeString*)getAttributeById(168);
     if (result == nullptr) {
-        result = new AttributeString(168, DataType::String);
+        result = new AttributeString(168);
         addAttribute(result);
     }
     return result;
@@ -6814,7 +6820,7 @@ AttributeUInt8* PiBinaryValueExtCluster::getTimeDelay() {
 AttributeString* PiMultistateInputRegCluster::getDeviceType() {
     auto result = (AttributeString*)getAttributeById(31);
     if (result == nullptr) {
-        result = new AttributeString(31, DataType::String);
+        result = new AttributeString(31);
         addAttribute(result);
     }
     return result;
@@ -6832,7 +6838,7 @@ AttributeUInt32* PiMultistateInputRegCluster::getObjectId() {
 AttributeString* PiMultistateInputRegCluster::getObjectName() {
     auto result = (AttributeString*)getAttributeById(77);
     if (result == nullptr) {
-        result = new AttributeString(77, DataType::String);
+        result = new AttributeString(77);
         addAttribute(result);
     }
     return result;
@@ -6850,7 +6856,7 @@ AttributeUInt16* PiMultistateInputRegCluster::getObjectType() {
 AttributeString* PiMultistateInputRegCluster::getProfileName() {
     auto result = (AttributeString*)getAttributeById(168);
     if (result == nullptr) {
-        result = new AttributeString(168, DataType::String);
+        result = new AttributeString(168);
         addAttribute(result);
     }
     return result;
@@ -6931,7 +6937,7 @@ AttributeUInt8* PiMultistateInputExtCluster::getTimeDelay() {
 AttributeString* PiMultistateOutputRegCluster::getDeviceType() {
     auto result = (AttributeString*)getAttributeById(31);
     if (result == nullptr) {
-        result = new AttributeString(31, DataType::String);
+        result = new AttributeString(31);
         addAttribute(result);
     }
     return result;
@@ -6958,7 +6964,7 @@ AttributeUInt32* PiMultistateOutputRegCluster::getObjectId() {
 AttributeString* PiMultistateOutputRegCluster::getObjectName() {
     auto result = (AttributeString*)getAttributeById(77);
     if (result == nullptr) {
-        result = new AttributeString(77, DataType::String);
+        result = new AttributeString(77);
         addAttribute(result);
     }
     return result;
@@ -6976,7 +6982,7 @@ AttributeUInt16* PiMultistateOutputRegCluster::getObjectType() {
 AttributeString* PiMultistateOutputRegCluster::getProfileName() {
     auto result = (AttributeString*)getAttributeById(168);
     if (result == nullptr) {
-        result = new AttributeString(168, DataType::String);
+        result = new AttributeString(168);
         addAttribute(result);
     }
     return result;
@@ -7048,7 +7054,7 @@ AttributeUInt32* PiMultistateValueRegCluster::getObjectId() {
 AttributeString* PiMultistateValueRegCluster::getObjectName() {
     auto result = (AttributeString*)getAttributeById(77);
     if (result == nullptr) {
-        result = new AttributeString(77, DataType::String);
+        result = new AttributeString(77);
         addAttribute(result);
     }
     return result;
@@ -7066,7 +7072,7 @@ AttributeUInt16* PiMultistateValueRegCluster::getObjectType() {
 AttributeString* PiMultistateValueRegCluster::getProfileName() {
     auto result = (AttributeString*)getAttributeById(168);
     if (result == nullptr) {
-        result = new AttributeString(168, DataType::String);
+        result = new AttributeString(168);
         addAttribute(result);
     }
     return result;
@@ -7922,7 +7928,7 @@ AttributeUInt8* SeMeteringCluster::getMeteringDeviceType() {
 AttributeOctstr* SeMeteringCluster::getSiteId() {
     auto result = (AttributeOctstr*)getAttributeById(775);
     if (result == nullptr) {
-        result = new AttributeOctstr(775, DataType::Octstr);
+        result = new AttributeOctstr(775);
         addAttribute(result);
     }
     return result;
@@ -7931,7 +7937,7 @@ AttributeOctstr* SeMeteringCluster::getSiteId() {
 AttributeOctstr* SeMeteringCluster::getMeterSerialNumber() {
     auto result = (AttributeOctstr*)getAttributeById(776);
     if (result == nullptr) {
-        result = new AttributeOctstr(776, DataType::Octstr);
+        result = new AttributeOctstr(776);
         addAttribute(result);
     }
     return result;
@@ -7985,7 +7991,7 @@ AttributeUInt8* SeMeteringCluster::getTemperatureFormatting() {
 AttributeOctstr* SeMeteringCluster::getModuleSerialNumber() {
     auto result = (AttributeOctstr*)getAttributeById(782);
     if (result == nullptr) {
-        result = new AttributeOctstr(782, DataType::Octstr);
+        result = new AttributeOctstr(782);
         addAttribute(result);
     }
     return result;
@@ -7994,7 +8000,7 @@ AttributeOctstr* SeMeteringCluster::getModuleSerialNumber() {
 AttributeOctstr* SeMeteringCluster::getOperatingTariffLevel() {
     auto result = (AttributeOctstr*)getAttributeById(783);
     if (result == nullptr) {
-        result = new AttributeOctstr(783, DataType::Octstr);
+        result = new AttributeOctstr(783);
         addAttribute(result);
     }
     return result;
@@ -8479,7 +8485,7 @@ void SeMeteringCluster::processCommand(uint8_t commandId, Memory& request, Memor
 AttributeString* TelecommunicationsInformationCluster::getNodeDescription() {
     auto result = (AttributeString*)getAttributeById(0);
     if (result == nullptr) {
-        result = new AttributeString(0, DataType::String);
+        result = new AttributeString(0);
         addAttribute(result);
     }
     return result;
@@ -8641,7 +8647,7 @@ AttributeUInt16* TelecommunicationsChattingCluster::getUID() {
 AttributeString* TelecommunicationsChattingCluster::getNickname() {
     auto result = (AttributeString*)getAttributeById(1);
     if (result == nullptr) {
-        result = new AttributeString(1, DataType::String);
+        result = new AttributeString(1);
         addAttribute(result);
     }
     return result;
@@ -8659,7 +8665,7 @@ AttributeUInt16* TelecommunicationsChattingCluster::getCID() {
 AttributeString* TelecommunicationsChattingCluster::getName() {
     auto result = (AttributeString*)getAttributeById(17);
     if (result == nullptr) {
-        result = new AttributeString(17, DataType::String);
+        result = new AttributeString(17);
         addAttribute(result);
     }
     return result;
@@ -8686,7 +8692,7 @@ AttributeUInt56* HaApplianceIdentificationCluster::getBasicIdentification() {
 AttributeString* HaApplianceIdentificationCluster::getCompanyName() {
     auto result = (AttributeString*)getAttributeById(16);
     if (result == nullptr) {
-        result = new AttributeString(16, DataType::String);
+        result = new AttributeString(16);
         addAttribute(result);
     }
     return result;
@@ -8704,7 +8710,7 @@ AttributeUInt16* HaApplianceIdentificationCluster::getCompanyId() {
 AttributeString* HaApplianceIdentificationCluster::getBrandName() {
     auto result = (AttributeString*)getAttributeById(18);
     if (result == nullptr) {
-        result = new AttributeString(18, DataType::String);
+        result = new AttributeString(18);
         addAttribute(result);
     }
     return result;
@@ -8722,7 +8728,7 @@ AttributeUInt16* HaApplianceIdentificationCluster::getBrandId() {
 AttributeOctstr* HaApplianceIdentificationCluster::getModel() {
     auto result = (AttributeOctstr*)getAttributeById(20);
     if (result == nullptr) {
-        result = new AttributeOctstr(20, DataType::Octstr);
+        result = new AttributeOctstr(20);
         addAttribute(result);
     }
     return result;
@@ -8731,7 +8737,7 @@ AttributeOctstr* HaApplianceIdentificationCluster::getModel() {
 AttributeOctstr* HaApplianceIdentificationCluster::getPartNumber() {
     auto result = (AttributeOctstr*)getAttributeById(21);
     if (result == nullptr) {
-        result = new AttributeOctstr(21, DataType::Octstr);
+        result = new AttributeOctstr(21);
         addAttribute(result);
     }
     return result;
@@ -8740,7 +8746,7 @@ AttributeOctstr* HaApplianceIdentificationCluster::getPartNumber() {
 AttributeOctstr* HaApplianceIdentificationCluster::getProductRevision() {
     auto result = (AttributeOctstr*)getAttributeById(22);
     if (result == nullptr) {
-        result = new AttributeOctstr(22, DataType::Octstr);
+        result = new AttributeOctstr(22);
         addAttribute(result);
     }
     return result;
@@ -8749,7 +8755,7 @@ AttributeOctstr* HaApplianceIdentificationCluster::getProductRevision() {
 AttributeOctstr* HaApplianceIdentificationCluster::getSoftwareRevision() {
     auto result = (AttributeOctstr*)getAttributeById(23);
     if (result == nullptr) {
-        result = new AttributeOctstr(23, DataType::Octstr);
+        result = new AttributeOctstr(23);
         addAttribute(result);
     }
     return result;
@@ -8758,7 +8764,7 @@ AttributeOctstr* HaApplianceIdentificationCluster::getSoftwareRevision() {
 AttributeOctstr* HaApplianceIdentificationCluster::getProductTypeName() {
     auto result = (AttributeOctstr*)getAttributeById(24);
     if (result == nullptr) {
-        result = new AttributeOctstr(24, DataType::Octstr);
+        result = new AttributeOctstr(24);
         addAttribute(result);
     }
     return result;
@@ -8785,7 +8791,7 @@ AttributeUInt8* HaApplianceIdentificationCluster::getCecedSpecificationVersion()
 AttributeString* HaMeterIdentificationCluster::getCompanyName() {
     auto result = (AttributeString*)getAttributeById(0);
     if (result == nullptr) {
-        result = new AttributeString(0, DataType::String);
+        result = new AttributeString(0);
         addAttribute(result);
     }
     return result;
@@ -8812,7 +8818,7 @@ AttributeUInt16* HaMeterIdentificationCluster::getDataQualityId() {
 AttributeString* HaMeterIdentificationCluster::getCustomerName() {
     auto result = (AttributeString*)getAttributeById(5);
     if (result == nullptr) {
-        result = new AttributeString(5, DataType::String);
+        result = new AttributeString(5);
         addAttribute(result);
     }
     return result;
@@ -8821,7 +8827,7 @@ AttributeString* HaMeterIdentificationCluster::getCustomerName() {
 AttributeString* HaMeterIdentificationCluster::getModel() {
     auto result = (AttributeString*)getAttributeById(6);
     if (result == nullptr) {
-        result = new AttributeString(6, DataType::String);
+        result = new AttributeString(6);
         addAttribute(result);
     }
     return result;
@@ -8830,7 +8836,7 @@ AttributeString* HaMeterIdentificationCluster::getModel() {
 AttributeString* HaMeterIdentificationCluster::getPartNumber() {
     auto result = (AttributeString*)getAttributeById(7);
     if (result == nullptr) {
-        result = new AttributeString(7, DataType::String);
+        result = new AttributeString(7);
         addAttribute(result);
     }
     return result;
@@ -8839,7 +8845,7 @@ AttributeString* HaMeterIdentificationCluster::getPartNumber() {
 AttributeString* HaMeterIdentificationCluster::getProductRevision() {
     auto result = (AttributeString*)getAttributeById(8);
     if (result == nullptr) {
-        result = new AttributeString(8, DataType::String);
+        result = new AttributeString(8);
         addAttribute(result);
     }
     return result;
@@ -8848,7 +8854,7 @@ AttributeString* HaMeterIdentificationCluster::getProductRevision() {
 AttributeString* HaMeterIdentificationCluster::getSoftwareRevision() {
     auto result = (AttributeString*)getAttributeById(10);
     if (result == nullptr) {
-        result = new AttributeString(10, DataType::String);
+        result = new AttributeString(10);
         addAttribute(result);
     }
     return result;
@@ -8857,7 +8863,7 @@ AttributeString* HaMeterIdentificationCluster::getSoftwareRevision() {
 AttributeString* HaMeterIdentificationCluster::getUtilityName() {
     auto result = (AttributeString*)getAttributeById(11);
     if (result == nullptr) {
-        result = new AttributeString(11, DataType::String);
+        result = new AttributeString(11);
         addAttribute(result);
     }
     return result;
@@ -8866,7 +8872,7 @@ AttributeString* HaMeterIdentificationCluster::getUtilityName() {
 AttributeString* HaMeterIdentificationCluster::getPod() {
     auto result = (AttributeString*)getAttributeById(12);
     if (result == nullptr) {
-        result = new AttributeString(12, DataType::String);
+        result = new AttributeString(12);
         addAttribute(result);
     }
     return result;
@@ -10458,7 +10464,7 @@ void TouchlinkCluster::processCommand(uint8_t commandId, Memory& request, Memory
 AttributeString* WiserDeviceInfoCluster::getDeviceInfo() {
     auto result = (AttributeString*)getAttributeById(32);
     if (result == nullptr) {
-        result = new AttributeString(32, DataType::String);
+        result = new AttributeString(32);
         addAttribute(result);
     }
     return result;

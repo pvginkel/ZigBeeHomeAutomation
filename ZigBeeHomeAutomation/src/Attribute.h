@@ -37,6 +37,200 @@ protected:
 	void markDirty() { _dirty = true; }
 };
 
+enum class AttributeStringType : uint8_t {
+    Empty,
+    CStr,
+    FlashString
+};
+
+class AttributeString : public Attribute {
+    AttributeStringType _type;
+    void* _value;
+
+public:
+    AttributeString(uint16_t attributeId)
+		: Attribute(attributeId, DataType::String), _type(AttributeStringType::Empty), _value(nullptr) {
+    }
+    ~AttributeString() override {
+        clearValue();
+    }
+
+    void clearValue() {
+        if (_type == AttributeStringType::CStr) {
+            free(_value);
+        }
+        _type = AttributeStringType::Empty;
+        _value = nullptr;
+    }
+    AttributeStringType getType() const {
+        return _type;
+    }
+    const char* getCString() const {
+        return _type == AttributeStringType::CStr ? (char*)_value : nullptr;
+    }
+    const __FlashStringHelper* getFlashString() const {
+        return _type == AttributeStringType::FlashString ? (__FlashStringHelper*)_value : nullptr;
+    }
+    void setValue(const String& value) {
+        setValue(value.c_str());
+    }
+    void setValue(const char* value) {
+        auto length = strlen(value);
+
+        char* buffer = nullptr;
+        if (_type == AttributeStringType::CStr) {
+            auto currentLength = strlen(_value);
+            if (length == currentLength) {
+                buffer = (char*)_value;
+            }
+        }
+
+        if (!buffer) {
+            clearValue();
+            buffer = (char*)malloc(length + 1);
+        }
+
+        _type = AttributeStringType::CStr;
+        _value = buffer;
+
+        strcpy(buffer, value);
+    }
+    void setValue(const __FlashStringHelper* value) {
+        clearValue();
+        _type = AttributeStringType::FlashString;
+        _value = (void*)value;
+    }
+
+    String toString() override {
+        if (_type == AttributeStringType::CStr) {
+            return String(getCString());
+        }
+        if (_type == AttributeStringType::FlashString) {
+            return String(getFlashString());
+        }
+        return String();
+    }
+
+    void readValue(Memory& memory) override {
+        // Unsupported.
+    }
+
+    void readStringValue(Memory& memory, DataType dataType) {
+        uint16_t length;
+        if (dataType == DataType::String16) {
+            length = memory.readUInt16Le();
+        }
+        else {
+            length = memory.readUInt8();
+        }
+
+        char* buffer = nullptr;
+
+        if (_type == AttributeStringType::CStr) {
+            auto currentLength = strlen(_value);
+            if (currentLength == length) {
+                buffer = (char*)_value;
+            }
+        }
+
+        if (!buffer) {
+            clearValue();
+            buffer = (char*)malloc(length + 1);
+        }
+
+        _type = AttributeStringType::CStr;
+        _value = buffer;
+
+        while (length--) {
+            *buffer++ = (char)memory.readUInt8();
+        }
+        *buffer = 0;
+    }
+
+    void writeValue(Memory& memory) override {
+        uint16_t length;
+
+        if (_type == AttributeStringType::CStr) {
+            length = strlen(getCString());
+        }
+        else if (_type == AttributeStringType::FlashString) {
+            length = 0;
+            auto value = (PGM_P)getFlashString();
+            for (;;) {
+				auto c = pgm_read_byte(value++);
+                if (!c) {
+                    break;
+                }
+                length++;
+            }
+        }
+        else {
+            length = 0;
+        }
+
+        // We only support long strings to keep program size down.
+        memory.writeUInt16Le(length);
+
+        if (_type == AttributeStringType::CStr) {
+            auto value = getCString();
+            for (;;) {
+				auto c = *value++;
+                if (!c) {
+                    break;
+                }
+                memory.writeUInt8(c);
+            }
+        }
+        else if (_type == AttributeStringType::FlashString) {
+            auto value = (PGM_P)getFlashString();
+            for (;;) {
+				auto c = pgm_read_byte(value++);
+                if (!c) {
+                    break;
+                }
+                memory.writeUInt8(c);
+            }
+        }
+    }
+};
+
+class AttributeOctstr : public Attribute {
+    Buffer _value{};
+
+public:
+    AttributeOctstr(uint16_t attributeId) : Attribute(attributeId, DataType::Octstr) {
+    }
+
+    const Buffer& getValue() { return _value; }
+
+    void setValue(Buffer value) {
+        _value = value;
+        markDirty();
+    }
+
+    String toString() override {
+        return F("BUFFER");
+    }
+
+    void readValue(Memory& memory) override {
+        // Unsupported.
+    }
+
+    void readOctstrValue(Memory& memory, DataType dataType) {
+        if (dataType == DataType::Octstr16) {
+            _value = memory.readOctstr16Le();
+        }
+        else {
+            _value = memory.readOctstr();
+        }
+    }
+
+    void writeValue(Memory& memory) override {
+        // We only support long octstrs to keep program size down.
+        memory.writeOctstr16Le(_value);
+    }
+};
+
 // GENERATION START
 class AttributeUInt8: public Attribute {
     uint8_t _value{};
@@ -521,70 +715,6 @@ public:
 
     void writeValue(Memory& memory) override {
         memory.writeDouble(_value);
-    }
-};
-
-class AttributeOctstr: public Attribute {
-    Buffer _value{};
-
-public:
-    AttributeOctstr(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
-    }
-
-    Buffer getValue() { return _value; }
-
-    void setValue(Buffer value) {
-        _value = value;
-        markDirty();
-    }
-
-    String toString() override {
-        return F("BUFFER");
-    }
-
-    void readValue(Memory& memory) override {
-        _value = memory.readOctstr();
-    }
-
-    void writeValue(Memory& memory) override {
-        if (_value.length() > 254) {
-            memory.writeOctstr16Le(_value);
-        }
-        else {
-            memory.writeOctstr(_value);
-        }
-    }
-};
-
-class AttributeString: public Attribute {
-    String _value{};
-
-public:
-    AttributeString(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {
-    }
-
-    String getValue() { return _value; }
-
-    void setValue(String value) {
-        _value = value;
-        markDirty();
-    }
-
-    String toString() override {
-        return _value;
-    }
-
-    void readValue(Memory& memory) override {
-        _value = memory.readString();
-    }
-
-    void writeValue(Memory& memory) override {
-        if (_value.length() > 254) {
-            memory.writeString16Le(_value);
-        }
-        else {
-            memory.writeString(_value);
-        }
     }
 };
 

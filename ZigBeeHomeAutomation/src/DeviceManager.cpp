@@ -522,8 +522,8 @@ void DeviceManager::reportAttribute(Device* device, Cluster* cluster, Attribute*
 		(uint8_t)CommandIdentifier::ReportAttributes
 	).write(buffer);
 
-	ReportAttributesFrame::writeAttribute(buffer, attribute->getAttributeId(), attribute->getDataType());
-	attribute->writeValue(buffer);
+	ReportAttributesFrame::writeAttribute(buffer, attribute->getAttributeId());
+	FrameParsingHelpers::writeAttributeWithValue(buffer, attribute);
 
 	attribute->markClean();
 
@@ -582,6 +582,12 @@ void DeviceManager::setCommandBuilder(command_builder_t commandBuilder) {
 }
 
 void DeviceManager::update() {
+	//
+	// Using checkMemory() and fillMemory(), it's estimated that this method
+	// needs 208 bytes of stack at most with logging enabled and 153 with
+	// logging disabled.
+	//
+
 	_device.loop();
 
 	reportAttributes();

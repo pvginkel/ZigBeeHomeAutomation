@@ -1810,6 +1810,10 @@ public:
         return Status::UnsupportedAttribute;
     }
 
+    virtual Status boschTestTamperCommand(uint8_t data) {
+        return Status::UnsupportedAttribute;
+    }
+
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 

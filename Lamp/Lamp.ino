@@ -28,12 +28,7 @@ StatusControl status;
 Light light(5);
 
 static bool isOn();
-static void toggle(uintptr_t);
 static void updateButton();
-static void reset(uintptr_t);
-static void resetCountdown(int remaining, uintptr_t);
-static void onConnected(ConnectionStatus connectionStatus, uintptr_t);
-static void onStatus(const String& message, uintptr_t);
 
 class : public GenOnOffCluster {
 public:
@@ -65,13 +60,17 @@ public:
     }
 } levelCtrlCluster;
 
-void setup()
-{
+void setup() {
+    Serial.begin(115200);
+    while (!Serial);
+
+    DEBUG(F("Serial ready"));
+
     deviceManager.addDevice(lightBulb);
     lightBulb.addCluster(onOffCluster);
     lightBulb.addCluster(levelCtrlCluster);
-    lightBulb.getBasicCluster().getManufacturerName()->setValue(String(F("Pieter")));
-    lightBulb.getBasicCluster().getModelId()->setValue(String(F("Lamp")));
+    lightBulb.getBasicCluster().getManufacturerName()->setValue(F("Pieter"));
+    lightBulb.getBasicCluster().getModelId()->setValue(F("Lamp"));
 
     onOffCluster.getOnOff()->configureBroadcastReporting();
     levelCtrlCluster.getCurrentLevel()->configureBroadcastReporting();
@@ -84,26 +83,50 @@ void setup()
 #endif
     });
 
-    Serial.begin(115200);
-    while (!Serial);
-
-    DEBUG(F("Serial ready"));
-
 #if DISPLAY
     u8g2.begin();
     display.begin(u8g2, SCREEN_WIDTH, SCREEN_HEIGHT, 5000ul);
 #endif
 
-    status.onClick(toggle);
-    status.onReset(reset);
-    status.onResetCountdown(resetCountdown);
+    status.onClick([](uintptr_t) {
+        light.setLevel(isOn() ? 0 : 255, 1000);
+    });
+
+    status.onReset([](uintptr_t) {
+        deviceManager.performReset();
+    });
+
+#if DISPLAY
+    status.onResetCountdown([](int remaining, uintptr_t) {
+        if (remaining > 0) {
+            display.setStatus(String(F("Resetting in ")) + remaining);
+        }
+        else if (remaining == 0) {
+            display.setStatus(F("Resetting NOW"));
+        }
+        else {
+            display.setStatus(String());
+        }
+    });
+#endif
+
     status.setBounce(Bounce(IO_PB, 50));
     status.setLed(IO_STATUS_LED);
 
     xbeeSerial.begin(9600);
 
-    deviceManager.setConnectedCallback(onConnected);
-    deviceManager.setStatusCallback(onStatus);
+    deviceManager.setConnectedCallback([](ConnectionStatus connectionStatus, uintptr_t) {
+#if DISPLAY
+        display.setConnected(connectionStatus);
+#endif
+        status.setConnected(connectionStatus);
+    });
+
+#if DISPLAY
+    deviceManager.setStatusCallback([](const __FlashStringHelper* message, uintptr_t) {
+        display.setStatus(message);
+    });
+#endif
 
     deviceManager.begin(xbeeSerial);
 
@@ -115,46 +138,12 @@ void loop() {
     status.update();
     light.update();
     deviceManager.update();
+
 #if DISPLAY
     display.update();
 #endif
 }
 
-void toggle(uintptr_t) {
-    light.setLevel(isOn() ? 0 : 255, 1000);
-}
-
 bool isOn() {
     return onOffCluster.getOnOff()->getValue();
-}
-
-void reset(uintptr_t) {
-    deviceManager.performReset();
-}
-
-void resetCountdown(int remaining, uintptr_t) {
-#if DISPLAY
-    if (remaining > 0) {
-        display.setStatus(String(F("Resetting in ")) + remaining);
-    }
-    else if (remaining == 0) {
-        display.setStatus(F("Resetting NOW"));
-    }
-    else {
-        display.setStatus(String());
-    }
-#endif
-}
-
-static void onConnected(ConnectionStatus connectionStatus, uintptr_t) {
-#if DISPLAY
-    display.setConnected(connectionStatus);
-#endif
-    status.setConnected(connectionStatus);
-}
-
-static void onStatus(const String& message, uintptr_t) {
-#if DISPLAY
-    display.setStatus(message);
-#endif
 }

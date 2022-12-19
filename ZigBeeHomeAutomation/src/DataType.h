@@ -1,6 +1,6 @@
 #pragma once
 
-enum class DataType {
+enum class DataType : uint8_t {
 	NoData = 0x00,
 	Data8 = 0x08,
 	Data16 = 0x09,

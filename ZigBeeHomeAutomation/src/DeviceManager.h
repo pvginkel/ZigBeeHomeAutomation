@@ -1,6 +1,6 @@
 #pragma once
 
-enum class ConnectionStatus {
+enum class ConnectionStatus : uint8_t {
 	NotConnected,
 	Connecting,
 	Connected
@@ -25,7 +25,6 @@ class DeviceManager {
 		RetrievingConfiguration,
 		RetrievingAssociationIndication
 	};
-
 
 	static constexpr int AT_COMMAND_RETRY_MS = 1000;
 	static constexpr int ASSOCIATION_INDICATION_REFRESH_MS = 1000;

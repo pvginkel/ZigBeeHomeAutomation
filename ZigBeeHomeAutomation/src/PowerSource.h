@@ -1,6 +1,6 @@
 #pragma once
 
-enum class PowerSource {
+enum class PowerSource : uint8_t {
 	Unknown = 0x00,
 	MainsSinglePhase = 0x01,
 	Mains3Phase = 0x02,

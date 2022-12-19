@@ -63,9 +63,8 @@ Status Device::processGeneralReadAttributesCommand(Frame& frame, Memory& request
 		if (attribute) {
 			DEBUG(F("  Attribute "), attributeId, F(" reporting "), attribute->toString());
 
-			ReadAttributesResponseFrame::writeAttribute(response, attributeId, Status::Success, attribute->getDataType());
-
-			attribute->writeValue(response);
+			ReadAttributesResponseFrame::writeAttribute(response, attributeId, Status::Success);
+			FrameParsingHelpers::writeAttributeWithValue(response, attribute);
 		}
 		else {
 			DEBUG(F("  Attribute "), attributeId, F(" unsupported"));
@@ -113,7 +112,16 @@ Status Device::processGeneralWriteAttributesCommand(Frame& frame, Memory& reques
 		else {
 			DEBUG(F("Writing value to attribute "), attributeId, F(" on cluster "), message.getClusterId());
 
-			attribute->readValue(request);
+			auto attributeDataType = attribute->getDataType();
+			if (attributeDataType == DataType::String) {
+				((AttributeString*)attribute)->readStringValue(request, dataType);
+			}
+			else if (attributeDataType == DataType::Octstr) {
+				((AttributeOctstr*)attribute)->readOctstrValue(request, dataType);
+			}
+			else {
+				attribute->readValue(request);
+			}
 
 			WriteAttributeResponseFrame::writeAttributeResponse(response, Status::Success, attributeId);
 		}
