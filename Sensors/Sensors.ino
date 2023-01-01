@@ -3,14 +3,14 @@
 #include <SoftwareSerial.h>
 #include <ZigBeeHomeAutomation.h>
 
-#define IO_XBEE_RX 12
-#define IO_XBEE_TX 11
-#define IO_PB 13
-#define IO_STATUS_LED 6
-#define IO_DHT 9
-#define IO_PHOTO_RESISTOR_33 A3
-#define IO_PHOTO_RESISTOR_60 A2
-#define IO_PHOTO_RESISTOR_200 A1
+#define IO_XBEE_RX 9
+#define IO_XBEE_TX 8
+#define IO_PB 4
+#define IO_STATUS_LED 3
+#define IO_DHT 10
+#define IO_PHOTO_RESISTOR_33 A2
+#define IO_PHOTO_RESISTOR_60 A1
+#define IO_PHOTO_RESISTOR_200 A0
 
 //#define REPORT_INTERVAL_MS 1000
 #define REPORT_INTERVAL_MS 60000ul
