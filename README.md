@@ -32,3 +32,16 @@ AT mode to API mode. See https://alselectro.wordpress.com/2017/01/23/zigbee-xbee
 for how to use an Arduino to upload firmware.
 
 The XBee device won't be listening to all channels by default.
+
+See https://www.youtube.com/watch?v=MdFFZGco3jg for instructions on how
+to recover an unresponsive modem. Basically the instructions are:
+
+* Set the boud rate to 115200.
+* Remove the modem from the USB adapter.
+* Select the device type, firmware type and version, and reset all settings
+  to their default value.
+* Click Write.
+* When the prompt appears to reset the modem, hold down the reset button
+  while you insert the modem.
+
+The firmware write process should now complete successfully.
