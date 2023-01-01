@@ -211,19 +211,6 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 	else if (clusterId == (uint16_t)ZdoCommand::MatchDescriptorRequest) {
 		DEBUG(F("ZDO Match Descriptor Request"));
 
-		uint16_t profile_id = ((uint16_t)frameData[4] << 8) | frameData[3];
-		uint8_t numInClusters = frameData[5];
-		for (uint8_t i = 1; i <= numInClusters; i++) {
-			uint16_t cluster = ((uint16_t)frameData[5 + 2 * i] << 8) | frameData[4 + (2 * i)];
-			Serial.println(cluster, HEX);
-		}
-		uint8_t numOutClusters = frameData[6 + 2 * numInClusters];
-		for (uint8_t i = 1; i <= numOutClusters; i++) {
-			uint16_t cluster =
-				((uint16_t)frameData[7 + 2 * (i + numInClusters)] << 8) | frameData[6 + 2 * (i + numInClusters)];
-			Serial.println(cluster, HEX);
-		}
-
 		Memory memory(_payload);
 
 		memory.writeUInt8(frameData[0]);
