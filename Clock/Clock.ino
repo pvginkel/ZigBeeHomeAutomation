@@ -97,10 +97,7 @@ void setup() {
     onOffCluster.getOnOff()->configureBroadcastReporting();
     levelCtrlCluster.getCurrentLevel()->configureBroadcastReporting();
 
-    Serial.begin(115200);
-    while (!Serial);
-
-    DEBUG(F("Serial ready"));
+    LOG_BEGIN();
 
     status.onClick([](uintptr_t) { clock.setOn(!clock.isOn()); });
     status.onReset([](uintptr_t) { deviceManager.performReset(); });

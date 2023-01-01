@@ -17,10 +17,7 @@ void setup() {
 	basicDevice.getBasicCluster().getManufacturerName()->setValue(F("Pieter"));
 	basicDevice.getBasicCluster().getModelId()->setValue(F("Basic Device"));
 
-	Serial.begin(115200);
-	while (!Serial);
-
-	DEBUG(F("Serial ready"));
+	LOG_BEGIN();
 
 	// Disable the onboard led.
 	pinMode(LED_BUILTIN, OUTPUT);

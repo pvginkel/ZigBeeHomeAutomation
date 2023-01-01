@@ -74,10 +74,7 @@ void setup() {
 	photoResistorCluster200k.getMinMeasuredValue()->setValue(0);
 	photoResistorCluster200k.getMaxMeasuredValue()->setValue(1023);
 
-	Serial.begin(115200);
-	while (!Serial);
-
-	DEBUG(F("Serial ready"));
+	LOG_BEGIN();
 
 	// Force a report if the status button is clicked.
 	status.onClick([](uintptr_t) { lastReport = 0; });

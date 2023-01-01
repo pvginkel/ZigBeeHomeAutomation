@@ -81,6 +81,21 @@
 #define DEBUG(...)
 #endif
 
+// Only enable serial if we're logging anything. For the Arduino Pro Micro,
+// logging and serial needs to be disabled completely if running without
+// a computer connected because the outgoing buffers will never empty.
+
+#if LOG_LEVEL > LOG_LEVEL_NONE
+#define LOG_BEGIN()					\
+	do {							\
+		Serial.begin(115200);		\
+		while (!Serial);			\
+		DEBUG(F("Serial ready"));	\
+	} while (0);
+#else
+#define LOG_BEGIN()
+#endif
+
 #define ARRAY_LENGTH(array) (sizeof(array)/sizeof((array)[0]))
 
 typedef uint32_t time_t;

@@ -15,11 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BasicDevice.ino" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="__vm\.BasicDevice.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BasicDevice.ino" />
   </ItemGroup>
 </Project>

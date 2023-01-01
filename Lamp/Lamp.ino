@@ -61,10 +61,7 @@ public:
 } levelCtrlCluster;
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial);
-
-    DEBUG(F("Serial ready"));
+    LOG_BEGIN();
 
     deviceManager.addDevice(lightBulb);
     lightBulb.addCluster(onOffCluster);

@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Lamp.ino" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="__vm\.Lamp.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -32,5 +29,6 @@
     <ClCompile Include="Display.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Lamp.ino" />
   </ItemGroup>
 </Project>
