@@ -705,7 +705,6 @@ const __FlashStringHelper* DeviceManager::getShortAssociationIndicationDescripti
 AT_BUILDER(restoreDefaultsCommand, "RE");
 AT_BUILDER(apiOptionsCommand, "AO", 3);
 AT_BUILDER(networkResetCommand, "NR", 0);
-AT_BUILDER_STR(nodeIdentifierCommand, "NI", "TEST LAMP");
 AT_BUILDER(zigbeeStackProfileCommand, "ZS", 2);
 AT_BUILDER(nodeJoinTimeCommand, "NJ", 0x5A);
 AT_BUILDER(encryptionEnableCommand, "EE", 1);
@@ -731,18 +730,17 @@ AtCommandRequest buildResetCommand(uint8_t index) {
 	case 0: return restoreDefaultsCommand();
 	case 1: return apiOptionsCommand();
 	case 2: return networkResetCommand();
-	case 3: return nodeIdentifierCommand();
-	case 4: return zigbeeStackProfileCommand();
-	case 5: return nodeJoinTimeCommand();
-	case 6: return encryptionEnableCommand();
-	case 7: return encryptionOptionsCommand();
-	case 8: return linkKeyCommand();
-	case 9: return dio6RtsCommand();
-	case 10: return scanChannelsCommand();
-	case 11: return apiModeCommand();
-	case 12: return sleepModeCommand();
-	case 13: return writeCommand();
-	case 14: return softwareResetCommand();
+	case 3: return zigbeeStackProfileCommand();
+	case 4: return nodeJoinTimeCommand();
+	case 5: return encryptionEnableCommand();
+	case 6: return encryptionOptionsCommand();
+	case 7: return linkKeyCommand();
+	case 8: return dio6RtsCommand();
+	case 9: return scanChannelsCommand();
+	case 10: return apiModeCommand();
+	case 11: return sleepModeCommand();
+	case 12: return writeCommand();
+	case 13: return softwareResetCommand();
 	default: return {};
 	}
 }
