@@ -91,7 +91,7 @@
 		Serial.begin(115200);		\
 		while (!Serial);			\
 		DEBUG(F("Serial ready"));	\
-	} while (0);
+	} while (0)
 #else
 #define LOG_BEGIN()
 #endif

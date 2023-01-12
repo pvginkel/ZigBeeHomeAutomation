@@ -4,7 +4,7 @@
 #define IO_XBEE_RX 2
 #define IO_XBEE_TX 3
 #define IO_PB 4
-#define IO_STATUS_LED 6
+#define IO_STATUS_LED 5
 
 SoftwareSerial xbeeSerial(IO_XBEE_RX, IO_XBEE_TX);
 DeviceManager deviceManager;
