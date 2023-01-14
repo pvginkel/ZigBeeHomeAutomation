@@ -115,7 +115,7 @@ public:
 	}
 
 	int lastIndexOf(const T& value) const {
-		for (int i = _size; i >= 0; i--) {
+		for (int i = int(_size); i >= 0; i--) {
 			if (_data[i] == value) {
 				return i;
 			}

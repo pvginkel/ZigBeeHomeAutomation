@@ -383,6 +383,12 @@ public class Generator
 
         cw.WriteLine("#include \"ZigBeeHomeAutomation.h\"");
 
+        cw.WriteLine();
+        cw.WriteLine("// Zigbee2mqtt deduplicates commands based on the transaction id.");
+        cw.WriteLine("// We generate this transaction ID using the field below. Every time");
+        cw.WriteLine("// we send out a command, we bump this value by one.");
+        cw.WriteLine("static uint8_t nextTransactionSequenceNumber = 0;");
+
         foreach (var (key, _) in obj)
         {
             var cluster = (JObject)obj[key];
@@ -488,7 +494,7 @@ public class Generator
                 // Virtual command method.
 
                 cwh.WriteLine();
-                cwh.Write($"virtual Status {command.Name}Command(");
+                cwh.Write($"virtual Status on{command.Name.ToUpperFirst()}Command(");
 
                 for (var i = 0; i < command.Parameters.Count; i++)
                 {
@@ -511,6 +517,57 @@ public class Generator
                 cwh.WriteLine("return Status::UnsupportedAttribute;");
                 cwh.UnIndent();
                 cwh.WriteLine("}");
+
+                // Raise command method. We don't (yet) support responses.
+
+                if (command.Response == null)
+                {
+                    cwh.WriteLine();
+                    cwh.Write($"void send{command.Name.ToUpperFirst()}Command(DeviceManager& deviceManager, uint8_t endpointId");
+
+                    for (var i = 0; i < command.Parameters.Count; i++)
+                    {
+                        var parameter = command.Parameters[i];
+                        cwh.Write($", {parameter.TypeName} {parameter.Name}");
+                    }
+
+                    cwh.WriteLine(");");
+
+                    cw.WriteLine();
+                    cw.Write($"void {key.ToUpperFirst()}Cluster::send{command.Name.ToUpperFirst()}Command(DeviceManager& deviceManager, uint8_t endpointId");
+
+                    for (var i = 0; i < command.Parameters.Count; i++)
+                    {
+                        var parameter = command.Parameters[i];
+                        cw.Write($", {parameter.TypeName} {parameter.Name}");
+                    }
+
+                    cw.WriteLine(") {");
+                    cw.Indent();
+
+                    cw.WriteLine("auto buffer = deviceManager.getBuffer();");
+                    cw.WriteLine();
+                    cw.WriteLine("Frame(");
+                    cw.Indent();
+                    cw.WriteLine("FrameControl(FrameType::Cluster, Direction::ToServer, true),");
+                    cw.WriteLine("nextTransactionSequenceNumber++,");
+                    cw.WriteLine($"{command.Id}");
+                    cw.UnIndent();
+                    cw.WriteLine(").write(buffer);");
+                    cw.WriteLine();
+
+                    foreach (var parameter in command.Parameters)
+                    {
+                        var type = GetDataType(parameter.DataType, parameter.Name);
+                        cw.WriteLine($"buffer.write{type.EndianMemoryMethodName}({parameter.Name});");
+                    }
+
+                    cw.WriteLine();
+                    cw.WriteLine("deviceManager.sendMessage(this, endpointId, buffer);");
+
+                    cw.UnIndent();
+                    cw.WriteLine("}");
+                }
             }
 
             // Command parser.
@@ -545,7 +602,7 @@ public class Generator
                         cw.WriteLine($"{responseClassName} response_;");
                     }
 
-                    cw.Write($"auto status_ = {command.Name}Command(");
+                    cw.Write($"auto status_ = on{command.Name.ToUpperFirst()}Command(");
 
                     for (var i = 0; i < command.Parameters.Count; i++)
                     {

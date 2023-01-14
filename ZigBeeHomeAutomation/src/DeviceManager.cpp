@@ -514,11 +514,28 @@ void DeviceManager::reportAttribute(Device* device, Cluster* cluster, Attribute*
 
 	attribute->markClean();
 
+	sendMessage(device, cluster, reportingEndpointId, buffer);
+}
+
+void DeviceManager::sendMessage(Cluster* cluster, uint8_t endpointId, Memory& buffer) {
+	for (auto device : _deviceList) {
+		for (int i = 0; i < device->getClusterCount(); i++) {
+			if (device->getClusterByIndex(i) == cluster) {
+				sendMessage(device, cluster, endpointId, buffer);
+				return;
+			}
+		}
+	}
+
+	ERROR(F("Cannot resolve device of cluster in DeviceManager::sendMessage"));
+}
+
+void DeviceManager::sendMessage(Device* device, Cluster* cluster, uint8_t endpointId, Memory& buffer) {
 	XBeeAddress64 destinationAddress;
 	uint16_t destinationShortAddress;
 	uint8_t destinationEndpoint;
 
-	if (reportingEndpointId == Attribute::REPORT_BROADCAST) {
+	if (endpointId == Attribute::REPORT_BROADCAST) {
 		destinationAddress = BROADCAST_ADDR64;
 		destinationShortAddress = 0;
 		destinationEndpoint = 1;
@@ -526,7 +543,7 @@ void DeviceManager::reportAttribute(Device* device, Cluster* cluster, Attribute*
 	else {
 		destinationAddress = _operatingPanId;
 		destinationShortAddress = 0;
-		destinationEndpoint = reportingEndpointId;
+		destinationEndpoint = endpointId;
 	}
 
 	ZBExplicitTxRequest message(
@@ -540,7 +557,7 @@ void DeviceManager::reportAttribute(Device* device, Cluster* cluster, Attribute*
 		device->getEndpointId(),
 		destinationEndpoint,
 		cluster->getClusterId(),
-		DeviceManager::ZHA_PROFILE_ID
+		ZHA_PROFILE_ID
 	);
 	_device.send(message);
 }

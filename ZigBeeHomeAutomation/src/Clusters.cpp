@@ -1,5 +1,10 @@
 #include "ZigBeeHomeAutomation.h"
 
+// Zigbee2mqtt deduplicates commands based on the transaction id.
+// We generate this transaction ID using the field below. Every time
+// we send out a command, we bump this value by one.
+static uint8_t nextTransactionSequenceNumber = 0;
+
 AttributeUInt8* GenBasicCluster::getZclVersion() {
     auto result = (AttributeUInt8*)getAttributeById(0);
     if (result == nullptr) {
@@ -135,10 +140,23 @@ AttributeUInt8* GenBasicCluster::getDisableLocalConfig() {
     return result;
 }
 
+void GenBasicCluster::sendResetFactDefaultCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void GenBasicCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
-            auto status_ = resetFactDefaultCommand();
+            auto status_ = onResetFactDefaultCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -445,36 +463,107 @@ AttributeUInt16* GenIdentifyCluster::getIdentifyTime() {
     return result;
 }
 
+void GenIdentifyCluster::sendIdentifyCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t identifytime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeUInt16Le(identifytime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenIdentifyCluster::sendIdentifyQueryCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenIdentifyCluster::sendEzmodeInvokeCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t action) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+    buffer.writeUInt8(action);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenIdentifyCluster::sendUpdateCommissionStateCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t action, uint8_t commstatemask) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        3
+    ).write(buffer);
+
+    buffer.writeUInt8(action);
+    buffer.writeUInt8(commstatemask);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenIdentifyCluster::sendTriggerEffectCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t effectid, uint8_t effectvariant) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        64
+    ).write(buffer);
+
+    buffer.writeUInt8(effectid);
+    buffer.writeUInt8(effectvariant);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void GenIdentifyCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
             auto identifytime = request.readUInt16Le();
-            auto status_ = identifyCommand(identifytime);
+            auto status_ = onIdentifyCommand(identifytime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
-            auto status_ = identifyQueryCommand();
+            auto status_ = onIdentifyQueryCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 2: {
             auto action = request.readUInt8();
-            auto status_ = ezmodeInvokeCommand(action);
+            auto status_ = onEzmodeInvokeCommand(action);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 3: {
             auto action = request.readUInt8();
             auto commstatemask = request.readUInt8();
-            auto status_ = updateCommissionStateCommand(action, commstatemask);
+            auto status_ = onUpdateCommissionStateCommand(action, commstatemask);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 64: {
             auto effectid = request.readUInt8();
             auto effectvariant = request.readUInt8();
-            auto status_ = triggerEffectCommand(effectid, effectvariant);
+            auto status_ = onTriggerEffectCommand(effectid, effectvariant);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -493,13 +582,55 @@ AttributeUInt8* GenGroupsCluster::getNameSupport() {
     return result;
 }
 
+void GenGroupsCluster::sendViewCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t groupid) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+    buffer.writeUInt16Le(groupid);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenGroupsCluster::sendRemoveAllCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        4
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenGroupsCluster::sendAddIfIdentifyingCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t groupid, String groupname) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        5
+    ).write(buffer);
+
+    buffer.writeUInt16Le(groupid);
+    buffer.writeString(groupname);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void GenGroupsCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
             auto groupid = request.readUInt16Le();
             auto groupname = request.readString();
             AddCommandResponse response_;
-            auto status_ = addCommand(groupid, groupname, response_);
+            auto status_ = onAddCommand(groupid, groupname, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -509,14 +640,14 @@ void GenGroupsCluster::processCommand(uint8_t commandId, Memory& request, Memory
         }
         case 1: {
             auto groupid = request.readUInt16Le();
-            auto status_ = viewCommand(groupid);
+            auto status_ = onViewCommand(groupid);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 3: {
             auto groupid = request.readUInt16Le();
             RemoveCommandResponse response_;
-            auto status_ = removeCommand(groupid, response_);
+            auto status_ = onRemoveCommand(groupid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -525,14 +656,14 @@ void GenGroupsCluster::processCommand(uint8_t commandId, Memory& request, Memory
             return;
         }
         case 4: {
-            auto status_ = removeAllCommand();
+            auto status_ = onRemoveAllCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 5: {
             auto groupid = request.readUInt16Le();
             auto groupname = request.readString();
-            auto status_ = addIfIdentifyingCommand(groupid, groupname);
+            auto status_ = onAddIfIdentifyingCommand(groupid, groupname);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -596,13 +727,71 @@ AttributeUInt64* GenScenesCluster::getLastCfgBy() {
     return result;
 }
 
+void GenScenesCluster::sendRecallCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t groupid, uint8_t sceneid) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        5
+    ).write(buffer);
+
+    buffer.writeUInt16Le(groupid);
+    buffer.writeUInt8(sceneid);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenScenesCluster::sendTradfriArrowSingleCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t value, uint16_t value2) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        7
+    ).write(buffer);
+
+    buffer.writeUInt16Le(value);
+    buffer.writeUInt16Le(value2);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenScenesCluster::sendTradfriArrowHoldCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t value) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        8
+    ).write(buffer);
+
+    buffer.writeUInt16Le(value);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenScenesCluster::sendTradfriArrowReleaseCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t value) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        9
+    ).write(buffer);
+
+    buffer.writeUInt16Le(value);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void GenScenesCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 2: {
             auto groupid = request.readUInt16Le();
             auto sceneid = request.readUInt8();
             RemoveCommandResponse response_;
-            auto status_ = removeCommand(groupid, sceneid, response_);
+            auto status_ = onRemoveCommand(groupid, sceneid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -614,7 +803,7 @@ void GenScenesCluster::processCommand(uint8_t commandId, Memory& request, Memory
         case 3: {
             auto groupid = request.readUInt16Le();
             RemoveAllCommandResponse response_;
-            auto status_ = removeAllCommand(groupid, response_);
+            auto status_ = onRemoveAllCommand(groupid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -626,7 +815,7 @@ void GenScenesCluster::processCommand(uint8_t commandId, Memory& request, Memory
             auto groupid = request.readUInt16Le();
             auto sceneid = request.readUInt8();
             StoreCommandResponse response_;
-            auto status_ = storeCommand(groupid, sceneid, response_);
+            auto status_ = onStoreCommand(groupid, sceneid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -638,7 +827,7 @@ void GenScenesCluster::processCommand(uint8_t commandId, Memory& request, Memory
         case 5: {
             auto groupid = request.readUInt16Le();
             auto sceneid = request.readUInt8();
-            auto status_ = recallCommand(groupid, sceneid);
+            auto status_ = onRecallCommand(groupid, sceneid);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -649,7 +838,7 @@ void GenScenesCluster::processCommand(uint8_t commandId, Memory& request, Memory
             auto groupidto = request.readUInt16Le();
             auto sceneidto = request.readUInt8();
             CopyCommandResponse response_;
-            auto status_ = copyCommand(mode, groupidfrom, sceneidfrom, groupidto, sceneidto, response_);
+            auto status_ = onCopyCommand(mode, groupidfrom, sceneidfrom, groupidto, sceneidto, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -661,19 +850,19 @@ void GenScenesCluster::processCommand(uint8_t commandId, Memory& request, Memory
         case 7: {
             auto value = request.readUInt16Le();
             auto value2 = request.readUInt16Le();
-            auto status_ = tradfriArrowSingleCommand(value, value2);
+            auto status_ = onTradfriArrowSingleCommand(value, value2);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 8: {
             auto value = request.readUInt16Le();
-            auto status_ = tradfriArrowHoldCommand(value);
+            auto status_ = onTradfriArrowHoldCommand(value);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 9: {
             auto value = request.readUInt16Le();
-            auto status_ = tradfriArrowReleaseCommand(value);
+            auto status_ = onTradfriArrowReleaseCommand(value);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -737,32 +926,115 @@ AttributeUInt8* GenOnOffCluster::getMoesStartUpOnOff() {
     return result;
 }
 
+void GenOnOffCluster::sendOffCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenOnOffCluster::sendOnCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenOnOffCluster::sendToggleCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenOnOffCluster::sendOffWithEffectCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t effectid, uint8_t effectvariant) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        64
+    ).write(buffer);
+
+    buffer.writeUInt8(effectid);
+    buffer.writeUInt8(effectvariant);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenOnOffCluster::sendOnWithRecallGlobalSceneCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        65
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenOnOffCluster::sendOnWithTimedOffCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t ctrlbits, uint16_t ontime, uint16_t offwaittime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        66
+    ).write(buffer);
+
+    buffer.writeUInt8(ctrlbits);
+    buffer.writeUInt16Le(ontime);
+    buffer.writeUInt16Le(offwaittime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void GenOnOffCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
-            auto status_ = offCommand();
+            auto status_ = onOffCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
-            auto status_ = onCommand();
+            auto status_ = onOnCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 2: {
-            auto status_ = toggleCommand();
+            auto status_ = onToggleCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 64: {
             auto effectid = request.readUInt8();
             auto effectvariant = request.readUInt8();
-            auto status_ = offWithEffectCommand(effectid, effectvariant);
+            auto status_ = onOffWithEffectCommand(effectid, effectvariant);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 65: {
-            auto status_ = onWithRecallGlobalSceneCommand();
+            auto status_ = onOnWithRecallGlobalSceneCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -770,7 +1042,7 @@ void GenOnOffCluster::processCommand(uint8_t commandId, Memory& request, Memory&
             auto ctrlbits = request.readUInt8();
             auto ontime = request.readUInt16Le();
             auto offwaittime = request.readUInt16Le();
-            auto status_ = onWithTimedOffCommand(ctrlbits, ontime, offwaittime);
+            auto status_ = onOnWithTimedOffCommand(ctrlbits, ontime, offwaittime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -897,19 +1169,152 @@ AttributeUInt8* GenLevelCtrlCluster::getStartUpCurrentLevel() {
     return result;
 }
 
+void GenLevelCtrlCluster::sendMoveToLevelCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t level, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeUInt8(level);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenLevelCtrlCluster::sendMoveCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t movemode, uint8_t rate) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+    buffer.writeUInt8(movemode);
+    buffer.writeUInt8(rate);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenLevelCtrlCluster::sendStepCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t stepmode, uint8_t stepsize, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+    buffer.writeUInt8(stepmode);
+    buffer.writeUInt8(stepsize);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenLevelCtrlCluster::sendStopCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        3
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenLevelCtrlCluster::sendMoveToLevelWithOnOffCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t level, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        4
+    ).write(buffer);
+
+    buffer.writeUInt8(level);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenLevelCtrlCluster::sendMoveWithOnOffCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t movemode, uint8_t rate) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        5
+    ).write(buffer);
+
+    buffer.writeUInt8(movemode);
+    buffer.writeUInt8(rate);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenLevelCtrlCluster::sendStepWithOnOffCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t stepmode, uint8_t stepsize, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        6
+    ).write(buffer);
+
+    buffer.writeUInt8(stepmode);
+    buffer.writeUInt8(stepsize);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenLevelCtrlCluster::sendStopWithOnOffCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        7
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenLevelCtrlCluster::sendMoveToLevelTuyaCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t level, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        240
+    ).write(buffer);
+
+    buffer.writeUInt16Le(level);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void GenLevelCtrlCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
             auto level = request.readUInt8();
             auto transtime = request.readUInt16Le();
-            auto status_ = moveToLevelCommand(level, transtime);
+            auto status_ = onMoveToLevelCommand(level, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
             auto movemode = request.readUInt8();
             auto rate = request.readUInt8();
-            auto status_ = moveCommand(movemode, rate);
+            auto status_ = onMoveCommand(movemode, rate);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -917,26 +1322,26 @@ void GenLevelCtrlCluster::processCommand(uint8_t commandId, Memory& request, Mem
             auto stepmode = request.readUInt8();
             auto stepsize = request.readUInt8();
             auto transtime = request.readUInt16Le();
-            auto status_ = stepCommand(stepmode, stepsize, transtime);
+            auto status_ = onStepCommand(stepmode, stepsize, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 3: {
-            auto status_ = stopCommand();
+            auto status_ = onStopCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 4: {
             auto level = request.readUInt8();
             auto transtime = request.readUInt16Le();
-            auto status_ = moveToLevelWithOnOffCommand(level, transtime);
+            auto status_ = onMoveToLevelWithOnOffCommand(level, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 5: {
             auto movemode = request.readUInt8();
             auto rate = request.readUInt8();
-            auto status_ = moveWithOnOffCommand(movemode, rate);
+            auto status_ = onMoveWithOnOffCommand(movemode, rate);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -944,19 +1349,19 @@ void GenLevelCtrlCluster::processCommand(uint8_t commandId, Memory& request, Mem
             auto stepmode = request.readUInt8();
             auto stepsize = request.readUInt8();
             auto transtime = request.readUInt16Le();
-            auto status_ = stepWithOnOffCommand(stepmode, stepsize, transtime);
+            auto status_ = onStepWithOnOffCommand(stepmode, stepsize, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 7: {
-            auto status_ = stopWithOnOffCommand();
+            auto status_ = onStopWithOnOffCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 240: {
             auto level = request.readUInt16Le();
             auto transtime = request.readUInt16Le();
-            auto status_ = moveToLevelTuyaCommand(level, transtime);
+            auto status_ = onMoveToLevelTuyaCommand(level, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -975,32 +1380,99 @@ AttributeUInt16* GenAlarmsCluster::getAlarmCount() {
     return result;
 }
 
+void GenAlarmsCluster::sendResetCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t alarmcode, uint16_t clusterid) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeUInt8(alarmcode);
+    buffer.writeUInt16Le(clusterid);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenAlarmsCluster::sendResetAllCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenAlarmsCluster::sendGetAlarmCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenAlarmsCluster::sendResetLogCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        3
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenAlarmsCluster::sendPublishEventLogCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        4
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void GenAlarmsCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
             auto alarmcode = request.readUInt8();
             auto clusterid = request.readUInt16Le();
-            auto status_ = resetCommand(alarmcode, clusterid);
+            auto status_ = onResetCommand(alarmcode, clusterid);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
-            auto status_ = resetAllCommand();
+            auto status_ = onResetAllCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 2: {
-            auto status_ = getAlarmCommand();
+            auto status_ = onGetAlarmCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 3: {
-            auto status_ = resetLogCommand();
+            auto status_ = onResetLogCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 4: {
-            auto status_ = publishEventLogCommand();
+            auto status_ = onPublishEventLogCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -1217,6 +1689,72 @@ AttributeUInt16* GenRssiLocationCluster::getNumRSSIMeasurements() {
     return result;
 }
 
+void GenRssiLocationCluster::sendSetAbsoluteCommand(DeviceManager& deviceManager, uint8_t endpointId, int16_t coord1, int16_t coord2, int16_t coord3, int16_t power, uint16_t pathlossexponent) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeInt16Le(coord1);
+    buffer.writeInt16Le(coord2);
+    buffer.writeInt16Le(coord3);
+    buffer.writeInt16Le(power);
+    buffer.writeUInt16Le(pathlossexponent);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenRssiLocationCluster::sendSetDevCfgCommand(DeviceManager& deviceManager, uint8_t endpointId, int16_t power, uint16_t pathlossexponent, uint16_t calperiod, uint8_t numrssimeasurements, uint16_t reportingperiod) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+    buffer.writeInt16Le(power);
+    buffer.writeUInt16Le(pathlossexponent);
+    buffer.writeUInt16Le(calperiod);
+    buffer.writeUInt8(numrssimeasurements);
+    buffer.writeUInt16Le(reportingperiod);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenRssiLocationCluster::sendGetDevCfgCommand(DeviceManager& deviceManager, uint8_t endpointId, uint64_t targetaddr) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+    buffer.writeUInt64Le(targetaddr);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenRssiLocationCluster::sendGetDataCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t getdatainfo, uint8_t numrsp, uint64_t targetaddr) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        3
+    ).write(buffer);
+
+    buffer.writeUInt8(getdatainfo);
+    buffer.writeUInt8(numrsp);
+    buffer.writeUInt64Le(targetaddr);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void GenRssiLocationCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
@@ -1225,7 +1763,7 @@ void GenRssiLocationCluster::processCommand(uint8_t commandId, Memory& request, 
             auto coord3 = request.readInt16Le();
             auto power = request.readInt16Le();
             auto pathlossexponent = request.readUInt16Le();
-            auto status_ = setAbsoluteCommand(coord1, coord2, coord3, power, pathlossexponent);
+            auto status_ = onSetAbsoluteCommand(coord1, coord2, coord3, power, pathlossexponent);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -1235,13 +1773,13 @@ void GenRssiLocationCluster::processCommand(uint8_t commandId, Memory& request, 
             auto calperiod = request.readUInt16Le();
             auto numrssimeasurements = request.readUInt8();
             auto reportingperiod = request.readUInt16Le();
-            auto status_ = setDevCfgCommand(power, pathlossexponent, calperiod, numrssimeasurements, reportingperiod);
+            auto status_ = onSetDevCfgCommand(power, pathlossexponent, calperiod, numrssimeasurements, reportingperiod);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 2: {
             auto targetaddr = request.readUInt64Le();
-            auto status_ = getDevCfgCommand(targetaddr);
+            auto status_ = onGetDevCfgCommand(targetaddr);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -1249,7 +1787,7 @@ void GenRssiLocationCluster::processCommand(uint8_t commandId, Memory& request, 
             auto getdatainfo = request.readUInt8();
             auto numrsp = request.readUInt8();
             auto targetaddr = request.readUInt64Le();
-            auto status_ = getDataCommand(getdatainfo, numrsp, targetaddr);
+            auto status_ = onGetDataCommand(getdatainfo, numrsp, targetaddr);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -2204,34 +2742,95 @@ AttributeUInt8* GenCommissioningCluster::getConcentratorDiscoveryTime() {
     return result;
 }
 
+void GenCommissioningCluster::sendRestartDeviceCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t options, uint8_t delay, uint8_t jitter) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeUInt8(options);
+    buffer.writeUInt8(delay);
+    buffer.writeUInt8(jitter);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenCommissioningCluster::sendSaveStartupParamsCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t options, uint8_t index) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+    buffer.writeUInt8(options);
+    buffer.writeUInt8(index);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenCommissioningCluster::sendRestoreStartupParamsCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t options, uint8_t index) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+    buffer.writeUInt8(options);
+    buffer.writeUInt8(index);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenCommissioningCluster::sendResetStartupParamsCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t options, uint8_t index) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        3
+    ).write(buffer);
+
+    buffer.writeUInt8(options);
+    buffer.writeUInt8(index);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void GenCommissioningCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
             auto options = request.readUInt8();
             auto delay = request.readUInt8();
             auto jitter = request.readUInt8();
-            auto status_ = restartDeviceCommand(options, delay, jitter);
+            auto status_ = onRestartDeviceCommand(options, delay, jitter);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
             auto options = request.readUInt8();
             auto index = request.readUInt8();
-            auto status_ = saveStartupParamsCommand(options, index);
+            auto status_ = onSaveStartupParamsCommand(options, index);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 2: {
             auto options = request.readUInt8();
             auto index = request.readUInt8();
-            auto status_ = restoreStartupParamsCommand(options, index);
+            auto status_ = onRestoreStartupParamsCommand(options, index);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 3: {
             auto options = request.readUInt8();
             auto index = request.readUInt8();
-            auto status_ = resetStartupParamsCommand(options, index);
+            auto status_ = onResetStartupParamsCommand(options, index);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -2348,7 +2947,7 @@ void GenOtaCluster::processCommand(uint8_t commandId, Memory& request, Memory& r
             auto imageType = request.readUInt16Le();
             auto fileVersion = request.readUInt32Le();
             QueryNextImageRequestCommandResponse response_;
-            auto status_ = queryNextImageRequestCommand(fieldControl, manufacturerCode, imageType, fileVersion, response_);
+            auto status_ = onQueryNextImageRequestCommand(fieldControl, manufacturerCode, imageType, fileVersion, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -2365,7 +2964,7 @@ void GenOtaCluster::processCommand(uint8_t commandId, Memory& request, Memory& r
             auto imageType = request.readUInt16Le();
             auto fileVersion = request.readUInt32Le();
             UpgradeEndRequestCommandResponse response_;
-            auto status_ = upgradeEndRequestCommand(status, manufacturerCode, imageType, fileVersion, response_);
+            auto status_ = onUpgradeEndRequestCommand(status, manufacturerCode, imageType, fileVersion, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt16Le(response_.getManufacturerCode());
@@ -2445,29 +3044,85 @@ AttributeUInt16* GenPollCtrlCluster::getFastPollTimeoutMax() {
     return result;
 }
 
+void GenPollCtrlCluster::sendCheckinRspCommand(DeviceManager& deviceManager, uint8_t endpointId, bool startFastPolling, uint16_t fastPollTimeout) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeUInt8(startFastPolling);
+    buffer.writeUInt16Le(fastPollTimeout);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenPollCtrlCluster::sendFastPollStopCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenPollCtrlCluster::sendSetLongPollIntervalCommand(DeviceManager& deviceManager, uint8_t endpointId, uint32_t newLongPollInterval) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+    buffer.writeUInt32Le(newLongPollInterval);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void GenPollCtrlCluster::sendSetShortPollIntervalCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t newShortPollInterval) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        3
+    ).write(buffer);
+
+    buffer.writeUInt16Le(newShortPollInterval);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void GenPollCtrlCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
             auto startFastPolling = request.readUInt8();
             auto fastPollTimeout = request.readUInt16Le();
-            auto status_ = checkinRspCommand(startFastPolling, fastPollTimeout);
+            auto status_ = onCheckinRspCommand(startFastPolling, fastPollTimeout);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
-            auto status_ = fastPollStopCommand();
+            auto status_ = onFastPollStopCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 2: {
             auto newLongPollInterval = request.readUInt32Le();
-            auto status_ = setLongPollIntervalCommand(newLongPollInterval);
+            auto status_ = onSetLongPollIntervalCommand(newLongPollInterval);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 3: {
             auto newShortPollInterval = request.readUInt16Le();
-            auto status_ = setShortPollIntervalCommand(newShortPollInterval);
+            auto status_ = onSetShortPollIntervalCommand(newShortPollInterval);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -2950,7 +3605,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         case 0: {
             auto pincodevalue = request.readString();
             LockDoorCommandResponse response_;
-            auto status_ = lockDoorCommand(pincodevalue, response_);
+            auto status_ = onLockDoorCommand(pincodevalue, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -2960,7 +3615,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         case 1: {
             auto pincodevalue = request.readString();
             UnlockDoorCommandResponse response_;
-            auto status_ = unlockDoorCommand(pincodevalue, response_);
+            auto status_ = onUnlockDoorCommand(pincodevalue, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -2970,7 +3625,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         case 2: {
             auto pincodevalue = request.readString();
             ToggleDoorCommandResponse response_;
-            auto status_ = toggleDoorCommand(pincodevalue, response_);
+            auto status_ = onToggleDoorCommand(pincodevalue, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -2981,7 +3636,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
             auto timeout = request.readUInt16Le();
             auto pincodevalue = request.readString();
             UnlockWithTimeoutCommandResponse response_;
-            auto status_ = unlockWithTimeoutCommand(timeout, pincodevalue, response_);
+            auto status_ = onUnlockWithTimeoutCommand(timeout, pincodevalue, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -2991,7 +3646,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         case 4: {
             auto logindex = request.readUInt16Le();
             GetLogRecordCommandResponse response_;
-            auto status_ = getLogRecordCommand(logindex, response_);
+            auto status_ = onGetLogRecordCommand(logindex, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt16Le(response_.getLogentryid());
@@ -3010,7 +3665,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
             auto usertype = request.readUInt8();
             auto pincodevalue = request.readString();
             SetPinCodeCommandResponse response_;
-            auto status_ = setPinCodeCommand(userid, userstatus, usertype, pincodevalue, response_);
+            auto status_ = onSetPinCodeCommand(userid, userstatus, usertype, pincodevalue, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3020,7 +3675,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         case 6: {
             auto userid = request.readUInt16Le();
             GetPinCodeCommandResponse response_;
-            auto status_ = getPinCodeCommand(userid, response_);
+            auto status_ = onGetPinCodeCommand(userid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt16Le(response_.getUserid());
@@ -3033,7 +3688,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         case 7: {
             auto userid = request.readUInt16Le();
             ClearPinCodeCommandResponse response_;
-            auto status_ = clearPinCodeCommand(userid, response_);
+            auto status_ = onClearPinCodeCommand(userid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3042,7 +3697,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         }
         case 8: {
             ClearAllPinCodesCommandResponse response_;
-            auto status_ = clearAllPinCodesCommand(response_);
+            auto status_ = onClearAllPinCodesCommand(response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3053,7 +3708,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
             auto userid = request.readUInt16Le();
             auto userstatus = request.readUInt8();
             SetUserStatusCommandResponse response_;
-            auto status_ = setUserStatusCommand(userid, userstatus, response_);
+            auto status_ = onSetUserStatusCommand(userid, userstatus, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3063,7 +3718,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         case 10: {
             auto userid = request.readUInt16Le();
             GetUserStatusCommandResponse response_;
-            auto status_ = getUserStatusCommand(userid, response_);
+            auto status_ = onGetUserStatusCommand(userid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt16Le(response_.getUserid());
@@ -3080,7 +3735,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
             auto endhour = request.readUInt8();
             auto endminute = request.readUInt8();
             SetWeekDayScheduleCommandResponse response_;
-            auto status_ = setWeekDayScheduleCommand(scheduleid, userid, daysmask, starthour, startminute, endhour, endminute, response_);
+            auto status_ = onSetWeekDayScheduleCommand(scheduleid, userid, daysmask, starthour, startminute, endhour, endminute, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3091,7 +3746,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
             auto scheduleid = request.readUInt8();
             auto userid = request.readUInt16Le();
             GetWeekDayScheduleCommandResponse response_;
-            auto status_ = getWeekDayScheduleCommand(scheduleid, userid, response_);
+            auto status_ = onGetWeekDayScheduleCommand(scheduleid, userid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getScheduleid());
@@ -3109,7 +3764,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
             auto scheduleid = request.readUInt8();
             auto userid = request.readUInt16Le();
             ClearWeekDayScheduleCommandResponse response_;
-            auto status_ = clearWeekDayScheduleCommand(scheduleid, userid, response_);
+            auto status_ = onClearWeekDayScheduleCommand(scheduleid, userid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3122,7 +3777,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
             auto zigbeelocalstarttime = request.readUInt32Le();
             auto zigbeelocalendtime = request.readUInt32Le();
             SetYearDayScheduleCommandResponse response_;
-            auto status_ = setYearDayScheduleCommand(scheduleid, userid, zigbeelocalstarttime, zigbeelocalendtime, response_);
+            auto status_ = onSetYearDayScheduleCommand(scheduleid, userid, zigbeelocalstarttime, zigbeelocalendtime, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3133,7 +3788,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
             auto scheduleid = request.readUInt8();
             auto userid = request.readUInt16Le();
             GetYearDayScheduleCommandResponse response_;
-            auto status_ = getYearDayScheduleCommand(scheduleid, userid, response_);
+            auto status_ = onGetYearDayScheduleCommand(scheduleid, userid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getScheduleid());
@@ -3148,7 +3803,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
             auto scheduleid = request.readUInt8();
             auto userid = request.readUInt16Le();
             ClearYearDayScheduleCommandResponse response_;
-            auto status_ = clearYearDayScheduleCommand(scheduleid, userid, response_);
+            auto status_ = onClearYearDayScheduleCommand(scheduleid, userid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3161,7 +3816,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
             auto zigbeelocalendtime = request.readUInt32Le();
             auto opermodelduringholiday = request.readUInt8();
             SetHolidayScheduleCommandResponse response_;
-            auto status_ = setHolidayScheduleCommand(holidayscheduleid, zigbeelocalstarttime, zigbeelocalendtime, opermodelduringholiday, response_);
+            auto status_ = onSetHolidayScheduleCommand(holidayscheduleid, zigbeelocalstarttime, zigbeelocalendtime, opermodelduringholiday, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3171,7 +3826,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         case 18: {
             auto holidayscheduleid = request.readUInt8();
             GetHolidayScheduleCommandResponse response_;
-            auto status_ = getHolidayScheduleCommand(holidayscheduleid, response_);
+            auto status_ = onGetHolidayScheduleCommand(holidayscheduleid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getHolidayscheduleid());
@@ -3185,7 +3840,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         case 19: {
             auto holidayscheduleid = request.readUInt8();
             ClearHolidayScheduleCommandResponse response_;
-            auto status_ = clearHolidayScheduleCommand(holidayscheduleid, response_);
+            auto status_ = onClearHolidayScheduleCommand(holidayscheduleid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3196,7 +3851,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
             auto userid = request.readUInt16Le();
             auto usertype = request.readUInt8();
             SetUserTypeCommandResponse response_;
-            auto status_ = setUserTypeCommand(userid, usertype, response_);
+            auto status_ = onSetUserTypeCommand(userid, usertype, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3206,7 +3861,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         case 21: {
             auto userid = request.readUInt16Le();
             GetUserTypeCommandResponse response_;
-            auto status_ = getUserTypeCommand(userid, response_);
+            auto status_ = onGetUserTypeCommand(userid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt16Le(response_.getUserid());
@@ -3220,7 +3875,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
             auto usertype = request.readUInt8();
             auto pincodevalue = request.readString();
             SetRfidCodeCommandResponse response_;
-            auto status_ = setRfidCodeCommand(userid, userstatus, usertype, pincodevalue, response_);
+            auto status_ = onSetRfidCodeCommand(userid, userstatus, usertype, pincodevalue, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3230,7 +3885,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         case 23: {
             auto userid = request.readUInt16Le();
             GetRfidCodeCommandResponse response_;
-            auto status_ = getRfidCodeCommand(userid, response_);
+            auto status_ = onGetRfidCodeCommand(userid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt16Le(response_.getUserid());
@@ -3243,7 +3898,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         case 24: {
             auto userid = request.readUInt16Le();
             ClearRfidCodeCommandResponse response_;
-            auto status_ = clearRfidCodeCommand(userid, response_);
+            auto status_ = onClearRfidCodeCommand(userid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3252,7 +3907,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
         }
         case 25: {
             ClearAllRfidCodesCommandResponse response_;
-            auto status_ = clearAllRfidCodesCommand(response_);
+            auto status_ = onClearAllRfidCodesCommand(response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getStatus());
@@ -3463,51 +4118,161 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getMoesCalibrationTime() {
     return result;
 }
 
+void ClosuresWindowCoveringCluster::sendUpOpenCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void ClosuresWindowCoveringCluster::sendDownCloseCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void ClosuresWindowCoveringCluster::sendStopCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void ClosuresWindowCoveringCluster::sendGoToLiftValueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t liftvalue) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        4
+    ).write(buffer);
+
+    buffer.writeUInt16Le(liftvalue);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void ClosuresWindowCoveringCluster::sendGoToLiftPercentageCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t percentageliftvalue) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        5
+    ).write(buffer);
+
+    buffer.writeUInt8(percentageliftvalue);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void ClosuresWindowCoveringCluster::sendGoToTiltValueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t tiltvalue) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        7
+    ).write(buffer);
+
+    buffer.writeUInt16Le(tiltvalue);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void ClosuresWindowCoveringCluster::sendGoToTiltPercentageCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t percentagetiltvalue) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        8
+    ).write(buffer);
+
+    buffer.writeUInt8(percentagetiltvalue);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void ClosuresWindowCoveringCluster::sendElkoStopOrStepLiftPercentageCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t direction, uint16_t stepvalue) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        128
+    ).write(buffer);
+
+    buffer.writeUInt16Le(direction);
+    buffer.writeUInt16Le(stepvalue);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void ClosuresWindowCoveringCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
-            auto status_ = upOpenCommand();
+            auto status_ = onUpOpenCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
-            auto status_ = downCloseCommand();
+            auto status_ = onDownCloseCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 2: {
-            auto status_ = stopCommand();
+            auto status_ = onStopCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 4: {
             auto liftvalue = request.readUInt16Le();
-            auto status_ = goToLiftValueCommand(liftvalue);
+            auto status_ = onGoToLiftValueCommand(liftvalue);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 5: {
             auto percentageliftvalue = request.readUInt8();
-            auto status_ = goToLiftPercentageCommand(percentageliftvalue);
+            auto status_ = onGoToLiftPercentageCommand(percentageliftvalue);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 7: {
             auto tiltvalue = request.readUInt16Le();
-            auto status_ = goToTiltValueCommand(tiltvalue);
+            auto status_ = onGoToTiltValueCommand(tiltvalue);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 8: {
             auto percentagetiltvalue = request.readUInt8();
-            auto status_ = goToTiltPercentageCommand(percentagetiltvalue);
+            auto status_ = onGoToTiltPercentageCommand(percentagetiltvalue);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 128: {
             auto direction = request.readUInt16Le();
             auto stepvalue = request.readUInt16Le();
-            auto status_ = elkoStopOrStepLiftPercentageCommand(direction, stepvalue);
+            auto status_ = onElkoStopOrStepLiftPercentageCommand(direction, stepvalue);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -3607,16 +4372,43 @@ AttributeUInt8* BarrierControlCluster::getBarrierPosition() {
     return result;
 }
 
+void BarrierControlCluster::sendGoToPercentCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t percentOpen) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeUInt8(percentOpen);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void BarrierControlCluster::sendStopCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void BarrierControlCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
             auto percentOpen = request.readUInt8();
-            auto status_ = goToPercentCommand(percentOpen);
+            auto status_ = onGoToPercentCommand(percentOpen);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
-            auto status_ = stopCommand();
+            auto status_ = onStopCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -4238,36 +5030,183 @@ AttributeUInt8* HvacThermostatCluster::getStelproSystemMode() {
     return result;
 }
 
+void HvacThermostatCluster::sendSetpointRaiseLowerCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t mode, int8_t amount) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeUInt8(mode);
+    buffer.writeInt8(amount);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void HvacThermostatCluster::sendGetWeeklyScheduleCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t daystoreturn, uint8_t modetoreturn) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+    buffer.writeUInt8(daystoreturn);
+    buffer.writeUInt8(modetoreturn);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void HvacThermostatCluster::sendClearWeeklyScheduleCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        3
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void HvacThermostatCluster::sendGetRelayStatusLogCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        4
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void HvacThermostatCluster::sendDanfossSetpointCommandCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t setpointType, int16_t setpoint) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        64
+    ).write(buffer);
+
+    buffer.writeUInt8(setpointType);
+    buffer.writeInt16Le(setpoint);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void HvacThermostatCluster::sendSchneiderWiserThermostatBoostCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t command, uint8_t enable, uint16_t temperature, uint16_t duration) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        128
+    ).write(buffer);
+
+    buffer.writeUInt8(command);
+    buffer.writeUInt8(enable);
+    buffer.writeUInt16Le(temperature);
+    buffer.writeUInt16Le(duration);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void HvacThermostatCluster::sendWiserSmartSetSetpointCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t operatingmode, uint8_t zonemode, int16_t setpoint, uint8_t reserved) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        224
+    ).write(buffer);
+
+    buffer.writeUInt8(operatingmode);
+    buffer.writeUInt8(zonemode);
+    buffer.writeInt16Le(setpoint);
+    buffer.writeUInt8(reserved);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void HvacThermostatCluster::sendWiserSmartSetFipModeCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t zonemode, uint8_t fipmode, uint8_t reserved) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        225
+    ).write(buffer);
+
+    buffer.writeUInt8(zonemode);
+    buffer.writeUInt8(fipmode);
+    buffer.writeUInt8(reserved);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void HvacThermostatCluster::sendWiserSmartCalibrateValveCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        226
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void HvacThermostatCluster::sendPlugwiseCalibrateValveCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        160
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void HvacThermostatCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
             auto mode = request.readUInt8();
             auto amount = request.readInt8();
-            auto status_ = setpointRaiseLowerCommand(mode, amount);
+            auto status_ = onSetpointRaiseLowerCommand(mode, amount);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 2: {
             auto daystoreturn = request.readUInt8();
             auto modetoreturn = request.readUInt8();
-            auto status_ = getWeeklyScheduleCommand(daystoreturn, modetoreturn);
+            auto status_ = onGetWeeklyScheduleCommand(daystoreturn, modetoreturn);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 3: {
-            auto status_ = clearWeeklyScheduleCommand();
+            auto status_ = onClearWeeklyScheduleCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 4: {
-            auto status_ = getRelayStatusLogCommand();
+            auto status_ = onGetRelayStatusLogCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 64: {
             auto setpointType = request.readUInt8();
             auto setpoint = request.readInt16Le();
-            auto status_ = danfossSetpointCommandCommand(setpointType, setpoint);
+            auto status_ = onDanfossSetpointCommandCommand(setpointType, setpoint);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -4276,7 +5215,7 @@ void HvacThermostatCluster::processCommand(uint8_t commandId, Memory& request, M
             auto enable = request.readUInt8();
             auto temperature = request.readUInt16Le();
             auto duration = request.readUInt16Le();
-            auto status_ = schneiderWiserThermostatBoostCommand(command, enable, temperature, duration);
+            auto status_ = onSchneiderWiserThermostatBoostCommand(command, enable, temperature, duration);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -4285,17 +5224,25 @@ void HvacThermostatCluster::processCommand(uint8_t commandId, Memory& request, M
             auto zonemode = request.readUInt8();
             auto setpoint = request.readInt16Le();
             auto reserved = request.readUInt8();
-            auto status_ = wiserSmartSetSetpointCommand(operatingmode, zonemode, setpoint, reserved);
+            auto status_ = onWiserSmartSetSetpointCommand(operatingmode, zonemode, setpoint, reserved);
+            response.writeUInt8((uint8_t)status_);
+            return;
+        }
+        case 225: {
+            auto zonemode = request.readUInt8();
+            auto fipmode = request.readUInt8();
+            auto reserved = request.readUInt8();
+            auto status_ = onWiserSmartSetFipModeCommand(zonemode, fipmode, reserved);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 226: {
-            auto status_ = wiserSmartCalibrateValveCommand();
+            auto status_ = onWiserSmartCalibrateValveCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 160: {
-            auto status_ = plugwiseCalibrateValveCommand();
+            auto status_ = onPlugwiseCalibrateValveCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -4890,20 +5837,326 @@ AttributeUInt16* LightingColorCtrlCluster::getStartUpColorTemperature() {
     return result;
 }
 
+void LightingColorCtrlCluster::sendMoveToHueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t hue, uint8_t direction, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeUInt8(hue);
+    buffer.writeUInt8(direction);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendMoveHueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t movemode, uint8_t rate) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+    buffer.writeUInt8(movemode);
+    buffer.writeUInt8(rate);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendStepHueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t stepmode, uint8_t stepsize, uint8_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+    buffer.writeUInt8(stepmode);
+    buffer.writeUInt8(stepsize);
+    buffer.writeUInt8(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendMoveToSaturationCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t saturation, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        3
+    ).write(buffer);
+
+    buffer.writeUInt8(saturation);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendMoveSaturationCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t movemode, uint8_t rate) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        4
+    ).write(buffer);
+
+    buffer.writeUInt8(movemode);
+    buffer.writeUInt8(rate);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendStepSaturationCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t stepmode, uint8_t stepsize, uint8_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        5
+    ).write(buffer);
+
+    buffer.writeUInt8(stepmode);
+    buffer.writeUInt8(stepsize);
+    buffer.writeUInt8(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendMoveToHueAndSaturationCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t hue, uint8_t saturation, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        6
+    ).write(buffer);
+
+    buffer.writeUInt8(hue);
+    buffer.writeUInt8(saturation);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendMoveToColorCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t colorx, uint16_t colory, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        7
+    ).write(buffer);
+
+    buffer.writeUInt16Le(colorx);
+    buffer.writeUInt16Le(colory);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendMoveColorCommand(DeviceManager& deviceManager, uint8_t endpointId, int16_t ratex, int16_t ratey) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        8
+    ).write(buffer);
+
+    buffer.writeInt16Le(ratex);
+    buffer.writeInt16Le(ratey);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendStepColorCommand(DeviceManager& deviceManager, uint8_t endpointId, int16_t stepx, int16_t stepy, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        9
+    ).write(buffer);
+
+    buffer.writeInt16Le(stepx);
+    buffer.writeInt16Le(stepy);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendMoveToColorTempCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t colortemp, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        10
+    ).write(buffer);
+
+    buffer.writeUInt16Le(colortemp);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendEnhancedMoveToHueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t enhancehue, uint8_t direction, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        64
+    ).write(buffer);
+
+    buffer.writeUInt16Le(enhancehue);
+    buffer.writeUInt8(direction);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendEnhancedMoveHueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t movemode, uint16_t rate) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        65
+    ).write(buffer);
+
+    buffer.writeUInt8(movemode);
+    buffer.writeUInt16Le(rate);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendEnhancedStepHueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t stepmode, uint16_t stepsize, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        66
+    ).write(buffer);
+
+    buffer.writeUInt8(stepmode);
+    buffer.writeUInt16Le(stepsize);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendEnhancedMoveToHueAndSaturationCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t enhancehue, uint8_t saturation, uint16_t transtime) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        67
+    ).write(buffer);
+
+    buffer.writeUInt16Le(enhancehue);
+    buffer.writeUInt8(saturation);
+    buffer.writeUInt16Le(transtime);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendColorLoopSetCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t updateflags, uint8_t action, uint8_t direction, uint16_t time, uint16_t starthue) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        68
+    ).write(buffer);
+
+    buffer.writeUInt8(updateflags);
+    buffer.writeUInt8(action);
+    buffer.writeUInt8(direction);
+    buffer.writeUInt16Le(time);
+    buffer.writeUInt16Le(starthue);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendStopMoveStepCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t bits, uint8_t bytee, uint8_t action, uint8_t direction, uint16_t time, uint16_t starthue) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        71
+    ).write(buffer);
+
+    buffer.writeUInt8(bits);
+    buffer.writeUInt8(bytee);
+    buffer.writeUInt8(action);
+    buffer.writeUInt8(direction);
+    buffer.writeUInt16Le(time);
+    buffer.writeUInt16Le(starthue);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendMoveColorTempCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t movemode, uint16_t rate, uint16_t minimum, uint16_t maximum) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        75
+    ).write(buffer);
+
+    buffer.writeUInt8(movemode);
+    buffer.writeUInt16Le(rate);
+    buffer.writeUInt16Le(minimum);
+    buffer.writeUInt16Le(maximum);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void LightingColorCtrlCluster::sendStepColorTempCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t stepmode, uint16_t stepsize, uint16_t transtime, uint16_t minimum, uint16_t maximum) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        76
+    ).write(buffer);
+
+    buffer.writeUInt8(stepmode);
+    buffer.writeUInt16Le(stepsize);
+    buffer.writeUInt16Le(transtime);
+    buffer.writeUInt16Le(minimum);
+    buffer.writeUInt16Le(maximum);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
             auto hue = request.readUInt8();
             auto direction = request.readUInt8();
             auto transtime = request.readUInt16Le();
-            auto status_ = moveToHueCommand(hue, direction, transtime);
+            auto status_ = onMoveToHueCommand(hue, direction, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
             auto movemode = request.readUInt8();
             auto rate = request.readUInt8();
-            auto status_ = moveHueCommand(movemode, rate);
+            auto status_ = onMoveHueCommand(movemode, rate);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -4911,21 +6164,21 @@ void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request
             auto stepmode = request.readUInt8();
             auto stepsize = request.readUInt8();
             auto transtime = request.readUInt8();
-            auto status_ = stepHueCommand(stepmode, stepsize, transtime);
+            auto status_ = onStepHueCommand(stepmode, stepsize, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 3: {
             auto saturation = request.readUInt8();
             auto transtime = request.readUInt16Le();
-            auto status_ = moveToSaturationCommand(saturation, transtime);
+            auto status_ = onMoveToSaturationCommand(saturation, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 4: {
             auto movemode = request.readUInt8();
             auto rate = request.readUInt8();
-            auto status_ = moveSaturationCommand(movemode, rate);
+            auto status_ = onMoveSaturationCommand(movemode, rate);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -4933,7 +6186,7 @@ void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request
             auto stepmode = request.readUInt8();
             auto stepsize = request.readUInt8();
             auto transtime = request.readUInt8();
-            auto status_ = stepSaturationCommand(stepmode, stepsize, transtime);
+            auto status_ = onStepSaturationCommand(stepmode, stepsize, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -4941,7 +6194,7 @@ void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request
             auto hue = request.readUInt8();
             auto saturation = request.readUInt8();
             auto transtime = request.readUInt16Le();
-            auto status_ = moveToHueAndSaturationCommand(hue, saturation, transtime);
+            auto status_ = onMoveToHueAndSaturationCommand(hue, saturation, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -4949,14 +6202,14 @@ void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request
             auto colorx = request.readUInt16Le();
             auto colory = request.readUInt16Le();
             auto transtime = request.readUInt16Le();
-            auto status_ = moveToColorCommand(colorx, colory, transtime);
+            auto status_ = onMoveToColorCommand(colorx, colory, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 8: {
             auto ratex = request.readInt16Le();
             auto ratey = request.readInt16Le();
-            auto status_ = moveColorCommand(ratex, ratey);
+            auto status_ = onMoveColorCommand(ratex, ratey);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -4964,14 +6217,14 @@ void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request
             auto stepx = request.readInt16Le();
             auto stepy = request.readInt16Le();
             auto transtime = request.readUInt16Le();
-            auto status_ = stepColorCommand(stepx, stepy, transtime);
+            auto status_ = onStepColorCommand(stepx, stepy, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 10: {
             auto colortemp = request.readUInt16Le();
             auto transtime = request.readUInt16Le();
-            auto status_ = moveToColorTempCommand(colortemp, transtime);
+            auto status_ = onMoveToColorTempCommand(colortemp, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -4979,14 +6232,14 @@ void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request
             auto enhancehue = request.readUInt16Le();
             auto direction = request.readUInt8();
             auto transtime = request.readUInt16Le();
-            auto status_ = enhancedMoveToHueCommand(enhancehue, direction, transtime);
+            auto status_ = onEnhancedMoveToHueCommand(enhancehue, direction, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 65: {
             auto movemode = request.readUInt8();
             auto rate = request.readUInt16Le();
-            auto status_ = enhancedMoveHueCommand(movemode, rate);
+            auto status_ = onEnhancedMoveHueCommand(movemode, rate);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -4994,7 +6247,7 @@ void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request
             auto stepmode = request.readUInt8();
             auto stepsize = request.readUInt16Le();
             auto transtime = request.readUInt16Le();
-            auto status_ = enhancedStepHueCommand(stepmode, stepsize, transtime);
+            auto status_ = onEnhancedStepHueCommand(stepmode, stepsize, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -5002,7 +6255,7 @@ void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request
             auto enhancehue = request.readUInt16Le();
             auto saturation = request.readUInt8();
             auto transtime = request.readUInt16Le();
-            auto status_ = enhancedMoveToHueAndSaturationCommand(enhancehue, saturation, transtime);
+            auto status_ = onEnhancedMoveToHueAndSaturationCommand(enhancehue, saturation, transtime);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -5012,7 +6265,7 @@ void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request
             auto direction = request.readUInt8();
             auto time = request.readUInt16Le();
             auto starthue = request.readUInt16Le();
-            auto status_ = colorLoopSetCommand(updateflags, action, direction, time, starthue);
+            auto status_ = onColorLoopSetCommand(updateflags, action, direction, time, starthue);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -5023,7 +6276,7 @@ void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request
             auto direction = request.readUInt8();
             auto time = request.readUInt16Le();
             auto starthue = request.readUInt16Le();
-            auto status_ = stopMoveStepCommand(bits, bytee, action, direction, time, starthue);
+            auto status_ = onStopMoveStepCommand(bits, bytee, action, direction, time, starthue);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -5032,7 +6285,7 @@ void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request
             auto rate = request.readUInt16Le();
             auto minimum = request.readUInt16Le();
             auto maximum = request.readUInt16Le();
-            auto status_ = moveColorTempCommand(movemode, rate, minimum, maximum);
+            auto status_ = onMoveColorTempCommand(movemode, rate, minimum, maximum);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -5042,7 +6295,7 @@ void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request
             auto transtime = request.readUInt16Le();
             auto minimum = request.readUInt16Le();
             auto maximum = request.readUInt16Le();
-            auto status_ = stepColorTempCommand(stepmode, stepsize, transtime, minimum, maximum);
+            auto status_ = onStepColorTempCommand(stepmode, stepsize, transtime, minimum, maximum);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -5691,28 +6944,83 @@ AttributeUInt8* SsIasZoneCluster::getCurrentZoneSensitivityLevel() {
     return result;
 }
 
+void SsIasZoneCluster::sendEnrollRspCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t enrollrspcode, uint8_t zoneid) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeUInt8(enrollrspcode);
+    buffer.writeUInt8(zoneid);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SsIasZoneCluster::sendInitNormalOpModeCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SsIasZoneCluster::sendInitTestModeCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SsIasZoneCluster::sendBoschTestTamperCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t data) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        243
+    ).write(buffer);
+
+    buffer.writeUInt8(data);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void SsIasZoneCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
             auto enrollrspcode = request.readUInt8();
             auto zoneid = request.readUInt8();
-            auto status_ = enrollRspCommand(enrollrspcode, zoneid);
+            auto status_ = onEnrollRspCommand(enrollrspcode, zoneid);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
-            auto status_ = initNormalOpModeCommand();
+            auto status_ = onInitNormalOpModeCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 2: {
-            auto status_ = initTestModeCommand();
+            auto status_ = onInitTestModeCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 243: {
             auto data = request.readUInt8();
-            auto status_ = boschTestTamperCommand(data);
+            auto status_ = onBoschTestTamperCommand(data);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -5722,6 +7030,58 @@ void SsIasZoneCluster::processCommand(uint8_t commandId, Memory& request, Memory
     }
 }
 
+void SsIasAceCluster::sendEmergencyCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SsIasAceCluster::sendFireCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        3
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SsIasAceCluster::sendPanicCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        4
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SsIasAceCluster::sendGetBypassedZoneListCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        8
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void SsIasAceCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
@@ -5729,7 +7089,7 @@ void SsIasAceCluster::processCommand(uint8_t commandId, Memory& request, Memory&
             auto code = request.readString();
             auto zoneid = request.readUInt8();
             ArmCommandResponse response_;
-            auto status_ = armCommand(armmode, code, zoneid, response_);
+            auto status_ = onArmCommand(armmode, code, zoneid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getArmnotification());
@@ -5737,23 +7097,23 @@ void SsIasAceCluster::processCommand(uint8_t commandId, Memory& request, Memory&
             return;
         }
         case 2: {
-            auto status_ = emergencyCommand();
+            auto status_ = onEmergencyCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 3: {
-            auto status_ = fireCommand();
+            auto status_ = onFireCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 4: {
-            auto status_ = panicCommand();
+            auto status_ = onPanicCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 5: {
             GetZoneIDMapCommandResponse response_;
-            auto status_ = getZoneIDMapCommand(response_);
+            auto status_ = onGetZoneIDMapCommand(response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt16Le(response_.getZoneidmapsection0());
@@ -5778,7 +7138,7 @@ void SsIasAceCluster::processCommand(uint8_t commandId, Memory& request, Memory&
         case 6: {
             auto zoneid = request.readUInt8();
             GetZoneInfoCommandResponse response_;
-            auto status_ = getZoneInfoCommand(zoneid, response_);
+            auto status_ = onGetZoneInfoCommand(zoneid, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getZoneid());
@@ -5790,7 +7150,7 @@ void SsIasAceCluster::processCommand(uint8_t commandId, Memory& request, Memory&
         }
         case 7: {
             GetPanelStatusCommandResponse response_;
-            auto status_ = getPanelStatusCommand(response_);
+            auto status_ = onGetPanelStatusCommand(response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt8(response_.getPanelstatus());
@@ -5801,7 +7161,7 @@ void SsIasAceCluster::processCommand(uint8_t commandId, Memory& request, Memory&
             return;
         }
         case 8: {
-            auto status_ = getBypassedZoneListCommand();
+            auto status_ = onGetBypassedZoneListCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -5820,6 +7180,37 @@ AttributeUInt16* SsIasWdCluster::getMaxDuration() {
     return result;
 }
 
+void SsIasWdCluster::sendStartWarningCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t startwarninginfo, uint16_t warningduration, uint8_t strobedutycycle, uint8_t strobelevel) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeUInt8(startwarninginfo);
+    buffer.writeUInt16Le(warningduration);
+    buffer.writeUInt8(strobedutycycle);
+    buffer.writeUInt8(strobelevel);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SsIasWdCluster::sendSquawkCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t squawkinfo) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+    buffer.writeUInt8(squawkinfo);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void SsIasWdCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
@@ -5827,13 +7218,13 @@ void SsIasWdCluster::processCommand(uint8_t commandId, Memory& request, Memory& 
             auto warningduration = request.readUInt16Le();
             auto strobedutycycle = request.readUInt8();
             auto strobelevel = request.readUInt8();
-            auto status_ = startWarningCommand(startwarninginfo, warningduration, strobedutycycle, strobelevel);
+            auto status_ = onStartWarningCommand(startwarninginfo, warningduration, strobedutycycle, strobelevel);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
             auto squawkinfo = request.readUInt8();
-            auto status_ = squawkCommand(squawkinfo);
+            auto status_ = onSquawkCommand(squawkinfo);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -5870,11 +7261,25 @@ AttributeOctstr* PiGenericTunnelCluster::getProtocolAddr() {
     return result;
 }
 
+void PiGenericTunnelCluster::sendMatchProtocolAddrCommand(DeviceManager& deviceManager, uint8_t endpointId, String protocoladdr) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeString(protocoladdr);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void PiGenericTunnelCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
             auto protocoladdr = request.readString();
-            auto status_ = matchProtocolAddrCommand(protocoladdr);
+            auto status_ = onMatchProtocolAddrCommand(protocoladdr);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -5884,11 +7289,25 @@ void PiGenericTunnelCluster::processCommand(uint8_t commandId, Memory& request, 
     }
 }
 
+void PiBacnetProtocolTunnelCluster::sendTransferNpduCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t npdu) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeUInt8(npdu);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void PiBacnetProtocolTunnelCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
             auto npdu = request.readUInt8();
-            auto status_ = transferNpduCommand(npdu);
+            auto status_ = onTransferNpduCommand(npdu);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -6051,25 +7470,77 @@ AttributeUInt8* PiAnalogInputExtCluster::getTimeDelay() {
     return result;
 }
 
+void PiAnalogInputExtCluster::sendTransferApduCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void PiAnalogInputExtCluster::sendConnectReqCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void PiAnalogInputExtCluster::sendDisconnectReqCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void PiAnalogInputExtCluster::sendConnectStatusNotiCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        3
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void PiAnalogInputExtCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
-            auto status_ = transferApduCommand();
+            auto status_ = onTransferApduCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
-            auto status_ = connectReqCommand();
+            auto status_ = onConnectReqCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 2: {
-            auto status_ = disconnectReqCommand();
+            auto status_ = onDisconnectReqCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 3: {
-            auto status_ = connectStatusNotiCommand();
+            auto status_ = onConnectStatusNotiCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -7195,25 +8666,77 @@ AttributeUInt16* Pi11073ProtocolTunnelCluster::getIdleTimeout() {
     return result;
 }
 
+void Pi11073ProtocolTunnelCluster::sendTransferApduCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void Pi11073ProtocolTunnelCluster::sendConnectReqCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void Pi11073ProtocolTunnelCluster::sendDisconnectReqCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void Pi11073ProtocolTunnelCluster::sendConnectStatusNotiCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        3
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void Pi11073ProtocolTunnelCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
-            auto status_ = transferApduCommand();
+            auto status_ = onTransferApduCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
-            auto status_ = connectReqCommand();
+            auto status_ = onConnectReqCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 2: {
-            auto status_ = disconnectReqCommand();
+            auto status_ = onDisconnectReqCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 3: {
-            auto status_ = connectStatusNotiCommand();
+            auto status_ = onConnectStatusNotiCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -8429,50 +9952,167 @@ AttributeUInt32* SeMeteringCluster::getDeviceManagementFlags() {
     return result;
 }
 
+void SeMeteringCluster::sendGetProfileCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SeMeteringCluster::sendReqMirrorCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SeMeteringCluster::sendMirrorRemCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SeMeteringCluster::sendReqFastPollModeCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        3
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SeMeteringCluster::sendGetSnapshotCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        4
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SeMeteringCluster::sendTakeSnapshotCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        5
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SeMeteringCluster::sendMirrorReportAttrRspCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        6
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SeMeteringCluster::sendOwonGetHistoryRecordCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        32
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void SeMeteringCluster::sendOwonStopSendingHistoricalRecordCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        33
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void SeMeteringCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
-            auto status_ = getProfileCommand();
+            auto status_ = onGetProfileCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
-            auto status_ = reqMirrorCommand();
+            auto status_ = onReqMirrorCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 2: {
-            auto status_ = mirrorRemCommand();
+            auto status_ = onMirrorRemCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 3: {
-            auto status_ = reqFastPollModeCommand();
+            auto status_ = onReqFastPollModeCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 4: {
-            auto status_ = getSnapshotCommand();
+            auto status_ = onGetSnapshotCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 5: {
-            auto status_ = takeSnapshotCommand();
+            auto status_ = onTakeSnapshotCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 6: {
-            auto status_ = mirrorReportAttrRspCommand();
+            auto status_ = onMirrorReportAttrRspCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 32: {
-            auto status_ = owonGetHistoryRecordCommand();
+            auto status_ = onOwonGetHistoryRecordCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 33: {
-            auto status_ = owonStopSendingHistoricalRecordCommand();
+            auto status_ = onOwonStopSendingHistoricalRecordCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -8896,10 +10536,23 @@ AttributeInt24* HaMeterIdentificationCluster::getPowerThreshold() {
     return result;
 }
 
+void HaApplianceEventsAlertsCluster::sendGetAlertsCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void HaApplianceEventsAlertsCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
-            auto status_ = getAlertsCommand();
+            auto status_ = onGetAlertsCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -8927,16 +10580,43 @@ AttributeUInt8* HaApplianceStatisticsCluster::getLogQueueMaxSize() {
     return result;
 }
 
+void HaApplianceStatisticsCluster::sendLogCommand(DeviceManager& deviceManager, uint8_t endpointId, uint32_t logid) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeUInt32Le(logid);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void HaApplianceStatisticsCluster::sendLogQueueCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void HaApplianceStatisticsCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
             auto logid = request.readUInt32Le();
-            auto status_ = logCommand(logid);
+            auto status_ = onLogCommand(logid);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 1: {
-            auto status_ = logQueueCommand();
+            auto status_ = onLogQueueCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -10107,10 +11787,39 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageSwellPeriodPhC() {
     return result;
 }
 
+void HaElectricalMeasurementCluster::sendGetProfileInfoCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void HaElectricalMeasurementCluster::sendGetMeasurementProfileCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t attrId, uint32_t starttime, uint8_t numofuntervals) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+    buffer.writeUInt16Le(attrId);
+    buffer.writeUInt32Le(starttime);
+    buffer.writeUInt8(numofuntervals);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void HaElectricalMeasurementCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
-            auto status_ = getProfileInfoCommand();
+            auto status_ = onGetProfileInfoCommand();
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -10118,7 +11827,7 @@ void HaElectricalMeasurementCluster::processCommand(uint8_t commandId, Memory& r
             auto attrId = request.readUInt16Le();
             auto starttime = request.readUInt32Le();
             auto numofuntervals = request.readUInt8();
-            auto status_ = getMeasurementProfileCommand(attrId, starttime, numofuntervals);
+            auto status_ = onGetMeasurementProfileCommand(attrId, starttime, numofuntervals);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -10416,6 +12125,35 @@ AttributeInt8* HaDiagnosticCluster::getLastMessageRssi() {
     return result;
 }
 
+void TouchlinkCluster::sendIdentifyRequestCommand(DeviceManager& deviceManager, uint8_t endpointId, uint32_t transactionID, uint16_t duration) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        6
+    ).write(buffer);
+
+    buffer.writeUInt32Le(transactionID);
+    buffer.writeUInt16Le(duration);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void TouchlinkCluster::sendResetToFactoryNewCommand(DeviceManager& deviceManager, uint8_t endpointId, uint32_t transactionID) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        7
+    ).write(buffer);
+
+    buffer.writeUInt32Le(transactionID);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void TouchlinkCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
@@ -10423,7 +12161,7 @@ void TouchlinkCluster::processCommand(uint8_t commandId, Memory& request, Memory
             auto zigbeeInformation = request.readUInt8();
             auto touchlinkInformation = request.readUInt8();
             ScanRequestCommandResponse response_;
-            auto status_ = scanRequestCommand(transactionID, zigbeeInformation, touchlinkInformation, response_);
+            auto status_ = onScanRequestCommand(transactionID, zigbeeInformation, touchlinkInformation, response_);
             response.writeUInt8((uint8_t)status_);
             if (status_ == Status::Success) {
                 response.writeUInt32Le(response_.getTransactionID());
@@ -10445,13 +12183,13 @@ void TouchlinkCluster::processCommand(uint8_t commandId, Memory& request, Memory
         case 6: {
             auto transactionID = request.readUInt32Le();
             auto duration = request.readUInt16Le();
-            auto status_ = identifyRequestCommand(transactionID, duration);
+            auto status_ = onIdentifyRequestCommand(transactionID, duration);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 7: {
             auto transactionID = request.readUInt32Le();
-            auto status_ = resetToFactoryNewCommand(transactionID);
+            auto status_ = onResetToFactoryNewCommand(transactionID);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -10470,6 +12208,112 @@ AttributeString* WiserDeviceInfoCluster::getDeviceInfo() {
     return result;
 }
 
+void ZosungIRTransmitCluster::sendZosungSendIRCode00Command(DeviceManager& deviceManager, uint8_t endpointId, uint16_t seq, uint32_t length, uint32_t unk1, uint16_t unk2, uint8_t unk3, uint8_t cmd, uint16_t unk4) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        0
+    ).write(buffer);
+
+    buffer.writeUInt16Le(seq);
+    buffer.writeUInt32Le(length);
+    buffer.writeUInt32Le(unk1);
+    buffer.writeUInt16Le(unk2);
+    buffer.writeUInt8(unk3);
+    buffer.writeUInt8(cmd);
+    buffer.writeUInt16Le(unk4);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void ZosungIRTransmitCluster::sendZosungSendIRCode01Command(DeviceManager& deviceManager, uint8_t endpointId, uint8_t zero, uint16_t seq, uint32_t length, uint32_t unk1, uint16_t unk2, uint8_t unk3, uint8_t cmd, uint16_t unk4) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        1
+    ).write(buffer);
+
+    buffer.writeUInt8(zero);
+    buffer.writeUInt16Le(seq);
+    buffer.writeUInt32Le(length);
+    buffer.writeUInt32Le(unk1);
+    buffer.writeUInt16Le(unk2);
+    buffer.writeUInt8(unk3);
+    buffer.writeUInt8(cmd);
+    buffer.writeUInt16Le(unk4);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void ZosungIRTransmitCluster::sendZosungSendIRCode02Command(DeviceManager& deviceManager, uint8_t endpointId, uint16_t seq, uint32_t position, uint8_t maxlen) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        2
+    ).write(buffer);
+
+    buffer.writeUInt16Le(seq);
+    buffer.writeUInt32Le(position);
+    buffer.writeUInt8(maxlen);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void ZosungIRTransmitCluster::sendZosungSendIRCode03Command(DeviceManager& deviceManager, uint8_t endpointId, uint8_t zero, uint16_t seq, uint32_t position, Buffer msgpart, uint8_t msgpartcrc) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        3
+    ).write(buffer);
+
+    buffer.writeUInt8(zero);
+    buffer.writeUInt16Le(seq);
+    buffer.writeUInt32Le(position);
+    buffer.writeOctstr(msgpart);
+    buffer.writeUInt8(msgpartcrc);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void ZosungIRTransmitCluster::sendZosungSendIRCode04Command(DeviceManager& deviceManager, uint8_t endpointId, uint8_t zero0, uint16_t seq, uint16_t zero1) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        4
+    ).write(buffer);
+
+    buffer.writeUInt8(zero0);
+    buffer.writeUInt16Le(seq);
+    buffer.writeUInt16Le(zero1);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
+void ZosungIRTransmitCluster::sendZosungSendIRCode05Command(DeviceManager& deviceManager, uint8_t endpointId, uint16_t seq, uint16_t zero) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        5
+    ).write(buffer);
+
+    buffer.writeUInt16Le(seq);
+    buffer.writeUInt16Le(zero);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void ZosungIRTransmitCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
@@ -10480,7 +12324,7 @@ void ZosungIRTransmitCluster::processCommand(uint8_t commandId, Memory& request,
             auto unk3 = request.readUInt8();
             auto cmd = request.readUInt8();
             auto unk4 = request.readUInt16Le();
-            auto status_ = zosungSendIRCode00Command(seq, length, unk1, unk2, unk3, cmd, unk4);
+            auto status_ = onZosungSendIRCode00Command(seq, length, unk1, unk2, unk3, cmd, unk4);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -10493,7 +12337,7 @@ void ZosungIRTransmitCluster::processCommand(uint8_t commandId, Memory& request,
             auto unk3 = request.readUInt8();
             auto cmd = request.readUInt8();
             auto unk4 = request.readUInt16Le();
-            auto status_ = zosungSendIRCode01Command(zero, seq, length, unk1, unk2, unk3, cmd, unk4);
+            auto status_ = onZosungSendIRCode01Command(zero, seq, length, unk1, unk2, unk3, cmd, unk4);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -10501,7 +12345,7 @@ void ZosungIRTransmitCluster::processCommand(uint8_t commandId, Memory& request,
             auto seq = request.readUInt16Le();
             auto position = request.readUInt32Le();
             auto maxlen = request.readUInt8();
-            auto status_ = zosungSendIRCode02Command(seq, position, maxlen);
+            auto status_ = onZosungSendIRCode02Command(seq, position, maxlen);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -10511,7 +12355,7 @@ void ZosungIRTransmitCluster::processCommand(uint8_t commandId, Memory& request,
             auto position = request.readUInt32Le();
             auto msgpart = request.readOctstr();
             auto msgpartcrc = request.readUInt8();
-            auto status_ = zosungSendIRCode03Command(zero, seq, position, msgpart, msgpartcrc);
+            auto status_ = onZosungSendIRCode03Command(zero, seq, position, msgpart, msgpartcrc);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -10519,14 +12363,14 @@ void ZosungIRTransmitCluster::processCommand(uint8_t commandId, Memory& request,
             auto zero0 = request.readUInt8();
             auto seq = request.readUInt16Le();
             auto zero1 = request.readUInt16Le();
-            auto status_ = zosungSendIRCode04Command(zero0, seq, zero1);
+            auto status_ = onZosungSendIRCode04Command(zero0, seq, zero1);
             response.writeUInt8((uint8_t)status_);
             return;
         }
         case 5: {
             auto seq = request.readUInt16Le();
             auto zero = request.readUInt16Le();
-            auto status_ = zosungSendIRCode05Command(seq, zero);
+            auto status_ = onZosungSendIRCode05Command(seq, zero);
             response.writeUInt8((uint8_t)status_);
             return;
         }

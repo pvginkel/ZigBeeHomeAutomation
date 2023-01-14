@@ -24,6 +24,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicDevice", "BasicDevice\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AmplifierRemote", "AmplifierRemote\AmplifierRemote.vcxproj", "{06A219D9-CAE2-41FE-9734-98071E514C32}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TableLamp", "TableLamp\TableLamp.vcxproj", "{5A286A13-95B3-487F-ACB3-96364509B281}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LightControlTest", "LightControlTest\LightControlTest.vcxproj", "{963D1CD0-B182-4859-8ECD-6AD3B7F24827}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +122,30 @@ Global
 		{06A219D9-CAE2-41FE-9734-98071E514C32}.Release|x64.Build.0 = Release|Win32
 		{06A219D9-CAE2-41FE-9734-98071E514C32}.Release|x86.ActiveCfg = Release|Win32
 		{06A219D9-CAE2-41FE-9734-98071E514C32}.Release|x86.Build.0 = Release|Win32
+		{5A286A13-95B3-487F-ACB3-96364509B281}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{5A286A13-95B3-487F-ACB3-96364509B281}.Debug|Any CPU.Build.0 = Debug|Win32
+		{5A286A13-95B3-487F-ACB3-96364509B281}.Debug|x64.ActiveCfg = Debug|Win32
+		{5A286A13-95B3-487F-ACB3-96364509B281}.Debug|x64.Build.0 = Debug|Win32
+		{5A286A13-95B3-487F-ACB3-96364509B281}.Debug|x86.ActiveCfg = Debug|Win32
+		{5A286A13-95B3-487F-ACB3-96364509B281}.Debug|x86.Build.0 = Debug|Win32
+		{5A286A13-95B3-487F-ACB3-96364509B281}.Release|Any CPU.ActiveCfg = Release|Win32
+		{5A286A13-95B3-487F-ACB3-96364509B281}.Release|Any CPU.Build.0 = Release|Win32
+		{5A286A13-95B3-487F-ACB3-96364509B281}.Release|x64.ActiveCfg = Release|Win32
+		{5A286A13-95B3-487F-ACB3-96364509B281}.Release|x64.Build.0 = Release|Win32
+		{5A286A13-95B3-487F-ACB3-96364509B281}.Release|x86.ActiveCfg = Release|Win32
+		{5A286A13-95B3-487F-ACB3-96364509B281}.Release|x86.Build.0 = Release|Win32
+		{963D1CD0-B182-4859-8ECD-6AD3B7F24827}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{963D1CD0-B182-4859-8ECD-6AD3B7F24827}.Debug|Any CPU.Build.0 = Debug|x64
+		{963D1CD0-B182-4859-8ECD-6AD3B7F24827}.Debug|x64.ActiveCfg = Debug|x64
+		{963D1CD0-B182-4859-8ECD-6AD3B7F24827}.Debug|x64.Build.0 = Debug|x64
+		{963D1CD0-B182-4859-8ECD-6AD3B7F24827}.Debug|x86.ActiveCfg = Debug|Win32
+		{963D1CD0-B182-4859-8ECD-6AD3B7F24827}.Debug|x86.Build.0 = Debug|Win32
+		{963D1CD0-B182-4859-8ECD-6AD3B7F24827}.Release|Any CPU.ActiveCfg = Release|x64
+		{963D1CD0-B182-4859-8ECD-6AD3B7F24827}.Release|Any CPU.Build.0 = Release|x64
+		{963D1CD0-B182-4859-8ECD-6AD3B7F24827}.Release|x64.ActiveCfg = Release|x64
+		{963D1CD0-B182-4859-8ECD-6AD3B7F24827}.Release|x64.Build.0 = Release|x64
+		{963D1CD0-B182-4859-8ECD-6AD3B7F24827}.Release|x86.ActiveCfg = Release|Win32
+		{963D1CD0-B182-4859-8ECD-6AD3B7F24827}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,7 +156,9 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{06a219d9-cae2-41fe-9734-98071e514c32}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{0afe8a92-dcc3-4a87-ad96-adcac3684697}*SharedItemsImports = 9
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{5a286a13-95b3-487f-acb3-96364509b281}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{677ea60b-dceb-4830-a89e-14803d1efd9d}*SharedItemsImports = 4
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{c4401942-a693-4607-ad0e-7cda97525e22}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{f7047cd8-9532-424e-9ec9-130c702e557d}*SharedItemsImports = 4
 	EndGlobalSection

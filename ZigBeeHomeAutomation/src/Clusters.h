@@ -20,9 +20,11 @@ public:
     AttributeUInt8* getAlarmMask();
     AttributeUInt8* getDisableLocalConfig();
 
-    virtual Status resetFactDefaultCommand() {
+    virtual Status onResetFactDefaultCommand() {
         return Status::UnsupportedAttribute;
     }
+
+    void sendResetFactDefaultCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -77,25 +79,35 @@ public:
     }
     AttributeUInt16* getIdentifyTime();
 
-    virtual Status identifyCommand(uint16_t identifytime) {
+    virtual Status onIdentifyCommand(uint16_t identifytime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status identifyQueryCommand() {
+    void sendIdentifyCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t identifytime);
+
+    virtual Status onIdentifyQueryCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status ezmodeInvokeCommand(uint8_t action) {
+    void sendIdentifyQueryCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onEzmodeInvokeCommand(uint8_t action) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status updateCommissionStateCommand(uint8_t action, uint8_t commstatemask) {
+    void sendEzmodeInvokeCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t action);
+
+    virtual Status onUpdateCommissionStateCommand(uint8_t action, uint8_t commstatemask) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status triggerEffectCommand(uint8_t effectid, uint8_t effectvariant) {
+    void sendUpdateCommissionStateCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t action, uint8_t commstatemask);
+
+    virtual Status onTriggerEffectCommand(uint8_t effectid, uint8_t effectvariant) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendTriggerEffectCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t effectid, uint8_t effectvariant);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -119,13 +131,15 @@ public:
 
     };
 
-    virtual Status addCommand(uint16_t groupid, String groupname, AddCommandResponse& response) {
+    virtual Status onAddCommand(uint16_t groupid, String groupname, AddCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status viewCommand(uint16_t groupid) {
+    virtual Status onViewCommand(uint16_t groupid) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendViewCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t groupid);
 
     class RemoveCommandResponse {
         uint8_t _status{};
@@ -140,17 +154,21 @@ public:
 
     };
 
-    virtual Status removeCommand(uint16_t groupid, RemoveCommandResponse& response) {
+    virtual Status onRemoveCommand(uint16_t groupid, RemoveCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status removeAllCommand() {
+    virtual Status onRemoveAllCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status addIfIdentifyingCommand(uint16_t groupid, String groupname) {
+    void sendRemoveAllCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onAddIfIdentifyingCommand(uint16_t groupid, String groupname) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendAddIfIdentifyingCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t groupid, String groupname);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -183,7 +201,7 @@ public:
 
     };
 
-    virtual Status removeCommand(uint16_t groupid, uint8_t sceneid, RemoveCommandResponse& response) {
+    virtual Status onRemoveCommand(uint16_t groupid, uint8_t sceneid, RemoveCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -200,7 +218,7 @@ public:
 
     };
 
-    virtual Status removeAllCommand(uint16_t groupid, RemoveAllCommandResponse& response) {
+    virtual Status onRemoveAllCommand(uint16_t groupid, RemoveAllCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -221,13 +239,15 @@ public:
 
     };
 
-    virtual Status storeCommand(uint16_t groupid, uint8_t sceneid, StoreCommandResponse& response) {
+    virtual Status onStoreCommand(uint16_t groupid, uint8_t sceneid, StoreCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status recallCommand(uint16_t groupid, uint8_t sceneid) {
+    virtual Status onRecallCommand(uint16_t groupid, uint8_t sceneid) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendRecallCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t groupid, uint8_t sceneid);
 
     class CopyCommandResponse {
         uint8_t _status{};
@@ -246,21 +266,27 @@ public:
 
     };
 
-    virtual Status copyCommand(uint8_t mode, uint16_t groupidfrom, uint8_t sceneidfrom, uint16_t groupidto, uint8_t sceneidto, CopyCommandResponse& response) {
+    virtual Status onCopyCommand(uint8_t mode, uint16_t groupidfrom, uint8_t sceneidfrom, uint16_t groupidto, uint8_t sceneidto, CopyCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status tradfriArrowSingleCommand(uint16_t value, uint16_t value2) {
+    virtual Status onTradfriArrowSingleCommand(uint16_t value, uint16_t value2) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status tradfriArrowHoldCommand(uint16_t value) {
+    void sendTradfriArrowSingleCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t value, uint16_t value2);
+
+    virtual Status onTradfriArrowHoldCommand(uint16_t value) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status tradfriArrowReleaseCommand(uint16_t value) {
+    void sendTradfriArrowHoldCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t value);
+
+    virtual Status onTradfriArrowReleaseCommand(uint16_t value) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendTradfriArrowReleaseCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t value);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -276,29 +302,41 @@ public:
     AttributeUInt8* getStartUpOnOff();
     AttributeUInt8* getMoesStartUpOnOff();
 
-    virtual Status offCommand() {
+    virtual Status onOffCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status onCommand() {
+    void sendOffCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onOnCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status toggleCommand() {
+    void sendOnCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onToggleCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status offWithEffectCommand(uint8_t effectid, uint8_t effectvariant) {
+    void sendToggleCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onOffWithEffectCommand(uint8_t effectid, uint8_t effectvariant) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status onWithRecallGlobalSceneCommand() {
+    void sendOffWithEffectCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t effectid, uint8_t effectvariant);
+
+    virtual Status onOnWithRecallGlobalSceneCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status onWithTimedOffCommand(uint8_t ctrlbits, uint16_t ontime, uint16_t offwaittime) {
+    void sendOnWithRecallGlobalSceneCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onOnWithTimedOffCommand(uint8_t ctrlbits, uint16_t ontime, uint16_t offwaittime) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendOnWithTimedOffCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t ctrlbits, uint16_t ontime, uint16_t offwaittime);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -327,41 +365,59 @@ public:
     AttributeUInt16* getDefaultMoveRate();
     AttributeUInt8* getStartUpCurrentLevel();
 
-    virtual Status moveToLevelCommand(uint8_t level, uint16_t transtime) {
+    virtual Status onMoveToLevelCommand(uint8_t level, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status moveCommand(uint8_t movemode, uint8_t rate) {
+    void sendMoveToLevelCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t level, uint16_t transtime);
+
+    virtual Status onMoveCommand(uint8_t movemode, uint8_t rate) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status stepCommand(uint8_t stepmode, uint8_t stepsize, uint16_t transtime) {
+    void sendMoveCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t movemode, uint8_t rate);
+
+    virtual Status onStepCommand(uint8_t stepmode, uint8_t stepsize, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status stopCommand() {
+    void sendStepCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t stepmode, uint8_t stepsize, uint16_t transtime);
+
+    virtual Status onStopCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status moveToLevelWithOnOffCommand(uint8_t level, uint16_t transtime) {
+    void sendStopCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onMoveToLevelWithOnOffCommand(uint8_t level, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status moveWithOnOffCommand(uint8_t movemode, uint8_t rate) {
+    void sendMoveToLevelWithOnOffCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t level, uint16_t transtime);
+
+    virtual Status onMoveWithOnOffCommand(uint8_t movemode, uint8_t rate) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status stepWithOnOffCommand(uint8_t stepmode, uint8_t stepsize, uint16_t transtime) {
+    void sendMoveWithOnOffCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t movemode, uint8_t rate);
+
+    virtual Status onStepWithOnOffCommand(uint8_t stepmode, uint8_t stepsize, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status stopWithOnOffCommand() {
+    void sendStepWithOnOffCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t stepmode, uint8_t stepsize, uint16_t transtime);
+
+    virtual Status onStopWithOnOffCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status moveToLevelTuyaCommand(uint16_t level, uint16_t transtime) {
+    void sendStopWithOnOffCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onMoveToLevelTuyaCommand(uint16_t level, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendMoveToLevelTuyaCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t level, uint16_t transtime);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -372,25 +428,35 @@ public:
     }
     AttributeUInt16* getAlarmCount();
 
-    virtual Status resetCommand(uint8_t alarmcode, uint16_t clusterid) {
+    virtual Status onResetCommand(uint8_t alarmcode, uint16_t clusterid) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status resetAllCommand() {
+    void sendResetCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t alarmcode, uint16_t clusterid);
+
+    virtual Status onResetAllCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status getAlarmCommand() {
+    void sendResetAllCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onGetAlarmCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status resetLogCommand() {
+    void sendGetAlarmCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onResetLogCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status publishEventLogCommand() {
+    void sendResetLogCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onPublishEventLogCommand() {
         return Status::UnsupportedAttribute;
     }
+
+    void sendPublishEventLogCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -429,21 +495,29 @@ public:
     AttributeUInt16* getCalcPeriod();
     AttributeUInt16* getNumRSSIMeasurements();
 
-    virtual Status setAbsoluteCommand(int16_t coord1, int16_t coord2, int16_t coord3, int16_t power, uint16_t pathlossexponent) {
+    virtual Status onSetAbsoluteCommand(int16_t coord1, int16_t coord2, int16_t coord3, int16_t power, uint16_t pathlossexponent) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status setDevCfgCommand(int16_t power, uint16_t pathlossexponent, uint16_t calperiod, uint8_t numrssimeasurements, uint16_t reportingperiod) {
+    void sendSetAbsoluteCommand(DeviceManager& deviceManager, uint8_t endpointId, int16_t coord1, int16_t coord2, int16_t coord3, int16_t power, uint16_t pathlossexponent);
+
+    virtual Status onSetDevCfgCommand(int16_t power, uint16_t pathlossexponent, uint16_t calperiod, uint8_t numrssimeasurements, uint16_t reportingperiod) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status getDevCfgCommand(uint64_t targetaddr) {
+    void sendSetDevCfgCommand(DeviceManager& deviceManager, uint8_t endpointId, int16_t power, uint16_t pathlossexponent, uint16_t calperiod, uint8_t numrssimeasurements, uint16_t reportingperiod);
+
+    virtual Status onGetDevCfgCommand(uint64_t targetaddr) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status getDataCommand(uint8_t getdatainfo, uint8_t numrsp, uint64_t targetaddr) {
+    void sendGetDevCfgCommand(DeviceManager& deviceManager, uint8_t endpointId, uint64_t targetaddr);
+
+    virtual Status onGetDataCommand(uint8_t getdatainfo, uint8_t numrsp, uint64_t targetaddr) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendGetDataCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t getdatainfo, uint8_t numrsp, uint64_t targetaddr);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -612,21 +686,29 @@ public:
     AttributeUInt8* getConcentratorRus();
     AttributeUInt8* getConcentratorDiscoveryTime();
 
-    virtual Status restartDeviceCommand(uint8_t options, uint8_t delay, uint8_t jitter) {
+    virtual Status onRestartDeviceCommand(uint8_t options, uint8_t delay, uint8_t jitter) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status saveStartupParamsCommand(uint8_t options, uint8_t index) {
+    void sendRestartDeviceCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t options, uint8_t delay, uint8_t jitter);
+
+    virtual Status onSaveStartupParamsCommand(uint8_t options, uint8_t index) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status restoreStartupParamsCommand(uint8_t options, uint8_t index) {
+    void sendSaveStartupParamsCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t options, uint8_t index);
+
+    virtual Status onRestoreStartupParamsCommand(uint8_t options, uint8_t index) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status resetStartupParamsCommand(uint8_t options, uint8_t index) {
+    void sendRestoreStartupParamsCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t options, uint8_t index);
+
+    virtual Status onResetStartupParamsCommand(uint8_t options, uint8_t index) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendResetStartupParamsCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t options, uint8_t index);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -672,7 +754,7 @@ public:
 
     };
 
-    virtual Status queryNextImageRequestCommand(uint8_t fieldControl, uint16_t manufacturerCode, uint16_t imageType, uint32_t fileVersion, QueryNextImageRequestCommandResponse& response) {
+    virtual Status onQueryNextImageRequestCommand(uint8_t fieldControl, uint16_t manufacturerCode, uint16_t imageType, uint32_t fileVersion, QueryNextImageRequestCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -701,7 +783,7 @@ public:
 
     };
 
-    virtual Status upgradeEndRequestCommand(uint8_t status, uint16_t manufacturerCode, uint16_t imageType, uint32_t fileVersion, UpgradeEndRequestCommandResponse& response) {
+    virtual Status onUpgradeEndRequestCommand(uint8_t status, uint16_t manufacturerCode, uint16_t imageType, uint32_t fileVersion, UpgradeEndRequestCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -720,21 +802,29 @@ public:
     AttributeUInt32* getLongPollIntervalMin();
     AttributeUInt16* getFastPollTimeoutMax();
 
-    virtual Status checkinRspCommand(bool startFastPolling, uint16_t fastPollTimeout) {
+    virtual Status onCheckinRspCommand(bool startFastPolling, uint16_t fastPollTimeout) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status fastPollStopCommand() {
+    void sendCheckinRspCommand(DeviceManager& deviceManager, uint8_t endpointId, bool startFastPolling, uint16_t fastPollTimeout);
+
+    virtual Status onFastPollStopCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status setLongPollIntervalCommand(uint32_t newLongPollInterval) {
+    void sendFastPollStopCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onSetLongPollIntervalCommand(uint32_t newLongPollInterval) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status setShortPollIntervalCommand(uint16_t newShortPollInterval) {
+    void sendSetLongPollIntervalCommand(DeviceManager& deviceManager, uint8_t endpointId, uint32_t newLongPollInterval);
+
+    virtual Status onSetShortPollIntervalCommand(uint16_t newShortPollInterval) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendSetShortPollIntervalCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t newShortPollInterval);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -835,7 +925,7 @@ public:
 
     };
 
-    virtual Status lockDoorCommand(String pincodevalue, LockDoorCommandResponse& response) {
+    virtual Status onLockDoorCommand(String pincodevalue, LockDoorCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -848,7 +938,7 @@ public:
 
     };
 
-    virtual Status unlockDoorCommand(String pincodevalue, UnlockDoorCommandResponse& response) {
+    virtual Status onUnlockDoorCommand(String pincodevalue, UnlockDoorCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -861,7 +951,7 @@ public:
 
     };
 
-    virtual Status toggleDoorCommand(String pincodevalue, ToggleDoorCommandResponse& response) {
+    virtual Status onToggleDoorCommand(String pincodevalue, ToggleDoorCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -874,7 +964,7 @@ public:
 
     };
 
-    virtual Status unlockWithTimeoutCommand(uint16_t timeout, String pincodevalue, UnlockWithTimeoutCommandResponse& response) {
+    virtual Status onUnlockWithTimeoutCommand(uint16_t timeout, String pincodevalue, UnlockWithTimeoutCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -911,7 +1001,7 @@ public:
 
     };
 
-    virtual Status getLogRecordCommand(uint16_t logindex, GetLogRecordCommandResponse& response) {
+    virtual Status onGetLogRecordCommand(uint16_t logindex, GetLogRecordCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -924,7 +1014,7 @@ public:
 
     };
 
-    virtual Status setPinCodeCommand(uint16_t userid, uint8_t userstatus, uint8_t usertype, String pincodevalue, SetPinCodeCommandResponse& response) {
+    virtual Status onSetPinCodeCommand(uint16_t userid, uint8_t userstatus, uint8_t usertype, String pincodevalue, SetPinCodeCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -949,7 +1039,7 @@ public:
 
     };
 
-    virtual Status getPinCodeCommand(uint16_t userid, GetPinCodeCommandResponse& response) {
+    virtual Status onGetPinCodeCommand(uint16_t userid, GetPinCodeCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -962,7 +1052,7 @@ public:
 
     };
 
-    virtual Status clearPinCodeCommand(uint16_t userid, ClearPinCodeCommandResponse& response) {
+    virtual Status onClearPinCodeCommand(uint16_t userid, ClearPinCodeCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -975,7 +1065,7 @@ public:
 
     };
 
-    virtual Status clearAllPinCodesCommand(ClearAllPinCodesCommandResponse& response) {
+    virtual Status onClearAllPinCodesCommand(ClearAllPinCodesCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -988,7 +1078,7 @@ public:
 
     };
 
-    virtual Status setUserStatusCommand(uint16_t userid, uint8_t userstatus, SetUserStatusCommandResponse& response) {
+    virtual Status onSetUserStatusCommand(uint16_t userid, uint8_t userstatus, SetUserStatusCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1005,7 +1095,7 @@ public:
 
     };
 
-    virtual Status getUserStatusCommand(uint16_t userid, GetUserStatusCommandResponse& response) {
+    virtual Status onGetUserStatusCommand(uint16_t userid, GetUserStatusCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1018,7 +1108,7 @@ public:
 
     };
 
-    virtual Status setWeekDayScheduleCommand(uint8_t scheduleid, uint16_t userid, uint8_t daysmask, uint8_t starthour, uint8_t startminute, uint8_t endhour, uint8_t endminute, SetWeekDayScheduleCommandResponse& response) {
+    virtual Status onSetWeekDayScheduleCommand(uint8_t scheduleid, uint16_t userid, uint8_t daysmask, uint8_t starthour, uint8_t startminute, uint8_t endhour, uint8_t endminute, SetWeekDayScheduleCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1059,7 +1149,7 @@ public:
 
     };
 
-    virtual Status getWeekDayScheduleCommand(uint8_t scheduleid, uint16_t userid, GetWeekDayScheduleCommandResponse& response) {
+    virtual Status onGetWeekDayScheduleCommand(uint8_t scheduleid, uint16_t userid, GetWeekDayScheduleCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1072,7 +1162,7 @@ public:
 
     };
 
-    virtual Status clearWeekDayScheduleCommand(uint8_t scheduleid, uint16_t userid, ClearWeekDayScheduleCommandResponse& response) {
+    virtual Status onClearWeekDayScheduleCommand(uint8_t scheduleid, uint16_t userid, ClearWeekDayScheduleCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1085,7 +1175,7 @@ public:
 
     };
 
-    virtual Status setYearDayScheduleCommand(uint8_t scheduleid, uint16_t userid, uint32_t zigbeelocalstarttime, uint32_t zigbeelocalendtime, SetYearDayScheduleCommandResponse& response) {
+    virtual Status onSetYearDayScheduleCommand(uint8_t scheduleid, uint16_t userid, uint32_t zigbeelocalstarttime, uint32_t zigbeelocalendtime, SetYearDayScheduleCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1114,7 +1204,7 @@ public:
 
     };
 
-    virtual Status getYearDayScheduleCommand(uint8_t scheduleid, uint16_t userid, GetYearDayScheduleCommandResponse& response) {
+    virtual Status onGetYearDayScheduleCommand(uint8_t scheduleid, uint16_t userid, GetYearDayScheduleCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1127,7 +1217,7 @@ public:
 
     };
 
-    virtual Status clearYearDayScheduleCommand(uint8_t scheduleid, uint16_t userid, ClearYearDayScheduleCommandResponse& response) {
+    virtual Status onClearYearDayScheduleCommand(uint8_t scheduleid, uint16_t userid, ClearYearDayScheduleCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1140,7 +1230,7 @@ public:
 
     };
 
-    virtual Status setHolidayScheduleCommand(uint8_t holidayscheduleid, uint32_t zigbeelocalstarttime, uint32_t zigbeelocalendtime, uint8_t opermodelduringholiday, SetHolidayScheduleCommandResponse& response) {
+    virtual Status onSetHolidayScheduleCommand(uint8_t holidayscheduleid, uint32_t zigbeelocalstarttime, uint32_t zigbeelocalendtime, uint8_t opermodelduringholiday, SetHolidayScheduleCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1169,7 +1259,7 @@ public:
 
     };
 
-    virtual Status getHolidayScheduleCommand(uint8_t holidayscheduleid, GetHolidayScheduleCommandResponse& response) {
+    virtual Status onGetHolidayScheduleCommand(uint8_t holidayscheduleid, GetHolidayScheduleCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1182,7 +1272,7 @@ public:
 
     };
 
-    virtual Status clearHolidayScheduleCommand(uint8_t holidayscheduleid, ClearHolidayScheduleCommandResponse& response) {
+    virtual Status onClearHolidayScheduleCommand(uint8_t holidayscheduleid, ClearHolidayScheduleCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1195,7 +1285,7 @@ public:
 
     };
 
-    virtual Status setUserTypeCommand(uint16_t userid, uint8_t usertype, SetUserTypeCommandResponse& response) {
+    virtual Status onSetUserTypeCommand(uint16_t userid, uint8_t usertype, SetUserTypeCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1212,7 +1302,7 @@ public:
 
     };
 
-    virtual Status getUserTypeCommand(uint16_t userid, GetUserTypeCommandResponse& response) {
+    virtual Status onGetUserTypeCommand(uint16_t userid, GetUserTypeCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1225,7 +1315,7 @@ public:
 
     };
 
-    virtual Status setRfidCodeCommand(uint16_t userid, uint8_t userstatus, uint8_t usertype, String pincodevalue, SetRfidCodeCommandResponse& response) {
+    virtual Status onSetRfidCodeCommand(uint16_t userid, uint8_t userstatus, uint8_t usertype, String pincodevalue, SetRfidCodeCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1250,7 +1340,7 @@ public:
 
     };
 
-    virtual Status getRfidCodeCommand(uint16_t userid, GetRfidCodeCommandResponse& response) {
+    virtual Status onGetRfidCodeCommand(uint16_t userid, GetRfidCodeCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1263,7 +1353,7 @@ public:
 
     };
 
-    virtual Status clearRfidCodeCommand(uint16_t userid, ClearRfidCodeCommandResponse& response) {
+    virtual Status onClearRfidCodeCommand(uint16_t userid, ClearRfidCodeCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1276,7 +1366,7 @@ public:
 
     };
 
-    virtual Status clearAllRfidCodesCommand(ClearAllRfidCodesCommandResponse& response) {
+    virtual Status onClearAllRfidCodesCommand(ClearAllRfidCodesCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1310,37 +1400,53 @@ public:
     AttributeOctstr* getIntermediateSetpointsTilt();
     AttributeUInt16* getMoesCalibrationTime();
 
-    virtual Status upOpenCommand() {
+    virtual Status onUpOpenCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status downCloseCommand() {
+    void sendUpOpenCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onDownCloseCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status stopCommand() {
+    void sendDownCloseCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onStopCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status goToLiftValueCommand(uint16_t liftvalue) {
+    void sendStopCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onGoToLiftValueCommand(uint16_t liftvalue) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status goToLiftPercentageCommand(uint8_t percentageliftvalue) {
+    void sendGoToLiftValueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t liftvalue);
+
+    virtual Status onGoToLiftPercentageCommand(uint8_t percentageliftvalue) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status goToTiltValueCommand(uint16_t tiltvalue) {
+    void sendGoToLiftPercentageCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t percentageliftvalue);
+
+    virtual Status onGoToTiltValueCommand(uint16_t tiltvalue) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status goToTiltPercentageCommand(uint8_t percentagetiltvalue) {
+    void sendGoToTiltValueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t tiltvalue);
+
+    virtual Status onGoToTiltPercentageCommand(uint8_t percentagetiltvalue) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status elkoStopOrStepLiftPercentageCommand(uint16_t direction, uint16_t stepvalue) {
+    void sendGoToTiltPercentageCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t percentagetiltvalue);
+
+    virtual Status onElkoStopOrStepLiftPercentageCommand(uint16_t direction, uint16_t stepvalue) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendElkoStopOrStepLiftPercentageCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t direction, uint16_t stepvalue);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -1360,13 +1466,17 @@ public:
     AttributeUInt16* getClosePeriod();
     AttributeUInt8* getBarrierPosition();
 
-    virtual Status goToPercentCommand(uint8_t percentOpen) {
+    virtual Status onGoToPercentCommand(uint8_t percentOpen) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status stopCommand() {
+    void sendGoToPercentCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t percentOpen);
+
+    virtual Status onStopCommand() {
         return Status::UnsupportedAttribute;
     }
+
+    void sendStopCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -1450,41 +1560,65 @@ public:
     AttributeUInt8* getAcCapacityFormat();
     AttributeUInt8* getStelproSystemMode();
 
-    virtual Status setpointRaiseLowerCommand(uint8_t mode, int8_t amount) {
+    virtual Status onSetpointRaiseLowerCommand(uint8_t mode, int8_t amount) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status getWeeklyScheduleCommand(uint8_t daystoreturn, uint8_t modetoreturn) {
+    void sendSetpointRaiseLowerCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t mode, int8_t amount);
+
+    virtual Status onGetWeeklyScheduleCommand(uint8_t daystoreturn, uint8_t modetoreturn) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status clearWeeklyScheduleCommand() {
+    void sendGetWeeklyScheduleCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t daystoreturn, uint8_t modetoreturn);
+
+    virtual Status onClearWeeklyScheduleCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status getRelayStatusLogCommand() {
+    void sendClearWeeklyScheduleCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onGetRelayStatusLogCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status danfossSetpointCommandCommand(uint8_t setpointType, int16_t setpoint) {
+    void sendGetRelayStatusLogCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onDanfossSetpointCommandCommand(uint8_t setpointType, int16_t setpoint) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status schneiderWiserThermostatBoostCommand(uint8_t command, uint8_t enable, uint16_t temperature, uint16_t duration) {
+    void sendDanfossSetpointCommandCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t setpointType, int16_t setpoint);
+
+    virtual Status onSchneiderWiserThermostatBoostCommand(uint8_t command, uint8_t enable, uint16_t temperature, uint16_t duration) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status wiserSmartSetSetpointCommand(uint8_t operatingmode, uint8_t zonemode, int16_t setpoint, uint8_t reserved) {
+    void sendSchneiderWiserThermostatBoostCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t command, uint8_t enable, uint16_t temperature, uint16_t duration);
+
+    virtual Status onWiserSmartSetSetpointCommand(uint8_t operatingmode, uint8_t zonemode, int16_t setpoint, uint8_t reserved) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status wiserSmartCalibrateValveCommand() {
+    void sendWiserSmartSetSetpointCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t operatingmode, uint8_t zonemode, int16_t setpoint, uint8_t reserved);
+
+    virtual Status onWiserSmartSetFipModeCommand(uint8_t zonemode, uint8_t fipmode, uint8_t reserved) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status plugwiseCalibrateValveCommand() {
+    void sendWiserSmartSetFipModeCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t zonemode, uint8_t fipmode, uint8_t reserved);
+
+    virtual Status onWiserSmartCalibrateValveCommand() {
         return Status::UnsupportedAttribute;
     }
+
+    void sendWiserSmartCalibrateValveCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onPlugwiseCalibrateValveCommand() {
+        return Status::UnsupportedAttribute;
+    }
+
+    void sendPlugwiseCalibrateValveCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -1577,81 +1711,119 @@ public:
     AttributeUInt16* getCoupleColorTempToLevelMin();
     AttributeUInt16* getStartUpColorTemperature();
 
-    virtual Status moveToHueCommand(uint8_t hue, uint8_t direction, uint16_t transtime) {
+    virtual Status onMoveToHueCommand(uint8_t hue, uint8_t direction, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status moveHueCommand(uint8_t movemode, uint8_t rate) {
+    void sendMoveToHueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t hue, uint8_t direction, uint16_t transtime);
+
+    virtual Status onMoveHueCommand(uint8_t movemode, uint8_t rate) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status stepHueCommand(uint8_t stepmode, uint8_t stepsize, uint8_t transtime) {
+    void sendMoveHueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t movemode, uint8_t rate);
+
+    virtual Status onStepHueCommand(uint8_t stepmode, uint8_t stepsize, uint8_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status moveToSaturationCommand(uint8_t saturation, uint16_t transtime) {
+    void sendStepHueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t stepmode, uint8_t stepsize, uint8_t transtime);
+
+    virtual Status onMoveToSaturationCommand(uint8_t saturation, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status moveSaturationCommand(uint8_t movemode, uint8_t rate) {
+    void sendMoveToSaturationCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t saturation, uint16_t transtime);
+
+    virtual Status onMoveSaturationCommand(uint8_t movemode, uint8_t rate) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status stepSaturationCommand(uint8_t stepmode, uint8_t stepsize, uint8_t transtime) {
+    void sendMoveSaturationCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t movemode, uint8_t rate);
+
+    virtual Status onStepSaturationCommand(uint8_t stepmode, uint8_t stepsize, uint8_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status moveToHueAndSaturationCommand(uint8_t hue, uint8_t saturation, uint16_t transtime) {
+    void sendStepSaturationCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t stepmode, uint8_t stepsize, uint8_t transtime);
+
+    virtual Status onMoveToHueAndSaturationCommand(uint8_t hue, uint8_t saturation, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status moveToColorCommand(uint16_t colorx, uint16_t colory, uint16_t transtime) {
+    void sendMoveToHueAndSaturationCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t hue, uint8_t saturation, uint16_t transtime);
+
+    virtual Status onMoveToColorCommand(uint16_t colorx, uint16_t colory, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status moveColorCommand(int16_t ratex, int16_t ratey) {
+    void sendMoveToColorCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t colorx, uint16_t colory, uint16_t transtime);
+
+    virtual Status onMoveColorCommand(int16_t ratex, int16_t ratey) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status stepColorCommand(int16_t stepx, int16_t stepy, uint16_t transtime) {
+    void sendMoveColorCommand(DeviceManager& deviceManager, uint8_t endpointId, int16_t ratex, int16_t ratey);
+
+    virtual Status onStepColorCommand(int16_t stepx, int16_t stepy, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status moveToColorTempCommand(uint16_t colortemp, uint16_t transtime) {
+    void sendStepColorCommand(DeviceManager& deviceManager, uint8_t endpointId, int16_t stepx, int16_t stepy, uint16_t transtime);
+
+    virtual Status onMoveToColorTempCommand(uint16_t colortemp, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status enhancedMoveToHueCommand(uint16_t enhancehue, uint8_t direction, uint16_t transtime) {
+    void sendMoveToColorTempCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t colortemp, uint16_t transtime);
+
+    virtual Status onEnhancedMoveToHueCommand(uint16_t enhancehue, uint8_t direction, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status enhancedMoveHueCommand(uint8_t movemode, uint16_t rate) {
+    void sendEnhancedMoveToHueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t enhancehue, uint8_t direction, uint16_t transtime);
+
+    virtual Status onEnhancedMoveHueCommand(uint8_t movemode, uint16_t rate) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status enhancedStepHueCommand(uint8_t stepmode, uint16_t stepsize, uint16_t transtime) {
+    void sendEnhancedMoveHueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t movemode, uint16_t rate);
+
+    virtual Status onEnhancedStepHueCommand(uint8_t stepmode, uint16_t stepsize, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status enhancedMoveToHueAndSaturationCommand(uint16_t enhancehue, uint8_t saturation, uint16_t transtime) {
+    void sendEnhancedStepHueCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t stepmode, uint16_t stepsize, uint16_t transtime);
+
+    virtual Status onEnhancedMoveToHueAndSaturationCommand(uint16_t enhancehue, uint8_t saturation, uint16_t transtime) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status colorLoopSetCommand(uint8_t updateflags, uint8_t action, uint8_t direction, uint16_t time, uint16_t starthue) {
+    void sendEnhancedMoveToHueAndSaturationCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t enhancehue, uint8_t saturation, uint16_t transtime);
+
+    virtual Status onColorLoopSetCommand(uint8_t updateflags, uint8_t action, uint8_t direction, uint16_t time, uint16_t starthue) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status stopMoveStepCommand(uint8_t bits, uint8_t bytee, uint8_t action, uint8_t direction, uint16_t time, uint16_t starthue) {
+    void sendColorLoopSetCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t updateflags, uint8_t action, uint8_t direction, uint16_t time, uint16_t starthue);
+
+    virtual Status onStopMoveStepCommand(uint8_t bits, uint8_t bytee, uint8_t action, uint8_t direction, uint16_t time, uint16_t starthue) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status moveColorTempCommand(uint8_t movemode, uint16_t rate, uint16_t minimum, uint16_t maximum) {
+    void sendStopMoveStepCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t bits, uint8_t bytee, uint8_t action, uint8_t direction, uint16_t time, uint16_t starthue);
+
+    virtual Status onMoveColorTempCommand(uint8_t movemode, uint16_t rate, uint16_t minimum, uint16_t maximum) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status stepColorTempCommand(uint8_t stepmode, uint16_t stepsize, uint16_t transtime, uint16_t minimum, uint16_t maximum) {
+    void sendMoveColorTempCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t movemode, uint16_t rate, uint16_t minimum, uint16_t maximum);
+
+    virtual Status onStepColorTempCommand(uint8_t stepmode, uint16_t stepsize, uint16_t transtime, uint16_t minimum, uint16_t maximum) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendStepColorTempCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t stepmode, uint16_t stepsize, uint16_t transtime, uint16_t minimum, uint16_t maximum);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -1798,21 +1970,29 @@ public:
     AttributeUInt8* getNumZoneSensitivityLevelsSupported();
     AttributeUInt8* getCurrentZoneSensitivityLevel();
 
-    virtual Status enrollRspCommand(uint8_t enrollrspcode, uint8_t zoneid) {
+    virtual Status onEnrollRspCommand(uint8_t enrollrspcode, uint8_t zoneid) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status initNormalOpModeCommand() {
+    void sendEnrollRspCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t enrollrspcode, uint8_t zoneid);
+
+    virtual Status onInitNormalOpModeCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status initTestModeCommand() {
+    void sendInitNormalOpModeCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onInitTestModeCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status boschTestTamperCommand(uint8_t data) {
+    void sendInitTestModeCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onBoschTestTamperCommand(uint8_t data) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendBoschTestTamperCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t data);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -1831,21 +2011,27 @@ public:
 
     };
 
-    virtual Status armCommand(uint8_t armmode, String code, uint8_t zoneid, ArmCommandResponse& response) {
+    virtual Status onArmCommand(uint8_t armmode, String code, uint8_t zoneid, ArmCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status emergencyCommand() {
+    virtual Status onEmergencyCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status fireCommand() {
+    void sendEmergencyCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onFireCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status panicCommand() {
+    void sendFireCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onPanicCommand() {
         return Status::UnsupportedAttribute;
     }
+
+    void sendPanicCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     class GetZoneIDMapCommandResponse {
         uint16_t _zoneidmapsection0{};
@@ -1916,7 +2102,7 @@ public:
 
     };
 
-    virtual Status getZoneIDMapCommand(GetZoneIDMapCommandResponse& response) {
+    virtual Status onGetZoneIDMapCommand(GetZoneIDMapCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1941,7 +2127,7 @@ public:
 
     };
 
-    virtual Status getZoneInfoCommand(uint8_t zoneid, GetZoneInfoCommandResponse& response) {
+    virtual Status onGetZoneInfoCommand(uint8_t zoneid, GetZoneInfoCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
@@ -1966,13 +2152,15 @@ public:
 
     };
 
-    virtual Status getPanelStatusCommand(GetPanelStatusCommandResponse& response) {
+    virtual Status onGetPanelStatusCommand(GetPanelStatusCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status getBypassedZoneListCommand() {
+    virtual Status onGetBypassedZoneListCommand() {
         return Status::UnsupportedAttribute;
     }
+
+    void sendGetBypassedZoneListCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -1983,13 +2171,17 @@ public:
     }
     AttributeUInt16* getMaxDuration();
 
-    virtual Status startWarningCommand(uint8_t startwarninginfo, uint16_t warningduration, uint8_t strobedutycycle, uint8_t strobelevel) {
+    virtual Status onStartWarningCommand(uint8_t startwarninginfo, uint16_t warningduration, uint8_t strobedutycycle, uint8_t strobelevel) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status squawkCommand(uint8_t squawkinfo) {
+    void sendStartWarningCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t startwarninginfo, uint16_t warningduration, uint8_t strobedutycycle, uint8_t strobelevel);
+
+    virtual Status onSquawkCommand(uint8_t squawkinfo) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendSquawkCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t squawkinfo);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -2002,9 +2194,11 @@ public:
     AttributeUInt16* getMaxOutgoTransSize();
     AttributeOctstr* getProtocolAddr();
 
-    virtual Status matchProtocolAddrCommand(String protocoladdr) {
+    virtual Status onMatchProtocolAddrCommand(String protocoladdr) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendMatchProtocolAddrCommand(DeviceManager& deviceManager, uint8_t endpointId, String protocoladdr);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -2014,9 +2208,11 @@ public:
     PiBacnetProtocolTunnelCluster(ClusterType type = ClusterType::Input) : Cluster(1537, type) {
     }
 
-    virtual Status transferNpduCommand(uint8_t npdu) {
+    virtual Status onTransferNpduCommand(uint8_t npdu) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendTransferNpduCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t npdu);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -2049,21 +2245,29 @@ public:
     AttributeUInt8* getNotifyType();
     AttributeUInt8* getTimeDelay();
 
-    virtual Status transferApduCommand() {
+    virtual Status onTransferApduCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status connectReqCommand() {
+    void sendTransferApduCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onConnectReqCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status disconnectReqCommand() {
+    void sendConnectReqCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onDisconnectReqCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status connectStatusNotiCommand() {
+    void sendDisconnectReqCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onConnectStatusNotiCommand() {
         return Status::UnsupportedAttribute;
     }
+
+    void sendConnectStatusNotiCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -2293,21 +2497,29 @@ public:
     AttributeUInt8* getPreemptible();
     AttributeUInt16* getIdleTimeout();
 
-    virtual Status transferApduCommand() {
+    virtual Status onTransferApduCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status connectReqCommand() {
+    void sendTransferApduCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onConnectReqCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status disconnectReqCommand() {
+    void sendConnectReqCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onDisconnectReqCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status connectStatusNotiCommand() {
+    void sendDisconnectReqCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onConnectStatusNotiCommand() {
         return Status::UnsupportedAttribute;
     }
+
+    void sendConnectStatusNotiCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -2463,41 +2675,59 @@ public:
     AttributeUInt32* getPrePayNotificationFlags();
     AttributeUInt32* getDeviceManagementFlags();
 
-    virtual Status getProfileCommand() {
+    virtual Status onGetProfileCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status reqMirrorCommand() {
+    void sendGetProfileCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onReqMirrorCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status mirrorRemCommand() {
+    void sendReqMirrorCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onMirrorRemCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status reqFastPollModeCommand() {
+    void sendMirrorRemCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onReqFastPollModeCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status getSnapshotCommand() {
+    void sendReqFastPollModeCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onGetSnapshotCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status takeSnapshotCommand() {
+    void sendGetSnapshotCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onTakeSnapshotCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status mirrorReportAttrRspCommand() {
+    void sendTakeSnapshotCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onMirrorReportAttrRspCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status owonGetHistoryRecordCommand() {
+    void sendMirrorReportAttrRspCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onOwonGetHistoryRecordCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status owonStopSendingHistoricalRecordCommand() {
+    void sendOwonGetHistoryRecordCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onOwonStopSendingHistoricalRecordCommand() {
         return Status::UnsupportedAttribute;
     }
+
+    void sendOwonStopSendingHistoricalRecordCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -2583,9 +2813,11 @@ public:
     HaApplianceEventsAlertsCluster(ClusterType type = ClusterType::Input) : Cluster(2818, type) {
     }
 
-    virtual Status getAlertsCommand() {
+    virtual Status onGetAlertsCommand() {
         return Status::UnsupportedAttribute;
     }
+
+    void sendGetAlertsCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -2597,13 +2829,17 @@ public:
     AttributeUInt32* getLogMaxSize();
     AttributeUInt8* getLogQueueMaxSize();
 
-    virtual Status logCommand(uint32_t logid) {
+    virtual Status onLogCommand(uint32_t logid) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status logQueueCommand() {
+    void sendLogCommand(DeviceManager& deviceManager, uint8_t endpointId, uint32_t logid);
+
+    virtual Status onLogQueueCommand() {
         return Status::UnsupportedAttribute;
     }
+
+    void sendLogQueueCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -2742,13 +2978,17 @@ public:
     AttributeUInt16* getRmsVoltageSagPeriodPhC();
     AttributeUInt16* getRmsVoltageSwellPeriodPhC();
 
-    virtual Status getProfileInfoCommand() {
+    virtual Status onGetProfileInfoCommand() {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status getMeasurementProfileCommand(uint16_t attrId, uint32_t starttime, uint8_t numofuntervals) {
+    void sendGetProfileInfoCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
+    virtual Status onGetMeasurementProfileCommand(uint16_t attrId, uint32_t starttime, uint8_t numofuntervals) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendGetMeasurementProfileCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t attrId, uint32_t starttime, uint8_t numofuntervals);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -2853,17 +3093,21 @@ public:
 
     };
 
-    virtual Status scanRequestCommand(uint32_t transactionID, uint8_t zigbeeInformation, uint8_t touchlinkInformation, ScanRequestCommandResponse& response) {
+    virtual Status onScanRequestCommand(uint32_t transactionID, uint8_t zigbeeInformation, uint8_t touchlinkInformation, ScanRequestCommandResponse& response) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status identifyRequestCommand(uint32_t transactionID, uint16_t duration) {
+    virtual Status onIdentifyRequestCommand(uint32_t transactionID, uint16_t duration) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status resetToFactoryNewCommand(uint32_t transactionID) {
+    void sendIdentifyRequestCommand(DeviceManager& deviceManager, uint8_t endpointId, uint32_t transactionID, uint16_t duration);
+
+    virtual Status onResetToFactoryNewCommand(uint32_t transactionID) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendResetToFactoryNewCommand(DeviceManager& deviceManager, uint8_t endpointId, uint32_t transactionID);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
@@ -2880,29 +3124,41 @@ public:
     ZosungIRTransmitCluster(ClusterType type = ClusterType::Input) : Cluster(60672, type) {
     }
 
-    virtual Status zosungSendIRCode00Command(uint16_t seq, uint32_t length, uint32_t unk1, uint16_t unk2, uint8_t unk3, uint8_t cmd, uint16_t unk4) {
+    virtual Status onZosungSendIRCode00Command(uint16_t seq, uint32_t length, uint32_t unk1, uint16_t unk2, uint8_t unk3, uint8_t cmd, uint16_t unk4) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status zosungSendIRCode01Command(uint8_t zero, uint16_t seq, uint32_t length, uint32_t unk1, uint16_t unk2, uint8_t unk3, uint8_t cmd, uint16_t unk4) {
+    void sendZosungSendIRCode00Command(DeviceManager& deviceManager, uint8_t endpointId, uint16_t seq, uint32_t length, uint32_t unk1, uint16_t unk2, uint8_t unk3, uint8_t cmd, uint16_t unk4);
+
+    virtual Status onZosungSendIRCode01Command(uint8_t zero, uint16_t seq, uint32_t length, uint32_t unk1, uint16_t unk2, uint8_t unk3, uint8_t cmd, uint16_t unk4) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status zosungSendIRCode02Command(uint16_t seq, uint32_t position, uint8_t maxlen) {
+    void sendZosungSendIRCode01Command(DeviceManager& deviceManager, uint8_t endpointId, uint8_t zero, uint16_t seq, uint32_t length, uint32_t unk1, uint16_t unk2, uint8_t unk3, uint8_t cmd, uint16_t unk4);
+
+    virtual Status onZosungSendIRCode02Command(uint16_t seq, uint32_t position, uint8_t maxlen) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status zosungSendIRCode03Command(uint8_t zero, uint16_t seq, uint32_t position, Buffer msgpart, uint8_t msgpartcrc) {
+    void sendZosungSendIRCode02Command(DeviceManager& deviceManager, uint8_t endpointId, uint16_t seq, uint32_t position, uint8_t maxlen);
+
+    virtual Status onZosungSendIRCode03Command(uint8_t zero, uint16_t seq, uint32_t position, Buffer msgpart, uint8_t msgpartcrc) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status zosungSendIRCode04Command(uint8_t zero0, uint16_t seq, uint16_t zero1) {
+    void sendZosungSendIRCode03Command(DeviceManager& deviceManager, uint8_t endpointId, uint8_t zero, uint16_t seq, uint32_t position, Buffer msgpart, uint8_t msgpartcrc);
+
+    virtual Status onZosungSendIRCode04Command(uint8_t zero0, uint16_t seq, uint16_t zero1) {
         return Status::UnsupportedAttribute;
     }
 
-    virtual Status zosungSendIRCode05Command(uint16_t seq, uint16_t zero) {
+    void sendZosungSendIRCode04Command(DeviceManager& deviceManager, uint8_t endpointId, uint8_t zero0, uint16_t seq, uint16_t zero1);
+
+    virtual Status onZosungSendIRCode05Command(uint16_t seq, uint16_t zero) {
         return Status::UnsupportedAttribute;
     }
+
+    void sendZosungSendIRCode05Command(DeviceManager& deviceManager, uint8_t endpointId, uint16_t seq, uint16_t zero);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };

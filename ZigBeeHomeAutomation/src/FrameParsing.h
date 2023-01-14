@@ -13,6 +13,11 @@ enum class Direction : uint8_t {
 class FrameControl {
 	union {
 		struct {
+			// frame type: 01
+			// manuf 0
+			// direciton 1
+			// disable default response 1
+			// 000
 			uint8_t frameType : 2;
 			uint8_t manufacturerSpecific : 1;
 			uint8_t direction : 1;

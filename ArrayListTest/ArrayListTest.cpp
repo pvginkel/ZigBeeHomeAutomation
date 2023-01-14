@@ -315,15 +315,9 @@ public:
 
 		Assert::AreEqual(0, (int)list.size());
 
-		auto index = 0;
-
 		for (auto v : list) {
-			switch (index++) {
-			default: Assert::Fail();
-			}
+			Assert::Fail();
 		}
-
-		Assert::AreEqual(0, index);
 	}
 
 	TEST_METHOD(replace) {

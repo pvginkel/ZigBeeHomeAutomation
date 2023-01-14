@@ -50,6 +50,8 @@ class DeviceManager {
 	CallbackArgs<ConnectionStatus> _setConnected;
 
 public:
+    static constexpr uint8_t REPORT_BROADCAST = 0xff;
+
 	static constexpr uint16_t ZHA_PROFILE_ID = 0x0104;
 
 	static constexpr XBeeAddress64 BROADCAST_ADDR64 = {};
@@ -74,6 +76,13 @@ public:
 	XBeeAddress64* getOperatingPanId() {
 		return &_operatingPanId;
 	}
+
+	Memory getBuffer() {
+		return Memory(_payload);
+	}
+
+	void sendMessage(Cluster* cluster, uint8_t endpointId, Memory& buffer);
+	void sendMessage(Device* device, Cluster* cluster, uint8_t endpointId, Memory& buffer);
 
 private:
 	void processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clusterId, uint8_t* frameData, uint8_t frameDataLength);
