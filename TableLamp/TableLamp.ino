@@ -1,4 +1,3 @@
-#include <Adafruit_MPR121.h>
 #include <SoftwareSerial.h>
 #include <ZigBeeHomeAutomation.h>
 

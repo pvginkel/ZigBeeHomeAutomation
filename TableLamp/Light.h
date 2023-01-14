@@ -52,19 +52,9 @@ public:
 
 			float progress = float(diff) / float(_transitionTime);
 
-			float scaledLevel;
-			if (_level > 0 && (_minimumLevel != 0.0f || _maximumLevel != 1.0f)) {
-				scaledLevel =
-					_minimumLevel +
-					_level * (_maximumLevel - _minimumLevel);
-			}
-			else {
-				scaledLevel = _level;
-			}
-
 			float level =
 				_startLevel +
-				(scaledLevel - _startLevel) * progress;
+				(getScaledLevel() - _startLevel) * progress;
 
 			_actualLevel = level;
 			analogWrite(uint8_t(_pin), interpolate(_actualLevel));
@@ -96,15 +86,27 @@ public:
 	}
 
 	void resetTransition() {
-		_startLevel = _level;
+		auto scaledLevel = getScaledLevel();
+
+		_startLevel = scaledLevel;
 		_transitionStart = 0;
 		_transitionTime = 0;
 
-		_actualLevel = _level;
+		_actualLevel = scaledLevel;
 		analogWrite(_pin, interpolate(_actualLevel));
 	}
 
 private:
+	float getScaledLevel() {
+		if (_level > 0 && (_minimumLevel != 0.0f || _maximumLevel != 1.0f)) {
+			return
+				_minimumLevel +
+				_level * (_maximumLevel - _minimumLevel);
+		}
+
+		return _level;
+	}
+
 	static uint8_t interpolate(float level) {
 		const auto result = int(InterpolateAlgorithm::interpolate(level) * 256.0f);
 			

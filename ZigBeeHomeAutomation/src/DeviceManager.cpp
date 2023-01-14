@@ -596,8 +596,6 @@ void DeviceManager::update() {
 
 	reportAttributes();
 
-	esp8266_yield();
-
 	// Retry any pending at command.
 
 	if (_commandBuilder) {

@@ -44,9 +44,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\DeviceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\Esp8266.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)src\FrameParsing.h">
       <Filter>Header Files</Filter>
     </ClInclude>

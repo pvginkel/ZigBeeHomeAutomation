@@ -29,7 +29,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\DateTime.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Device.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\DeviceManager.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\Esp8266.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\FrameParsing.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Memory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\PowerSource.h" />

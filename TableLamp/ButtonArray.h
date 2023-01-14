@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Adafruit_MPR121.h>
+
 class ButtonArray {
     class CapBounce : public Debouncer {
         uint16_t* _touched;
@@ -18,7 +20,6 @@ class ButtonArray {
     };
 
     uint8_t _irqPin;
-    int _irqState;
 	Adafruit_MPR121 _cap;
     uint16_t _touched;
     CapBounce _buttons[4] = {
@@ -29,42 +30,26 @@ class ButtonArray {
     };
 
 public:
-    ButtonArray() : _irqPin(0), _irqState(0), _touched(0) {
+    ButtonArray() : _irqPin(0), _touched(0) {
     }
 
     bool begin(uint8_t irqPin, uint8_t i2caddr) {
         _irqPin = irqPin;
 
-        pinMode(irqPin, INPUT_PULLUP);
-        // Enable pull-up resistor.
-        //digitalWrite(irqPin, HIGH);
+        pinMode(irqPin, INPUT);
 
         return _cap.begin(i2caddr);
     }
 
     void update() {
-        /*
+        // IRQ pin goes low if there's information available.
+
         auto state = digitalRead(_irqPin);
-        if (_irqState != state) {
-            DEBUG(F("Button IRQ changed from "), _irqState, F(" to "), state);
-
-            _irqState = state;
-
-            if (!state) {
-                _touched = _cap.touched();
-
-                DEBUG(F("  Touched is now "), String(_touched, BIN));
-            }
+        if (state != LOW) {
+            return;
         }
-        */
-
-        auto touched = _touched;
 
         _touched = _cap.touched();
-
-        if (touched != _touched) {
-            DEBUG(F("  Touched is now "), String(_touched, BIN));
-        }
     }
 
     bool rose(int button) {
