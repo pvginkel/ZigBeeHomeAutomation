@@ -92,6 +92,15 @@ void setup() {
     lightBulb.getBasicCluster().getManufacturerName()->setValue(F("Pieter"));
     lightBulb.getBasicCluster().getModelId()->setValue(F("Table Lamp"));
 
+    // Setup static attributes.
+
+    lightingColorCtrlCluster.getColorTempPhysicalMin()->setValue(MINIMUM_TEMPERATURE);
+    lightingColorCtrlCluster.getColorTempPhysicalMin()->configureBroadcastReporting();
+    lightingColorCtrlCluster.getColorTempPhysicalMax()->setValue(MAXIMUM_TEMPERATURE);
+    lightingColorCtrlCluster.getColorTempPhysicalMax()->configureBroadcastReporting();
+
+    // Setup operational attributes.
+
     onOffCluster.getOnOff()->configureBroadcastReporting();
     levelCtrlCluster.getCurrentLevel()->configureBroadcastReporting();
     lightingColorCtrlCluster.getColorTemperature()->configureBroadcastReporting();
