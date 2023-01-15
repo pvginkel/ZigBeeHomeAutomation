@@ -2,6 +2,7 @@
 #include <ZigBeeHomeAutomation.h>
 
 #include "ButtonArray.h"
+#include "Configuration.h"
 #include "DualTemperatureLight.h"
 
 constexpr uint8_t IO_PB = 2;
@@ -14,20 +15,25 @@ constexpr uint8_t IO_XBEE_RX = 8;
 constexpr uint8_t IO_LAMP_HIGH_COLD = 9;
 constexpr uint8_t IO_LAMP_HIGH_WARM = 10;
 
+constexpr uint16_t MINIMUM_TEMPERATURE = 270;
+constexpr uint16_t MAXIMUM_TEMPERATURE = 650;
+
 SoftwareSerial xbeeSerial(IO_XBEE_RX, IO_XBEE_TX);
 DeviceManager deviceManager;
 BasicDevice lightBulb(1, 1, PowerSource::MainsSinglePhase);
 StatusControl status;
 NaturalDualTemperatureLight light(
-    NaturalTemperatureLight(0.05f, 1.0f, 270, 650),
-    NaturalTemperatureLight(0.05f, 1.0f, 270, 650),
-    0.06f /* breakStart */,
-    0.1f /* breakEnd */
+    NaturalTemperatureLight(0.02f, 1.0f, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE),
+    NaturalTemperatureLight(0.02f, 1.0f, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE),
+    0.04f /* breakStart */,
+    0.07f /* breakEnd */
 );
 ButtonArray<4> buttons;
+Configuration configuration;
 
 static bool isOn();
 static void updateButton();
+static void setupConfiguration();
 
 class : public GenOnOffCluster {
 public:
@@ -77,6 +83,8 @@ void setup() {
         ERROR(F("MPR121 not found, check wiring?"));
     }
 
+    setupConfiguration();
+
     deviceManager.addDevice(lightBulb);
     lightBulb.addCluster(onOffCluster);
     lightBulb.addCluster(levelCtrlCluster);
@@ -94,7 +102,11 @@ void setup() {
     });
     light.onTemperatureChanged([](uint16_t temperature, uintptr_t) {
         lightingColorCtrlCluster.getColorTemperature()->setValue(temperature);
+		configuration.setTemperature(temperature);
     });
+
+    light.setLevel(0);
+	light.setTemperature(configuration.getTemperature());
 
     status.onClick([](uintptr_t) {
         light.setLevel(isOn() ? 0 : 1, 1000);
@@ -117,6 +129,20 @@ void setup() {
 
     light.begin(IO_LAMP_LOW_COLD, IO_LAMP_LOW_WARM, IO_LAMP_HIGH_COLD, IO_LAMP_HIGH_WARM);
     light.setLevel(0);
+}
+
+void setupConfiguration() {
+    configuration.begin();
+
+    if (!configuration.isInitialized()) {
+        configuration.setTemperature(MINIMUM_TEMPERATURE);
+        configuration.setInitialized(true);
+    }
+
+    auto temperature = configuration.getTemperature();
+    if (temperature < MINIMUM_TEMPERATURE || temperature > MAXIMUM_TEMPERATURE) {
+        configuration.setTemperature(MINIMUM_TEMPERATURE);
+    }
 }
 
 void loop() {

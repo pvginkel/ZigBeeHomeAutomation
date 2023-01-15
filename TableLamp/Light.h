@@ -11,12 +11,13 @@ class Light {
 	float _minimumLevel;
 	float _maximumLevel;
 	time_t _transitionStart;
+	time_t _lastUpdate;
 	time_t _transitionTime;
 
 public:
 	Light(float minimumLevel, float maximumLevel)
 		: _pin(-1), _level(0), _actualLevel(0), _startLevel(0), _minimumLevel(minimumLevel),
-		_maximumLevel(maximumLevel), _transitionStart(0), _transitionTime(0) {
+		_maximumLevel(maximumLevel), _transitionStart(0), _lastUpdate(0), _transitionTime(0) {
 	}
 
 	void begin(uint8_t pin) {
@@ -42,12 +43,13 @@ public:
 			return;
 		}
 
-		auto diff = millis() - _transitionStart;
+		auto currentMillis = millis();
+		auto diff = currentMillis - _transitionStart;
 
 		if (diff >= _transitionTime) {
 			resetTransition();
 		}
-		else {
+		else if (currentMillis > _lastUpdate) {
 			// Interpolate the level.
 
 			float progress = float(diff) / float(_transitionTime);
@@ -57,6 +59,7 @@ public:
 				(getScaledLevel() - _startLevel) * progress;
 
 			_actualLevel = level;
+			_lastUpdate = currentMillis;
 			analogWrite(uint8_t(_pin), interpolate(_actualLevel));
 		}
 	}
@@ -93,6 +96,7 @@ public:
 		_transitionTime = 0;
 
 		_actualLevel = scaledLevel;
+		_lastUpdate = millis();
 		analogWrite(_pin, interpolate(_actualLevel));
 	}
 
