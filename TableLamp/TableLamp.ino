@@ -24,7 +24,7 @@ NaturalDualTemperatureLight light(
     0.06f /* breakStart */,
     0.1f /* breakEnd */
 );
-ButtonArray buttons;
+ButtonArray<4> buttons;
 
 static bool isOn();
 static void updateButton();

@@ -2,16 +2,21 @@
 
 #include <Adafruit_MPR121.h>
 
+template <int N>
 class ButtonArray {
     class CapBounce : public Debouncer {
         uint16_t* _touched;
         uint8_t _pin;
 
     public:
-        CapBounce(uint16_t& touched, uint8_t pin, uint16_t interval = 50) : _touched(&touched), _pin(pin) {
-            this->interval(interval);
+        CapBounce() : _touched(nullptr), _pin(0) {
         }
         virtual ~CapBounce() = default;
+
+        void init(uint16_t& touched, uint8_t pin) {
+            _touched = &touched;
+            _pin = pin;
+        }
 
     protected:
         bool readCurrentState() override {
@@ -22,15 +27,15 @@ class ButtonArray {
     uint8_t _irqPin;
 	Adafruit_MPR121 _cap;
     uint16_t _touched;
-    CapBounce _buttons[4] = {
-        CapBounce(_touched, 0),
-        CapBounce(_touched, 1),
-        CapBounce(_touched, 2),
-        CapBounce(_touched, 3)
-    };
+    CapBounce _buttons[N] = {};
 
 public:
-    ButtonArray() : _irqPin(0), _touched(0) {
+    ButtonArray(uint16_t interval = 50) : _irqPin(0), _touched(0) {
+        for (int i = 0; i < N; i++) {
+            _buttons[i].init(_touched, i);
+        }
+
+        this->interval(interval);
     }
 
     void interval(uint16_t interval_millis) {
