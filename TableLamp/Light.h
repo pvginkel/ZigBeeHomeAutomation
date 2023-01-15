@@ -15,9 +15,18 @@ class Light {
 	time_t _transitionTime;
 
 public:
-	Light(float minimumLevel, float maximumLevel)
-		: _pin(-1), _level(0), _actualLevel(0), _startLevel(0), _minimumLevel(minimumLevel),
-		_maximumLevel(maximumLevel), _transitionStart(0), _lastUpdate(0), _transitionTime(0) {
+	Light()
+		: _pin(-1), _level(0), _actualLevel(0), _startLevel(0), _minimumLevel(0),
+		_maximumLevel(1), _transitionStart(0), _lastUpdate(0), _transitionTime(0) {
+	}
+
+	void reconfigure(float minimumLevel, float maximumLevel, time_t time = 0) {
+		auto level = getLevel();
+
+		_minimumLevel = minimumLevel;
+		_maximumLevel = maximumLevel;
+
+		setLevel(level, time);
 	}
 
 	void begin(uint8_t pin) {

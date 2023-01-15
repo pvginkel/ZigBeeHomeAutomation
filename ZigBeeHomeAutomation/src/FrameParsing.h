@@ -261,7 +261,13 @@ class WriteAttributeResponseFrame {
 public:
 	static void writeAttributeResponse(Memory& buffer, Status status, uint16_t& attributeId) {
 		buffer.writeUInt8((uint8_t)status);
-		buffer.writeUInt16Le(attributeId);
+
+		// The spec states that the attribute ID has to be included, but
+		// at least my IKEA lights don't, and zigbee2mqtt doesn't expect
+		// it. It's not able to parse the response if I do include the
+		// attribute ID. So, we don't include it and this works fine.
+
+		//buffer.writeUInt16Le(attributeId);
 	}
 };
 

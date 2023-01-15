@@ -22,9 +22,14 @@ class TemperatureLight {
 	uint16_t _temperature;
 
 public:
-	TemperatureLight(float minimumLevel, float maximumLevel, uint16_t minimumTemperature, uint16_t maximumTemperature)
-		: _cold(minimumLevel, maximumLevel), _warm(minimumLevel, maximumLevel), _minimumTemperature(minimumTemperature),
-		_maximumTemperature(maximumTemperature), _level(0.0f), _temperature(minimumTemperature) {
+	TemperatureLight(uint16_t minimumTemperature, uint16_t maximumTemperature)
+		: _minimumTemperature(minimumTemperature), _maximumTemperature(maximumTemperature),
+		_level(0.0f), _temperature(minimumTemperature) {
+	}
+
+	void reconfigure(float minimumLevel, float maximumLevel, time_t time = 0) {
+		_cold.reconfigure(minimumLevel, maximumLevel, time);
+		_warm.reconfigure(minimumLevel, maximumLevel, time);
 	}
 
 	void begin(uint8_t coldPin, uint8_t warmPin) {

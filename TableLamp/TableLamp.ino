@@ -18,22 +18,51 @@ constexpr uint8_t IO_LAMP_HIGH_WARM = 10;
 constexpr uint16_t MINIMUM_TEMPERATURE = 270;
 constexpr uint16_t MAXIMUM_TEMPERATURE = 650;
 
+constexpr float LIGHT_LOW_MINIMUM_LEVEL_DEFAULT = 0.02f;
+constexpr float LIGHT_LOW_MAXIMUM_LEVEL_DEFAULT = 1.0f;
+constexpr float LIGHT_HIGH_MINIMUM_LEVEL_DEFAULT = 0.02f;
+constexpr float LIGHT_HIGH_MAXIMUM_LEVEL_DEFAULT = 1.0f;
+constexpr float LIGHT_BREAK_START_DEFAULT = 0.04f;
+constexpr float LIGHT_BREAK_END_DEFAULT = 0.07f;
+
 SoftwareSerial xbeeSerial(IO_XBEE_RX, IO_XBEE_TX);
 DeviceManager deviceManager;
 BasicDevice lightBulb(1, 1, PowerSource::MainsSinglePhase);
 StatusControl status;
-NaturalDualTemperatureLight light(
-    NaturalTemperatureLight(0.02f, 1.0f, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE),
-    NaturalTemperatureLight(0.02f, 1.0f, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE),
-    0.04f /* breakStart */,
-    0.07f /* breakEnd */
-);
+NaturalTemperatureLight lightLow(MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
+NaturalTemperatureLight lightHigh(MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
+NaturalDualTemperatureLight light(lightLow, lightHigh);
 ButtonArray<4> buttons;
 Configuration configuration;
 
 static bool isOn();
 static void updateButton();
 static void setupConfiguration();
+static void reconfigureLight(time_t time = 0);
+static void saveLightConfiguration();
+
+// Custom attributes to configure the lamp.
+
+class LightConfigurationAttributeUInt8 : public AttributeUInt8 {
+public:
+	LightConfigurationAttributeUInt8(uint16_t attributeId, DataType dataType)
+		: AttributeUInt8(attributeId, dataType) {
+	}
+
+	void readValue(Memory& memory) override {
+        AttributeUInt8::readValue(memory);
+
+        reconfigureLight(1000);
+        saveLightConfiguration();
+    }
+};
+
+LightConfigurationAttributeUInt8 lightLowMinimumLevel(0x0201, DataType::UInt8);
+LightConfigurationAttributeUInt8 lightLowMaximumLevel(0x0202, DataType::UInt8);
+LightConfigurationAttributeUInt8 lightHighMinimumLevel(0x0203, DataType::UInt8);
+LightConfigurationAttributeUInt8 lightHighMaximumLevel(0x0204, DataType::UInt8);
+LightConfigurationAttributeUInt8 lightBreakStart(0x0205, DataType::UInt8);
+LightConfigurationAttributeUInt8 lightBreakEnd(0x0206, DataType::UInt8);
 
 class : public GenOnOffCluster {
 public:
@@ -92,6 +121,27 @@ void setup() {
     lightBulb.getBasicCluster().getManufacturerName()->setValue(F("Pieter"));
     lightBulb.getBasicCluster().getModelId()->setValue(F("Table Lamp"));
 
+    // Add custom attributes.
+
+    levelCtrlCluster.addAttribute(&lightLowMinimumLevel);
+    lightLowMinimumLevel.configureBroadcastReporting();
+    lightLowMinimumLevel.setValue(configuration.getLightLowMinimumLevel());
+    levelCtrlCluster.addAttribute(&lightLowMaximumLevel);
+    lightLowMaximumLevel.configureBroadcastReporting();
+    lightLowMaximumLevel.setValue(configuration.getLightLowMaximumLevel());
+    levelCtrlCluster.addAttribute(&lightHighMinimumLevel);
+    lightHighMinimumLevel.configureBroadcastReporting();
+    lightHighMinimumLevel.setValue(configuration.getLightHighMinimumLevel());
+    levelCtrlCluster.addAttribute(&lightHighMaximumLevel);
+    lightHighMaximumLevel.configureBroadcastReporting();
+    lightHighMaximumLevel.setValue(configuration.getLightHighMaximumLevel());
+    levelCtrlCluster.addAttribute(&lightBreakStart);
+    lightBreakStart.configureBroadcastReporting();
+    lightBreakStart.setValue(configuration.getLightBreakStart());
+    levelCtrlCluster.addAttribute(&lightBreakEnd);
+    lightBreakEnd.configureBroadcastReporting();
+    lightBreakEnd.setValue(configuration.getLightBreakEnd());
+
     // Setup static attributes.
 
     lightingColorCtrlCluster.getColorTempPhysicalMin()->setValue(MINIMUM_TEMPERATURE);
@@ -136,6 +186,8 @@ void setup() {
 
     deviceManager.begin(xbeeSerial);
 
+    reconfigureLight();
+
     light.begin(IO_LAMP_LOW_COLD, IO_LAMP_LOW_WARM, IO_LAMP_HIGH_COLD, IO_LAMP_HIGH_WARM);
     light.setLevel(0);
 }
@@ -145,6 +197,12 @@ void setupConfiguration() {
 
     if (!configuration.isInitialized()) {
         configuration.setTemperature(MINIMUM_TEMPERATURE);
+        configuration.setLightLowMinimumLevel(uint8_t(LIGHT_LOW_MINIMUM_LEVEL_DEFAULT * 255));
+        configuration.setLightLowMaximumLevel(uint8_t(LIGHT_LOW_MAXIMUM_LEVEL_DEFAULT * 255));
+        configuration.setLightHighMinimumLevel(uint8_t(LIGHT_HIGH_MINIMUM_LEVEL_DEFAULT * 255));
+        configuration.setLightHighMaximumLevel(uint8_t(LIGHT_HIGH_MAXIMUM_LEVEL_DEFAULT * 255));
+        configuration.setLightBreakStart(uint8_t(LIGHT_BREAK_START_DEFAULT * 255));
+        configuration.setLightBreakEnd(uint8_t(LIGHT_BREAK_END_DEFAULT * 255));
         configuration.setInitialized(true);
     }
 
@@ -152,6 +210,41 @@ void setupConfiguration() {
     if (temperature < MINIMUM_TEMPERATURE || temperature > MAXIMUM_TEMPERATURE) {
         configuration.setTemperature(MINIMUM_TEMPERATURE);
     }
+}
+
+void reconfigureLight(time_t time) {
+    DEBUG(F("Reconfiguring light"));
+    DEBUG(F("  Low minimum level "), lightLowMinimumLevel.getValue());
+    DEBUG(F("  Low maximum level "), lightLowMaximumLevel.getValue());
+    DEBUG(F("  High minimum level "), lightHighMinimumLevel.getValue());
+    DEBUG(F("  High maximum level "), lightHighMaximumLevel.getValue());
+    DEBUG(F("  Break start level "), lightBreakStart.getValue());
+    DEBUG(F("  Break end level "), lightBreakEnd.getValue());
+
+    lightLow.reconfigure(
+        float(lightLowMinimumLevel.getValue()) / 255.0f,
+        float(lightLowMaximumLevel.getValue()) / 255.0f,
+        time
+    );
+    lightHigh.reconfigure(
+        float(lightHighMinimumLevel.getValue()) / 255.0f,
+        float(lightHighMaximumLevel.getValue()) / 255.0f,
+        time
+    );
+    light.reconfigure(
+        float(lightBreakStart.getValue()) / 255.0f,
+        float(lightBreakEnd.getValue()) / 255.0f,
+        time
+    );
+}
+
+void saveLightConfiguration() {
+    configuration.setLightLowMinimumLevel(lightLowMinimumLevel.getValue());
+    configuration.setLightLowMaximumLevel(lightLowMaximumLevel.getValue());
+    configuration.setLightHighMinimumLevel(lightHighMinimumLevel.getValue());
+    configuration.setLightHighMaximumLevel(lightHighMaximumLevel.getValue());
+    configuration.setLightBreakStart(lightBreakStart.getValue());
+    configuration.setLightBreakEnd(lightBreakEnd.getValue());
 }
 
 void loop() {
