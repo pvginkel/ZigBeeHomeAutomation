@@ -6,14 +6,14 @@
 #include "DualTemperatureLight.h"
 
 constexpr uint8_t IO_PB = 2;
-constexpr uint8_t IO_STATUS_LED = 3;
+constexpr uint8_t IO_STATUS_LED = 10;
 constexpr uint8_t IO_TOUCH_IRQ = 4;
 constexpr uint8_t IO_LAMP_LOW_COLD = 5;
-constexpr uint8_t IO_LAMP_LOW_WARM = 6;
-constexpr uint8_t IO_XBEE_TX = 7;
-constexpr uint8_t IO_XBEE_RX = 8;
+constexpr uint8_t IO_LAMP_LOW_WARM = 3;
+constexpr uint8_t IO_XBEE_TX = 20;
+constexpr uint8_t IO_XBEE_RX = 21;
 constexpr uint8_t IO_LAMP_HIGH_COLD = 9;
-constexpr uint8_t IO_LAMP_HIGH_WARM = 10;
+constexpr uint8_t IO_LAMP_HIGH_WARM = 6;
 
 constexpr uint16_t MINIMUM_TEMPERATURE = 270;
 constexpr uint16_t MAXIMUM_TEMPERATURE = 650;
