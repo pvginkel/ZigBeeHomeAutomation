@@ -15,8 +15,8 @@ constexpr uint8_t IO_XBEE_RX = 21;
 constexpr uint8_t IO_LAMP_HIGH_COLD = 9;
 constexpr uint8_t IO_LAMP_HIGH_WARM = 6;
 
-constexpr uint16_t MINIMUM_TEMPERATURE = 270;
-constexpr uint16_t MAXIMUM_TEMPERATURE = 650;
+constexpr uint16_t MINIMUM_TEMPERATURE = 250;
+constexpr uint16_t MAXIMUM_TEMPERATURE = 454;
 
 constexpr float LIGHT_LOW_MINIMUM_LEVEL_DEFAULT = 0.02f;
 constexpr float LIGHT_LOW_MAXIMUM_LEVEL_DEFAULT = 1.0f;
