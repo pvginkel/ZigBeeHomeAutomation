@@ -15,8 +15,8 @@ constexpr uint8_t IO_XBEE_RX = 21;
 constexpr uint8_t IO_LAMP_HIGH_COLD = 9;
 constexpr uint8_t IO_LAMP_HIGH_WARM = 6;
 
-constexpr uint16_t MINIMUM_TEMPERATURE = 250;
-constexpr uint16_t MAXIMUM_TEMPERATURE = 454;
+constexpr uint16_t MINIMUM_TEMPERATURE = 153;
+constexpr uint16_t MAXIMUM_TEMPERATURE = 370;
 
 constexpr float LIGHT_LOW_MINIMUM_LEVEL_DEFAULT = 0.02f;
 constexpr float LIGHT_LOW_MAXIMUM_LEVEL_DEFAULT = 1.0f;
@@ -97,7 +97,7 @@ public:
 class : public LightingColorCtrlCluster {
 public:
     Status onMoveToColorTempCommand(uint16_t colortemp, uint16_t transtime) override {
-        INFO(F("Color change to "), (colortemp * 10), F(" K transition time "), (transtime * 100), F(" ms"));
+        INFO(F("Color change to "), mired2kelvin(colortemp), F(" K transition time "), (transtime * 100), F(" ms"));
         light.setTemperature(colortemp, transtime * 100);
         return Status::Success;
     }

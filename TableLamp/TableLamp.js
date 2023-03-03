@@ -148,8 +148,8 @@ const definition = {
   model: "Table Lamp",
   vendor: "Pieter",
   description: "Dimmable table lamp with light temperature",
-  extend: extendLocal.light_onoff_brightness_colortemp({ colorTempRange: [250, 454] }),
-  // The documentation of the light strips says this should be 270, 650 instead
+  extend: extendLocal.light_onoff_brightness_colortemp({ colorTempRange: [153, 370] }),
+  // The above numbers are 2700K to 6500K (in mireds).
 };
 
 module.exports = definition;
