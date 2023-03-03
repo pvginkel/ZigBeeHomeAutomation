@@ -16,6 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TableLamp.ino" />
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.TableLamp.vsarduino.h">

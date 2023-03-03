@@ -4,32 +4,28 @@
 
 template <class InterpolateAlgorithm>
 class TemperatureLight {
-	struct RGB {
-		float r;
-		float g;
-		float b;
-
-		RGB(float r, float g, float b) : r(r), g(g), b(b) { }
-	};
-
 	CallbackArgs<float> _levelChanged;
 	CallbackArgs<uint16_t> _temperatureChanged;
 	LinearLight _cold;
 	LinearLight _warm;
 	uint16_t _minimumTemperature;
 	uint16_t _maximumTemperature;
+	float _minimumLevel;
+	float _maximumLevel;
 	float _level;
 	uint16_t _temperature;
 
 public:
 	TemperatureLight(uint16_t minimumTemperature, uint16_t maximumTemperature)
 		: _minimumTemperature(minimumTemperature), _maximumTemperature(maximumTemperature),
-		_level(0.0f), _temperature(minimumTemperature) {
+		_minimumLevel(0.0f), _maximumLevel(1.0f), _level(0.0f), _temperature(minimumTemperature) {
 	}
 
 	void reconfigure(float minimumLevel, float maximumLevel, time_t time = 0) {
-		_cold.reconfigure(minimumLevel, maximumLevel, time);
-		_warm.reconfigure(minimumLevel, maximumLevel, time);
+		_minimumLevel = minimumLevel;
+		_maximumLevel = maximumLevel;
+
+		updateLevelAndTemperature(time);
 	}
 
 	void begin(uint8_t coldPin, uint8_t warmPin) {
@@ -67,6 +63,8 @@ public:
 	}
 
 	void setTemperature(uint16_t temperature, time_t time = 0) {
+		DEBUG("Setting temperature to ", temperature, " minimum ", _minimumTemperature, " maximum ", _maximumTemperature);
+
 		if (temperature < _minimumTemperature) {
 			temperature = _minimumTemperature;
 		}
@@ -101,49 +99,26 @@ private:
 		auto warmLevel = color.g;
 		auto coldLevel = color.r;
 
-		_cold.setLevel(coldLevel, time);
-		_warm.setLevel(warmLevel, time);
+		auto scaledWarmLevel = scaleLevel(warmLevel, coldLevel + warmLevel);
+		auto scaledColdLevel = scaleLevel(coldLevel, coldLevel + warmLevel);
+
+		DEBUG("Warm level ", warmLevel * 100, " scaled ", scaledWarmLevel, " cold level ", coldLevel * 100, " scaled ", scaledColdLevel);
+
+		_cold.setLevel(scaledColdLevel, time);
+		_warm.setLevel(scaledWarmLevel, time);
 	}
 
-	// Taken from https://blog.saikoled.com/post/43693602826/why-every-led-light-should-be-using-hsi.
-	//
-	// Function example takes H, S, I, and a pointer to the 
-	// returned RGB colorspace converted vector. It should
-	// be initialized with:
-	//
-	// int rgb[3];
-	//
-	// in the calling function. After calling hsi2rgb
-	// the vector rgb will contain red, green, and blue
-	// calculated values.
+	float scaleLevel(float level, float totalLevel) {
+		// Apply the minimum and maximum levels to the specific level. We do this
+		// by scaling the specific level as a percentage of how much that level
+		// influences the total light. So, if cold is 25% and warm 75%, 25% of
+		// the minimum level goes to cold.
 
-	static RGB hsi2rgb(float H, float S, float I) {
-		float r, g, b;
-		H = fmodf(H, 360); // cycle H around to 0-360 degrees
-		H = 3.14159f * H / 180.0f; // Convert to radians.
-		S = S > 0 ? (S < 1 ? S : 1) : 0; // clamp S and I to interval [0,1]
-		I = I > 0 ? (I < 1 ? I : 1) : 0;
+		auto fraction = level / totalLevel;
 
-		// Math! Thanks in part to Kyle Miller.
-		if (H < 2.09439f) {
-			r = I / 3 * (1 + S * cosf(H) / cosf(1.047196667f - H));
-			g = I / 3 * (1 + S * (1 - cosf(H) / cosf(1.047196667f - H)));
-			b = I / 3 * (1 - S);
-		}
-		else if (H < 4.188787f) {
-			H = H - 2.09439f;
-			g = I / 3 * (1 + S * cosf(H) / cos(1.047196667f - H));
-			b = I / 3 * (1 + S * (1 - cosf(H) / cosf(1.047196667f - H)));
-			r = I / 3 * (1 - S);
-		}
-		else {
-			H = H - 4.188787f;
-			b = I / 3 * (1 + S * cosf(H) / cosf(1.047196667f - H));
-			r = I / 3 * (1 + S * (1 - cosf(H) / cosf(1.047196667f - H)));
-			g = I / 3 * (1 - S);
-		}
+		float minimumLevel = fraction * _minimumLevel;
 
-		return { r, g, b };
+		return scaleLightLevel(level, minimumLevel, _maximumLevel);
 	}
 };
 

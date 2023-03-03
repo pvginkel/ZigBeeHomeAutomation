@@ -1,5 +1,30 @@
 #pragma once
 
+// Taken from https://blog.saikoled.com/post/43693602826/why-every-led-light-should-be-using-hsi.
+//
+// Function example takes H, S, I, and a pointer to the 
+// returned RGB colorspace converted vector. It should
+// be initialized with:
+//
+// int rgb[3];
+//
+// in the calling function. After calling hsi2rgb
+// the vector rgb will contain red, green, and blue
+// calculated values.
+
+struct RGB {
+	float r;
+	float g;
+	float b;
+};
+
+RGB hsi2rgb(float H, float S, float I);
+
+uint16_t mired2kelvin(uint16_t mired);
+uint16_t kelvin2mired(uint16_t kelvin);
+
+float scaleLightLevel(float level, float minimumLevel, float maximumLevel);
+
 template <class InterpolateAlgorithm>
 class Light {
 	CallbackArgs<float> _levelChanged;
@@ -69,7 +94,8 @@ public:
 
 			_actualLevel = level;
 			_lastUpdate = currentMillis;
-			analogWrite(uint8_t(_pin), interpolate(_actualLevel));
+
+			updatePinValue();
 		}
 	}
 
@@ -106,18 +132,21 @@ public:
 
 		_actualLevel = scaledLevel;
 		_lastUpdate = millis();
-		analogWrite(_pin, interpolate(_actualLevel));
+
+		updatePinValue();
 	}
 
 private:
-	float getScaledLevel() {
-		if (_level > 0 && (_minimumLevel != 0.0f || _maximumLevel != 1.0f)) {
-			return
-				_minimumLevel +
-				_level * (_maximumLevel - _minimumLevel);
-		}
+	void updatePinValue() {
+		auto realValue = interpolate(_actualLevel);
 
-		return _level;
+		DEBUG("Setting light pin to ", realValue, " scaled level ", _actualLevel);
+
+		analogWrite(_pin, realValue);
+	}
+
+	float getScaledLevel() {
+		return scaleLightLevel(_level, _minimumLevel, _maximumLevel);
 	}
 
 	static uint8_t interpolate(float level) {
