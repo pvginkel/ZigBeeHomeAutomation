@@ -15,6 +15,11 @@ constexpr uint8_t IO_XBEE_RX = 21;
 constexpr uint8_t IO_LAMP_HIGH_COLD = 9;
 constexpr uint8_t IO_LAMP_HIGH_WARM = 6;
 
+constexpr int BUTTON_ON = 3;
+constexpr int BUTTON_OFF = 2;
+constexpr int BUTTON_MOVE_UP = 1;
+constexpr int BUTTON_MOVE_DOWN = 0;
+
 constexpr uint16_t MINIMUM_TEMPERATURE = 153;
 constexpr uint16_t MAXIMUM_TEMPERATURE = 370;
 
@@ -253,20 +258,20 @@ void loop() {
     deviceManager.update();
     buttons.update();
 
-    if (buttons.rose(0)) {
-        DEBUG(F("Button 0 pressed, sending on command"));
+    if (buttons.rose(BUTTON_ON)) {
+        DEBUG(F("Button ", BUTTON_ON, " pressed, sending on command"));
         onOffCluster.sendOnCommand(deviceManager, 1);
     }
-    if (buttons.rose(1)) {
-        DEBUG(F("Button 1 pressed, sending off command"));
+    if (buttons.rose(BUTTON_OFF)) {
+        DEBUG(F("Button ", BUTTON_OFF, " pressed, sending off command"));
         onOffCluster.sendOffCommand(deviceManager, 1);
     }
-    if (buttons.rose(2)) {
-        DEBUG(F("Button 2 pressed, sending move up command"));
+    if (buttons.rose(BUTTON_MOVE_UP)) {
+        DEBUG(F("Button ", BUTTON_MOVE_UP, " pressed, sending move up command"));
         levelCtrlCluster.sendMoveCommand(deviceManager, 1, 0 /* up */, 0xff /* default rate */);
     }
-    if (buttons.rose(3)) {
-        DEBUG(F("Button 3 pressed, sending move down command"));
+    if (buttons.rose(BUTTON_MOVE_DOWN)) {
+        DEBUG(F("Button ", BUTTON_MOVE_DOWN, " pressed, sending move down command"));
         levelCtrlCluster.sendMoveCommand(deviceManager, 1, 1 /* down */, 0xff /* default rate */);
     }
 }
