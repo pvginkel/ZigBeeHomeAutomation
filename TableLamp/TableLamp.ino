@@ -259,19 +259,19 @@ void loop() {
     buttons.update();
 
     if (buttons.rose(BUTTON_ON)) {
-        DEBUG(F("Button ", BUTTON_ON, " pressed, sending on command"));
+        DEBUG(F("Button "), BUTTON_ON, F(" pressed, sending on command"));
         onOffCluster.sendOnCommand(deviceManager, 1);
     }
     if (buttons.rose(BUTTON_OFF)) {
-        DEBUG(F("Button ", BUTTON_OFF, " pressed, sending off command"));
+        DEBUG(F("Button "), BUTTON_OFF, F(" pressed, sending off command"));
         onOffCluster.sendOffCommand(deviceManager, 1);
     }
     if (buttons.rose(BUTTON_MOVE_UP)) {
-        DEBUG(F("Button ", BUTTON_MOVE_UP, " pressed, sending move up command"));
+        DEBUG(F("Button "), BUTTON_MOVE_UP, F(" pressed, sending move up command"));
         levelCtrlCluster.sendMoveCommand(deviceManager, 1, 0 /* up */, 0xff /* default rate */);
     }
     if (buttons.rose(BUTTON_MOVE_DOWN)) {
-        DEBUG(F("Button ", BUTTON_MOVE_DOWN, " pressed, sending move down command"));
+        DEBUG(F("Button "), BUTTON_MOVE_DOWN, F(" pressed, sending move down command"));
         levelCtrlCluster.sendMoveCommand(deviceManager, 1, 1 /* down */, 0xff /* default rate */);
     }
 }

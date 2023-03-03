@@ -140,7 +140,7 @@ private:
 	void updatePinValue() {
 		auto realValue = interpolate(_actualLevel);
 
-		DEBUG("Setting light pin to ", realValue, " scaled level ", _actualLevel);
+		DEBUG(F("Setting light pin to "), realValue, F(" scaled level "), _actualLevel);
 
 		analogWrite(_pin, realValue);
 	}

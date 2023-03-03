@@ -63,7 +63,7 @@ public:
 	}
 
 	void setTemperature(uint16_t temperature, time_t time = 0) {
-		DEBUG("Setting temperature to ", temperature, " minimum ", _minimumTemperature, " maximum ", _maximumTemperature);
+		DEBUG(F("Setting temperature to "), temperature, F(" minimum "), _minimumTemperature, F(" maximum "), _maximumTemperature);
 
 		if (temperature < _minimumTemperature) {
 			temperature = _minimumTemperature;
@@ -102,7 +102,7 @@ private:
 		auto scaledWarmLevel = scaleLevel(warmLevel, coldLevel + warmLevel);
 		auto scaledColdLevel = scaleLevel(coldLevel, coldLevel + warmLevel);
 
-		DEBUG("Warm level ", warmLevel * 100, " scaled ", scaledWarmLevel, " cold level ", coldLevel * 100, " scaled ", scaledColdLevel);
+		DEBUG(F("Warm level "), warmLevel * 100, F(" scaled "), scaledWarmLevel, F(" cold level "), coldLevel * 100, F(" scaled "), scaledColdLevel);
 
 		_cold.setLevel(scaledColdLevel, time);
 		_warm.setLevel(scaledWarmLevel, time);
