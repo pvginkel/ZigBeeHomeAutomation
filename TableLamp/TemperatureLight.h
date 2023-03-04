@@ -94,31 +94,17 @@ private:
 
 		auto mix = offset * 120.0f;
 
-		auto color = hsi2rgb(mix, 100, InterpolateAlgorithm::interpolate(_level));
+		auto interpolatedLevel = InterpolateAlgorithm::interpolate(_level);
+		auto scaledLevel = scaleLightLevel(interpolatedLevel, _minimumLevel, _maximumLevel);
+		auto color = hsi2rgb(mix, 100, scaledLevel);
 
 		auto warmLevel = color.g;
 		auto coldLevel = color.r;
 
-		auto scaledWarmLevel = scaleLevel(warmLevel, coldLevel + warmLevel);
-		auto scaledColdLevel = scaleLevel(coldLevel, coldLevel + warmLevel);
+		DEBUG(F("Level "), _level, F(", interpolated "), interpolatedLevel, F(", scaled "), scaledLevel, F(", warm level "), warmLevel, F(" cold level "), coldLevel);
 
-		DEBUG(F("Warm level "), warmLevel * 100, F(" scaled "), scaledWarmLevel, F(" cold level "), coldLevel * 100, F(" scaled "), scaledColdLevel);
-
-		_cold.setLevel(scaledColdLevel, time);
-		_warm.setLevel(scaledWarmLevel, time);
-	}
-
-	float scaleLevel(float level, float totalLevel) {
-		// Apply the minimum and maximum levels to the specific level. We do this
-		// by scaling the specific level as a percentage of how much that level
-		// influences the total light. So, if cold is 25% and warm 75%, 25% of
-		// the minimum level goes to cold.
-
-		auto fraction = level / totalLevel;
-
-		float minimumLevel = fraction * _minimumLevel;
-
-		return scaleLightLevel(level, minimumLevel, _maximumLevel);
+		_cold.setLevel(coldLevel, time);
+		_warm.setLevel(warmLevel, time);
 	}
 };
 
