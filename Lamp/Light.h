@@ -1,21 +1,57 @@
 #pragma once
 
+// Taken from https://blog.saikoled.com/post/43693602826/why-every-led-light-should-be-using-hsi.
+//
+// Function example takes H, S, I, and a pointer to the 
+// returned RGB colorspace converted vector. It should
+// be initialized with:
+//
+// int rgb[3];
+//
+// in the calling function. After calling hsi2rgb
+// the vector rgb will contain red, green, and blue
+// calculated values.
+
+struct RGB {
+	float r;
+	float g;
+	float b;
+};
+
+RGB hsi2rgb(float H, float S, float I);
+
+uint16_t mired2kelvin(uint16_t mired);
+uint16_t kelvin2mired(uint16_t kelvin);
+
+float scaleLightLevel(float level, float minimumLevel, float maximumLevel);
+
+template <class InterpolateAlgorithm>
 class Light {
-	CallbackArgs<int> _levelChanged;
+	CallbackArgs<float> _levelChanged;
 
 	int _pin;
-	int _level;
-	int _actualLevel;
-	int _startLevel;
-	int _minimumLevel;
-	int _maximumLevel;
+	float _level;
+	float _actualLevel;
+	float _startLevel;
+	float _minimumLevel;
+	float _maximumLevel;
 	time_t _transitionStart;
+	time_t _lastUpdate;
 	time_t _transitionTime;
 
 public:
-	Light(int minimumLevel = 0, int maximumLevel = 255)
-		: _pin(-1), _level(0), _actualLevel(0), _startLevel(0), _minimumLevel(minimumLevel),
-		_maximumLevel(maximumLevel), _transitionStart(0), _transitionTime(0) {
+	Light()
+		: _pin(-1), _level(0), _actualLevel(0), _startLevel(0), _minimumLevel(0),
+		_maximumLevel(1), _transitionStart(0), _lastUpdate(0), _transitionTime(0) {
+	}
+
+	void reconfigure(float minimumLevel, float maximumLevel, time_t time = 0) {
+		auto level = getLevel();
+
+		_minimumLevel = minimumLevel;
+		_maximumLevel = maximumLevel;
+
+		setLevel(level, time);
 	}
 
 	void begin(uint8_t pin) {
@@ -27,12 +63,12 @@ public:
 	}
 
 	bool isOn() {
-		return !!_level;
+		return _level > 0;
 	}
-	int getLevel() {
+	float getLevel() {
 		return _level;
 	}
-	void onLevelChanged(CallbackArgs<int>::Func func, uintptr_t data = 0) {
+	void onLevelChanged(CallbackArgs<float>::Func func, uintptr_t data = 0) {
 		_levelChanged.set(func, data);
 	}
 
@@ -41,28 +77,36 @@ public:
 			return;
 		}
 
-		auto diff = millis() - _transitionStart;
+		auto currentMillis = millis();
+		auto diff = currentMillis - _transitionStart;
 
 		if (diff >= _transitionTime) {
 			resetTransition();
 		}
-		else {
+		else if (currentMillis > _lastUpdate) {
 			// Interpolate the level.
 
 			float progress = float(diff) / float(_transitionTime);
 
-			int level =
+			float level =
 				_startLevel +
-				int(float(_level - _startLevel) * progress);
+				(getScaledLevel() - _startLevel) * progress;
 
-			if (level != _actualLevel) {
-				_actualLevel = level;
-				analogWrite(_pin, interpolate(_actualLevel));
-			}
+			_actualLevel = level;
+			_lastUpdate = currentMillis;
+
+			updatePinValue();
 		}
 	}
 
-	void setLevel(int level, time_t time = 0) {
+	void setLevel(float level, time_t time = 0) {
+		if (level < 0.0f) {
+			level = 0.0f;
+		}
+		if (level > 1.0f) {
+			level = 1.0f;
+		}
+
 		_level = level;
 
 		if (time == 0) {
@@ -80,28 +124,77 @@ public:
 	}
 
 	void resetTransition() {
-		_startLevel = _level;
+		auto scaledLevel = getScaledLevel();
+
+		_startLevel = scaledLevel;
 		_transitionStart = 0;
 		_transitionTime = 0;
 
-		if (_actualLevel != _level) {
-			_actualLevel = _level;
-			analogWrite(_pin, interpolate(_actualLevel));
-		}
+		_actualLevel = scaledLevel;
+		_lastUpdate = millis();
+
+		updatePinValue();
 	}
 
 private:
-	int interpolate(int level) {
-		if (level == 0) {
+	void updatePinValue() {
+		auto realValue = interpolate(_actualLevel);
+
+		DEBUG(F("Setting light pin to "), realValue, F(" scaled level "), _actualLevel);
+
+		analogWrite(_pin, realValue);
+	}
+
+	float getScaledLevel() {
+		return scaleLightLevel(_level, _minimumLevel, _maximumLevel);
+	}
+
+	static uint8_t interpolate(float level) {
+		const auto result = int(InterpolateAlgorithm::interpolate(level) * 256.0f);
+			
+		if (result < 0) {
 			return 0;
 		}
-
-		if (_minimumLevel == 0 && _maximumLevel == 255) {
-			return level;
+		if (result > 255) {
+			return 255;
 		}
-
-		float progress = float(level) / 255;
-		int range = _maximumLevel - _minimumLevel;
-		return _minimumLevel + int(range * progress);
+		return uint8_t(result);
 	}
 };
+
+
+class LinearInterpolateAlgorithm {
+public:
+	static float interpolate(float level) {
+		return level;
+	}
+};
+
+class CIE1931InterpolateAlgorithm {
+public:
+	static float interpolate(float level) {
+		/*
+		   For CIE, the following formulas have  Y as luminance, and
+		   Yn is the luminance of a white reference (basically, max luminance).
+		   This assumes a perceived lightness value L* between 0 and 100,
+		   and  a luminance value Y of 0-1.0.
+		   if L* > 8:  Y = ((L* + 16) / 116)^3 * Yn
+		   if L* <= 8: Y = L* *903.3 * Yn
+		 */
+
+		float l = level * 100.0f;
+		float Y;
+		if (l <= 8.0f) {
+			Y = (l / 903.3f);
+		}
+		else {
+			float foo = (l + 16.0f) / 116.0f;
+			Y = powf(foo, 3);
+		}
+
+		return Y;
+	}
+};
+
+typedef Light<LinearInterpolateAlgorithm> LinearLight;
+typedef Light<CIE1931InterpolateAlgorithm> NaturalLight;
