@@ -1,5 +1,7 @@
 #include "Display.h"
 
+#define TEETH_ANIMATION 1
+
 #define FONT_HEIGHT 10
 #define FONT_WIDTH 6
 
@@ -10,6 +12,17 @@
 #define FONT _FONT(FONT_WIDTH, FONT_HEIGHT)
 
 void Display::update() {
+
+#if TEETH_ANIMATION
+
+    auto currentMillis = millis();
+    if (currentMillis - _lastUpdate > 300) {
+        _dirty = true;
+        _lastUpdate = currentMillis;
+    }
+
+#endif
+
 	if (_screen && _dirty) {
 		paint();
 		_dirty = false;
@@ -18,6 +31,8 @@ void Display::update() {
 
 void Display::paint() {
     _screen->clearBuffer();
+
+#if !TEETH_ANIMATION
 
     if (_connected == ConnectionStatus::Connected) {
         // This font pulls in 10 Kb, but all we need is the "network bars" icon.
@@ -44,6 +59,25 @@ void Display::paint() {
         _screen->setCursor(0, _height - 2);
         _screen->print(_status);
     }
+
+#else
+
+    constexpr int teeth = 8;
+    int toothHeight = _height / 4;
+    int toothHeightVariance = (int)(toothHeight * 0.6);
+    int toothWidth = _width / teeth;
+
+    for (int i = 0; i < teeth; i++) {
+        int thisHeight = toothHeight - (rand() % toothHeightVariance);
+        _screen->drawFrame(i * toothWidth, 0, toothWidth, thisHeight - 1);
+    }
+
+    for (int i = 0; i < teeth; i++) {
+        int thisHeight = toothHeight - (rand() % toothHeightVariance);
+        _screen->drawFrame(i * toothWidth, _height - thisHeight, toothWidth, thisHeight - 1);
+    }
+
+#endif
 
     _screen->sendBuffer();
 }

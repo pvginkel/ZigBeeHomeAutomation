@@ -11,6 +11,7 @@ class Display {
 	String _status;
 	int _width{};
 	int _height{};
+	time_t _lastUpdate{};
 
 public:
 	void begin(U8G2& screen, int width, int height) {
