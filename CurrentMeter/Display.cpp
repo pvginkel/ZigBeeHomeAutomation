@@ -1,6 +1,6 @@
 #include "Display.h"
 
-#define TEETH_ANIMATION 1
+#define TEETH_ANIMATION 0
 
 #define FONT_HEIGHT 10
 #define FONT_WIDTH 6
@@ -59,6 +59,11 @@ void Display::paint() {
         _screen->setCursor(0, _height - 2);
         _screen->print(_status);
     }
+
+    _screen->setFont(FONT);
+    _screen->setCursor(0, _height / 2);
+    _screen->print(_mA, 3);
+    _screen->print(F(" mA"));
 
 #else
 

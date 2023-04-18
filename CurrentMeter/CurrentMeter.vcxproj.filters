@@ -19,12 +19,18 @@
     <ClCompile Include="Display.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AMeter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.CurrentMeter.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Display.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AMeter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

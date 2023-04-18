@@ -107,6 +107,7 @@
     <ProjectCapability Include="VisualMicro" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AMeter.cpp" />
     <ClCompile Include="CurrentMeter.ino">
       <FileType>CppCode</FileType>
       <DeploymentContent>true</DeploymentContent>
@@ -114,6 +115,7 @@
     <ClCompile Include="Display.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AMeter.h" />
     <ClInclude Include="Display.h" />
     <ClInclude Include="__vm\.CurrentMeter.vsarduino.h" />
   </ItemGroup>

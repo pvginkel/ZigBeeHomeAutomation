@@ -1,5 +1,6 @@
 #include "ZigBeeHomeAutomation.h"
 #include "ACS712.h"
+#include "AMeter.h"
 #include "Bounce2.h"
 #include "U8g2lib.h"
 #include "Display.h"
@@ -14,19 +15,22 @@ constexpr uint8_t IO_PB = 9;
 constexpr uint8_t IO_RELAY = 5;
 constexpr uint8_t IO_AMETER = A7;
 
-ACS712  ACS(IO_AMETER, 5.0, 1023, 185);
+AMeter aMeter(IO_AMETER, 185, 50, 200);
 StatusControl status;
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0);
 Display display;
 
+#if 1
+
 void setup() {
 	LOG_BEGIN();
 
-	ACS.autoMidPoint();
+	aMeter.onSampleCollected([](float sample, uintptr_t) {
+		display.setAMeterValue(sample);
+	});
 
-	//pinMode(IO_STATUS_LED, OUTPUT);
-	//digitalWrite(IO_STATUS_LED, 1);
-	//pinMode(IO_BUTTON, INPUT);
+	aMeter.begin();
+
 	pinMode(IO_RELAY, OUTPUT);
 
 	status.onClick([](uintptr_t) {
@@ -57,10 +61,14 @@ void setup() {
 
 void loop() {
 	status.update();
+	aMeter.update();
+
+	// Update display last to make sure we don't have a dirty
+	// screen in the next cycle.
 	display.update();
 }
 
-#if 0
+#elif 0
 
 constexpr int valueRange = 64;
 uint16_t values[valueRange * 2 + 1];
@@ -129,9 +137,15 @@ void loop() {
 	printValues(samples);
 }
 
-#elif 0
+#elif 1
 
-void loopx() {
+void setup() {
+	LOG_BEGIN();
+
+	ACS.autoMidPoint();
+}
+
+void loop() {
 	auto m1 = ACS.mA_AC(50, 5);
 	auto m2 = ACS.mA_AC_sampling(50, 5);
 	Serial.print("mA:\t");
@@ -139,13 +153,6 @@ void loopx() {
 	Serial.print("\t\t");
 	Serial.println(m2, 2);
 	delay(1000);
-}
-
-void loop() {
-	digitalWrite(4, 1);
-	delay(20);
-	digitalWrite(4, 0);
-	delay(20);
 }
 
 #elif 0

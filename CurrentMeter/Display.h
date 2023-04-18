@@ -12,6 +12,7 @@ class Display {
 	int _width{};
 	int _height{};
 	time_t _lastUpdate{};
+	float _mA{};
 
 public:
 	void begin(U8G2& screen, int width, int height) {
@@ -35,6 +36,11 @@ public:
 
 	void setStatus(const String& status) {
 		_status = status;
+		_dirty = true;
+	}
+
+	void setAMeterValue(float mA) {
+		_mA = mA;
 		_dirty = true;
 	}
 
