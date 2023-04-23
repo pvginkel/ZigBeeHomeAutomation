@@ -15,21 +15,166 @@ constexpr uint8_t IO_PB = 9;
 constexpr uint8_t IO_RELAY = 5;
 constexpr uint8_t IO_AMETER = A7;
 
-AMeter aMeter(IO_AMETER, 185, 50, 200);
+constexpr uint8_t FREQUENCY = 50;
+constexpr uint16_t VOLTAGE = 225;
+constexpr float MV_PER_AMPERE = 185;
+
 StatusControl status;
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0);
 Display display;
 
-#if 1
+#if 0
+
+void ADC0_init(void)
+{
+	///* Disable digital input buffer */
+	//PORTD_PIN5CTRL &= ~PORT_ISC_gm;
+	//PORTD_PIN5CTRL |= PORT_ISC_INPUT_DISABLE_gc;
+
+	///* Disable pull-up resistor */
+	//PORTD_PIN5CTRL &= ~PORT_PULLUPEN_bm;
+
+
+	PORTD_PIN5CTRL = PORT_ISC_INPUT_DISABLE_gc;              // disable digital input buffer on A7 (AIN5)
+
+	//ADC0.CTRLC = ADC_PRESC_DIV4_gc /* CLK_PER divided by 4 */
+	//	| ADC_REFSEL_INTREF_gc; /* Internal reference */
+
+	ADC0_CTRLC = ADC_PRESC_DIV32_gc | ADC_REFSEL_VDDREF_gc | ADC_SAMPCAP_bm; // reduced capacitance, Vdd ref, prescaler of 32
+
+	ADC0.CTRLA = ADC_ENABLE_bm /* ADC Enable: enabled */
+		| ADC_RESSEL_10BIT_gc; /* 10-bit mode */
+
+	/* Select ADC channel */
+	ADC0.MUXPOS = ADC_MUXPOS_AIN5_gc;
+
+	/* Enable FreeRun mode */
+	ADC0.CTRLA |= ADC_FREERUN_bm;
+}
+uint16_t ADC0_read(void)
+{
+	/* Clear the interrupt flag by writing 1: */
+	ADC0.INTFLAGS = ADC_RESRDY_bm;
+
+	return ADC0.RES;
+}
+void ADC0_start(void)
+{
+	/* Start conversion */
+	ADC0.COMMAND = ADC_STCONV_bm;
+}
+bool ADC0_conersionDone(void)
+{
+	return (ADC0.INTFLAGS & ADC_RESRDY_bm);
+}
+void setup() {
+	pinMode(IO_RELAY, OUTPUT);
+	digitalWrite(IO_RELAY, 1);
+
+	ADC0_init();
+	ADC0_start();
+}
+
+time_t lastMillis = 0;
+
+void loop() {
+	if (ADC0_conersionDone())
+	{
+		uint16_t adcVal = ADC0_read();
+		Serial.println(adcVal);
+
+		auto currentMillis = millis();
+		if (currentMillis - lastMillis > (1000 / 50)) {
+			Serial.println("CYCLE");
+			lastMillis = currentMillis;
+		}
+		/* In FreeRun mode, the next conversion starts automatically */
+	}
+}
+
+#elif 0
+
+void setup() {
+	Serial.begin(115200);
+	//Init
+	//PORTD_PIN4CTRL = 0x04;              // disable digital input buffer on A6 (AIN4)
+	PORTD_PIN5CTRL = 0x04;              // disable digital input buffer on A7 (AIN5)
+	ADC0_CTRLA = ADC_RESSEL_10BIT_gc;   // 10-bit resolution
+	ADC0_CTRLC = 0x54;                  // reduced capacitance, Vdd ref, prescaler of 32
+	// ADC0_MUXPOS = 0x04;                 // select A6 (AIN4)
+	ADC0_MUXPOS = ADC_MUXPOS_AIN5_gc;                 // select A7 (AIN5)
+	ADC0_CTRLA |= ADC_ENABLE_bm | ADC_FREERUN_bm;        // turn ADC on, in free running mode
+	// This is here already because we enable free running mode.
+	ADC0_COMMAND |= ADC_STCONV_bm;         // start a conversion
+
+	pinMode(IO_RELAY, OUTPUT);
+	digitalWrite(IO_RELAY, 1);
+}
+
+time_t lastMillis = 0;
+volatile uint16_t adcVal = 0;
+volatile bool dirty = false;
+
+void loop() {
+	//Read
+	//ADC0_COMMAND |= ADC_STCONV_bm;         // start a conversion
+	while (ADC0.INTFLAGS & ADC_RESRDY_bm);  // wait while busy
+	uint16_t adcVal = ADC0_RES;           // get ADC value
+	Serial.println(adcVal);
+
+	auto currentMillis = millis();
+	if (currentMillis - lastMillis > (1000 / 50)) {
+		Serial.println("CYCLE");
+		lastMillis = currentMillis;
+	}
+}
+
+#elif 1
+
+void analogSetup() {
+	// Disable digital input buffer on A7 (AIN5).
+	PORTD_PIN5CTRL = PORT_ISC_INPUT_DISABLE_gc;
+
+	// Reduced capacitance, Vdd ref, prescaler of 32.
+	ADC0.CTRLC = uint8_t(ADC_PRESC_DIV32_gc) | uint8_t(ADC_REFSEL_VDDREF_gc) | ADC_SAMPCAP_bm;
+
+	// ADC enable in 10 bit mode.
+	ADC0.CTRLA = ADC_ENABLE_bm | ADC_RESSEL_10BIT_gc;
+
+	// Select ADC channel.
+	ADC0.MUXPOS = ADC_MUXPOS_AIN5_gc;
+
+	// Enable FreeRun mode.
+	ADC0.CTRLA |= ADC_FREERUN_bm;
+
+	// Start conversion. Only set once because in FreeRun mode
+	// the conversion keeps going.
+	ADC0.COMMAND = ADC_STCONV_bm;
+}
+
+bool analogTryRead(uint16_t& result) {
+	if (ADC0.INTFLAGS & ADC_RESRDY_bm) {
+		// Clear the interrupt flag by writing 1
+		ADC0.INTFLAGS = ADC_RESRDY_bm;
+
+		result = ADC0.RES;
+		return true;
+	}
+
+	return false;
+}
+
+AMeter aMeter(MV_PER_AMPERE, FREQUENCY, analogTryRead);
 
 void setup() {
 	LOG_BEGIN();
 
 	aMeter.onSampleCollected([](float sample, uintptr_t) {
 		display.setAMeterValue(sample);
-	});
+		display.setWattage((sample / 1000.0f) * VOLTAGE);
+		});
 
-	aMeter.begin();
+	aMeter.autoMidPoint(IO_AMETER);
 
 	pinMode(IO_RELAY, OUTPUT);
 
@@ -57,6 +202,10 @@ void setup() {
 
 	u8g2.begin();
 	display.begin(u8g2, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	analogSetup();
+
+	aMeter.begin();
 }
 
 void loop() {
@@ -268,7 +417,7 @@ void loop() {
 			Serial.print(percentile95, 2);
 			Serial.print("\n");
 		}
-	}
+}
 }
 
 #endif

@@ -24,8 +24,14 @@ void Display::update() {
 #endif
 
 	if (_screen && _dirty) {
-		paint();
-		_dirty = false;
+        auto currentMillis = millis();
+        if (currentMillis - _lastUpdate >= MAX_UPDATE_INTERVAL) {
+            _lastUpdate = currentMillis;
+
+            paint();
+
+            _dirty = false;
+        }
 	}
 }
 
@@ -63,7 +69,9 @@ void Display::paint() {
     _screen->setFont(FONT);
     _screen->setCursor(0, _height / 2);
     _screen->print(_mA, 3);
-    _screen->print(F(" mA"));
+    _screen->print(F(" mA "));
+    _screen->print(_wattage, 2);
+    _screen->print(F(" W"));
 
 #else
 
