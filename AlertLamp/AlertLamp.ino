@@ -7,7 +7,7 @@ constexpr uint8_t IO_XBEE_RX = 2;
 constexpr uint8_t IO_XBEE_TX = 3;
 constexpr uint8_t IO_STATUS_LED = 10;
 constexpr uint8_t IO_PB = 9;
-constexpr uint8_t IO_RELAY = 5;
+constexpr uint8_t IO_RELAY = 14;
 
 constexpr uint16_t DEFAULT_ALERT_LIGHT_SECONDS_ON = 10;
 

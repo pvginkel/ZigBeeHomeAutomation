@@ -29,11 +29,11 @@ const tzLocal = {
   alert_light_seconds_on: {
     key: ["alert_light_seconds_on"],
     convertSet: async (entity, key, value, meta) => {
-      await entity.write('genOnOff', { 0x0201: { value, type: 0x21 } });
-      return { state: { alert_light_seconds_on: value }};
+      await entity.write("genOnOff", { 0x0201: { value, type: 0x21 } });
+      return { state: { alert_light_seconds_on: value } };
     },
     convertGet: async (entity, key, meta) => {
-      await entity.read('genOnOff', [0x0201]);
+      await entity.read("genOnOff", [0x0201]);
     },
   },
 };
@@ -42,19 +42,25 @@ const eLocal = {
   alert_light_seconds_on: () => {
     return exposes
       .numeric("alert_light_seconds_on", ea.GET | ea.SET)
-      .withDescription("Number of seconds the alert lamp stays on")
+      .withDescription("Number of seconds the alert lamp stays on");
   },
 };
 
 const extendLocal = {
-  switch: (options={}) => ({
+  switch: (options = {}) => ({
     ...extend.switch(options),
-    fromZigbee: [...extend.switch(options).fromZigbee, fzLocal.alert_light_configuration],
-    toZigbee: [...extend.switch(options).toZigbee,
-      tzLocal.alert_light_seconds_on
+    fromZigbee: [
+      ...extend.switch(options).fromZigbee,
+      fzLocal.alert_light_configuration,
     ],
-    exposes: [...extend.switch(options).exposes,
-      eLocal.alert_light_seconds_on(),]
+    toZigbee: [
+      ...extend.switch(options).toZigbee,
+      tzLocal.alert_light_seconds_on,
+    ],
+    exposes: [
+      ...extend.switch(options).exposes,
+      eLocal.alert_light_seconds_on(),
+    ],
   }),
 };
 
