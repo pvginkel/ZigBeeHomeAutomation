@@ -4,12 +4,12 @@
 #include "Configuration.h"
 #include "Doorbell.h"
 
-constexpr uint8_t IO_XBEE_RX = 11;
-constexpr uint8_t IO_XBEE_TX = 12;
+constexpr uint8_t IO_XBEE_RX = 12;
+constexpr uint8_t IO_XBEE_TX = 11;
 constexpr uint8_t IO_STATUS_LED = 3;
-constexpr uint8_t IO_PB = 2;
-constexpr uint8_t IO_RELAY = 4;
-constexpr uint8_t IO_DOORBELL = 5;
+constexpr uint8_t IO_PB = 4;
+constexpr uint8_t IO_RELAY = 5;
+constexpr uint8_t IO_DOORBELL = 2;
 
 constexpr bool DEFAULT_DOORBELL_ON = true;
 
@@ -64,7 +64,7 @@ void setup() {
     // Setup status.
 
     status.onClick([](uintptr_t) {
-        // No default action.
+        setEnabled(!isEnabled());
     });
 
     status.onReset([](uintptr_t) {
