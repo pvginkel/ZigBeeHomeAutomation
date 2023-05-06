@@ -36,6 +36,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Wire-1.0", "..\..\..\Users\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "U8g2-2.33.15", "..\libraries\U8g2\U8g2-2.33.15.vcxitems", "{A77BF23E-237A-43BC-9109-293AAA94A685}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AlertLamp", "AlertLamp\AlertLamp.vcxproj", "{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -166,6 +168,18 @@ Global
 		{81ECA0F5-0B88-4778-875D-F9B7737EB815}.Release|x64.Build.0 = Release|Win32
 		{81ECA0F5-0B88-4778-875D-F9B7737EB815}.Release|x86.ActiveCfg = Release|Win32
 		{81ECA0F5-0B88-4778-875D-F9B7737EB815}.Release|x86.Build.0 = Release|Win32
+		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Debug|Any CPU.Build.0 = Debug|Win32
+		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Debug|x64.ActiveCfg = Debug|Win32
+		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Debug|x64.Build.0 = Debug|Win32
+		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Debug|x86.ActiveCfg = Debug|Win32
+		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Debug|x86.Build.0 = Debug|Win32
+		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Release|Any CPU.ActiveCfg = Release|Win32
+		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Release|Any CPU.Build.0 = Release|Win32
+		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Release|x64.ActiveCfg = Release|Win32
+		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Release|x64.Build.0 = Release|Win32
+		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Release|x86.ActiveCfg = Release|Win32
+		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -183,6 +197,7 @@ Global
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{81eca0f5-0b88-4778-875d-f9b7737eb815}*SharedItemsImports = 4
 		..\..\..\Users\pvgin\AppData\Local\Arduino15\packages\arduino\hardware\megaavr\1.8.8\libraries\Wire\Wire-1.0.vcxitems*{81eca0f5-0b88-4778-875d-f9b7737eb815}*SharedItemsImports = 4
 		..\libraries\U8g2\U8g2-2.33.15.vcxitems*{a77bf23e-237a-43bc-9109-293aaa94a685}*SharedItemsImports = 9
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{c16d82d8-63b9-4781-bc51-ac8031ba9dbc}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{c4401942-a693-4607-ad0e-7cda97525e22}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
 		..\..\..\Users\pvgin\AppData\Local\Arduino15\packages\arduino\hardware\megaavr\1.8.8\libraries\Wire\Wire-1.0.vcxitems*{cc6d01a5-d88e-434f-876b-0c875266e5cf}*SharedItemsImports = 9
