@@ -38,6 +38,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "U8g2-2.33.15", "..\librarie
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AlertLamp", "AlertLamp\AlertLamp.vcxproj", "{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Doorbell", "Doorbell\Doorbell.vcxproj", "{238C376B-1596-4A7D-8FFD-631DDD7337F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -180,6 +182,18 @@ Global
 		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Release|x64.Build.0 = Release|Win32
 		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Release|x86.ActiveCfg = Release|Win32
 		{C16D82D8-63B9-4781-BC51-AC8031BA9DBC}.Release|x86.Build.0 = Release|Win32
+		{238C376B-1596-4A7D-8FFD-631DDD7337F6}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{238C376B-1596-4A7D-8FFD-631DDD7337F6}.Debug|Any CPU.Build.0 = Debug|Win32
+		{238C376B-1596-4A7D-8FFD-631DDD7337F6}.Debug|x64.ActiveCfg = Debug|Win32
+		{238C376B-1596-4A7D-8FFD-631DDD7337F6}.Debug|x64.Build.0 = Debug|Win32
+		{238C376B-1596-4A7D-8FFD-631DDD7337F6}.Debug|x86.ActiveCfg = Debug|Win32
+		{238C376B-1596-4A7D-8FFD-631DDD7337F6}.Debug|x86.Build.0 = Debug|Win32
+		{238C376B-1596-4A7D-8FFD-631DDD7337F6}.Release|Any CPU.ActiveCfg = Release|Win32
+		{238C376B-1596-4A7D-8FFD-631DDD7337F6}.Release|Any CPU.Build.0 = Release|Win32
+		{238C376B-1596-4A7D-8FFD-631DDD7337F6}.Release|x64.ActiveCfg = Release|Win32
+		{238C376B-1596-4A7D-8FFD-631DDD7337F6}.Release|x64.Build.0 = Release|Win32
+		{238C376B-1596-4A7D-8FFD-631DDD7337F6}.Release|x86.ActiveCfg = Release|Win32
+		{238C376B-1596-4A7D-8FFD-631DDD7337F6}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,6 +204,7 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{06a219d9-cae2-41fe-9734-98071e514c32}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{0afe8a92-dcc3-4a87-ad96-adcac3684697}*SharedItemsImports = 9
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{238c376b-1596-4a7d-8ffd-631ddd7337f6}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{5a286a13-95b3-487f-acb3-96364509b281}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{677ea60b-dceb-4830-a89e-14803d1efd9d}*SharedItemsImports = 4
 		..\libraries\Bounce2\Bounce2-2.71.vcxitems*{81eca0f5-0b88-4778-875d-f9b7737eb815}*SharedItemsImports = 4
