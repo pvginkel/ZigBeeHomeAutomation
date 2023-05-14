@@ -98,31 +98,43 @@ const eLocal = {
     return exposes
       .numeric("light_low_minimum_level", ea.GET | ea.SET)
       .withDescription("Low light minimum level")
+      .withValueMin(0)
+      .withValueMax(255);
   },
   light_low_maximum_level: () => {
     return exposes
       .numeric("light_low_maximum_level", ea.GET | ea.SET)
-      .withDescription("Low light maximum level");
+      .withDescription("Low light maximum level")
+      .withValueMin(0)
+      .withValueMax(255);
   },
   light_high_minimum_level: () => {
     return exposes
       .numeric("light_high_minimum_level", ea.GET | ea.SET)
-      .withDescription("High light minimum level");
+      .withDescription("High light minimum level")
+      .withValueMin(0)
+      .withValueMax(255);
   },
   light_high_maximum_level: () => {
     return exposes
       .numeric("light_high_maximum_level", ea.GET | ea.SET)
-      .withDescription("High light maximum level");
+      .withDescription("High light maximum level")
+      .withValueMin(0)
+      .withValueMax(255);
   },
   light_break_start: () => {
     return exposes
       .numeric("light_break_start", ea.GET | ea.SET)
-      .withDescription("Dual light break start");
+      .withDescription("Dual light break start")
+      .withValueMin(0)
+      .withValueMax(255);
   },
   light_break_end: () => {
     return exposes
       .numeric("light_break_end", ea.GET | ea.SET)
-      .withDescription("Dual light break end");
+      .withDescription("Dual light break end")
+      .withValueMin(0)
+      .withValueMax(255);
   },
 };
 

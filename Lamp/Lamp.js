@@ -54,11 +54,15 @@ const eLocal = {
     return exposes
       .numeric("light_minimum_level", ea.GET | ea.SET)
       .withDescription("Light minimum level")
+      .withValueMin(0)
+      .withValueMax(255);
   },
   light_maximum_level: () => {
     return exposes
       .numeric("light_maximum_level", ea.GET | ea.SET)
-      .withDescription("Light maximum level");
+      .withDescription("Light maximum level")
+      .withValueMin(0)
+      .withValueMax(255);;
   },
 };
 
