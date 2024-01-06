@@ -7,41 +7,6 @@ const utils = require("zigbee-herdsman-converters/lib/utils");
 const e = exposes.presets;
 const ea = exposes.access;
 
-const fzLocal = {
-  illuminance: {
-    cluster: "msIlluminanceMeasurement",
-    type: ["attributeReport", "readResponse"],
-    options: [
-      exposes.options.calibration("illuminance", "percentual"),
-      exposes.options.calibration("illuminance_lux", "percentual"),
-    ],
-    convert: (model, msg, publish, options, meta) => {
-      const result = {};
-
-      if (msg.data.hasOwnProperty("measuredValue")) {
-        const raw = msg.data["measuredValue"];
-        const VIN = 5.0;
-        const R = 10000;
-
-        // Conversion analog to voltage
-        const Vout = raw * (VIN / 1023);
-        // Conversion voltage to resistance
-        const RLDR = (R * (VIN - Vout)) / Vout;
-        // Conversion resitance to lumen
-        const phys = 500 / (RLDR / 1000);
-
-        result[utils.postfixWithEndpointName("illuminance", msg, model, meta)] =
-          RLDR | 0;
-        result[
-          utils.postfixWithEndpointName("illuminance_lux", msg, model, meta)
-        ] = phys | 0;
-      }
-
-      return result;
-    },
-  },
-};
-
 const definition = {
   zigbeeModel: ["DHT22 Sensor"],
   model: "DHT22 Sensor",
