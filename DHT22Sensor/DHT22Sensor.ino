@@ -3,11 +3,11 @@
 #include <SoftwareSerial.h>
 #include <ZigBeeHomeAutomation.h>
 
-constexpr uint8_t IO_XBEE_RX = 9;
-constexpr uint8_t IO_XBEE_TX = 8;
-constexpr uint8_t IO_PB = 2;
+constexpr uint8_t IO_XBEE_RX = 8;
+constexpr uint8_t IO_XBEE_TX = 9;
+constexpr uint8_t IO_PB = 4;
 constexpr uint8_t IO_STATUS_LED = 3;
-constexpr uint8_t IO_DHT = 4;
+constexpr uint8_t IO_DHT = 5;
 
 constexpr uint16_t REPORT_INTERVAL_MS = 60000ul;
 
@@ -82,5 +82,5 @@ static void reportSensors() {
 	const float humidity = dht.readHumidity();
 	relativeHumidityCluster.getMeasuredValue()->setValue((uint16_t)(humidity * SCALE_TEMPERATURE));
 
-	DEBUG(F("Temperature "), temperature, F(", humidity "), humidity);
+	INFO(F("Temperature "), temperature, F(", humidity "), humidity);
 }
