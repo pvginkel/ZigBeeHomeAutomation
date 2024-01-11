@@ -62,18 +62,23 @@ public:
         _type = AttributeStringType::Empty;
         _value = nullptr;
     }
+
     AttributeStringType getType() const {
         return _type;
     }
+
     const char* getCString() const {
         return _type == AttributeStringType::CStr ? (char*)_value : nullptr;
     }
+
     const __FlashStringHelper* getFlashString() const {
         return _type == AttributeStringType::FlashString ? (__FlashStringHelper*)_value : nullptr;
     }
+
     void setValue(const String& value) {
         setValue(value.c_str());
     }
+
     void setValue(const char* value) {
         auto length = strlen(value);
 
@@ -94,11 +99,14 @@ public:
         _value = buffer;
 
         strcpy(buffer, value);
+        markDirty();
     }
+
     void setValue(const __FlashStringHelper* value) {
         clearValue();
         _type = AttributeStringType::FlashString;
         _value = (void*)value;
+        markDirty();
     }
 
     String toString() override {
