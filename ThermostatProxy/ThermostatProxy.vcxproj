@@ -83,6 +83,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="opentherm.cpp" />
+    <ClCompile Include="Thermostat.cpp" />
     <ClCompile Include="ThermostatProxy.ino">
       <FileType>CppCode</FileType>
       <DeploymentContent>true</DeploymentContent>
@@ -93,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opentherm.h" />
+    <ClInclude Include="Thermostat.h" />
     <ClInclude Include="__vm\.ThermostatProxy.vsarduino.h" />
   </ItemGroup>
   <PropertyGroup>

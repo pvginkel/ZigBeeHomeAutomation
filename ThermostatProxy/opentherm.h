@@ -1,3 +1,5 @@
+// From https://github.com/jpraus/arduino-opentherm/tree/master.
+
 #ifndef OPENTHERM_H
 #define OPENTHERM_H
 

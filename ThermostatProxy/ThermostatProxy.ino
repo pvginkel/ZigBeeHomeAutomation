@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
 #include <ZigBeeHomeAutomation.h>
-#include "opentherm.h"
+#include "Thermostat.h"
 
 constexpr uint8_t IO_XBEE_RX = 2;
 constexpr uint8_t IO_XBEE_TX = 3;
@@ -15,6 +15,7 @@ SoftwareSerial xbeeSerial(IO_XBEE_RX, IO_XBEE_TX);
 DeviceManager deviceManager;
 BasicDevice thermostatDevice(1, 1, PowerSource::DCSource);
 StatusControl status;
+Thermostat thermostat(IO_BOILER_IN, IO_BOILER_OUT, IO_THERMOSTAT_IN, IO_THERMOSTAT_OUT);
 
 AttributeString logAttribute(0x0201);
 
@@ -42,18 +43,16 @@ void setup() {
 	);
 
 	deviceManager.begin(xbeeSerial);
-}
 
-time_t lastMessage = 0;
+	thermostat.eventOccurredCallback(
+		[](const String& message, uintptr_t) { logAttribute.setValue(message); }
+	);
+
+	thermostat.begin();
+}
 
 void loop() {
 	status.update();
 	deviceManager.update();
-
-	auto currentMillis = millis();
-	if (currentMillis - lastMessage > 1000) {
-		lastMessage = currentMillis;
-
-		logAttribute.setValue(String(F("It is now ")) + String(currentMillis));
-	}
+	thermostat.update();
 }

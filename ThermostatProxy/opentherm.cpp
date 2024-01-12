@@ -1,3 +1,5 @@
+// From https://github.com/jpraus/arduino-opentherm/tree/master.
+
 #include "opentherm.h"
 #include "Arduino.h"
 
