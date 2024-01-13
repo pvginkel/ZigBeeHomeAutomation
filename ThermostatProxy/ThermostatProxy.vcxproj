@@ -82,7 +82,7 @@
     <TargetOSAndVersion>Arduino</TargetOSAndVersion>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="opentherm.cpp" />
+    <ClCompile Include="OpenTherm.cpp" />
     <ClCompile Include="Thermostat.cpp" />
     <ClCompile Include="ThermostatProxy.ino">
       <FileType>CppCode</FileType>
@@ -93,7 +93,7 @@
     <ProjectCapability Include="VisualMicro" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="opentherm.h" />
+    <ClInclude Include="OpenTherm.h" />
     <ClInclude Include="Thermostat.h" />
     <ClInclude Include="__vm\.ThermostatProxy.vsarduino.h" />
   </ItemGroup>

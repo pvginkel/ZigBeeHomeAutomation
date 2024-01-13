@@ -1,34 +1,24 @@
 #pragma once
 
-#include "opentherm.h"
+#include "OpenTherm.h"
 #include "Arduino.h"
 #include "Callback.h"
 
 class Thermostat
 {
-	enum class Mode: uint8_t {
-		ListenMaster,
-		ListenSlave
-	};
+	static Thermostat* _instance;
+	static void IRAM_ATTR handleBoilerInterrupt();
+	static void IRAM_ATTR handleThermostatInterrupt();
 
 	CallbackArgs<const String&> _eventOccurred;
-	uint8_t _boilerInPin;
-	uint8_t _boilerOutPin;
-	uint8_t _thermostatInPin;
-	uint8_t _thermostatOutPin;
-	Mode _mode = Mode::ListenMaster;
-	OpenthermData _message;
+	OpenTherm _boiler;
+	OpenTherm _thermostat;
 	String _printedMessage;
 
-	const String& printMessage(const __FlashStringHelper* prefix);
+	void processThermostatRequest(unsigned long request, OpenThermResponseStatus status);
 
 public:
-	Thermostat(uint8_t boilerInPin, uint8_t boilerOutPin, uint8_t thermostatInPin, uint8_t thermostatOutPin) :
-		_boilerInPin(boilerInPin), _boilerOutPin(boilerOutPin), _thermostatInPin(thermostatInPin), _thermostatOutPin(thermostatOutPin),
-		_message()
-	{
-		_printedMessage.reserve(30);
-	}
+	Thermostat(uint8_t boilerInPin, uint8_t boilerOutPin, uint8_t thermostatInPin, uint8_t thermostatOutPin);
 
 	void begin();
 	void update();
