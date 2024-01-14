@@ -14,8 +14,10 @@ class Thermostat
 	OpenTherm _boiler;
 	OpenTherm _thermostat;
 	String _printedMessage;
+	unsigned long _pendingRequest;
 
 	void processThermostatRequest(unsigned long request, OpenThermResponseStatus status);
+	void processBoilerResponse(unsigned long response, OpenThermResponseStatus status);
 
 public:
 	Thermostat(uint8_t boilerInPin, uint8_t boilerOutPin, uint8_t thermostatInPin, uint8_t thermostatOutPin);

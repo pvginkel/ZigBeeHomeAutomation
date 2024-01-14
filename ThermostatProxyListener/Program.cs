@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
-using MQTTnet.Client;
-using MQTTnet;
 using System.Text;
-using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
+using MQTTnet;
+using MQTTnet.Client;
+using Newtonsoft.Json.Linq;
 
 var mqttFactory = new MqttFactory();
 float boilerTemperature = 0;
@@ -21,7 +21,7 @@ using (var mqttClient = mqttFactory.CreateMqttClient())
 {
     var mqttClientOptions = new MqttClientOptionsBuilder()
         .WithTcpServer("192.168.178.5")
-        .WithCredentials("mqtt", "oGhdlk3ZaYdwh4U5GXYW8FRQ7ClcorKiL9sa9vX0FKjiy3vDbZ8sIJnAilGZaQY")
+        .WithCredentials("mqtt", Environment.GetEnvironmentVariable("MQTT_PASSWORD"))
         .Build();
 
     mqttClient.ApplicationMessageReceivedAsync += e =>
@@ -43,9 +43,9 @@ using (var mqttClient = mqttFactory.CreateMqttClient())
 
     var response = await mqttClient.ConnectAsync(mqttClientOptions);
 
-    var mqttSubscribeOptions = mqttFactory.CreateSubscribeOptionsBuilder()
-        .WithTopicFilter(
-            f => f.WithTopic("zigbee2mqtt/Thermostat Proxy"))
+    var mqttSubscribeOptions = mqttFactory
+        .CreateSubscribeOptionsBuilder()
+        .WithTopicFilter(f => f.WithTopic("zigbee2mqtt/Thermostat Proxy"))
         .Build();
 
     await mqttClient.SubscribeAsync(mqttSubscribeOptions, CancellationToken.None);
@@ -61,9 +61,12 @@ using (var mqttClient = mqttFactory.CreateMqttClient())
 
 void ProcessData(string log)
 {
-    var match = Regex.Match(log, @"^T:(\S+) B:(\S+)$");
+    var match = Regex.Match(log, @"^T:(\S+)(?: B:0:3)?(?: B:(\S+))?$");
     if (!match.Success)
+    {
+        Console.WriteLine(log);
         throw new InvalidOperationException("Unexpected data");
+    }
 
     //Console.WriteLine(log);
 
@@ -72,13 +75,31 @@ void ProcessData(string log)
     if (response == null)
         return;
 
-    File.AppendAllText("log.txt", log + Environment.NewLine);
+    File.AppendAllText("log.txt", $"""
+{DateTime.Now:O} {log}
+{request}
+{response}
+
+""");
 
     HandleRequestResponse(request, response);
 }
 
 void HandleRequestResponse(Message request, Message response)
 {
+    if (request.Status != 1)
+    {
+        Console.WriteLine("=====");
+        Console.WriteLine("Invalid thermostat request " + request);
+        return;
+    }
+    if (response.Status != 1)
+    {
+        Console.WriteLine("=====");
+        Console.WriteLine("Invalid boiler response " + response);
+        return;
+    }
+
     switch (request)
     {
         case { Type: OpenThermMessageType.READ_DATA, Id: OpenThermMessageID.Status }:
@@ -100,7 +121,10 @@ void HandleRequestResponse(Message request, Message response)
         case { Type: OpenThermMessageType.READ_DATA, Id: OpenThermMessageID.BurnerOperationHours }:
             burnerOperationHours = response.Payload;
             break;
-        case { Type: OpenThermMessageType.READ_DATA, Id: OpenThermMessageID.DHWBurnerOperationHours }:
+        case {
+            Type: OpenThermMessageType.READ_DATA,
+            Id: OpenThermMessageID.DHWBurnerOperationHours
+        }:
             dhwBurnerOperationHours = response.Payload;
             break;
         case { Type: OpenThermMessageType.READ_DATA, Id: OpenThermMessageID.DHWFlowRate }:
@@ -112,9 +136,6 @@ void HandleRequestResponse(Message request, Message response)
         case { Type: OpenThermMessageType.READ_DATA, Id: (OpenThermMessageID)113 }:
         case { Type: OpenThermMessageType.READ_DATA, Id: (OpenThermMessageID)114 }:
             // Ignore.
-            break;
-        default:
-            Console.WriteLine($"T: {request} B: {response}");
             break;
     }
 
@@ -129,24 +150,33 @@ void HandleRequestResponse(Message request, Message response)
     Console.WriteLine($"DHW burner operation hours: {dhwBurnerOperationHours}");
     Console.WriteLine($"DHW flow rate: {dhwFlowRate}");
     Console.WriteLine($"ASF flags: {asfFlags}");
+    Console.WriteLine();
+    Console.WriteLine($"T: {request}");
+    Console.WriteLine($"B: {response}");
 }
 
-record Message(OpenThermMessageType Type, OpenThermMessageID Id, ushort Payload)
+record Message(OpenThermMessageType Type, OpenThermMessageID Id, ushort Payload, int Status)
 {
     public static Message? Parse(string data)
     {
-        var value = uint.Parse(data, NumberStyles.HexNumber);
-        if (value == 0)
+        if (data.Length == 0)
             return null;
 
-        var type = (value >> 25) & 0b111;
+        var parts = data.Split(':');
+        var value = uint.Parse(parts[0], NumberStyles.HexNumber);
+        if (value == 0)
+            return null;
+        var status = int.Parse(parts[1]);
+
+        var type = (value >> 28) & 0b111;
         var id = (value >> 16) & 0xff;
         var payload = (ushort)(value & 0xffff);
 
-        return new Message((OpenThermMessageType)type, (OpenThermMessageID)id, payload);
+        return new Message((OpenThermMessageType)type, (OpenThermMessageID)id, payload, status);
     }
 
-    public float FloatPayload => (Payload & 0x8000) != 0 ? -(0x10000L - Payload) / 256.0f : Payload / 256.0f;
+    public float FloatPayload =>
+        (Payload & 0x8000) != 0 ? -(0x10000L - Payload) / 256.0f : Payload / 256.0f;
 }
 
 enum OpenThermMessageType : byte
@@ -158,6 +188,7 @@ enum OpenThermMessageType : byte
     WRITE = WRITE_DATA, // for backwared compatibility
     INVALID_DATA = 0B010,
     RESERVED = 0B011,
+
     /* Slave to Master */
     READ_ACK = 0B100,
     WRITE_ACK = 0B101,

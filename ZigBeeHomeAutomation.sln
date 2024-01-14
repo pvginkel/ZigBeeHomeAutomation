@@ -46,7 +46,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LowPowerTest", "LowPowerTes
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThermostatProxy", "ThermostatProxy\ThermostatProxy.vcxproj", "{A9356C33-F68D-4D5F-A9D8-4715672ED74D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThermostatProxyListener", "ThermostatProxyListener\ThermostatProxyListener.csproj", "{33140233-E0F4-41EE-8062-982BAA1E630A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThermostatProxyListener", "ThermostatProxyListener\ThermostatProxyListener.csproj", "{33140233-E0F4-41EE-8062-982BAA1E630A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -376,18 +376,13 @@ Global
 		SolutionGuid = {54F7BF8A-707B-491B-81BF-BE5D83194544}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{06a219d9-cae2-41fe-9734-98071e514c32}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{0afe8a92-dcc3-4a87-ad96-adcac3684697}*SharedItemsImports = 9
-		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{677ea60b-dceb-4830-a89e-14803d1efd9d}*SharedItemsImports = 4
-		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{7fa304b2-f195-4e8c-ac3b-d7d678719ed2}*SharedItemsImports = 4
 		..\libraries\Bounce2\Bounce2-2.71.vcxitems*{81eca0f5-0b88-4778-875d-f9b7737eb815}*SharedItemsImports = 4
 		..\libraries\U8g2\U8g2-2.33.15.vcxitems*{81eca0f5-0b88-4778-875d-f9b7737eb815}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{81eca0f5-0b88-4778-875d-f9b7737eb815}*SharedItemsImports = 4
 		..\..\..\Users\pvgin\AppData\Local\Arduino15\packages\arduino\hardware\megaavr\1.8.8\libraries\Wire\Wire-1.0.vcxitems*{81eca0f5-0b88-4778-875d-f9b7737eb815}*SharedItemsImports = 4
 		..\libraries\U8g2\U8g2-2.33.15.vcxitems*{a77bf23e-237a-43bc-9109-293aaa94a685}*SharedItemsImports = 9
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{a9356c33-f68d-4d5f-a9d8-4715672ed74d}*SharedItemsImports = 4
-		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{c4401942-a693-4607-ad0e-7cda97525e22}*SharedItemsImports = 4
-		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
 		..\..\..\Users\pvgin\AppData\Local\Arduino15\packages\arduino\hardware\megaavr\1.8.8\libraries\Wire\Wire-1.0.vcxitems*{cc6d01a5-d88e-434f-876b-0c875266e5cf}*SharedItemsImports = 9
 		..\libraries\Bounce2\Bounce2-2.71.vcxitems*{cf1c60ee-ddcf-4cae-99ff-d9a0a648f2fa}*SharedItemsImports = 9
 	EndGlobalSection

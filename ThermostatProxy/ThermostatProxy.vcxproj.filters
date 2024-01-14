@@ -15,15 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\arduino folders read me.txt">
-      <Filter>Misc Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="ThermostatProxy.ino" />
+    <ClCompile Include="OpenTherm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thermostat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.ThermostatProxy.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenTherm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thermostat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

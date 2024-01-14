@@ -155,6 +155,7 @@ void IRAM_ATTR OpenTherm::handleInterrupt()
 			status = OpenThermStatus::RESPONSE_RECEIVING;
 			responseTimestamp = newTs;
 			responseBitIndex = 0;
+			response = 0;
 		}
 		else {
 			status = OpenThermStatus::RESPONSE_INVALID;
