@@ -14,35 +14,46 @@ internal class Parameters
         CreateFlagParameter(
             Parameter.CHEnabled,
             MessageId.Status,
-            (request, response) => ((MasterStatus)request.PayloadU16).HasFlag(MasterStatus.CHEnable)
+            (request, response) =>
+                ((MasterStatus)response.PayloadHBU8).HasFlag(MasterStatus.CHEnable),
+            (request, response) =>
+                ((MasterStatus)request.PayloadHBU8).HasFlag(MasterStatus.CHEnable)
         );
     public IParameter DHWEnabled { get; } =
         CreateFlagParameter(
             Parameter.DHWEnabled,
             MessageId.Status,
             (request, response) =>
-                ((MasterStatus)request.PayloadU16).HasFlag(MasterStatus.DHWEnable)
+                ((MasterStatus)response.PayloadHBU8).HasFlag(MasterStatus.DHWEnable),
+            (request, response) =>
+                ((MasterStatus)request.PayloadHBU8).HasFlag(MasterStatus.DHWEnable)
         );
     public IParameter CoolingEnabled { get; } =
         CreateFlagParameter(
             Parameter.CoolingEnabled,
             MessageId.Status,
             (request, response) =>
-                ((MasterStatus)request.PayloadU16).HasFlag(MasterStatus.CoolingEnable)
+                ((MasterStatus)response.PayloadHBU8).HasFlag(MasterStatus.CoolingEnable),
+            (request, response) =>
+                ((MasterStatus)request.PayloadHBU8).HasFlag(MasterStatus.CoolingEnable)
         );
     public IParameter OTCActive { get; } =
         CreateFlagParameter(
             Parameter.OTCActive,
             MessageId.Status,
             (request, response) =>
-                ((MasterStatus)request.PayloadU16).HasFlag(MasterStatus.OTCActive)
+                ((MasterStatus)response.PayloadHBU8).HasFlag(MasterStatus.OTCActive),
+            (request, response) =>
+                ((MasterStatus)request.PayloadHBU8).HasFlag(MasterStatus.OTCActive)
         );
     public IParameter CH2Enabled { get; } =
         CreateFlagParameter(
             Parameter.CH2Enabled,
             MessageId.Status,
             (request, response) =>
-                ((MasterStatus)request.PayloadU16).HasFlag(MasterStatus.CH2Enable)
+                ((MasterStatus)response.PayloadHBU8).HasFlag(MasterStatus.CH2Enable),
+            (request, response) =>
+                ((MasterStatus)request.PayloadHBU8).HasFlag(MasterStatus.CH2Enable)
         );
 
     // Slave status
@@ -51,46 +62,46 @@ internal class Parameters
             Parameter.Fault,
             MessageId.Status,
             (request, response) =>
-                ((SlaveStatus)response.PayloadU16).HasFlag(SlaveStatus.FaultIndication)
+                ((SlaveStatus)response.PayloadLBU8).HasFlag(SlaveStatus.FaultIndication)
         );
     public IParameter CHActive { get; } =
         CreateFlagParameter(
             Parameter.CHActive,
             MessageId.Status,
-            (request, response) => ((SlaveStatus)response.PayloadU16).HasFlag(SlaveStatus.CHMode)
+            (request, response) => ((SlaveStatus)response.PayloadLBU8).HasFlag(SlaveStatus.CHMode)
         );
     public IParameter DHWActive { get; } =
         CreateFlagParameter(
             Parameter.DHWActive,
             MessageId.Status,
-            (request, response) => ((SlaveStatus)response.PayloadU16).HasFlag(SlaveStatus.DHWMode)
+            (request, response) => ((SlaveStatus)response.PayloadLBU8).HasFlag(SlaveStatus.DHWMode)
         );
     public IParameter FlameOn { get; } =
         CreateFlagParameter(
             Parameter.FlameOn,
             MessageId.Status,
             (request, response) =>
-                ((SlaveStatus)response.PayloadU16).HasFlag(SlaveStatus.FlameStatus)
+                ((SlaveStatus)response.PayloadLBU8).HasFlag(SlaveStatus.FlameStatus)
         );
     public IParameter CoolingModeActive { get; } =
         CreateFlagParameter(
             Parameter.CoolingModeActive,
             MessageId.Status,
             (request, response) =>
-                ((SlaveStatus)response.PayloadU16).HasFlag(SlaveStatus.CoolingStatus)
+                ((SlaveStatus)response.PayloadLBU8).HasFlag(SlaveStatus.CoolingStatus)
         );
     public IParameter CH2Active { get; } =
         CreateFlagParameter(
             Parameter.CH2Active,
             MessageId.Status,
-            (request, response) => ((SlaveStatus)response.PayloadU16).HasFlag(SlaveStatus.CH2Mode)
+            (request, response) => ((SlaveStatus)response.PayloadLBU8).HasFlag(SlaveStatus.CH2Mode)
         );
     public IParameter DiagnosticEvent { get; } =
         CreateFlagParameter(
             Parameter.DiagnosticEvent,
             MessageId.Status,
             (request, response) =>
-                ((SlaveStatus)response.PayloadU16).HasFlag(SlaveStatus.DiagnosticIndication)
+                ((SlaveStatus)response.PayloadLBU8).HasFlag(SlaveStatus.DiagnosticIndication)
         );
 
     // Application specific fault flags
@@ -513,14 +524,27 @@ internal class Parameters
     private static IParameter CreateFlagParameter(
         Parameter parameter,
         MessageId messageId,
-        Func<Message, Message, bool> handler
+        Func<Message, Message, bool> handler,
+        Func<Message, Message, bool>? requestedHandler = null
     )
     {
-        return new ParameterValue(
+        ParameterValue self = null!;
+
+        self = new ParameterValue(
             parameter,
             messageId,
-            (request, response) => handler(request, response) ? "yes" : null
+            (request, response) =>
+            {
+                var value = handler(request, response);
+                var requestedValue = requestedHandler?.Invoke(request, response) ?? value;
+                if (value == requestedValue)
+                    return value ? "YES" : (self.Value == null ? null : "NO");
+
+                return (value ? "YES" : "NO") + " (requested " + (requestedValue ? "YES" : "NO");
+            }
         );
+
+        return self;
     }
 
     private class ParameterValue(
@@ -532,12 +556,15 @@ internal class Parameters
         public Parameter Parameter => parameter;
         public MessageId MessageId => messageId;
         public DateTime LastUpdated { get; private set; } = DateTime.MinValue;
-
+        public MessageType? LastResponseType { get; private set; }
         public object? Value { get; private set; }
 
         public void Update(Message request, Message response)
         {
-            if (response.Type == MessageType.UNKNOWN_DATA_ID)
+            if (
+                request.Type == MessageType.READ_DATA
+                && response.Type == MessageType.UNKNOWN_DATA_ID
+            )
                 return;
 
             var value = handler(request, response);
@@ -545,6 +572,7 @@ internal class Parameters
             {
                 Value = value;
                 LastUpdated = DateTime.Now;
+                LastResponseType = response.Type;
             }
         }
 

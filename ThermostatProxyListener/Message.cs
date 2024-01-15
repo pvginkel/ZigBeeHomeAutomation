@@ -2,7 +2,7 @@
 
 namespace ThermostatProxyListener;
 
-internal record Message(MessageType Type, MessageId Id, ushort PayloadU16, int Status)
+internal record Message(MessageType Type, MessageId Id, ushort PayloadU16, MessageStatus Status)
 {
     public static Message? Parse(string data)
     {
@@ -19,7 +19,7 @@ internal record Message(MessageType Type, MessageId Id, ushort PayloadU16, int S
         var id = (value >> 16) & 0xff;
         var payload = (ushort)(value & 0xffff);
 
-        return new Message((MessageType)type, (MessageId)id, payload, status);
+        return new Message((MessageType)type, (MessageId)id, payload, (MessageStatus)status);
     }
 
     public float PayloadFloat =>
@@ -28,4 +28,7 @@ internal record Message(MessageType Type, MessageId Id, ushort PayloadU16, int S
 
     public byte PayloadHBU8 => (byte)((PayloadU16 >> 8) & 0xff);
     public byte PayloadLBU8 => (byte)(PayloadU16 & 0xff);
+
+    public override string ToString() =>
+        $"Type = {Type}, Id = {Id}, Payload = {PayloadU16:x4}, Status = {Status}";
 }

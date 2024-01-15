@@ -78,25 +78,31 @@ internal class ThermostatProxyMQTTClient : IAsyncDisposable
         if (request == null || response == null)
             return;
 
-        File.AppendAllText("log.txt", $"""
+        if (!replay)
+        {
+            File.AppendAllText(
+                "log.txt",
+                $"""
 {DateTime.Now:O} {log}
 {request}
 {response}
 
-""");
+"""
+            );
+        }
 
         HandleRequestResponse(request, response, replay);
     }
 
     private void HandleRequestResponse(Message request, Message response, bool replay)
     {
-        if (request.Status != 1)
+        if (request.Status != MessageStatus.OTRS_SUCCESS)
         {
             Console.WriteLine("=====");
             Console.WriteLine("Invalid thermostat request " + request);
             return;
         }
-        if (response.Status != 1)
+        if (response.Status != MessageStatus.OTRS_SUCCESS)
         {
             Console.WriteLine("=====");
             Console.WriteLine("Invalid boiler response " + response);

@@ -4,9 +4,7 @@ internal enum MessageType : byte
 {
     /*  Master to Slave */
     READ_DATA = 0B000,
-    READ = READ_DATA, // for backwared compatibility
     WRITE_DATA = 0B001,
-    WRITE = WRITE_DATA, // for backwared compatibility
     INVALID_DATA = 0B010,
     RESERVED = 0B011,
 
