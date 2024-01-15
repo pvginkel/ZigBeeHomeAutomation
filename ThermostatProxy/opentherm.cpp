@@ -260,14 +260,14 @@ bool OpenTherm::isValidResponse(unsigned long response)
 {
 	if (parity(response)) return false;
 	byte msgType = (response << 1) >> 29;
-	return msgType == READ_ACK || msgType == WRITE_ACK;
+	return msgType == READ_ACK || msgType == WRITE_ACK || msgType == DATA_INVALID || msgType == UNKNOWN_DATA_ID;
 }
 
 bool OpenTherm::isValidRequest(unsigned long request)
 {
 	if (parity(request)) return false;
 	byte msgType = (request << 1) >> 29;
-	return msgType == READ_DATA || msgType == WRITE_DATA;
+	return msgType == READ_DATA || msgType == WRITE_DATA || msgType == INVALID_DATA;
 }
 
 void OpenTherm::end() {
