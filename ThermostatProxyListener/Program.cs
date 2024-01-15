@@ -41,7 +41,7 @@ using (var mqttClient = mqttFactory.CreateMqttClient())
         return Task.CompletedTask;
     };
 
-    var response = await mqttClient.ConnectAsync(mqttClientOptions);
+    await mqttClient.ConnectAsync(mqttClientOptions);
 
     var mqttSubscribeOptions = mqttFactory
         .CreateSubscribeOptionsBuilder()
