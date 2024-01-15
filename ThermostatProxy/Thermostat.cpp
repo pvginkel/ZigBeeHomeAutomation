@@ -38,16 +38,10 @@ void Thermostat::processThermostatRequest(unsigned long request, OpenThermRespon
     _printedMessage += F(":");
     _printedMessage += String((uint8_t)status);
 
-    DEBUG(F("Process thermostat request "), _printedMessage);
-
     if (status == OpenThermResponseStatus::OTRS_SUCCESS) {
         auto sent = _boiler.sendRequestAync(request);
         if (!sent) {
             _pendingRequest = request;
-            DEBUG(F("Pending"));
-        }
-        else {
-            DEBUG(F("Sent"));
         }
     }
     else {
@@ -65,8 +59,6 @@ void Thermostat::processBoilerResponse(unsigned long response, OpenThermResponse
     _printedMessage += F(":");
     _printedMessage += String((uint8_t)status);
 
-    DEBUG(F("Process boiler response "), _printedMessage);
-
     _eventOccurred.call(_printedMessage);
 }
 
@@ -77,7 +69,6 @@ void Thermostat::update() {
     if (_pendingRequest) {
         auto sent = _boiler.sendRequestAync(_pendingRequest);
         if (sent) {
-            DEBUG(F("Sent pending request"));
             _pendingRequest = 0;
         }
     }

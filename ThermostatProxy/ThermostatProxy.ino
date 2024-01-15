@@ -2,8 +2,7 @@
 #include <ZigBeeHomeAutomation.h>
 #include "Thermostat.h"
 
-constexpr uint8_t IO_XBEE_RX = 2;
-constexpr uint8_t IO_XBEE_TX = 3;
+constexpr uint8_t IO_XBEE_RESET = 2;
 constexpr uint8_t IO_PB = 8;
 constexpr uint8_t IO_STATUS_LED = 9;
 constexpr uint8_t IO_BOILER_IN = 4;
@@ -11,7 +10,6 @@ constexpr uint8_t IO_BOILER_OUT = 5;
 constexpr uint8_t IO_THERMOSTAT_IN = 7;
 constexpr uint8_t IO_THERMOSTAT_OUT = 6;
 
-SoftwareSerial xbeeSerial(IO_XBEE_RX, IO_XBEE_TX);
 DeviceManager deviceManager;
 BasicDevice thermostatDevice(1, 1, PowerSource::DCSource);
 StatusControl status;
@@ -36,13 +34,14 @@ void setup() {
 	status.setBounce(Bounce(IO_PB, 50));
 	status.setLed(IO_STATUS_LED);
 
-	xbeeSerial.begin(9600);
+	Serial1.begin(9600);
 
 	deviceManager.setConnectedCallback(
 		[](ConnectionStatus connectionStatus, uintptr_t) { status.setConnected(connectionStatus); }
 	);
 
-	deviceManager.begin(xbeeSerial);
+	deviceManager.resetDevice(IO_XBEE_RESET);
+	deviceManager.begin(Serial1);
 
 	thermostat.eventOccurredCallback(
 		[](const String& message, uintptr_t) { logAttribute.setValue(message); }
