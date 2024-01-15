@@ -566,6 +566,17 @@ void DeviceManager::addDevice(Device& device) {
 	_deviceList.add(&device);
 }
 
+void DeviceManager::resetDevice(uint8_t pin) {
+	// From https://electronics.stackexchange.com/questions/36981.
+
+	pinMode(pin, OUTPUT);
+	digitalWrite(pin, LOW);
+
+	delay(200);
+
+	pinMode(pin, INPUT);
+}
+
 void DeviceManager::begin(Stream& stream) {
 	_device.begin(stream);
 

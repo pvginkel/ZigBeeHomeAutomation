@@ -60,6 +60,7 @@ public:
 
 	DeviceManager();
 
+	void resetDevice(uint8_t pin);
 	void begin(Stream& stream);
 	void sendAnnounce();
 	void performReset();
