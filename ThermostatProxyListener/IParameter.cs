@@ -8,5 +8,6 @@ internal interface IParameter
     DateTime LastUpdated { get; }
     MessageType? LastResponseType { get; }
 
-    void Update(Message request, Message response);
+    void Update(Message request, Message response, DateTime dateTime);
+    event EventHandler? Changed;
 }

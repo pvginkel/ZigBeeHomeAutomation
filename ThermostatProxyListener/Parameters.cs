@@ -5,6 +5,41 @@ namespace ThermostatProxyListener;
 
 internal class Parameters
 {
+    private static IParameter CreateParameter(
+        Parameter parameter,
+        MessageId messageId,
+        Func<Message, Message, object?> handler
+    )
+    {
+        return new ParameterValue(parameter, messageId, handler);
+    }
+
+    private static IParameter CreateFlagParameter(
+        Parameter parameter,
+        MessageId messageId,
+        Func<Message, Message, bool> handler,
+        Func<Message, Message, bool>? requestedHandler = null
+    )
+    {
+        ParameterValue self = null!;
+
+        self = new ParameterValue(
+            parameter,
+            messageId,
+            (request, response) =>
+            {
+                var value = handler(request, response);
+                var requestedValue = requestedHandler?.Invoke(request, response) ?? value;
+                if (value == requestedValue)
+                    return value ? "YES" : (self.Value == null ? null : "NO");
+
+                return (value ? "YES" : "NO") + " (requested " + (requestedValue ? "YES" : "NO");
+            }
+        );
+
+        return self;
+    }
+
     private readonly Dictionary<MessageId, List<IParameter>> _parametersByMessageId;
 
     public ImmutableArray<IParameter> AllParameters { get; }
@@ -488,6 +523,8 @@ internal class Parameters
                 )
         );
 
+    public event EventHandler<ParameterChangedEventArgs>? ParameterChanged;
+
     public Parameters()
     {
         AllParameters = GetType()
@@ -496,56 +533,32 @@ internal class Parameters
             .Select(p => (IParameter)p.GetValue(this)!)
             .ToImmutableArray();
 
+        foreach (var parameter in AllParameters)
+        {
+            parameter.Changed += (_, _) =>
+                OnParameterChanged(new ParameterChangedEventArgs(parameter));
+        }
+
         _parametersByMessageId = AllParameters
             .GroupBy(p => p.MessageId)
             .ToDictionary(p => p.Key, p => p.ToList());
     }
 
-    public void Process(Message request, Message response)
+    private void Parameter_Changed(object? sender, EventArgs e) { }
+
+    public void Process(Message request, Message response, DateTime dateTime)
     {
         if (_parametersByMessageId.TryGetValue(request.Id, out var parameters))
         {
             foreach (var parameter in parameters)
             {
-                parameter.Update(request, response);
+                parameter.Update(request, response, dateTime);
             }
         }
     }
 
-    private static IParameter CreateParameter(
-        Parameter parameter,
-        MessageId messageId,
-        Func<Message, Message, object?> handler
-    )
-    {
-        return new ParameterValue(parameter, messageId, handler);
-    }
-
-    private static IParameter CreateFlagParameter(
-        Parameter parameter,
-        MessageId messageId,
-        Func<Message, Message, bool> handler,
-        Func<Message, Message, bool>? requestedHandler = null
-    )
-    {
-        ParameterValue self = null!;
-
-        self = new ParameterValue(
-            parameter,
-            messageId,
-            (request, response) =>
-            {
-                var value = handler(request, response);
-                var requestedValue = requestedHandler?.Invoke(request, response) ?? value;
-                if (value == requestedValue)
-                    return value ? "YES" : (self.Value == null ? null : "NO");
-
-                return (value ? "YES" : "NO") + " (requested " + (requestedValue ? "YES" : "NO");
-            }
-        );
-
-        return self;
-    }
+    protected virtual void OnParameterChanged(ParameterChangedEventArgs e) =>
+        ParameterChanged?.Invoke(this, e);
 
     private class ParameterValue(
         Parameter parameter,
@@ -559,7 +572,9 @@ internal class Parameters
         public MessageType? LastResponseType { get; private set; }
         public object? Value { get; private set; }
 
-        public void Update(Message request, Message response)
+        public event EventHandler? Changed;
+
+        public void Update(Message request, Message response, DateTime dateTime)
         {
             if (
                 request.Type == MessageType.READ_DATA
@@ -571,11 +586,15 @@ internal class Parameters
             if (!Equals(value, Value))
             {
                 Value = value;
-                LastUpdated = DateTime.Now;
+                LastUpdated = dateTime;
                 LastResponseType = response.Type;
+
+                OnChanged();
             }
         }
 
         public override string? ToString() => Value?.ToString();
+
+        protected virtual void OnChanged() => Changed?.Invoke(this, EventArgs.Empty);
     }
 }

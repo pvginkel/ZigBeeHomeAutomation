@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 using MQTTnet;
 using MQTTnet.Client;
@@ -16,6 +17,11 @@ internal class ThermostatProxyMQTTClient : IAsyncDisposable
     {
         _statusHandler = statusHandler;
         _client = _factory.CreateMqttClient();
+
+        _statusHandler.Parameters.ParameterChanged += Parameters_ParameterChanged;
+
+        // Always recreate the changes.txt file from scratch.
+        File.Delete("changes.txt");
     }
 
     public async Task Connect()
@@ -34,7 +40,7 @@ internal class ThermostatProxyMQTTClient : IAsyncDisposable
                 var data = Encoding.UTF8.GetString(e.ApplicationMessage.PayloadSegment);
                 var obj = JObject.Parse(data);
 
-                ProcessData((string)obj["log"]!, false);
+                ProcessData((string)obj["log"]!, DateTime.Now, false);
             }
             catch (Exception ex)
             {
@@ -54,17 +60,34 @@ internal class ThermostatProxyMQTTClient : IAsyncDisposable
         await _client.SubscribeAsync(mqttSubscribeOptions, CancellationToken.None);
     }
 
+    private void Parameters_ParameterChanged(object? sender, ParameterChangedEventArgs e)
+    {
+        File.AppendAllText(
+            "changes.txt",
+            $"""
+            [{e.Parameter.LastUpdated:s}] {e.Parameter.Parameter}: {e.Parameter.Value}
+            
+            """
+        );
+    }
+
     private void ReplayLog()
     {
         foreach (var line in File.ReadAllLines("log.txt"))
         {
-            var match = Regex.Match(line, @" (T:\S+ B:\S+)$");
+            var match = Regex.Match(line, @"^(.*) (T:\S+ B:\S+)$");
             if (match.Success)
-                ProcessData(match.Groups[1].Value, true);
+            {
+                ProcessData(
+                    match.Groups[2].Value,
+                    DateTime.ParseExact(match.Groups[1].Value, "O", CultureInfo.InvariantCulture),
+                    true
+                );
+            }
         }
     }
 
-    private void ProcessData(string log, bool replay)
+    private void ProcessData(string log, DateTime dateTime, bool replay)
     {
         var match = Regex.Match(log, @"^T:(\S+)(?: B:0:3)?(?: B:(\S+))?$");
         if (!match.Success)
@@ -91,10 +114,15 @@ internal class ThermostatProxyMQTTClient : IAsyncDisposable
             );
         }
 
-        HandleRequestResponse(request, response, replay);
+        HandleRequestResponse(request, response, dateTime, replay);
     }
 
-    private void HandleRequestResponse(Message request, Message response, bool replay)
+    private void HandleRequestResponse(
+        Message request,
+        Message response,
+        DateTime dateTime,
+        bool replay
+    )
     {
         if (request.Status != MessageStatus.OTRS_SUCCESS)
         {
@@ -109,7 +137,7 @@ internal class ThermostatProxyMQTTClient : IAsyncDisposable
             return;
         }
 
-        _statusHandler.Process(request, response, replay);
+        _statusHandler.Process(request, response, dateTime, replay);
     }
 
     public async ValueTask DisposeAsync()

@@ -6,9 +6,9 @@ internal class ThermostatProxyStatusHandler
 
     public event EventHandler<MessagesEventArgs>? Updated;
 
-    public void Process(Message request, Message response, bool replay)
+    public void Process(Message request, Message response, DateTime dateTime, bool replay)
     {
-        Parameters.Process(request, response);
+        Parameters.Process(request, response, dateTime);
 
         if (!replay)
             OnUpdated(new MessagesEventArgs(request, response));
