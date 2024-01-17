@@ -3,11 +3,10 @@
 #include <SoftwareSerial.h>
 #include <ZigBeeHomeAutomation.h>
 
-constexpr uint8_t IO_XBEE_RX = 8;
-constexpr uint8_t IO_XBEE_TX = 9;
 constexpr uint8_t IO_PB = 4;
 constexpr uint8_t IO_STATUS_LED = 3;
 constexpr uint8_t IO_DHT = 5;
+constexpr uint8_t IO_XBEE_RESET = 9;
 
 constexpr uint16_t REPORT_INTERVAL_MS = 60000ul;
 
@@ -19,7 +18,6 @@ constexpr int MIN_HUMIDITY = 0;
 constexpr int MAX_HUMIDITY = 100;
 constexpr int SCALE_HUMIDITY = 100;
 
-SoftwareSerial xbeeSerial(IO_XBEE_RX, IO_XBEE_TX);
 DeviceManager deviceManager;
 BasicDevice sensorDevice(1, 1, PowerSource::DCSource);
 StatusControl status;
@@ -51,13 +49,15 @@ void setup() {
 	status.setBounce(Bounce(IO_PB, 50));
 	status.setLed(IO_STATUS_LED);
 
-	xbeeSerial.begin(9600);
+	Serial1.begin(9600);
 
 	deviceManager.setConnectedCallback(
 		[](ConnectionStatus connectionStatus, uintptr_t) { status.setConnected(connectionStatus); }
 	);
 
-	deviceManager.begin(xbeeSerial);
+	deviceManager.resetDevice(IO_XBEE_RESET);
+
+	deviceManager.begin(Serial1);
 
 	dht.begin();
 }
