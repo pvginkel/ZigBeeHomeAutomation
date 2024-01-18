@@ -62,13 +62,19 @@ internal class ThermostatProxyMQTTClient : IAsyncDisposable
 
     private void Parameters_ParameterChanged(object? sender, ParameterChangedEventArgs e)
     {
-        File.AppendAllText(
-            "changes.txt",
-            $"""
+        if (
+            e.Parameter.LastResponseType == MessageType.READ_ACK
+            || e.Parameter.LastResponseType == MessageType.WRITE_ACK
+        )
+        {
+            File.AppendAllText(
+                "changes.txt",
+                $"""
             [{e.Parameter.LastUpdated:s}] {e.Parameter.Parameter}: {e.Parameter.Value}
             
             """
-        );
+            );
+        }
     }
 
     private void ReplayLog()
