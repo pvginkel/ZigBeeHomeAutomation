@@ -21,9 +21,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Thermostat.ino" />
+    <ClCompile Include="OpenTherm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.Thermostat.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenTherm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

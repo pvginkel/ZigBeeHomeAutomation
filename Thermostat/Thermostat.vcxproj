@@ -80,6 +80,7 @@
     <TargetOSAndVersion>Arduino</TargetOSAndVersion>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="OpenTherm.cpp" />
     <ClCompile Include="Thermostat.ino">
       <FileType>CppCode</FileType>
       <DeploymentContent>true</DeploymentContent>
@@ -93,6 +94,7 @@
     <ProjectCapability Include="VisualMicro" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="OpenTherm.h" />
     <ClInclude Include="__vm\.Thermostat.vsarduino.h" />
   </ItemGroup>
   <PropertyGroup>
