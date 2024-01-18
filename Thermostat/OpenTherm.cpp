@@ -13,6 +13,42 @@ Copyright 2018, Ihor Melnyk
 #define IRAM_ATTR ICACHE_RAM_ATTR
 #endif
 
+OpenThermMessage::OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type, uint16_t payload)
+	: id(id), type(type), payload(payload) { }
+
+OpenThermMessage::OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type, uint8_t lb, uint8_t hb)
+	: id(id), type(type), payload(uint16_t(hb) << 8 | lb) { }
+
+OpenThermMessage::OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type, float payload)
+	: id(id), type(type), payload(serializeFloat(payload)) { }
+
+uint8_t OpenThermMessage::getHB() const
+{
+	return uint8_t(payload >> 8);
+}
+
+uint8_t OpenThermMessage::getLB() const
+{
+	return uint8_t(payload);
+}
+
+float OpenThermMessage::getFloat() const
+{
+	const auto sign = payload & (1 << 15) ? -1.0f : 0.0f;
+	const auto value = uint16_t(payload & ~(1 << 15));
+	return sign * float(value) / 256.0f;
+}
+
+uint16_t OpenThermMessage::serializeFloat(float value)
+{
+	const uint16_t sign = value < 0 ? 1 << 15 : 0;
+	if (sign) {
+		value = -value;
+	}
+
+	return uint16_t(value * 256.0f) | sign;
+}
+
 OpenTherm::OpenTherm(uint8_t inPin, uint8_t outPin, bool isSlave):
 	_inPin(inPin),
 	_outPin(outPin),

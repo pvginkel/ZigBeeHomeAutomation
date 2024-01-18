@@ -106,38 +106,20 @@ enum class OpenThermStatus {
 
 struct OpenThermMessage
 {
-	OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type, uint16_t payload)
-		: id(id), type(type), payload(payload) { }
-	OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type, uint8_t lb, uint8_t hb)
-		: id(id), type(type), payload(uint16_t(hb) << 8 | lb) { }
-	OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type, float payload)
-		: id(id), type(type), payload(serializeFloat(payload)) { }
+	OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type, uint16_t payload);
+	OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type, uint8_t lb, uint8_t hb);
+	OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type, float payload);
 
 	OpenThermMessageID id;
 	OpenThermMessageType type;
 	uint16_t payload;
 
-	uint8_t getHB() const {
-		return uint8_t(payload >> 8);
-	}
-	uint8_t getLB() const {
-		return uint8_t(payload);
-	}
-	float getFloat() const {
-		const auto sign = payload & (1 << 15) ? -1.0f : 0.0f;
-		const auto value = uint16_t(payload & ~(1 << 15));
-		return sign * float(value) / 256.0f;
-	}
+	uint8_t getHB() const;
+	uint8_t getLB() const;
+	float getFloat() const;
 
 private:
-	static uint16_t serializeFloat(float value) {
-		const uint16_t sign = value < 0 ? 1 << 15 : 0;
-		if (sign) {
-			value = -value;
-		}
-
-		return uint16_t(value * 256.0f) | sign;
-	}
+	static uint16_t serializeFloat(float value);
 };
 
 typedef unsigned long OpenThermFrame_t;
