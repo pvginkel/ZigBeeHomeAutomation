@@ -35,3 +35,28 @@ Attribute* Cluster::getAttributeByIndex(int index) {
 void Cluster::addAttribute(Attribute* attribute) {
 	_attributes.add(attribute);
 }
+
+Status Cluster::processWriteAttributeValue(uint16_t attributeId, DataType dataType, Memory& buffer) {
+	auto attribute = getAttributeById(attributeId);
+
+	if (!attribute) {
+		return Status::UnsupportedAttribute;
+	}
+
+	if (dataType != attribute->getDataType()) {
+		return Status::InvalidDataType;
+	}
+
+	auto attributeDataType = attribute->getDataType();
+	if (attributeDataType == DataType::String) {
+		((AttributeString*)attribute)->readStringValue(buffer, dataType);
+	}
+	else if (attributeDataType == DataType::Octstr) {
+		((AttributeOctstr*)attribute)->readOctstrValue(buffer, dataType);
+	}
+	else {
+		attribute->readValue(buffer);
+	}
+
+	return Status::Success;
+}

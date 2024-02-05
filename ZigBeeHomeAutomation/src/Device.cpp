@@ -93,38 +93,26 @@ Status Device::processGeneralWriteAttributesCommand(Frame& frame, Memory& reques
 	).write(response);
 
 	while (WriteAttributesFrame::readNextWriteAttribute(request, attributeId, dataType)) {
-		auto attribute = cluster->getAttributeById(attributeId);
+		const auto status = cluster->processWriteAttributeValue(attributeId, dataType, request);
 
-		if (!attribute) {
-			WARN(F("Tried to write non-existing attribute "), attributeId, F(" on cluster "), message.getClusterId());
-
-			skipValue(request, dataType);
-
-			WriteAttributeResponseFrame::writeAttributeResponse(response, Status::UnsupportedAttribute, attributeId);
-		}
-		else if (dataType != attribute->getDataType()) {
-			WARN(F("Tried to write attribute "), attributeId, F(" on cluster "), message.getClusterId(), F(" with incorrect data type "), (int)dataType);
-
-			skipValue(request, dataType);
-
-			WriteAttributeResponseFrame::writeAttributeResponse(response, Status::InvalidDataType, attributeId);
+		if (status == Status::Success) {
+			DEBUG(F("Writing value to attribute "), attributeId, F(" on cluster "), message.getClusterId());
 		}
 		else {
-			DEBUG(F("Writing value to attribute "), attributeId, F(" on cluster "), message.getClusterId());
-
-			auto attributeDataType = attribute->getDataType();
-			if (attributeDataType == DataType::String) {
-				((AttributeString*)attribute)->readStringValue(request, dataType);
+			if (status == Status::InvalidDataType) {
+				WARN(F("Tried to write attribute "), attributeId, F(" on cluster "), message.getClusterId(), F(" with incorrect data type "), (int)dataType);
 			}
-			else if (attributeDataType == DataType::Octstr) {
-				((AttributeOctstr*)attribute)->readOctstrValue(request, dataType);
+			else if (status == Status::UnsupportedAttribute) {
+				WARN(F("Tried to write non-existing attribute "), attributeId, F(" on cluster "), message.getClusterId());
 			}
 			else {
-				attribute->readValue(request);
+				WARN(F("Unknown error while writing "), attributeId, F(" on cluster "), message.getClusterId());
 			}
 
-			WriteAttributeResponseFrame::writeAttributeResponse(response, Status::Success, attributeId);
+			skipValue(request, dataType);
 		}
+
+		WriteAttributeResponseFrame::writeAttributeResponse(response, status, attributeId);
 	}
 
 	return Status::Success;

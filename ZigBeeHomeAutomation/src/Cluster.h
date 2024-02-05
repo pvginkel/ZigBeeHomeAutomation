@@ -30,5 +30,7 @@ public:
         response.writeUInt8((uint8_t)Status::UnsupportedAttribute);
     }
 
+    virtual Status processWriteAttributeValue(uint16_t attributeId, DataType dataType, Memory& buffer);
+
     Cluster& operator=(const Cluster&) = delete;
 };
