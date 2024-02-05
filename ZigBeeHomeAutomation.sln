@@ -48,6 +48,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThermostatProxy", "Thermost
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Thermostat", "Thermostat\Thermostat.vcxproj", "{0D670976-08E1-4580-9CAC-7CCBA4B58928}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HumbleRemote", "HumbleRemote\HumbleRemote.vcxproj", "{60E5E608-FB93-4958-B238-A26021EC10FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -378,6 +380,36 @@ Global
 		{0D670976-08E1-4580-9CAC-7CCBA4B58928}.Release|x86.ActiveCfg = Release|x86
 		{0D670976-08E1-4580-9CAC-7CCBA4B58928}.Release|x86.Build.0 = Release|x86
 		{0D670976-08E1-4580-9CAC-7CCBA4B58928}.Release|x86.Deploy.0 = Release|x86
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|Any CPU.Build.0 = Debug|x64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|Any CPU.Deploy.0 = Debug|x64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|ARM.ActiveCfg = Debug|ARM
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|ARM.Build.0 = Debug|ARM
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|ARM.Deploy.0 = Debug|ARM
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|ARM64.Build.0 = Debug|ARM64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|x64.ActiveCfg = Debug|x64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|x64.Build.0 = Debug|x64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|x64.Deploy.0 = Debug|x64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|x86.ActiveCfg = Debug|x86
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|x86.Build.0 = Debug|x86
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Debug|x86.Deploy.0 = Debug|x86
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|Any CPU.ActiveCfg = Release|x64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|Any CPU.Build.0 = Release|x64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|Any CPU.Deploy.0 = Release|x64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|ARM.ActiveCfg = Release|ARM
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|ARM.Build.0 = Release|ARM
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|ARM.Deploy.0 = Release|ARM
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|ARM64.ActiveCfg = Release|ARM64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|ARM64.Build.0 = Release|ARM64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|ARM64.Deploy.0 = Release|ARM64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|x64.ActiveCfg = Release|x64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|x64.Build.0 = Release|x64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|x64.Deploy.0 = Release|x64
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|x86.ActiveCfg = Release|x86
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|x86.Build.0 = Release|x86
+		{60E5E608-FB93-4958-B238-A26021EC10FF}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -387,13 +419,18 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{0afe8a92-dcc3-4a87-ad96-adcac3684697}*SharedItemsImports = 9
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{0d670976-08e1-4580-9cac-7ccba4b58928}*SharedItemsImports = 4
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{238c376b-1596-4a7d-8ffd-631ddd7337f6}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{381bd1d2-ffa9-4b49-bb2a-468e9c42d5c5}*SharedItemsImports = 4
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{5a286a13-95b3-487f-acb3-96364509b281}*SharedItemsImports = 4
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{60e5e608-fb93-4958-b238-a26021ec10ff}*SharedItemsImports = 4
 		..\libraries\Bounce2\Bounce2-2.71.vcxitems*{81eca0f5-0b88-4778-875d-f9b7737eb815}*SharedItemsImports = 4
 		..\libraries\U8g2\U8g2-2.33.15.vcxitems*{81eca0f5-0b88-4778-875d-f9b7737eb815}*SharedItemsImports = 4
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{81eca0f5-0b88-4778-875d-f9b7737eb815}*SharedItemsImports = 4
 		..\..\..\Users\pvgin\AppData\Local\Arduino15\packages\arduino\hardware\megaavr\1.8.8\libraries\Wire\Wire-1.0.vcxitems*{81eca0f5-0b88-4778-875d-f9b7737eb815}*SharedItemsImports = 4
 		..\libraries\U8g2\U8g2-2.33.15.vcxitems*{a77bf23e-237a-43bc-9109-293aaa94a685}*SharedItemsImports = 9
 		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{a9356c33-f68d-4d5f-a9d8-4715672ed74d}*SharedItemsImports = 4
+		ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
 		..\..\..\Users\pvgin\AppData\Local\Arduino15\packages\arduino\hardware\megaavr\1.8.8\libraries\Wire\Wire-1.0.vcxitems*{cc6d01a5-d88e-434f-876b-0c875266e5cf}*SharedItemsImports = 9
 		..\libraries\Bounce2\Bounce2-2.71.vcxitems*{cf1c60ee-ddcf-4cae-99ff-d9a0a648f2fa}*SharedItemsImports = 9
 	EndGlobalSection
