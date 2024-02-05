@@ -6,7 +6,7 @@
 static uint8_t nextTransactionSequenceNumber = 0;
 
 AttributeUInt8* GenBasicCluster::getZclVersion() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBasicAttribute::ZclVersion);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::UInt8);
         addAttribute(result);
@@ -15,7 +15,7 @@ AttributeUInt8* GenBasicCluster::getZclVersion() {
 }
 
 AttributeUInt8* GenBasicCluster::getAppVersion() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBasicAttribute::AppVersion);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::UInt8);
         addAttribute(result);
@@ -24,7 +24,7 @@ AttributeUInt8* GenBasicCluster::getAppVersion() {
 }
 
 AttributeUInt8* GenBasicCluster::getStackVersion() {
-    auto result = (AttributeUInt8*)getAttributeById(2);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBasicAttribute::StackVersion);
     if (result == nullptr) {
         result = new AttributeUInt8(2, DataType::UInt8);
         addAttribute(result);
@@ -33,7 +33,7 @@ AttributeUInt8* GenBasicCluster::getStackVersion() {
 }
 
 AttributeUInt8* GenBasicCluster::getHwVersion() {
-    auto result = (AttributeUInt8*)getAttributeById(3);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBasicAttribute::HwVersion);
     if (result == nullptr) {
         result = new AttributeUInt8(3, DataType::UInt8);
         addAttribute(result);
@@ -42,7 +42,7 @@ AttributeUInt8* GenBasicCluster::getHwVersion() {
 }
 
 AttributeString* GenBasicCluster::getManufacturerName() {
-    auto result = (AttributeString*)getAttributeById(4);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBasicAttribute::ManufacturerName);
     if (result == nullptr) {
         result = new AttributeString(4);
         addAttribute(result);
@@ -51,7 +51,7 @@ AttributeString* GenBasicCluster::getManufacturerName() {
 }
 
 AttributeString* GenBasicCluster::getModelId() {
-    auto result = (AttributeString*)getAttributeById(5);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBasicAttribute::ModelId);
     if (result == nullptr) {
         result = new AttributeString(5);
         addAttribute(result);
@@ -60,7 +60,7 @@ AttributeString* GenBasicCluster::getModelId() {
 }
 
 AttributeString* GenBasicCluster::getDateCode() {
-    auto result = (AttributeString*)getAttributeById(6);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBasicAttribute::DateCode);
     if (result == nullptr) {
         result = new AttributeString(6);
         addAttribute(result);
@@ -69,7 +69,7 @@ AttributeString* GenBasicCluster::getDateCode() {
 }
 
 AttributeUInt8* GenBasicCluster::getPowerSource() {
-    auto result = (AttributeUInt8*)getAttributeById(7);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBasicAttribute::PowerSource);
     if (result == nullptr) {
         result = new AttributeUInt8(7, DataType::Enum8);
         addAttribute(result);
@@ -78,7 +78,7 @@ AttributeUInt8* GenBasicCluster::getPowerSource() {
 }
 
 AttributeUInt8* GenBasicCluster::getAppProfileVersion() {
-    auto result = (AttributeUInt8*)getAttributeById(8);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBasicAttribute::AppProfileVersion);
     if (result == nullptr) {
         result = new AttributeUInt8(8, DataType::Enum8);
         addAttribute(result);
@@ -87,7 +87,7 @@ AttributeUInt8* GenBasicCluster::getAppProfileVersion() {
 }
 
 AttributeString* GenBasicCluster::getSwBuildId() {
-    auto result = (AttributeString*)getAttributeById(16384);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBasicAttribute::SwBuildId);
     if (result == nullptr) {
         result = new AttributeString(16384);
         addAttribute(result);
@@ -96,7 +96,7 @@ AttributeString* GenBasicCluster::getSwBuildId() {
 }
 
 AttributeString* GenBasicCluster::getLocationDesc() {
-    auto result = (AttributeString*)getAttributeById(16);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBasicAttribute::LocationDesc);
     if (result == nullptr) {
         result = new AttributeString(16);
         addAttribute(result);
@@ -105,7 +105,7 @@ AttributeString* GenBasicCluster::getLocationDesc() {
 }
 
 AttributeUInt8* GenBasicCluster::getPhysicalEnv() {
-    auto result = (AttributeUInt8*)getAttributeById(17);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBasicAttribute::PhysicalEnv);
     if (result == nullptr) {
         result = new AttributeUInt8(17, DataType::Enum8);
         addAttribute(result);
@@ -114,7 +114,7 @@ AttributeUInt8* GenBasicCluster::getPhysicalEnv() {
 }
 
 AttributeUInt8* GenBasicCluster::getDeviceEnabled() {
-    auto result = (AttributeUInt8*)getAttributeById(18);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBasicAttribute::DeviceEnabled);
     if (result == nullptr) {
         result = new AttributeUInt8(18, DataType::Bool);
         addAttribute(result);
@@ -123,7 +123,7 @@ AttributeUInt8* GenBasicCluster::getDeviceEnabled() {
 }
 
 AttributeUInt8* GenBasicCluster::getAlarmMask() {
-    auto result = (AttributeUInt8*)getAttributeById(19);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBasicAttribute::AlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt8(19, DataType::Map8);
         addAttribute(result);
@@ -132,7 +132,7 @@ AttributeUInt8* GenBasicCluster::getAlarmMask() {
 }
 
 AttributeUInt8* GenBasicCluster::getDisableLocalConfig() {
-    auto result = (AttributeUInt8*)getAttributeById(20);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBasicAttribute::DisableLocalConfig);
     if (result == nullptr) {
         result = new AttributeUInt8(20, DataType::Map8);
         addAttribute(result);
@@ -167,7 +167,7 @@ void GenBasicCluster::processCommand(uint8_t commandId, Memory& request, Memory&
 }
 
 AttributeUInt16* GenPowerCfgCluster::getMainsVoltage() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenPowerCfgAttribute::MainsVoltage);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -176,7 +176,7 @@ AttributeUInt16* GenPowerCfgCluster::getMainsVoltage() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getMainsFrequency() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::MainsFrequency);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::UInt8);
         addAttribute(result);
@@ -185,7 +185,7 @@ AttributeUInt8* GenPowerCfgCluster::getMainsFrequency() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getMainsAlarmMask() {
-    auto result = (AttributeUInt8*)getAttributeById(16);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::MainsAlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt8(16, DataType::Map8);
         addAttribute(result);
@@ -194,7 +194,7 @@ AttributeUInt8* GenPowerCfgCluster::getMainsAlarmMask() {
 }
 
 AttributeUInt16* GenPowerCfgCluster::getMainsVoltMinThres() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenPowerCfgAttribute::MainsVoltMinThres);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -203,7 +203,7 @@ AttributeUInt16* GenPowerCfgCluster::getMainsVoltMinThres() {
 }
 
 AttributeUInt16* GenPowerCfgCluster::getMainsVoltMaxThres() {
-    auto result = (AttributeUInt16*)getAttributeById(18);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenPowerCfgAttribute::MainsVoltMaxThres);
     if (result == nullptr) {
         result = new AttributeUInt16(18, DataType::UInt16);
         addAttribute(result);
@@ -212,7 +212,7 @@ AttributeUInt16* GenPowerCfgCluster::getMainsVoltMaxThres() {
 }
 
 AttributeUInt16* GenPowerCfgCluster::getMainsVoltageDwellTripPoint() {
-    auto result = (AttributeUInt16*)getAttributeById(19);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenPowerCfgAttribute::MainsVoltageDwellTripPoint);
     if (result == nullptr) {
         result = new AttributeUInt16(19, DataType::UInt16);
         addAttribute(result);
@@ -221,7 +221,7 @@ AttributeUInt16* GenPowerCfgCluster::getMainsVoltageDwellTripPoint() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatteryVoltage() {
-    auto result = (AttributeUInt8*)getAttributeById(32);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryVoltage);
     if (result == nullptr) {
         result = new AttributeUInt8(32, DataType::UInt8);
         addAttribute(result);
@@ -230,7 +230,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryVoltage() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatteryPercentageRemaining() {
-    auto result = (AttributeUInt8*)getAttributeById(33);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryPercentageRemaining);
     if (result == nullptr) {
         result = new AttributeUInt8(33, DataType::UInt8);
         addAttribute(result);
@@ -239,7 +239,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryPercentageRemaining() {
 }
 
 AttributeString* GenPowerCfgCluster::getBatteryManufacturer() {
-    auto result = (AttributeString*)getAttributeById(48);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryManufacturer);
     if (result == nullptr) {
         result = new AttributeString(48);
         addAttribute(result);
@@ -248,7 +248,7 @@ AttributeString* GenPowerCfgCluster::getBatteryManufacturer() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatterySize() {
-    auto result = (AttributeUInt8*)getAttributeById(49);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatterySize);
     if (result == nullptr) {
         result = new AttributeUInt8(49, DataType::Enum8);
         addAttribute(result);
@@ -257,7 +257,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatterySize() {
 }
 
 AttributeUInt16* GenPowerCfgCluster::getBatteryAHrRating() {
-    auto result = (AttributeUInt16*)getAttributeById(50);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryAHrRating);
     if (result == nullptr) {
         result = new AttributeUInt16(50, DataType::UInt16);
         addAttribute(result);
@@ -266,7 +266,7 @@ AttributeUInt16* GenPowerCfgCluster::getBatteryAHrRating() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatteryQuantity() {
-    auto result = (AttributeUInt8*)getAttributeById(51);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryQuantity);
     if (result == nullptr) {
         result = new AttributeUInt8(51, DataType::UInt8);
         addAttribute(result);
@@ -275,7 +275,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryQuantity() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatteryRatedVoltage() {
-    auto result = (AttributeUInt8*)getAttributeById(52);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryRatedVoltage);
     if (result == nullptr) {
         result = new AttributeUInt8(52, DataType::UInt8);
         addAttribute(result);
@@ -284,7 +284,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryRatedVoltage() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatteryAlarmMask() {
-    auto result = (AttributeUInt8*)getAttributeById(53);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryAlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt8(53, DataType::Map8);
         addAttribute(result);
@@ -293,7 +293,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryAlarmMask() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatteryVoltMinThres() {
-    auto result = (AttributeUInt8*)getAttributeById(54);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryVoltMinThres);
     if (result == nullptr) {
         result = new AttributeUInt8(54, DataType::UInt8);
         addAttribute(result);
@@ -302,7 +302,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryVoltMinThres() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatteryVoltThres1() {
-    auto result = (AttributeUInt8*)getAttributeById(55);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryVoltThres1);
     if (result == nullptr) {
         result = new AttributeUInt8(55, DataType::UInt8);
         addAttribute(result);
@@ -311,7 +311,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryVoltThres1() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatteryVoltThres2() {
-    auto result = (AttributeUInt8*)getAttributeById(56);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryVoltThres2);
     if (result == nullptr) {
         result = new AttributeUInt8(56, DataType::UInt8);
         addAttribute(result);
@@ -320,7 +320,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryVoltThres2() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatteryVoltThres3() {
-    auto result = (AttributeUInt8*)getAttributeById(57);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryVoltThres3);
     if (result == nullptr) {
         result = new AttributeUInt8(57, DataType::UInt8);
         addAttribute(result);
@@ -329,7 +329,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryVoltThres3() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatteryPercentMinThres() {
-    auto result = (AttributeUInt8*)getAttributeById(58);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryPercentMinThres);
     if (result == nullptr) {
         result = new AttributeUInt8(58, DataType::UInt8);
         addAttribute(result);
@@ -338,7 +338,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryPercentMinThres() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatteryPercentThres1() {
-    auto result = (AttributeUInt8*)getAttributeById(59);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryPercentThres1);
     if (result == nullptr) {
         result = new AttributeUInt8(59, DataType::UInt8);
         addAttribute(result);
@@ -347,7 +347,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryPercentThres1() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatteryPercentThres2() {
-    auto result = (AttributeUInt8*)getAttributeById(60);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryPercentThres2);
     if (result == nullptr) {
         result = new AttributeUInt8(60, DataType::UInt8);
         addAttribute(result);
@@ -356,7 +356,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryPercentThres2() {
 }
 
 AttributeUInt8* GenPowerCfgCluster::getBatteryPercentThres3() {
-    auto result = (AttributeUInt8*)getAttributeById(61);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryPercentThres3);
     if (result == nullptr) {
         result = new AttributeUInt8(61, DataType::UInt8);
         addAttribute(result);
@@ -365,7 +365,7 @@ AttributeUInt8* GenPowerCfgCluster::getBatteryPercentThres3() {
 }
 
 AttributeUInt32* GenPowerCfgCluster::getBatteryAlarmState() {
-    auto result = (AttributeUInt32*)getAttributeById(62);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenPowerCfgAttribute::BatteryAlarmState);
     if (result == nullptr) {
         result = new AttributeUInt32(62, DataType::Map32);
         addAttribute(result);
@@ -374,7 +374,7 @@ AttributeUInt32* GenPowerCfgCluster::getBatteryAlarmState() {
 }
 
 AttributeInt16* GenDeviceTempCfgCluster::getCurrentTemperature() {
-    auto result = (AttributeInt16*)getAttributeById(0);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)GenDeviceTempCfgAttribute::CurrentTemperature);
     if (result == nullptr) {
         result = new AttributeInt16(0, DataType::Int16);
         addAttribute(result);
@@ -383,7 +383,7 @@ AttributeInt16* GenDeviceTempCfgCluster::getCurrentTemperature() {
 }
 
 AttributeInt16* GenDeviceTempCfgCluster::getMinTempExperienced() {
-    auto result = (AttributeInt16*)getAttributeById(1);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)GenDeviceTempCfgAttribute::MinTempExperienced);
     if (result == nullptr) {
         result = new AttributeInt16(1, DataType::Int16);
         addAttribute(result);
@@ -392,7 +392,7 @@ AttributeInt16* GenDeviceTempCfgCluster::getMinTempExperienced() {
 }
 
 AttributeInt16* GenDeviceTempCfgCluster::getMaxTempExperienced() {
-    auto result = (AttributeInt16*)getAttributeById(2);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)GenDeviceTempCfgAttribute::MaxTempExperienced);
     if (result == nullptr) {
         result = new AttributeInt16(2, DataType::Int16);
         addAttribute(result);
@@ -401,7 +401,7 @@ AttributeInt16* GenDeviceTempCfgCluster::getMaxTempExperienced() {
 }
 
 AttributeUInt16* GenDeviceTempCfgCluster::getOverTempTotalDwell() {
-    auto result = (AttributeUInt16*)getAttributeById(3);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenDeviceTempCfgAttribute::OverTempTotalDwell);
     if (result == nullptr) {
         result = new AttributeUInt16(3, DataType::UInt16);
         addAttribute(result);
@@ -410,7 +410,7 @@ AttributeUInt16* GenDeviceTempCfgCluster::getOverTempTotalDwell() {
 }
 
 AttributeUInt8* GenDeviceTempCfgCluster::getDevTempAlarmMask() {
-    auto result = (AttributeUInt8*)getAttributeById(16);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenDeviceTempCfgAttribute::DevTempAlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt8(16, DataType::Map8);
         addAttribute(result);
@@ -419,7 +419,7 @@ AttributeUInt8* GenDeviceTempCfgCluster::getDevTempAlarmMask() {
 }
 
 AttributeInt16* GenDeviceTempCfgCluster::getLowTempThres() {
-    auto result = (AttributeInt16*)getAttributeById(17);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)GenDeviceTempCfgAttribute::LowTempThres);
     if (result == nullptr) {
         result = new AttributeInt16(17, DataType::Int16);
         addAttribute(result);
@@ -428,7 +428,7 @@ AttributeInt16* GenDeviceTempCfgCluster::getLowTempThres() {
 }
 
 AttributeInt16* GenDeviceTempCfgCluster::getHighTempThres() {
-    auto result = (AttributeInt16*)getAttributeById(18);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)GenDeviceTempCfgAttribute::HighTempThres);
     if (result == nullptr) {
         result = new AttributeInt16(18, DataType::Int16);
         addAttribute(result);
@@ -437,7 +437,7 @@ AttributeInt16* GenDeviceTempCfgCluster::getHighTempThres() {
 }
 
 AttributeUInt24* GenDeviceTempCfgCluster::getLowTempDwellTripPoint() {
-    auto result = (AttributeUInt24*)getAttributeById(19);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)GenDeviceTempCfgAttribute::LowTempDwellTripPoint);
     if (result == nullptr) {
         result = new AttributeUInt24(19, DataType::UInt24);
         addAttribute(result);
@@ -446,7 +446,7 @@ AttributeUInt24* GenDeviceTempCfgCluster::getLowTempDwellTripPoint() {
 }
 
 AttributeUInt24* GenDeviceTempCfgCluster::getHighTempDwellTripPoint() {
-    auto result = (AttributeUInt24*)getAttributeById(20);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)GenDeviceTempCfgAttribute::HighTempDwellTripPoint);
     if (result == nullptr) {
         result = new AttributeUInt24(20, DataType::UInt24);
         addAttribute(result);
@@ -455,7 +455,7 @@ AttributeUInt24* GenDeviceTempCfgCluster::getHighTempDwellTripPoint() {
 }
 
 AttributeUInt16* GenIdentifyCluster::getIdentifyTime() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenIdentifyAttribute::IdentifyTime);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -574,7 +574,7 @@ void GenIdentifyCluster::processCommand(uint8_t commandId, Memory& request, Memo
 }
 
 AttributeUInt8* GenGroupsCluster::getNameSupport() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenGroupsAttribute::NameSupport);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Map8);
         addAttribute(result);
@@ -674,7 +674,7 @@ void GenGroupsCluster::processCommand(uint8_t commandId, Memory& request, Memory
 }
 
 AttributeUInt8* GenScenesCluster::getCount() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenScenesAttribute::Count);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::UInt8);
         addAttribute(result);
@@ -683,7 +683,7 @@ AttributeUInt8* GenScenesCluster::getCount() {
 }
 
 AttributeUInt8* GenScenesCluster::getCurrentScene() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenScenesAttribute::CurrentScene);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::UInt8);
         addAttribute(result);
@@ -692,7 +692,7 @@ AttributeUInt8* GenScenesCluster::getCurrentScene() {
 }
 
 AttributeUInt16* GenScenesCluster::getCurrentGroup() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenScenesAttribute::CurrentGroup);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::UInt16);
         addAttribute(result);
@@ -701,7 +701,7 @@ AttributeUInt16* GenScenesCluster::getCurrentGroup() {
 }
 
 AttributeUInt8* GenScenesCluster::getSceneValid() {
-    auto result = (AttributeUInt8*)getAttributeById(3);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenScenesAttribute::SceneValid);
     if (result == nullptr) {
         result = new AttributeUInt8(3, DataType::Bool);
         addAttribute(result);
@@ -710,7 +710,7 @@ AttributeUInt8* GenScenesCluster::getSceneValid() {
 }
 
 AttributeUInt8* GenScenesCluster::getNameSupport() {
-    auto result = (AttributeUInt8*)getAttributeById(4);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenScenesAttribute::NameSupport);
     if (result == nullptr) {
         result = new AttributeUInt8(4, DataType::Map8);
         addAttribute(result);
@@ -719,7 +719,7 @@ AttributeUInt8* GenScenesCluster::getNameSupport() {
 }
 
 AttributeUInt64* GenScenesCluster::getLastCfgBy() {
-    auto result = (AttributeUInt64*)getAttributeById(5);
+    auto result = (AttributeUInt64*)getAttributeById((uint16_t)GenScenesAttribute::LastCfgBy);
     if (result == nullptr) {
         result = new AttributeUInt64(5, DataType::EUI64);
         addAttribute(result);
@@ -873,7 +873,7 @@ void GenScenesCluster::processCommand(uint8_t commandId, Memory& request, Memory
 }
 
 AttributeUInt8* GenOnOffCluster::getOnOff() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenOnOffAttribute::OnOff);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Bool);
         addAttribute(result);
@@ -882,7 +882,7 @@ AttributeUInt8* GenOnOffCluster::getOnOff() {
 }
 
 AttributeUInt8* GenOnOffCluster::getGlobalSceneCtrl() {
-    auto result = (AttributeUInt8*)getAttributeById(16384);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenOnOffAttribute::GlobalSceneCtrl);
     if (result == nullptr) {
         result = new AttributeUInt8(16384, DataType::Bool);
         addAttribute(result);
@@ -891,7 +891,7 @@ AttributeUInt8* GenOnOffCluster::getGlobalSceneCtrl() {
 }
 
 AttributeUInt16* GenOnOffCluster::getOnTime() {
-    auto result = (AttributeUInt16*)getAttributeById(16385);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenOnOffAttribute::OnTime);
     if (result == nullptr) {
         result = new AttributeUInt16(16385, DataType::UInt16);
         addAttribute(result);
@@ -900,7 +900,7 @@ AttributeUInt16* GenOnOffCluster::getOnTime() {
 }
 
 AttributeUInt16* GenOnOffCluster::getOffWaitTime() {
-    auto result = (AttributeUInt16*)getAttributeById(16386);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenOnOffAttribute::OffWaitTime);
     if (result == nullptr) {
         result = new AttributeUInt16(16386, DataType::UInt16);
         addAttribute(result);
@@ -909,7 +909,7 @@ AttributeUInt16* GenOnOffCluster::getOffWaitTime() {
 }
 
 AttributeUInt8* GenOnOffCluster::getStartUpOnOff() {
-    auto result = (AttributeUInt8*)getAttributeById(16387);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenOnOffAttribute::StartUpOnOff);
     if (result == nullptr) {
         result = new AttributeUInt8(16387, DataType::Enum8);
         addAttribute(result);
@@ -918,7 +918,7 @@ AttributeUInt8* GenOnOffCluster::getStartUpOnOff() {
 }
 
 AttributeUInt8* GenOnOffCluster::getMoesStartUpOnOff() {
-    auto result = (AttributeUInt8*)getAttributeById(32770);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenOnOffAttribute::MoesStartUpOnOff);
     if (result == nullptr) {
         result = new AttributeUInt8(32770, DataType::Enum8);
         addAttribute(result);
@@ -1053,7 +1053,7 @@ void GenOnOffCluster::processCommand(uint8_t commandId, Memory& request, Memory&
 }
 
 AttributeUInt8* GenOnOffSwitchCfgCluster::getSwitchType() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenOnOffSwitchCfgAttribute::SwitchType);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Enum8);
         addAttribute(result);
@@ -1062,7 +1062,7 @@ AttributeUInt8* GenOnOffSwitchCfgCluster::getSwitchType() {
 }
 
 AttributeUInt8* GenOnOffSwitchCfgCluster::getSwitchActions() {
-    auto result = (AttributeUInt8*)getAttributeById(16);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenOnOffSwitchCfgAttribute::SwitchActions);
     if (result == nullptr) {
         result = new AttributeUInt8(16, DataType::Enum8);
         addAttribute(result);
@@ -1071,7 +1071,7 @@ AttributeUInt8* GenOnOffSwitchCfgCluster::getSwitchActions() {
 }
 
 AttributeUInt8* GenLevelCtrlCluster::getCurrentLevel() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenLevelCtrlAttribute::CurrentLevel);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::UInt8);
         addAttribute(result);
@@ -1080,7 +1080,7 @@ AttributeUInt8* GenLevelCtrlCluster::getCurrentLevel() {
 }
 
 AttributeUInt16* GenLevelCtrlCluster::getRemainingTime() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenLevelCtrlAttribute::RemainingTime);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -1089,7 +1089,7 @@ AttributeUInt16* GenLevelCtrlCluster::getRemainingTime() {
 }
 
 AttributeUInt8* GenLevelCtrlCluster::getMinLevel() {
-    auto result = (AttributeUInt8*)getAttributeById(2);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenLevelCtrlAttribute::MinLevel);
     if (result == nullptr) {
         result = new AttributeUInt8(2, DataType::UInt8);
         addAttribute(result);
@@ -1098,7 +1098,7 @@ AttributeUInt8* GenLevelCtrlCluster::getMinLevel() {
 }
 
 AttributeUInt8* GenLevelCtrlCluster::getMaxLevel() {
-    auto result = (AttributeUInt8*)getAttributeById(3);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenLevelCtrlAttribute::MaxLevel);
     if (result == nullptr) {
         result = new AttributeUInt8(3, DataType::UInt8);
         addAttribute(result);
@@ -1107,7 +1107,7 @@ AttributeUInt8* GenLevelCtrlCluster::getMaxLevel() {
 }
 
 AttributeUInt8* GenLevelCtrlCluster::getOptions() {
-    auto result = (AttributeUInt8*)getAttributeById(15);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenLevelCtrlAttribute::Options);
     if (result == nullptr) {
         result = new AttributeUInt8(15, DataType::Map8);
         addAttribute(result);
@@ -1116,7 +1116,7 @@ AttributeUInt8* GenLevelCtrlCluster::getOptions() {
 }
 
 AttributeUInt16* GenLevelCtrlCluster::getOnOffTransitionTime() {
-    auto result = (AttributeUInt16*)getAttributeById(16);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenLevelCtrlAttribute::OnOffTransitionTime);
     if (result == nullptr) {
         result = new AttributeUInt16(16, DataType::UInt16);
         addAttribute(result);
@@ -1125,7 +1125,7 @@ AttributeUInt16* GenLevelCtrlCluster::getOnOffTransitionTime() {
 }
 
 AttributeUInt8* GenLevelCtrlCluster::getOnLevel() {
-    auto result = (AttributeUInt8*)getAttributeById(17);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenLevelCtrlAttribute::OnLevel);
     if (result == nullptr) {
         result = new AttributeUInt8(17, DataType::UInt8);
         addAttribute(result);
@@ -1134,7 +1134,7 @@ AttributeUInt8* GenLevelCtrlCluster::getOnLevel() {
 }
 
 AttributeUInt16* GenLevelCtrlCluster::getOnTransitionTime() {
-    auto result = (AttributeUInt16*)getAttributeById(18);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenLevelCtrlAttribute::OnTransitionTime);
     if (result == nullptr) {
         result = new AttributeUInt16(18, DataType::UInt16);
         addAttribute(result);
@@ -1143,7 +1143,7 @@ AttributeUInt16* GenLevelCtrlCluster::getOnTransitionTime() {
 }
 
 AttributeUInt16* GenLevelCtrlCluster::getOffTransitionTime() {
-    auto result = (AttributeUInt16*)getAttributeById(19);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenLevelCtrlAttribute::OffTransitionTime);
     if (result == nullptr) {
         result = new AttributeUInt16(19, DataType::UInt16);
         addAttribute(result);
@@ -1152,7 +1152,7 @@ AttributeUInt16* GenLevelCtrlCluster::getOffTransitionTime() {
 }
 
 AttributeUInt16* GenLevelCtrlCluster::getDefaultMoveRate() {
-    auto result = (AttributeUInt16*)getAttributeById(20);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenLevelCtrlAttribute::DefaultMoveRate);
     if (result == nullptr) {
         result = new AttributeUInt16(20, DataType::UInt16);
         addAttribute(result);
@@ -1161,7 +1161,7 @@ AttributeUInt16* GenLevelCtrlCluster::getDefaultMoveRate() {
 }
 
 AttributeUInt8* GenLevelCtrlCluster::getStartUpCurrentLevel() {
-    auto result = (AttributeUInt8*)getAttributeById(16384);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenLevelCtrlAttribute::StartUpCurrentLevel);
     if (result == nullptr) {
         result = new AttributeUInt8(16384, DataType::UInt8);
         addAttribute(result);
@@ -1372,7 +1372,7 @@ void GenLevelCtrlCluster::processCommand(uint8_t commandId, Memory& request, Mem
 }
 
 AttributeUInt16* GenAlarmsCluster::getAlarmCount() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenAlarmsAttribute::AlarmCount);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -1483,7 +1483,7 @@ void GenAlarmsCluster::processCommand(uint8_t commandId, Memory& request, Memory
 }
 
 AttributeUInt32* GenTimeCluster::getTime() {
-    auto result = (AttributeUInt32*)getAttributeById(0);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenTimeAttribute::Time);
     if (result == nullptr) {
         result = new AttributeUInt32(0, DataType::UTC);
         addAttribute(result);
@@ -1492,7 +1492,7 @@ AttributeUInt32* GenTimeCluster::getTime() {
 }
 
 AttributeUInt8* GenTimeCluster::getTimeStatus() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenTimeAttribute::TimeStatus);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::Map8);
         addAttribute(result);
@@ -1501,7 +1501,7 @@ AttributeUInt8* GenTimeCluster::getTimeStatus() {
 }
 
 AttributeInt32* GenTimeCluster::getTimeZone() {
-    auto result = (AttributeInt32*)getAttributeById(2);
+    auto result = (AttributeInt32*)getAttributeById((uint16_t)GenTimeAttribute::TimeZone);
     if (result == nullptr) {
         result = new AttributeInt32(2, DataType::Int32);
         addAttribute(result);
@@ -1510,7 +1510,7 @@ AttributeInt32* GenTimeCluster::getTimeZone() {
 }
 
 AttributeUInt32* GenTimeCluster::getDstStart() {
-    auto result = (AttributeUInt32*)getAttributeById(3);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenTimeAttribute::DstStart);
     if (result == nullptr) {
         result = new AttributeUInt32(3, DataType::UInt32);
         addAttribute(result);
@@ -1519,7 +1519,7 @@ AttributeUInt32* GenTimeCluster::getDstStart() {
 }
 
 AttributeUInt32* GenTimeCluster::getDstEnd() {
-    auto result = (AttributeUInt32*)getAttributeById(4);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenTimeAttribute::DstEnd);
     if (result == nullptr) {
         result = new AttributeUInt32(4, DataType::UInt32);
         addAttribute(result);
@@ -1528,7 +1528,7 @@ AttributeUInt32* GenTimeCluster::getDstEnd() {
 }
 
 AttributeInt32* GenTimeCluster::getDstShift() {
-    auto result = (AttributeInt32*)getAttributeById(5);
+    auto result = (AttributeInt32*)getAttributeById((uint16_t)GenTimeAttribute::DstShift);
     if (result == nullptr) {
         result = new AttributeInt32(5, DataType::Int32);
         addAttribute(result);
@@ -1537,7 +1537,7 @@ AttributeInt32* GenTimeCluster::getDstShift() {
 }
 
 AttributeUInt32* GenTimeCluster::getStandardTime() {
-    auto result = (AttributeUInt32*)getAttributeById(6);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenTimeAttribute::StandardTime);
     if (result == nullptr) {
         result = new AttributeUInt32(6, DataType::UInt32);
         addAttribute(result);
@@ -1546,7 +1546,7 @@ AttributeUInt32* GenTimeCluster::getStandardTime() {
 }
 
 AttributeUInt32* GenTimeCluster::getLocalTime() {
-    auto result = (AttributeUInt32*)getAttributeById(7);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenTimeAttribute::LocalTime);
     if (result == nullptr) {
         result = new AttributeUInt32(7, DataType::UInt32);
         addAttribute(result);
@@ -1555,7 +1555,7 @@ AttributeUInt32* GenTimeCluster::getLocalTime() {
 }
 
 AttributeUInt32* GenTimeCluster::getLastSetTime() {
-    auto result = (AttributeUInt32*)getAttributeById(8);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenTimeAttribute::LastSetTime);
     if (result == nullptr) {
         result = new AttributeUInt32(8, DataType::UTC);
         addAttribute(result);
@@ -1564,7 +1564,7 @@ AttributeUInt32* GenTimeCluster::getLastSetTime() {
 }
 
 AttributeUInt32* GenTimeCluster::getValidUntilTime() {
-    auto result = (AttributeUInt32*)getAttributeById(9);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenTimeAttribute::ValidUntilTime);
     if (result == nullptr) {
         result = new AttributeUInt32(9, DataType::UTC);
         addAttribute(result);
@@ -1573,7 +1573,7 @@ AttributeUInt32* GenTimeCluster::getValidUntilTime() {
 }
 
 AttributeUInt8* GenRssiLocationCluster::getType() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenRssiLocationAttribute::Type);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Data8);
         addAttribute(result);
@@ -1582,7 +1582,7 @@ AttributeUInt8* GenRssiLocationCluster::getType() {
 }
 
 AttributeUInt8* GenRssiLocationCluster::getMethod() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenRssiLocationAttribute::Method);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::Enum8);
         addAttribute(result);
@@ -1591,7 +1591,7 @@ AttributeUInt8* GenRssiLocationCluster::getMethod() {
 }
 
 AttributeUInt16* GenRssiLocationCluster::getAge() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenRssiLocationAttribute::Age);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::UInt16);
         addAttribute(result);
@@ -1600,7 +1600,7 @@ AttributeUInt16* GenRssiLocationCluster::getAge() {
 }
 
 AttributeUInt8* GenRssiLocationCluster::getQualityMeasure() {
-    auto result = (AttributeUInt8*)getAttributeById(3);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenRssiLocationAttribute::QualityMeasure);
     if (result == nullptr) {
         result = new AttributeUInt8(3, DataType::UInt8);
         addAttribute(result);
@@ -1609,7 +1609,7 @@ AttributeUInt8* GenRssiLocationCluster::getQualityMeasure() {
 }
 
 AttributeUInt8* GenRssiLocationCluster::getNumOfDevices() {
-    auto result = (AttributeUInt8*)getAttributeById(4);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenRssiLocationAttribute::NumOfDevices);
     if (result == nullptr) {
         result = new AttributeUInt8(4, DataType::UInt8);
         addAttribute(result);
@@ -1618,7 +1618,7 @@ AttributeUInt8* GenRssiLocationCluster::getNumOfDevices() {
 }
 
 AttributeInt16* GenRssiLocationCluster::getCoordinate1() {
-    auto result = (AttributeInt16*)getAttributeById(16);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)GenRssiLocationAttribute::Coordinate1);
     if (result == nullptr) {
         result = new AttributeInt16(16, DataType::Int16);
         addAttribute(result);
@@ -1627,7 +1627,7 @@ AttributeInt16* GenRssiLocationCluster::getCoordinate1() {
 }
 
 AttributeInt16* GenRssiLocationCluster::getCoordinate2() {
-    auto result = (AttributeInt16*)getAttributeById(17);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)GenRssiLocationAttribute::Coordinate2);
     if (result == nullptr) {
         result = new AttributeInt16(17, DataType::Int16);
         addAttribute(result);
@@ -1636,7 +1636,7 @@ AttributeInt16* GenRssiLocationCluster::getCoordinate2() {
 }
 
 AttributeInt16* GenRssiLocationCluster::getCoordinate3() {
-    auto result = (AttributeInt16*)getAttributeById(18);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)GenRssiLocationAttribute::Coordinate3);
     if (result == nullptr) {
         result = new AttributeInt16(18, DataType::Int16);
         addAttribute(result);
@@ -1645,7 +1645,7 @@ AttributeInt16* GenRssiLocationCluster::getCoordinate3() {
 }
 
 AttributeInt16* GenRssiLocationCluster::getPower() {
-    auto result = (AttributeInt16*)getAttributeById(19);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)GenRssiLocationAttribute::Power);
     if (result == nullptr) {
         result = new AttributeInt16(19, DataType::Int16);
         addAttribute(result);
@@ -1654,7 +1654,7 @@ AttributeInt16* GenRssiLocationCluster::getPower() {
 }
 
 AttributeUInt16* GenRssiLocationCluster::getPathLossExponent() {
-    auto result = (AttributeUInt16*)getAttributeById(20);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenRssiLocationAttribute::PathLossExponent);
     if (result == nullptr) {
         result = new AttributeUInt16(20, DataType::UInt16);
         addAttribute(result);
@@ -1663,7 +1663,7 @@ AttributeUInt16* GenRssiLocationCluster::getPathLossExponent() {
 }
 
 AttributeUInt16* GenRssiLocationCluster::getReportingPeriod() {
-    auto result = (AttributeUInt16*)getAttributeById(21);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenRssiLocationAttribute::ReportingPeriod);
     if (result == nullptr) {
         result = new AttributeUInt16(21, DataType::UInt16);
         addAttribute(result);
@@ -1672,7 +1672,7 @@ AttributeUInt16* GenRssiLocationCluster::getReportingPeriod() {
 }
 
 AttributeUInt16* GenRssiLocationCluster::getCalcPeriod() {
-    auto result = (AttributeUInt16*)getAttributeById(22);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenRssiLocationAttribute::CalcPeriod);
     if (result == nullptr) {
         result = new AttributeUInt16(22, DataType::UInt16);
         addAttribute(result);
@@ -1681,7 +1681,7 @@ AttributeUInt16* GenRssiLocationCluster::getCalcPeriod() {
 }
 
 AttributeUInt16* GenRssiLocationCluster::getNumRSSIMeasurements() {
-    auto result = (AttributeUInt16*)getAttributeById(23);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenRssiLocationAttribute::NumRSSIMeasurements);
     if (result == nullptr) {
         result = new AttributeUInt16(23, DataType::UInt16);
         addAttribute(result);
@@ -1798,7 +1798,7 @@ void GenRssiLocationCluster::processCommand(uint8_t commandId, Memory& request, 
 }
 
 AttributeString* GenAnalogInputCluster::getDescription() {
-    auto result = (AttributeString*)getAttributeById(28);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenAnalogInputAttribute::Description);
     if (result == nullptr) {
         result = new AttributeString(28);
         addAttribute(result);
@@ -1807,7 +1807,7 @@ AttributeString* GenAnalogInputCluster::getDescription() {
 }
 
 AttributeSingle* GenAnalogInputCluster::getMaxPresentValue() {
-    auto result = (AttributeSingle*)getAttributeById(65);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)GenAnalogInputAttribute::MaxPresentValue);
     if (result == nullptr) {
         result = new AttributeSingle(65, DataType::Single);
         addAttribute(result);
@@ -1816,7 +1816,7 @@ AttributeSingle* GenAnalogInputCluster::getMaxPresentValue() {
 }
 
 AttributeSingle* GenAnalogInputCluster::getMinPresentValue() {
-    auto result = (AttributeSingle*)getAttributeById(69);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)GenAnalogInputAttribute::MinPresentValue);
     if (result == nullptr) {
         result = new AttributeSingle(69, DataType::Single);
         addAttribute(result);
@@ -1825,7 +1825,7 @@ AttributeSingle* GenAnalogInputCluster::getMinPresentValue() {
 }
 
 AttributeUInt8* GenAnalogInputCluster::getOutOfService() {
-    auto result = (AttributeUInt8*)getAttributeById(81);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenAnalogInputAttribute::OutOfService);
     if (result == nullptr) {
         result = new AttributeUInt8(81, DataType::Bool);
         addAttribute(result);
@@ -1834,7 +1834,7 @@ AttributeUInt8* GenAnalogInputCluster::getOutOfService() {
 }
 
 AttributeSingle* GenAnalogInputCluster::getPresentValue() {
-    auto result = (AttributeSingle*)getAttributeById(85);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)GenAnalogInputAttribute::PresentValue);
     if (result == nullptr) {
         result = new AttributeSingle(85, DataType::Single);
         addAttribute(result);
@@ -1843,7 +1843,7 @@ AttributeSingle* GenAnalogInputCluster::getPresentValue() {
 }
 
 AttributeUInt8* GenAnalogInputCluster::getReliability() {
-    auto result = (AttributeUInt8*)getAttributeById(103);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenAnalogInputAttribute::Reliability);
     if (result == nullptr) {
         result = new AttributeUInt8(103, DataType::Enum8);
         addAttribute(result);
@@ -1852,7 +1852,7 @@ AttributeUInt8* GenAnalogInputCluster::getReliability() {
 }
 
 AttributeSingle* GenAnalogInputCluster::getResolution() {
-    auto result = (AttributeSingle*)getAttributeById(106);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)GenAnalogInputAttribute::Resolution);
     if (result == nullptr) {
         result = new AttributeSingle(106, DataType::Single);
         addAttribute(result);
@@ -1861,7 +1861,7 @@ AttributeSingle* GenAnalogInputCluster::getResolution() {
 }
 
 AttributeUInt8* GenAnalogInputCluster::getStatusFlags() {
-    auto result = (AttributeUInt8*)getAttributeById(111);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenAnalogInputAttribute::StatusFlags);
     if (result == nullptr) {
         result = new AttributeUInt8(111, DataType::Map8);
         addAttribute(result);
@@ -1870,7 +1870,7 @@ AttributeUInt8* GenAnalogInputCluster::getStatusFlags() {
 }
 
 AttributeUInt16* GenAnalogInputCluster::getEngineeringUnits() {
-    auto result = (AttributeUInt16*)getAttributeById(117);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenAnalogInputAttribute::EngineeringUnits);
     if (result == nullptr) {
         result = new AttributeUInt16(117, DataType::Enum16);
         addAttribute(result);
@@ -1879,7 +1879,7 @@ AttributeUInt16* GenAnalogInputCluster::getEngineeringUnits() {
 }
 
 AttributeUInt32* GenAnalogInputCluster::getApplicationType() {
-    auto result = (AttributeUInt32*)getAttributeById(256);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenAnalogInputAttribute::ApplicationType);
     if (result == nullptr) {
         result = new AttributeUInt32(256, DataType::UInt32);
         addAttribute(result);
@@ -1888,7 +1888,7 @@ AttributeUInt32* GenAnalogInputCluster::getApplicationType() {
 }
 
 AttributeString* GenAnalogOutputCluster::getDescription() {
-    auto result = (AttributeString*)getAttributeById(28);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenAnalogOutputAttribute::Description);
     if (result == nullptr) {
         result = new AttributeString(28);
         addAttribute(result);
@@ -1897,7 +1897,7 @@ AttributeString* GenAnalogOutputCluster::getDescription() {
 }
 
 AttributeSingle* GenAnalogOutputCluster::getMaxPresentValue() {
-    auto result = (AttributeSingle*)getAttributeById(65);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)GenAnalogOutputAttribute::MaxPresentValue);
     if (result == nullptr) {
         result = new AttributeSingle(65, DataType::Single);
         addAttribute(result);
@@ -1906,7 +1906,7 @@ AttributeSingle* GenAnalogOutputCluster::getMaxPresentValue() {
 }
 
 AttributeSingle* GenAnalogOutputCluster::getMinPresentValue() {
-    auto result = (AttributeSingle*)getAttributeById(69);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)GenAnalogOutputAttribute::MinPresentValue);
     if (result == nullptr) {
         result = new AttributeSingle(69, DataType::Single);
         addAttribute(result);
@@ -1915,7 +1915,7 @@ AttributeSingle* GenAnalogOutputCluster::getMinPresentValue() {
 }
 
 AttributeUInt8* GenAnalogOutputCluster::getOutOfService() {
-    auto result = (AttributeUInt8*)getAttributeById(81);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenAnalogOutputAttribute::OutOfService);
     if (result == nullptr) {
         result = new AttributeUInt8(81, DataType::Bool);
         addAttribute(result);
@@ -1924,7 +1924,7 @@ AttributeUInt8* GenAnalogOutputCluster::getOutOfService() {
 }
 
 AttributeSingle* GenAnalogOutputCluster::getPresentValue() {
-    auto result = (AttributeSingle*)getAttributeById(85);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)GenAnalogOutputAttribute::PresentValue);
     if (result == nullptr) {
         result = new AttributeSingle(85, DataType::Single);
         addAttribute(result);
@@ -1933,7 +1933,7 @@ AttributeSingle* GenAnalogOutputCluster::getPresentValue() {
 }
 
 AttributeUInt8* GenAnalogOutputCluster::getReliability() {
-    auto result = (AttributeUInt8*)getAttributeById(103);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenAnalogOutputAttribute::Reliability);
     if (result == nullptr) {
         result = new AttributeUInt8(103, DataType::Enum8);
         addAttribute(result);
@@ -1942,7 +1942,7 @@ AttributeUInt8* GenAnalogOutputCluster::getReliability() {
 }
 
 AttributeSingle* GenAnalogOutputCluster::getRelinquishDefault() {
-    auto result = (AttributeSingle*)getAttributeById(104);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)GenAnalogOutputAttribute::RelinquishDefault);
     if (result == nullptr) {
         result = new AttributeSingle(104, DataType::Single);
         addAttribute(result);
@@ -1951,7 +1951,7 @@ AttributeSingle* GenAnalogOutputCluster::getRelinquishDefault() {
 }
 
 AttributeSingle* GenAnalogOutputCluster::getResolution() {
-    auto result = (AttributeSingle*)getAttributeById(106);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)GenAnalogOutputAttribute::Resolution);
     if (result == nullptr) {
         result = new AttributeSingle(106, DataType::Single);
         addAttribute(result);
@@ -1960,7 +1960,7 @@ AttributeSingle* GenAnalogOutputCluster::getResolution() {
 }
 
 AttributeUInt8* GenAnalogOutputCluster::getStatusFlags() {
-    auto result = (AttributeUInt8*)getAttributeById(111);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenAnalogOutputAttribute::StatusFlags);
     if (result == nullptr) {
         result = new AttributeUInt8(111, DataType::Map8);
         addAttribute(result);
@@ -1969,7 +1969,7 @@ AttributeUInt8* GenAnalogOutputCluster::getStatusFlags() {
 }
 
 AttributeUInt16* GenAnalogOutputCluster::getEngineeringUnits() {
-    auto result = (AttributeUInt16*)getAttributeById(117);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenAnalogOutputAttribute::EngineeringUnits);
     if (result == nullptr) {
         result = new AttributeUInt16(117, DataType::Enum16);
         addAttribute(result);
@@ -1978,7 +1978,7 @@ AttributeUInt16* GenAnalogOutputCluster::getEngineeringUnits() {
 }
 
 AttributeUInt32* GenAnalogOutputCluster::getApplicationType() {
-    auto result = (AttributeUInt32*)getAttributeById(256);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenAnalogOutputAttribute::ApplicationType);
     if (result == nullptr) {
         result = new AttributeUInt32(256, DataType::UInt32);
         addAttribute(result);
@@ -1987,7 +1987,7 @@ AttributeUInt32* GenAnalogOutputCluster::getApplicationType() {
 }
 
 AttributeString* GenAnalogValueCluster::getDescription() {
-    auto result = (AttributeString*)getAttributeById(28);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenAnalogValueAttribute::Description);
     if (result == nullptr) {
         result = new AttributeString(28);
         addAttribute(result);
@@ -1996,7 +1996,7 @@ AttributeString* GenAnalogValueCluster::getDescription() {
 }
 
 AttributeUInt8* GenAnalogValueCluster::getOutOfService() {
-    auto result = (AttributeUInt8*)getAttributeById(81);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenAnalogValueAttribute::OutOfService);
     if (result == nullptr) {
         result = new AttributeUInt8(81, DataType::Bool);
         addAttribute(result);
@@ -2005,7 +2005,7 @@ AttributeUInt8* GenAnalogValueCluster::getOutOfService() {
 }
 
 AttributeSingle* GenAnalogValueCluster::getPresentValue() {
-    auto result = (AttributeSingle*)getAttributeById(85);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)GenAnalogValueAttribute::PresentValue);
     if (result == nullptr) {
         result = new AttributeSingle(85, DataType::Single);
         addAttribute(result);
@@ -2014,7 +2014,7 @@ AttributeSingle* GenAnalogValueCluster::getPresentValue() {
 }
 
 AttributeUInt8* GenAnalogValueCluster::getReliability() {
-    auto result = (AttributeUInt8*)getAttributeById(103);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenAnalogValueAttribute::Reliability);
     if (result == nullptr) {
         result = new AttributeUInt8(103, DataType::Enum8);
         addAttribute(result);
@@ -2023,7 +2023,7 @@ AttributeUInt8* GenAnalogValueCluster::getReliability() {
 }
 
 AttributeSingle* GenAnalogValueCluster::getRelinquishDefault() {
-    auto result = (AttributeSingle*)getAttributeById(104);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)GenAnalogValueAttribute::RelinquishDefault);
     if (result == nullptr) {
         result = new AttributeSingle(104, DataType::Single);
         addAttribute(result);
@@ -2032,7 +2032,7 @@ AttributeSingle* GenAnalogValueCluster::getRelinquishDefault() {
 }
 
 AttributeUInt8* GenAnalogValueCluster::getStatusFlags() {
-    auto result = (AttributeUInt8*)getAttributeById(111);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenAnalogValueAttribute::StatusFlags);
     if (result == nullptr) {
         result = new AttributeUInt8(111, DataType::Map8);
         addAttribute(result);
@@ -2041,7 +2041,7 @@ AttributeUInt8* GenAnalogValueCluster::getStatusFlags() {
 }
 
 AttributeUInt16* GenAnalogValueCluster::getEngineeringUnits() {
-    auto result = (AttributeUInt16*)getAttributeById(117);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenAnalogValueAttribute::EngineeringUnits);
     if (result == nullptr) {
         result = new AttributeUInt16(117, DataType::Enum16);
         addAttribute(result);
@@ -2050,7 +2050,7 @@ AttributeUInt16* GenAnalogValueCluster::getEngineeringUnits() {
 }
 
 AttributeUInt32* GenAnalogValueCluster::getApplicationType() {
-    auto result = (AttributeUInt32*)getAttributeById(256);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenAnalogValueAttribute::ApplicationType);
     if (result == nullptr) {
         result = new AttributeUInt32(256, DataType::UInt32);
         addAttribute(result);
@@ -2059,7 +2059,7 @@ AttributeUInt32* GenAnalogValueCluster::getApplicationType() {
 }
 
 AttributeString* GenBinaryInputCluster::getActiveText() {
-    auto result = (AttributeString*)getAttributeById(4);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBinaryInputAttribute::ActiveText);
     if (result == nullptr) {
         result = new AttributeString(4);
         addAttribute(result);
@@ -2068,7 +2068,7 @@ AttributeString* GenBinaryInputCluster::getActiveText() {
 }
 
 AttributeString* GenBinaryInputCluster::getDescription() {
-    auto result = (AttributeString*)getAttributeById(28);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBinaryInputAttribute::Description);
     if (result == nullptr) {
         result = new AttributeString(28);
         addAttribute(result);
@@ -2077,7 +2077,7 @@ AttributeString* GenBinaryInputCluster::getDescription() {
 }
 
 AttributeString* GenBinaryInputCluster::getInactiveText() {
-    auto result = (AttributeString*)getAttributeById(46);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBinaryInputAttribute::InactiveText);
     if (result == nullptr) {
         result = new AttributeString(46);
         addAttribute(result);
@@ -2086,7 +2086,7 @@ AttributeString* GenBinaryInputCluster::getInactiveText() {
 }
 
 AttributeUInt8* GenBinaryInputCluster::getOutOfService() {
-    auto result = (AttributeUInt8*)getAttributeById(81);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryInputAttribute::OutOfService);
     if (result == nullptr) {
         result = new AttributeUInt8(81, DataType::Bool);
         addAttribute(result);
@@ -2095,7 +2095,7 @@ AttributeUInt8* GenBinaryInputCluster::getOutOfService() {
 }
 
 AttributeUInt8* GenBinaryInputCluster::getPolarity() {
-    auto result = (AttributeUInt8*)getAttributeById(84);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryInputAttribute::Polarity);
     if (result == nullptr) {
         result = new AttributeUInt8(84, DataType::Enum8);
         addAttribute(result);
@@ -2104,7 +2104,7 @@ AttributeUInt8* GenBinaryInputCluster::getPolarity() {
 }
 
 AttributeUInt8* GenBinaryInputCluster::getPresentValue() {
-    auto result = (AttributeUInt8*)getAttributeById(85);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryInputAttribute::PresentValue);
     if (result == nullptr) {
         result = new AttributeUInt8(85, DataType::Bool);
         addAttribute(result);
@@ -2113,7 +2113,7 @@ AttributeUInt8* GenBinaryInputCluster::getPresentValue() {
 }
 
 AttributeUInt8* GenBinaryInputCluster::getReliability() {
-    auto result = (AttributeUInt8*)getAttributeById(103);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryInputAttribute::Reliability);
     if (result == nullptr) {
         result = new AttributeUInt8(103, DataType::Enum8);
         addAttribute(result);
@@ -2122,7 +2122,7 @@ AttributeUInt8* GenBinaryInputCluster::getReliability() {
 }
 
 AttributeUInt8* GenBinaryInputCluster::getStatusFlags() {
-    auto result = (AttributeUInt8*)getAttributeById(111);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryInputAttribute::StatusFlags);
     if (result == nullptr) {
         result = new AttributeUInt8(111, DataType::Map8);
         addAttribute(result);
@@ -2131,7 +2131,7 @@ AttributeUInt8* GenBinaryInputCluster::getStatusFlags() {
 }
 
 AttributeUInt32* GenBinaryInputCluster::getApplicationType() {
-    auto result = (AttributeUInt32*)getAttributeById(256);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenBinaryInputAttribute::ApplicationType);
     if (result == nullptr) {
         result = new AttributeUInt32(256, DataType::UInt32);
         addAttribute(result);
@@ -2140,7 +2140,7 @@ AttributeUInt32* GenBinaryInputCluster::getApplicationType() {
 }
 
 AttributeString* GenBinaryOutputCluster::getActiveText() {
-    auto result = (AttributeString*)getAttributeById(4);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBinaryOutputAttribute::ActiveText);
     if (result == nullptr) {
         result = new AttributeString(4);
         addAttribute(result);
@@ -2149,7 +2149,7 @@ AttributeString* GenBinaryOutputCluster::getActiveText() {
 }
 
 AttributeString* GenBinaryOutputCluster::getDescription() {
-    auto result = (AttributeString*)getAttributeById(28);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBinaryOutputAttribute::Description);
     if (result == nullptr) {
         result = new AttributeString(28);
         addAttribute(result);
@@ -2158,7 +2158,7 @@ AttributeString* GenBinaryOutputCluster::getDescription() {
 }
 
 AttributeString* GenBinaryOutputCluster::getInactiveText() {
-    auto result = (AttributeString*)getAttributeById(46);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBinaryOutputAttribute::InactiveText);
     if (result == nullptr) {
         result = new AttributeString(46);
         addAttribute(result);
@@ -2167,7 +2167,7 @@ AttributeString* GenBinaryOutputCluster::getInactiveText() {
 }
 
 AttributeUInt32* GenBinaryOutputCluster::getMinimumOffTime() {
-    auto result = (AttributeUInt32*)getAttributeById(66);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenBinaryOutputAttribute::MinimumOffTime);
     if (result == nullptr) {
         result = new AttributeUInt32(66, DataType::UInt32);
         addAttribute(result);
@@ -2176,7 +2176,7 @@ AttributeUInt32* GenBinaryOutputCluster::getMinimumOffTime() {
 }
 
 AttributeUInt32* GenBinaryOutputCluster::getMinimumOnTime() {
-    auto result = (AttributeUInt32*)getAttributeById(67);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenBinaryOutputAttribute::MinimumOnTime);
     if (result == nullptr) {
         result = new AttributeUInt32(67, DataType::UInt32);
         addAttribute(result);
@@ -2185,7 +2185,7 @@ AttributeUInt32* GenBinaryOutputCluster::getMinimumOnTime() {
 }
 
 AttributeUInt8* GenBinaryOutputCluster::getOutOfService() {
-    auto result = (AttributeUInt8*)getAttributeById(81);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryOutputAttribute::OutOfService);
     if (result == nullptr) {
         result = new AttributeUInt8(81, DataType::Bool);
         addAttribute(result);
@@ -2194,7 +2194,7 @@ AttributeUInt8* GenBinaryOutputCluster::getOutOfService() {
 }
 
 AttributeUInt8* GenBinaryOutputCluster::getPolarity() {
-    auto result = (AttributeUInt8*)getAttributeById(84);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryOutputAttribute::Polarity);
     if (result == nullptr) {
         result = new AttributeUInt8(84, DataType::Enum8);
         addAttribute(result);
@@ -2203,7 +2203,7 @@ AttributeUInt8* GenBinaryOutputCluster::getPolarity() {
 }
 
 AttributeUInt8* GenBinaryOutputCluster::getPresentValue() {
-    auto result = (AttributeUInt8*)getAttributeById(85);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryOutputAttribute::PresentValue);
     if (result == nullptr) {
         result = new AttributeUInt8(85, DataType::Bool);
         addAttribute(result);
@@ -2212,7 +2212,7 @@ AttributeUInt8* GenBinaryOutputCluster::getPresentValue() {
 }
 
 AttributeUInt8* GenBinaryOutputCluster::getReliability() {
-    auto result = (AttributeUInt8*)getAttributeById(103);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryOutputAttribute::Reliability);
     if (result == nullptr) {
         result = new AttributeUInt8(103, DataType::Enum8);
         addAttribute(result);
@@ -2221,7 +2221,7 @@ AttributeUInt8* GenBinaryOutputCluster::getReliability() {
 }
 
 AttributeUInt8* GenBinaryOutputCluster::getRelinquishDefault() {
-    auto result = (AttributeUInt8*)getAttributeById(104);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryOutputAttribute::RelinquishDefault);
     if (result == nullptr) {
         result = new AttributeUInt8(104, DataType::Bool);
         addAttribute(result);
@@ -2230,7 +2230,7 @@ AttributeUInt8* GenBinaryOutputCluster::getRelinquishDefault() {
 }
 
 AttributeUInt8* GenBinaryOutputCluster::getStatusFlags() {
-    auto result = (AttributeUInt8*)getAttributeById(111);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryOutputAttribute::StatusFlags);
     if (result == nullptr) {
         result = new AttributeUInt8(111, DataType::Map8);
         addAttribute(result);
@@ -2239,7 +2239,7 @@ AttributeUInt8* GenBinaryOutputCluster::getStatusFlags() {
 }
 
 AttributeUInt32* GenBinaryOutputCluster::getApplicationType() {
-    auto result = (AttributeUInt32*)getAttributeById(256);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenBinaryOutputAttribute::ApplicationType);
     if (result == nullptr) {
         result = new AttributeUInt32(256, DataType::UInt32);
         addAttribute(result);
@@ -2248,7 +2248,7 @@ AttributeUInt32* GenBinaryOutputCluster::getApplicationType() {
 }
 
 AttributeString* GenBinaryValueCluster::getActiveText() {
-    auto result = (AttributeString*)getAttributeById(4);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBinaryValueAttribute::ActiveText);
     if (result == nullptr) {
         result = new AttributeString(4);
         addAttribute(result);
@@ -2257,7 +2257,7 @@ AttributeString* GenBinaryValueCluster::getActiveText() {
 }
 
 AttributeString* GenBinaryValueCluster::getDescription() {
-    auto result = (AttributeString*)getAttributeById(28);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBinaryValueAttribute::Description);
     if (result == nullptr) {
         result = new AttributeString(28);
         addAttribute(result);
@@ -2266,7 +2266,7 @@ AttributeString* GenBinaryValueCluster::getDescription() {
 }
 
 AttributeString* GenBinaryValueCluster::getInactiveText() {
-    auto result = (AttributeString*)getAttributeById(46);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenBinaryValueAttribute::InactiveText);
     if (result == nullptr) {
         result = new AttributeString(46);
         addAttribute(result);
@@ -2275,7 +2275,7 @@ AttributeString* GenBinaryValueCluster::getInactiveText() {
 }
 
 AttributeUInt32* GenBinaryValueCluster::getMinimumOffTime() {
-    auto result = (AttributeUInt32*)getAttributeById(66);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenBinaryValueAttribute::MinimumOffTime);
     if (result == nullptr) {
         result = new AttributeUInt32(66, DataType::UInt32);
         addAttribute(result);
@@ -2284,7 +2284,7 @@ AttributeUInt32* GenBinaryValueCluster::getMinimumOffTime() {
 }
 
 AttributeUInt32* GenBinaryValueCluster::getMinimumOnTime() {
-    auto result = (AttributeUInt32*)getAttributeById(67);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenBinaryValueAttribute::MinimumOnTime);
     if (result == nullptr) {
         result = new AttributeUInt32(67, DataType::UInt32);
         addAttribute(result);
@@ -2293,7 +2293,7 @@ AttributeUInt32* GenBinaryValueCluster::getMinimumOnTime() {
 }
 
 AttributeUInt8* GenBinaryValueCluster::getOutOfService() {
-    auto result = (AttributeUInt8*)getAttributeById(81);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryValueAttribute::OutOfService);
     if (result == nullptr) {
         result = new AttributeUInt8(81, DataType::Bool);
         addAttribute(result);
@@ -2302,7 +2302,7 @@ AttributeUInt8* GenBinaryValueCluster::getOutOfService() {
 }
 
 AttributeUInt8* GenBinaryValueCluster::getPresentValue() {
-    auto result = (AttributeUInt8*)getAttributeById(85);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryValueAttribute::PresentValue);
     if (result == nullptr) {
         result = new AttributeUInt8(85, DataType::Bool);
         addAttribute(result);
@@ -2311,7 +2311,7 @@ AttributeUInt8* GenBinaryValueCluster::getPresentValue() {
 }
 
 AttributeUInt8* GenBinaryValueCluster::getReliability() {
-    auto result = (AttributeUInt8*)getAttributeById(103);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryValueAttribute::Reliability);
     if (result == nullptr) {
         result = new AttributeUInt8(103, DataType::Enum8);
         addAttribute(result);
@@ -2320,7 +2320,7 @@ AttributeUInt8* GenBinaryValueCluster::getReliability() {
 }
 
 AttributeUInt8* GenBinaryValueCluster::getRelinquishDefault() {
-    auto result = (AttributeUInt8*)getAttributeById(104);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryValueAttribute::RelinquishDefault);
     if (result == nullptr) {
         result = new AttributeUInt8(104, DataType::Bool);
         addAttribute(result);
@@ -2329,7 +2329,7 @@ AttributeUInt8* GenBinaryValueCluster::getRelinquishDefault() {
 }
 
 AttributeUInt8* GenBinaryValueCluster::getStatusFlags() {
-    auto result = (AttributeUInt8*)getAttributeById(111);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenBinaryValueAttribute::StatusFlags);
     if (result == nullptr) {
         result = new AttributeUInt8(111, DataType::Map8);
         addAttribute(result);
@@ -2338,7 +2338,7 @@ AttributeUInt8* GenBinaryValueCluster::getStatusFlags() {
 }
 
 AttributeUInt32* GenBinaryValueCluster::getApplicationType() {
-    auto result = (AttributeUInt32*)getAttributeById(256);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenBinaryValueAttribute::ApplicationType);
     if (result == nullptr) {
         result = new AttributeUInt32(256, DataType::UInt32);
         addAttribute(result);
@@ -2347,7 +2347,7 @@ AttributeUInt32* GenBinaryValueCluster::getApplicationType() {
 }
 
 AttributeString* GenMultistateInputCluster::getDescription() {
-    auto result = (AttributeString*)getAttributeById(28);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenMultistateInputAttribute::Description);
     if (result == nullptr) {
         result = new AttributeString(28);
         addAttribute(result);
@@ -2356,7 +2356,7 @@ AttributeString* GenMultistateInputCluster::getDescription() {
 }
 
 AttributeUInt16* GenMultistateInputCluster::getNumberOfStates() {
-    auto result = (AttributeUInt16*)getAttributeById(74);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenMultistateInputAttribute::NumberOfStates);
     if (result == nullptr) {
         result = new AttributeUInt16(74, DataType::UInt16);
         addAttribute(result);
@@ -2365,7 +2365,7 @@ AttributeUInt16* GenMultistateInputCluster::getNumberOfStates() {
 }
 
 AttributeUInt8* GenMultistateInputCluster::getOutOfService() {
-    auto result = (AttributeUInt8*)getAttributeById(81);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenMultistateInputAttribute::OutOfService);
     if (result == nullptr) {
         result = new AttributeUInt8(81, DataType::Bool);
         addAttribute(result);
@@ -2374,7 +2374,7 @@ AttributeUInt8* GenMultistateInputCluster::getOutOfService() {
 }
 
 AttributeUInt16* GenMultistateInputCluster::getPresentValue() {
-    auto result = (AttributeUInt16*)getAttributeById(85);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenMultistateInputAttribute::PresentValue);
     if (result == nullptr) {
         result = new AttributeUInt16(85, DataType::UInt16);
         addAttribute(result);
@@ -2383,7 +2383,7 @@ AttributeUInt16* GenMultistateInputCluster::getPresentValue() {
 }
 
 AttributeUInt8* GenMultistateInputCluster::getReliability() {
-    auto result = (AttributeUInt8*)getAttributeById(103);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenMultistateInputAttribute::Reliability);
     if (result == nullptr) {
         result = new AttributeUInt8(103, DataType::Enum8);
         addAttribute(result);
@@ -2392,7 +2392,7 @@ AttributeUInt8* GenMultistateInputCluster::getReliability() {
 }
 
 AttributeUInt8* GenMultistateInputCluster::getStatusFlags() {
-    auto result = (AttributeUInt8*)getAttributeById(111);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenMultistateInputAttribute::StatusFlags);
     if (result == nullptr) {
         result = new AttributeUInt8(111, DataType::Map8);
         addAttribute(result);
@@ -2401,7 +2401,7 @@ AttributeUInt8* GenMultistateInputCluster::getStatusFlags() {
 }
 
 AttributeUInt32* GenMultistateInputCluster::getApplicationType() {
-    auto result = (AttributeUInt32*)getAttributeById(256);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenMultistateInputAttribute::ApplicationType);
     if (result == nullptr) {
         result = new AttributeUInt32(256, DataType::UInt32);
         addAttribute(result);
@@ -2410,7 +2410,7 @@ AttributeUInt32* GenMultistateInputCluster::getApplicationType() {
 }
 
 AttributeString* GenMultistateOutputCluster::getDescription() {
-    auto result = (AttributeString*)getAttributeById(28);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenMultistateOutputAttribute::Description);
     if (result == nullptr) {
         result = new AttributeString(28);
         addAttribute(result);
@@ -2419,7 +2419,7 @@ AttributeString* GenMultistateOutputCluster::getDescription() {
 }
 
 AttributeUInt16* GenMultistateOutputCluster::getNumberOfStates() {
-    auto result = (AttributeUInt16*)getAttributeById(74);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenMultistateOutputAttribute::NumberOfStates);
     if (result == nullptr) {
         result = new AttributeUInt16(74, DataType::UInt16);
         addAttribute(result);
@@ -2428,7 +2428,7 @@ AttributeUInt16* GenMultistateOutputCluster::getNumberOfStates() {
 }
 
 AttributeUInt8* GenMultistateOutputCluster::getOutOfService() {
-    auto result = (AttributeUInt8*)getAttributeById(81);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenMultistateOutputAttribute::OutOfService);
     if (result == nullptr) {
         result = new AttributeUInt8(81, DataType::Bool);
         addAttribute(result);
@@ -2437,7 +2437,7 @@ AttributeUInt8* GenMultistateOutputCluster::getOutOfService() {
 }
 
 AttributeUInt16* GenMultistateOutputCluster::getPresentValue() {
-    auto result = (AttributeUInt16*)getAttributeById(85);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenMultistateOutputAttribute::PresentValue);
     if (result == nullptr) {
         result = new AttributeUInt16(85, DataType::UInt16);
         addAttribute(result);
@@ -2446,7 +2446,7 @@ AttributeUInt16* GenMultistateOutputCluster::getPresentValue() {
 }
 
 AttributeUInt8* GenMultistateOutputCluster::getReliability() {
-    auto result = (AttributeUInt8*)getAttributeById(103);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenMultistateOutputAttribute::Reliability);
     if (result == nullptr) {
         result = new AttributeUInt8(103, DataType::Enum8);
         addAttribute(result);
@@ -2455,7 +2455,7 @@ AttributeUInt8* GenMultistateOutputCluster::getReliability() {
 }
 
 AttributeUInt16* GenMultistateOutputCluster::getRelinquishDefault() {
-    auto result = (AttributeUInt16*)getAttributeById(104);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenMultistateOutputAttribute::RelinquishDefault);
     if (result == nullptr) {
         result = new AttributeUInt16(104, DataType::UInt16);
         addAttribute(result);
@@ -2464,7 +2464,7 @@ AttributeUInt16* GenMultistateOutputCluster::getRelinquishDefault() {
 }
 
 AttributeUInt8* GenMultistateOutputCluster::getStatusFlags() {
-    auto result = (AttributeUInt8*)getAttributeById(111);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenMultistateOutputAttribute::StatusFlags);
     if (result == nullptr) {
         result = new AttributeUInt8(111, DataType::Map8);
         addAttribute(result);
@@ -2473,7 +2473,7 @@ AttributeUInt8* GenMultistateOutputCluster::getStatusFlags() {
 }
 
 AttributeUInt32* GenMultistateOutputCluster::getApplicationType() {
-    auto result = (AttributeUInt32*)getAttributeById(256);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenMultistateOutputAttribute::ApplicationType);
     if (result == nullptr) {
         result = new AttributeUInt32(256, DataType::UInt32);
         addAttribute(result);
@@ -2482,7 +2482,7 @@ AttributeUInt32* GenMultistateOutputCluster::getApplicationType() {
 }
 
 AttributeString* GenMultistateValueCluster::getDescription() {
-    auto result = (AttributeString*)getAttributeById(28);
+    auto result = (AttributeString*)getAttributeById((uint16_t)GenMultistateValueAttribute::Description);
     if (result == nullptr) {
         result = new AttributeString(28);
         addAttribute(result);
@@ -2491,7 +2491,7 @@ AttributeString* GenMultistateValueCluster::getDescription() {
 }
 
 AttributeUInt16* GenMultistateValueCluster::getNumberOfStates() {
-    auto result = (AttributeUInt16*)getAttributeById(74);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenMultistateValueAttribute::NumberOfStates);
     if (result == nullptr) {
         result = new AttributeUInt16(74, DataType::UInt16);
         addAttribute(result);
@@ -2500,7 +2500,7 @@ AttributeUInt16* GenMultistateValueCluster::getNumberOfStates() {
 }
 
 AttributeUInt8* GenMultistateValueCluster::getOutOfService() {
-    auto result = (AttributeUInt8*)getAttributeById(81);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenMultistateValueAttribute::OutOfService);
     if (result == nullptr) {
         result = new AttributeUInt8(81, DataType::Bool);
         addAttribute(result);
@@ -2509,7 +2509,7 @@ AttributeUInt8* GenMultistateValueCluster::getOutOfService() {
 }
 
 AttributeUInt16* GenMultistateValueCluster::getPresentValue() {
-    auto result = (AttributeUInt16*)getAttributeById(85);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenMultistateValueAttribute::PresentValue);
     if (result == nullptr) {
         result = new AttributeUInt16(85, DataType::UInt16);
         addAttribute(result);
@@ -2518,7 +2518,7 @@ AttributeUInt16* GenMultistateValueCluster::getPresentValue() {
 }
 
 AttributeUInt8* GenMultistateValueCluster::getReliability() {
-    auto result = (AttributeUInt8*)getAttributeById(103);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenMultistateValueAttribute::Reliability);
     if (result == nullptr) {
         result = new AttributeUInt8(103, DataType::Enum8);
         addAttribute(result);
@@ -2527,7 +2527,7 @@ AttributeUInt8* GenMultistateValueCluster::getReliability() {
 }
 
 AttributeUInt16* GenMultistateValueCluster::getRelinquishDefault() {
-    auto result = (AttributeUInt16*)getAttributeById(104);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenMultistateValueAttribute::RelinquishDefault);
     if (result == nullptr) {
         result = new AttributeUInt16(104, DataType::UInt16);
         addAttribute(result);
@@ -2536,7 +2536,7 @@ AttributeUInt16* GenMultistateValueCluster::getRelinquishDefault() {
 }
 
 AttributeUInt8* GenMultistateValueCluster::getStatusFlags() {
-    auto result = (AttributeUInt8*)getAttributeById(111);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenMultistateValueAttribute::StatusFlags);
     if (result == nullptr) {
         result = new AttributeUInt8(111, DataType::Map8);
         addAttribute(result);
@@ -2545,7 +2545,7 @@ AttributeUInt8* GenMultistateValueCluster::getStatusFlags() {
 }
 
 AttributeUInt32* GenMultistateValueCluster::getApplicationType() {
-    auto result = (AttributeUInt32*)getAttributeById(256);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenMultistateValueAttribute::ApplicationType);
     if (result == nullptr) {
         result = new AttributeUInt32(256, DataType::UInt32);
         addAttribute(result);
@@ -2554,7 +2554,7 @@ AttributeUInt32* GenMultistateValueCluster::getApplicationType() {
 }
 
 AttributeUInt16* GenCommissioningCluster::getShortress() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenCommissioningAttribute::Shortress);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -2563,7 +2563,7 @@ AttributeUInt16* GenCommissioningCluster::getShortress() {
 }
 
 AttributeUInt64* GenCommissioningCluster::getExtendedPANId() {
-    auto result = (AttributeUInt64*)getAttributeById(1);
+    auto result = (AttributeUInt64*)getAttributeById((uint16_t)GenCommissioningAttribute::ExtendedPANId);
     if (result == nullptr) {
         result = new AttributeUInt64(1, DataType::EUI64);
         addAttribute(result);
@@ -2572,7 +2572,7 @@ AttributeUInt64* GenCommissioningCluster::getExtendedPANId() {
 }
 
 AttributeUInt16* GenCommissioningCluster::getPanId() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenCommissioningAttribute::PanId);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::UInt16);
         addAttribute(result);
@@ -2581,7 +2581,7 @@ AttributeUInt16* GenCommissioningCluster::getPanId() {
 }
 
 AttributeUInt32* GenCommissioningCluster::getChannelmask() {
-    auto result = (AttributeUInt32*)getAttributeById(3);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenCommissioningAttribute::Channelmask);
     if (result == nullptr) {
         result = new AttributeUInt32(3, DataType::Map32);
         addAttribute(result);
@@ -2590,7 +2590,7 @@ AttributeUInt32* GenCommissioningCluster::getChannelmask() {
 }
 
 AttributeUInt8* GenCommissioningCluster::getProtocolVersion() {
-    auto result = (AttributeUInt8*)getAttributeById(4);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenCommissioningAttribute::ProtocolVersion);
     if (result == nullptr) {
         result = new AttributeUInt8(4, DataType::UInt8);
         addAttribute(result);
@@ -2599,7 +2599,7 @@ AttributeUInt8* GenCommissioningCluster::getProtocolVersion() {
 }
 
 AttributeUInt8* GenCommissioningCluster::getStackProfile() {
-    auto result = (AttributeUInt8*)getAttributeById(5);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenCommissioningAttribute::StackProfile);
     if (result == nullptr) {
         result = new AttributeUInt8(5, DataType::UInt8);
         addAttribute(result);
@@ -2608,7 +2608,7 @@ AttributeUInt8* GenCommissioningCluster::getStackProfile() {
 }
 
 AttributeUInt8* GenCommissioningCluster::getStartupControl() {
-    auto result = (AttributeUInt8*)getAttributeById(6);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenCommissioningAttribute::StartupControl);
     if (result == nullptr) {
         result = new AttributeUInt8(6, DataType::Enum8);
         addAttribute(result);
@@ -2617,7 +2617,7 @@ AttributeUInt8* GenCommissioningCluster::getStartupControl() {
 }
 
 AttributeUInt64* GenCommissioningCluster::getTrustCenterress() {
-    auto result = (AttributeUInt64*)getAttributeById(16);
+    auto result = (AttributeUInt64*)getAttributeById((uint16_t)GenCommissioningAttribute::TrustCenterress);
     if (result == nullptr) {
         result = new AttributeUInt64(16, DataType::EUI64);
         addAttribute(result);
@@ -2626,7 +2626,7 @@ AttributeUInt64* GenCommissioningCluster::getTrustCenterress() {
 }
 
 AttributeUInt8* GenCommissioningCluster::getUseInsecureJoin() {
-    auto result = (AttributeUInt8*)getAttributeById(19);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenCommissioningAttribute::UseInsecureJoin);
     if (result == nullptr) {
         result = new AttributeUInt8(19, DataType::Bool);
         addAttribute(result);
@@ -2635,7 +2635,7 @@ AttributeUInt8* GenCommissioningCluster::getUseInsecureJoin() {
 }
 
 AttributeUInt8* GenCommissioningCluster::getNetworkKeySeqNum() {
-    auto result = (AttributeUInt8*)getAttributeById(21);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenCommissioningAttribute::NetworkKeySeqNum);
     if (result == nullptr) {
         result = new AttributeUInt8(21, DataType::UInt8);
         addAttribute(result);
@@ -2644,7 +2644,7 @@ AttributeUInt8* GenCommissioningCluster::getNetworkKeySeqNum() {
 }
 
 AttributeUInt8* GenCommissioningCluster::getNetworkKeyType() {
-    auto result = (AttributeUInt8*)getAttributeById(22);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenCommissioningAttribute::NetworkKeyType);
     if (result == nullptr) {
         result = new AttributeUInt8(22, DataType::Enum8);
         addAttribute(result);
@@ -2653,7 +2653,7 @@ AttributeUInt8* GenCommissioningCluster::getNetworkKeyType() {
 }
 
 AttributeUInt16* GenCommissioningCluster::getNetworkManagerress() {
-    auto result = (AttributeUInt16*)getAttributeById(23);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenCommissioningAttribute::NetworkManagerress);
     if (result == nullptr) {
         result = new AttributeUInt16(23, DataType::UInt16);
         addAttribute(result);
@@ -2662,7 +2662,7 @@ AttributeUInt16* GenCommissioningCluster::getNetworkManagerress() {
 }
 
 AttributeUInt8* GenCommissioningCluster::getScanAttempts() {
-    auto result = (AttributeUInt8*)getAttributeById(32);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenCommissioningAttribute::ScanAttempts);
     if (result == nullptr) {
         result = new AttributeUInt8(32, DataType::UInt8);
         addAttribute(result);
@@ -2671,7 +2671,7 @@ AttributeUInt8* GenCommissioningCluster::getScanAttempts() {
 }
 
 AttributeUInt16* GenCommissioningCluster::getTimeBetweenScans() {
-    auto result = (AttributeUInt16*)getAttributeById(33);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenCommissioningAttribute::TimeBetweenScans);
     if (result == nullptr) {
         result = new AttributeUInt16(33, DataType::UInt16);
         addAttribute(result);
@@ -2680,7 +2680,7 @@ AttributeUInt16* GenCommissioningCluster::getTimeBetweenScans() {
 }
 
 AttributeUInt16* GenCommissioningCluster::getRejoinInterval() {
-    auto result = (AttributeUInt16*)getAttributeById(34);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenCommissioningAttribute::RejoinInterval);
     if (result == nullptr) {
         result = new AttributeUInt16(34, DataType::UInt16);
         addAttribute(result);
@@ -2689,7 +2689,7 @@ AttributeUInt16* GenCommissioningCluster::getRejoinInterval() {
 }
 
 AttributeUInt16* GenCommissioningCluster::getMaxRejoinInterval() {
-    auto result = (AttributeUInt16*)getAttributeById(35);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenCommissioningAttribute::MaxRejoinInterval);
     if (result == nullptr) {
         result = new AttributeUInt16(35, DataType::UInt16);
         addAttribute(result);
@@ -2698,7 +2698,7 @@ AttributeUInt16* GenCommissioningCluster::getMaxRejoinInterval() {
 }
 
 AttributeUInt16* GenCommissioningCluster::getIndirectPollRate() {
-    auto result = (AttributeUInt16*)getAttributeById(48);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenCommissioningAttribute::IndirectPollRate);
     if (result == nullptr) {
         result = new AttributeUInt16(48, DataType::UInt16);
         addAttribute(result);
@@ -2707,7 +2707,7 @@ AttributeUInt16* GenCommissioningCluster::getIndirectPollRate() {
 }
 
 AttributeUInt8* GenCommissioningCluster::getParentRetryThreshold() {
-    auto result = (AttributeUInt8*)getAttributeById(49);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenCommissioningAttribute::ParentRetryThreshold);
     if (result == nullptr) {
         result = new AttributeUInt8(49, DataType::UInt8);
         addAttribute(result);
@@ -2716,7 +2716,7 @@ AttributeUInt8* GenCommissioningCluster::getParentRetryThreshold() {
 }
 
 AttributeUInt8* GenCommissioningCluster::getConcentratorFlag() {
-    auto result = (AttributeUInt8*)getAttributeById(64);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenCommissioningAttribute::ConcentratorFlag);
     if (result == nullptr) {
         result = new AttributeUInt8(64, DataType::Bool);
         addAttribute(result);
@@ -2725,7 +2725,7 @@ AttributeUInt8* GenCommissioningCluster::getConcentratorFlag() {
 }
 
 AttributeUInt8* GenCommissioningCluster::getConcentratorRus() {
-    auto result = (AttributeUInt8*)getAttributeById(65);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenCommissioningAttribute::ConcentratorRus);
     if (result == nullptr) {
         result = new AttributeUInt8(65, DataType::UInt8);
         addAttribute(result);
@@ -2734,7 +2734,7 @@ AttributeUInt8* GenCommissioningCluster::getConcentratorRus() {
 }
 
 AttributeUInt8* GenCommissioningCluster::getConcentratorDiscoveryTime() {
-    auto result = (AttributeUInt8*)getAttributeById(66);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenCommissioningAttribute::ConcentratorDiscoveryTime);
     if (result == nullptr) {
         result = new AttributeUInt8(66, DataType::UInt8);
         addAttribute(result);
@@ -2841,7 +2841,7 @@ void GenCommissioningCluster::processCommand(uint8_t commandId, Memory& request,
 }
 
 AttributeUInt64* GenOtaCluster::getUpgradeServerId() {
-    auto result = (AttributeUInt64*)getAttributeById(0);
+    auto result = (AttributeUInt64*)getAttributeById((uint16_t)GenOtaAttribute::UpgradeServerId);
     if (result == nullptr) {
         result = new AttributeUInt64(0, DataType::EUI64);
         addAttribute(result);
@@ -2850,7 +2850,7 @@ AttributeUInt64* GenOtaCluster::getUpgradeServerId() {
 }
 
 AttributeUInt32* GenOtaCluster::getFileOffset() {
-    auto result = (AttributeUInt32*)getAttributeById(1);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenOtaAttribute::FileOffset);
     if (result == nullptr) {
         result = new AttributeUInt32(1, DataType::UInt32);
         addAttribute(result);
@@ -2859,7 +2859,7 @@ AttributeUInt32* GenOtaCluster::getFileOffset() {
 }
 
 AttributeUInt32* GenOtaCluster::getCurrentFileVersion() {
-    auto result = (AttributeUInt32*)getAttributeById(2);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenOtaAttribute::CurrentFileVersion);
     if (result == nullptr) {
         result = new AttributeUInt32(2, DataType::UInt32);
         addAttribute(result);
@@ -2868,7 +2868,7 @@ AttributeUInt32* GenOtaCluster::getCurrentFileVersion() {
 }
 
 AttributeUInt16* GenOtaCluster::getCurrentZigbeeStackVersion() {
-    auto result = (AttributeUInt16*)getAttributeById(3);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenOtaAttribute::CurrentZigbeeStackVersion);
     if (result == nullptr) {
         result = new AttributeUInt16(3, DataType::UInt16);
         addAttribute(result);
@@ -2877,7 +2877,7 @@ AttributeUInt16* GenOtaCluster::getCurrentZigbeeStackVersion() {
 }
 
 AttributeUInt32* GenOtaCluster::getDownloadedFileVersion() {
-    auto result = (AttributeUInt32*)getAttributeById(4);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenOtaAttribute::DownloadedFileVersion);
     if (result == nullptr) {
         result = new AttributeUInt32(4, DataType::UInt32);
         addAttribute(result);
@@ -2886,7 +2886,7 @@ AttributeUInt32* GenOtaCluster::getDownloadedFileVersion() {
 }
 
 AttributeUInt16* GenOtaCluster::getDownloadedZigbeeStackVersion() {
-    auto result = (AttributeUInt16*)getAttributeById(5);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenOtaAttribute::DownloadedZigbeeStackVersion);
     if (result == nullptr) {
         result = new AttributeUInt16(5, DataType::UInt16);
         addAttribute(result);
@@ -2895,7 +2895,7 @@ AttributeUInt16* GenOtaCluster::getDownloadedZigbeeStackVersion() {
 }
 
 AttributeUInt8* GenOtaCluster::getImageUpgradeStatus() {
-    auto result = (AttributeUInt8*)getAttributeById(6);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)GenOtaAttribute::ImageUpgradeStatus);
     if (result == nullptr) {
         result = new AttributeUInt8(6, DataType::Enum8);
         addAttribute(result);
@@ -2904,7 +2904,7 @@ AttributeUInt8* GenOtaCluster::getImageUpgradeStatus() {
 }
 
 AttributeUInt16* GenOtaCluster::getManufacturerId() {
-    auto result = (AttributeUInt16*)getAttributeById(7);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenOtaAttribute::ManufacturerId);
     if (result == nullptr) {
         result = new AttributeUInt16(7, DataType::UInt16);
         addAttribute(result);
@@ -2913,7 +2913,7 @@ AttributeUInt16* GenOtaCluster::getManufacturerId() {
 }
 
 AttributeUInt16* GenOtaCluster::getImageTypeId() {
-    auto result = (AttributeUInt16*)getAttributeById(8);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenOtaAttribute::ImageTypeId);
     if (result == nullptr) {
         result = new AttributeUInt16(8, DataType::UInt16);
         addAttribute(result);
@@ -2922,7 +2922,7 @@ AttributeUInt16* GenOtaCluster::getImageTypeId() {
 }
 
 AttributeUInt16* GenOtaCluster::getMinimumBlockReqDelay() {
-    auto result = (AttributeUInt16*)getAttributeById(9);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenOtaAttribute::MinimumBlockReqDelay);
     if (result == nullptr) {
         result = new AttributeUInt16(9, DataType::UInt16);
         addAttribute(result);
@@ -2931,7 +2931,7 @@ AttributeUInt16* GenOtaCluster::getMinimumBlockReqDelay() {
 }
 
 AttributeUInt32* GenOtaCluster::getImageStamp() {
-    auto result = (AttributeUInt32*)getAttributeById(10);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenOtaAttribute::ImageStamp);
     if (result == nullptr) {
         result = new AttributeUInt32(10, DataType::UInt32);
         addAttribute(result);
@@ -2982,7 +2982,7 @@ void GenOtaCluster::processCommand(uint8_t commandId, Memory& request, Memory& r
 }
 
 AttributeUInt32* GenPollCtrlCluster::getCheckinInterval() {
-    auto result = (AttributeUInt32*)getAttributeById(0);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenPollCtrlAttribute::CheckinInterval);
     if (result == nullptr) {
         result = new AttributeUInt32(0, DataType::UInt32);
         addAttribute(result);
@@ -2991,7 +2991,7 @@ AttributeUInt32* GenPollCtrlCluster::getCheckinInterval() {
 }
 
 AttributeUInt32* GenPollCtrlCluster::getLongPollInterval() {
-    auto result = (AttributeUInt32*)getAttributeById(1);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenPollCtrlAttribute::LongPollInterval);
     if (result == nullptr) {
         result = new AttributeUInt32(1, DataType::UInt32);
         addAttribute(result);
@@ -3000,7 +3000,7 @@ AttributeUInt32* GenPollCtrlCluster::getLongPollInterval() {
 }
 
 AttributeUInt16* GenPollCtrlCluster::getShortPollInterval() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenPollCtrlAttribute::ShortPollInterval);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::UInt16);
         addAttribute(result);
@@ -3009,7 +3009,7 @@ AttributeUInt16* GenPollCtrlCluster::getShortPollInterval() {
 }
 
 AttributeUInt16* GenPollCtrlCluster::getFastPollTimeout() {
-    auto result = (AttributeUInt16*)getAttributeById(3);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenPollCtrlAttribute::FastPollTimeout);
     if (result == nullptr) {
         result = new AttributeUInt16(3, DataType::UInt16);
         addAttribute(result);
@@ -3018,7 +3018,7 @@ AttributeUInt16* GenPollCtrlCluster::getFastPollTimeout() {
 }
 
 AttributeUInt32* GenPollCtrlCluster::getCheckinIntervalMin() {
-    auto result = (AttributeUInt32*)getAttributeById(4);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenPollCtrlAttribute::CheckinIntervalMin);
     if (result == nullptr) {
         result = new AttributeUInt32(4, DataType::UInt32);
         addAttribute(result);
@@ -3027,7 +3027,7 @@ AttributeUInt32* GenPollCtrlCluster::getCheckinIntervalMin() {
 }
 
 AttributeUInt32* GenPollCtrlCluster::getLongPollIntervalMin() {
-    auto result = (AttributeUInt32*)getAttributeById(5);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)GenPollCtrlAttribute::LongPollIntervalMin);
     if (result == nullptr) {
         result = new AttributeUInt32(5, DataType::UInt32);
         addAttribute(result);
@@ -3036,7 +3036,7 @@ AttributeUInt32* GenPollCtrlCluster::getLongPollIntervalMin() {
 }
 
 AttributeUInt16* GenPollCtrlCluster::getFastPollTimeoutMax() {
-    auto result = (AttributeUInt16*)getAttributeById(6);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)GenPollCtrlAttribute::FastPollTimeoutMax);
     if (result == nullptr) {
         result = new AttributeUInt16(6, DataType::UInt16);
         addAttribute(result);
@@ -3133,7 +3133,7 @@ void GenPollCtrlCluster::processCommand(uint8_t commandId, Memory& request, Memo
 }
 
 AttributeUInt16* MobileDeviceCfgCluster::getKeepAliveTime() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MobileDeviceCfgAttribute::KeepAliveTime);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -3142,7 +3142,7 @@ AttributeUInt16* MobileDeviceCfgCluster::getKeepAliveTime() {
 }
 
 AttributeUInt16* MobileDeviceCfgCluster::getRejoinTimeout() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MobileDeviceCfgAttribute::RejoinTimeout);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -3151,7 +3151,7 @@ AttributeUInt16* MobileDeviceCfgCluster::getRejoinTimeout() {
 }
 
 AttributeUInt16* NeighborCleaningCluster::getNeighborCleaningTimeout() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)NeighborCleaningAttribute::NeighborCleaningTimeout);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -3160,7 +3160,7 @@ AttributeUInt16* NeighborCleaningCluster::getNeighborCleaningTimeout() {
 }
 
 AttributeUInt16* NearestGatewayCluster::getNearestGateway() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)NearestGatewayAttribute::NearestGateway);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -3169,7 +3169,7 @@ AttributeUInt16* NearestGatewayCluster::getNearestGateway() {
 }
 
 AttributeUInt16* NearestGatewayCluster::getNewMobileNode() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)NearestGatewayAttribute::NewMobileNode);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -3178,7 +3178,7 @@ AttributeUInt16* NearestGatewayCluster::getNewMobileNode() {
 }
 
 AttributeUInt16* ClosuresShadeCfgCluster::getPhysicalClosedLimit() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresShadeCfgAttribute::PhysicalClosedLimit);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -3187,7 +3187,7 @@ AttributeUInt16* ClosuresShadeCfgCluster::getPhysicalClosedLimit() {
 }
 
 AttributeUInt8* ClosuresShadeCfgCluster::getMotorStepSize() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresShadeCfgAttribute::MotorStepSize);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::UInt8);
         addAttribute(result);
@@ -3196,7 +3196,7 @@ AttributeUInt8* ClosuresShadeCfgCluster::getMotorStepSize() {
 }
 
 AttributeUInt8* ClosuresShadeCfgCluster::getStatus() {
-    auto result = (AttributeUInt8*)getAttributeById(2);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresShadeCfgAttribute::Status);
     if (result == nullptr) {
         result = new AttributeUInt8(2, DataType::Map8);
         addAttribute(result);
@@ -3205,7 +3205,7 @@ AttributeUInt8* ClosuresShadeCfgCluster::getStatus() {
 }
 
 AttributeUInt16* ClosuresShadeCfgCluster::getLosedLimit() {
-    auto result = (AttributeUInt16*)getAttributeById(16);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresShadeCfgAttribute::LosedLimit);
     if (result == nullptr) {
         result = new AttributeUInt16(16, DataType::UInt16);
         addAttribute(result);
@@ -3214,7 +3214,7 @@ AttributeUInt16* ClosuresShadeCfgCluster::getLosedLimit() {
 }
 
 AttributeUInt8* ClosuresShadeCfgCluster::getMode() {
-    auto result = (AttributeUInt8*)getAttributeById(18);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresShadeCfgAttribute::Mode);
     if (result == nullptr) {
         result = new AttributeUInt8(18, DataType::Enum8);
         addAttribute(result);
@@ -3223,7 +3223,7 @@ AttributeUInt8* ClosuresShadeCfgCluster::getMode() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getLockState() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::LockState);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Enum8);
         addAttribute(result);
@@ -3232,7 +3232,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getLockState() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getLockType() {
-    auto result = (AttributeUInt16*)getAttributeById(38);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::LockType);
     if (result == nullptr) {
         result = new AttributeUInt16(38, DataType::Map16);
         addAttribute(result);
@@ -3241,7 +3241,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getLockType() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getActuatorEnabled() {
-    auto result = (AttributeUInt8*)getAttributeById(2);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::ActuatorEnabled);
     if (result == nullptr) {
         result = new AttributeUInt8(2, DataType::Bool);
         addAttribute(result);
@@ -3250,7 +3250,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getActuatorEnabled() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getDoorState() {
-    auto result = (AttributeUInt8*)getAttributeById(3);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::DoorState);
     if (result == nullptr) {
         result = new AttributeUInt8(3, DataType::Enum8);
         addAttribute(result);
@@ -3259,7 +3259,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getDoorState() {
 }
 
 AttributeUInt32* ClosuresDoorLockCluster::getDoorOpenEvents() {
-    auto result = (AttributeUInt32*)getAttributeById(4);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::DoorOpenEvents);
     if (result == nullptr) {
         result = new AttributeUInt32(4, DataType::UInt32);
         addAttribute(result);
@@ -3268,7 +3268,7 @@ AttributeUInt32* ClosuresDoorLockCluster::getDoorOpenEvents() {
 }
 
 AttributeUInt32* ClosuresDoorLockCluster::getDoorClosedEvents() {
-    auto result = (AttributeUInt32*)getAttributeById(5);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::DoorClosedEvents);
     if (result == nullptr) {
         result = new AttributeUInt32(5, DataType::UInt32);
         addAttribute(result);
@@ -3277,7 +3277,7 @@ AttributeUInt32* ClosuresDoorLockCluster::getDoorClosedEvents() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getOpenPeriod() {
-    auto result = (AttributeUInt16*)getAttributeById(6);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::OpenPeriod);
     if (result == nullptr) {
         result = new AttributeUInt16(6, DataType::UInt16);
         addAttribute(result);
@@ -3286,7 +3286,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getOpenPeriod() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getNumOfLockRecordsSupported() {
-    auto result = (AttributeUInt16*)getAttributeById(16);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::NumOfLockRecordsSupported);
     if (result == nullptr) {
         result = new AttributeUInt16(16, DataType::UInt16);
         addAttribute(result);
@@ -3295,7 +3295,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getNumOfLockRecordsSupported() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getNumOfTotalUsersSupported() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::NumOfTotalUsersSupported);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -3304,7 +3304,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getNumOfTotalUsersSupported() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getNumOfPinUsersSupported() {
-    auto result = (AttributeUInt16*)getAttributeById(18);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::NumOfPinUsersSupported);
     if (result == nullptr) {
         result = new AttributeUInt16(18, DataType::UInt16);
         addAttribute(result);
@@ -3313,7 +3313,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getNumOfPinUsersSupported() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getNumOfRfidUsersSupported() {
-    auto result = (AttributeUInt16*)getAttributeById(19);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::NumOfRfidUsersSupported);
     if (result == nullptr) {
         result = new AttributeUInt16(19, DataType::UInt16);
         addAttribute(result);
@@ -3322,7 +3322,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getNumOfRfidUsersSupported() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getNumOfWeekDaySchedulesSupportedPerUser() {
-    auto result = (AttributeUInt8*)getAttributeById(20);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::NumOfWeekDaySchedulesSupportedPerUser);
     if (result == nullptr) {
         result = new AttributeUInt8(20, DataType::UInt8);
         addAttribute(result);
@@ -3331,7 +3331,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getNumOfWeekDaySchedulesSupportedPerUse
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getNumOfYearDaySchedulesSupportedPerUser() {
-    auto result = (AttributeUInt8*)getAttributeById(21);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::NumOfYearDaySchedulesSupportedPerUser);
     if (result == nullptr) {
         result = new AttributeUInt8(21, DataType::UInt8);
         addAttribute(result);
@@ -3340,7 +3340,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getNumOfYearDaySchedulesSupportedPerUse
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getNumOfHolidayScheduledsSupported() {
-    auto result = (AttributeUInt8*)getAttributeById(22);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::NumOfHolidayScheduledsSupported);
     if (result == nullptr) {
         result = new AttributeUInt8(22, DataType::UInt8);
         addAttribute(result);
@@ -3349,7 +3349,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getNumOfHolidayScheduledsSupported() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getMaxPinLen() {
-    auto result = (AttributeUInt8*)getAttributeById(23);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::MaxPinLen);
     if (result == nullptr) {
         result = new AttributeUInt8(23, DataType::UInt8);
         addAttribute(result);
@@ -3358,7 +3358,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getMaxPinLen() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getMinPinLen() {
-    auto result = (AttributeUInt8*)getAttributeById(24);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::MinPinLen);
     if (result == nullptr) {
         result = new AttributeUInt8(24, DataType::UInt8);
         addAttribute(result);
@@ -3367,7 +3367,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getMinPinLen() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getMaxRfidLen() {
-    auto result = (AttributeUInt8*)getAttributeById(25);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::MaxRfidLen);
     if (result == nullptr) {
         result = new AttributeUInt8(25, DataType::UInt8);
         addAttribute(result);
@@ -3376,7 +3376,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getMaxRfidLen() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getMinRfidLen() {
-    auto result = (AttributeUInt8*)getAttributeById(26);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::MinRfidLen);
     if (result == nullptr) {
         result = new AttributeUInt8(26, DataType::UInt8);
         addAttribute(result);
@@ -3385,7 +3385,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getMinRfidLen() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getEnableLogging() {
-    auto result = (AttributeUInt8*)getAttributeById(32);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::EnableLogging);
     if (result == nullptr) {
         result = new AttributeUInt8(32, DataType::Bool);
         addAttribute(result);
@@ -3394,7 +3394,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getEnableLogging() {
 }
 
 AttributeString* ClosuresDoorLockCluster::getLanguage() {
-    auto result = (AttributeString*)getAttributeById(33);
+    auto result = (AttributeString*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::Language);
     if (result == nullptr) {
         result = new AttributeString(33);
         addAttribute(result);
@@ -3403,7 +3403,7 @@ AttributeString* ClosuresDoorLockCluster::getLanguage() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getLedSettings() {
-    auto result = (AttributeUInt8*)getAttributeById(34);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::LedSettings);
     if (result == nullptr) {
         result = new AttributeUInt8(34, DataType::UInt8);
         addAttribute(result);
@@ -3412,7 +3412,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getLedSettings() {
 }
 
 AttributeUInt32* ClosuresDoorLockCluster::getAutoRelockTime() {
-    auto result = (AttributeUInt32*)getAttributeById(35);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::AutoRelockTime);
     if (result == nullptr) {
         result = new AttributeUInt32(35, DataType::UInt32);
         addAttribute(result);
@@ -3421,7 +3421,7 @@ AttributeUInt32* ClosuresDoorLockCluster::getAutoRelockTime() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getSoundVolume() {
-    auto result = (AttributeUInt8*)getAttributeById(36);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::SoundVolume);
     if (result == nullptr) {
         result = new AttributeUInt8(36, DataType::UInt8);
         addAttribute(result);
@@ -3430,7 +3430,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getSoundVolume() {
 }
 
 AttributeUInt32* ClosuresDoorLockCluster::getOperatingMode() {
-    auto result = (AttributeUInt32*)getAttributeById(37);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::OperatingMode);
     if (result == nullptr) {
         result = new AttributeUInt32(37, DataType::UInt32);
         addAttribute(result);
@@ -3439,7 +3439,7 @@ AttributeUInt32* ClosuresDoorLockCluster::getOperatingMode() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getDefaultConfigurationRegister() {
-    auto result = (AttributeUInt16*)getAttributeById(39);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::DefaultConfigurationRegister);
     if (result == nullptr) {
         result = new AttributeUInt16(39, DataType::Map16);
         addAttribute(result);
@@ -3448,7 +3448,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getDefaultConfigurationRegister() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getEnableLocalProgramming() {
-    auto result = (AttributeUInt8*)getAttributeById(40);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::EnableLocalProgramming);
     if (result == nullptr) {
         result = new AttributeUInt8(40, DataType::Bool);
         addAttribute(result);
@@ -3457,7 +3457,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getEnableLocalProgramming() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getEnableOneTouchLocking() {
-    auto result = (AttributeUInt8*)getAttributeById(41);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::EnableOneTouchLocking);
     if (result == nullptr) {
         result = new AttributeUInt8(41, DataType::Bool);
         addAttribute(result);
@@ -3466,7 +3466,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getEnableOneTouchLocking() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getEnableInsideStatusLed() {
-    auto result = (AttributeUInt8*)getAttributeById(42);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::EnableInsideStatusLed);
     if (result == nullptr) {
         result = new AttributeUInt8(42, DataType::Bool);
         addAttribute(result);
@@ -3475,7 +3475,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getEnableInsideStatusLed() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getEnablePrivacyModeButton() {
-    auto result = (AttributeUInt8*)getAttributeById(43);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::EnablePrivacyModeButton);
     if (result == nullptr) {
         result = new AttributeUInt8(43, DataType::Bool);
         addAttribute(result);
@@ -3484,7 +3484,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getEnablePrivacyModeButton() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getWrongCodeEntryLimit() {
-    auto result = (AttributeUInt8*)getAttributeById(48);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::WrongCodeEntryLimit);
     if (result == nullptr) {
         result = new AttributeUInt8(48, DataType::UInt8);
         addAttribute(result);
@@ -3493,7 +3493,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getWrongCodeEntryLimit() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getUserCodeTemporaryDisableTime() {
-    auto result = (AttributeUInt8*)getAttributeById(49);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::UserCodeTemporaryDisableTime);
     if (result == nullptr) {
         result = new AttributeUInt8(49, DataType::UInt8);
         addAttribute(result);
@@ -3502,7 +3502,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getUserCodeTemporaryDisableTime() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getSendPinOta() {
-    auto result = (AttributeUInt8*)getAttributeById(50);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::SendPinOta);
     if (result == nullptr) {
         result = new AttributeUInt8(50, DataType::Bool);
         addAttribute(result);
@@ -3511,7 +3511,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getSendPinOta() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getRequirePinForRfOperation() {
-    auto result = (AttributeUInt8*)getAttributeById(51);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::RequirePinForRfOperation);
     if (result == nullptr) {
         result = new AttributeUInt8(51, DataType::Bool);
         addAttribute(result);
@@ -3520,7 +3520,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getRequirePinForRfOperation() {
 }
 
 AttributeUInt8* ClosuresDoorLockCluster::getZigbeeSecurityLevel() {
-    auto result = (AttributeUInt8*)getAttributeById(52);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::ZigbeeSecurityLevel);
     if (result == nullptr) {
         result = new AttributeUInt8(52, DataType::UInt8);
         addAttribute(result);
@@ -3529,7 +3529,7 @@ AttributeUInt8* ClosuresDoorLockCluster::getZigbeeSecurityLevel() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getAlarmMask() {
-    auto result = (AttributeUInt16*)getAttributeById(64);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::AlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt16(64, DataType::Map16);
         addAttribute(result);
@@ -3538,7 +3538,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getAlarmMask() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getKeypadOperationEventMask() {
-    auto result = (AttributeUInt16*)getAttributeById(65);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::KeypadOperationEventMask);
     if (result == nullptr) {
         result = new AttributeUInt16(65, DataType::Map16);
         addAttribute(result);
@@ -3547,7 +3547,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getKeypadOperationEventMask() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getRfOperationEventMask() {
-    auto result = (AttributeUInt16*)getAttributeById(66);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::RfOperationEventMask);
     if (result == nullptr) {
         result = new AttributeUInt16(66, DataType::Map16);
         addAttribute(result);
@@ -3556,7 +3556,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getRfOperationEventMask() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getManualOperationEventMask() {
-    auto result = (AttributeUInt16*)getAttributeById(67);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::ManualOperationEventMask);
     if (result == nullptr) {
         result = new AttributeUInt16(67, DataType::Map16);
         addAttribute(result);
@@ -3565,7 +3565,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getManualOperationEventMask() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getRfidOperationEventMask() {
-    auto result = (AttributeUInt16*)getAttributeById(68);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::RfidOperationEventMask);
     if (result == nullptr) {
         result = new AttributeUInt16(68, DataType::Map16);
         addAttribute(result);
@@ -3574,7 +3574,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getRfidOperationEventMask() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getKeypadProgrammingEventMask() {
-    auto result = (AttributeUInt16*)getAttributeById(69);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::KeypadProgrammingEventMask);
     if (result == nullptr) {
         result = new AttributeUInt16(69, DataType::Map16);
         addAttribute(result);
@@ -3583,7 +3583,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getKeypadProgrammingEventMask() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getRfProgrammingEventMask() {
-    auto result = (AttributeUInt16*)getAttributeById(70);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::RfProgrammingEventMask);
     if (result == nullptr) {
         result = new AttributeUInt16(70, DataType::Map16);
         addAttribute(result);
@@ -3592,7 +3592,7 @@ AttributeUInt16* ClosuresDoorLockCluster::getRfProgrammingEventMask() {
 }
 
 AttributeUInt16* ClosuresDoorLockCluster::getRfidProgrammingEventMask() {
-    auto result = (AttributeUInt16*)getAttributeById(71);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresDoorLockAttribute::RfidProgrammingEventMask);
     if (result == nullptr) {
         result = new AttributeUInt16(71, DataType::Map16);
         addAttribute(result);
@@ -3921,7 +3921,7 @@ void ClosuresDoorLockCluster::processCommand(uint8_t commandId, Memory& request,
 }
 
 AttributeUInt8* ClosuresWindowCoveringCluster::getWindowCoveringType() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::WindowCoveringType);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Enum8);
         addAttribute(result);
@@ -3930,7 +3930,7 @@ AttributeUInt8* ClosuresWindowCoveringCluster::getWindowCoveringType() {
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getPhysicalClosedLimitLiftCm() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::PhysicalClosedLimitLiftCm);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -3939,7 +3939,7 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getPhysicalClosedLimitLiftCm() {
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getPhysicalClosedLimitTiltDdegree() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::PhysicalClosedLimitTiltDdegree);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::UInt16);
         addAttribute(result);
@@ -3948,7 +3948,7 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getPhysicalClosedLimitTiltDdegre
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getCurrentPositionLiftCm() {
-    auto result = (AttributeUInt16*)getAttributeById(3);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::CurrentPositionLiftCm);
     if (result == nullptr) {
         result = new AttributeUInt16(3, DataType::UInt16);
         addAttribute(result);
@@ -3957,7 +3957,7 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getCurrentPositionLiftCm() {
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getCurrentPositionTiltDdegree() {
-    auto result = (AttributeUInt16*)getAttributeById(4);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::CurrentPositionTiltDdegree);
     if (result == nullptr) {
         result = new AttributeUInt16(4, DataType::UInt16);
         addAttribute(result);
@@ -3966,7 +3966,7 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getCurrentPositionTiltDdegree() 
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getNumOfActuationsLift() {
-    auto result = (AttributeUInt16*)getAttributeById(5);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::NumOfActuationsLift);
     if (result == nullptr) {
         result = new AttributeUInt16(5, DataType::UInt16);
         addAttribute(result);
@@ -3975,7 +3975,7 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getNumOfActuationsLift() {
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getNumOfActuationsTilt() {
-    auto result = (AttributeUInt16*)getAttributeById(6);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::NumOfActuationsTilt);
     if (result == nullptr) {
         result = new AttributeUInt16(6, DataType::UInt16);
         addAttribute(result);
@@ -3984,7 +3984,7 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getNumOfActuationsTilt() {
 }
 
 AttributeUInt8* ClosuresWindowCoveringCluster::getConfigStatus() {
-    auto result = (AttributeUInt8*)getAttributeById(7);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::ConfigStatus);
     if (result == nullptr) {
         result = new AttributeUInt8(7, DataType::Map8);
         addAttribute(result);
@@ -3993,7 +3993,7 @@ AttributeUInt8* ClosuresWindowCoveringCluster::getConfigStatus() {
 }
 
 AttributeUInt8* ClosuresWindowCoveringCluster::getCurrentPositionLiftPercentage() {
-    auto result = (AttributeUInt8*)getAttributeById(8);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::CurrentPositionLiftPercentage);
     if (result == nullptr) {
         result = new AttributeUInt8(8, DataType::UInt8);
         addAttribute(result);
@@ -4002,7 +4002,7 @@ AttributeUInt8* ClosuresWindowCoveringCluster::getCurrentPositionLiftPercentage(
 }
 
 AttributeUInt8* ClosuresWindowCoveringCluster::getCurrentPositionTiltPercentage() {
-    auto result = (AttributeUInt8*)getAttributeById(9);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::CurrentPositionTiltPercentage);
     if (result == nullptr) {
         result = new AttributeUInt8(9, DataType::UInt8);
         addAttribute(result);
@@ -4011,7 +4011,7 @@ AttributeUInt8* ClosuresWindowCoveringCluster::getCurrentPositionTiltPercentage(
 }
 
 AttributeUInt8* ClosuresWindowCoveringCluster::getOperationalStatus() {
-    auto result = (AttributeUInt8*)getAttributeById(10);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::OperationalStatus);
     if (result == nullptr) {
         result = new AttributeUInt8(10, DataType::Map8);
         addAttribute(result);
@@ -4020,7 +4020,7 @@ AttributeUInt8* ClosuresWindowCoveringCluster::getOperationalStatus() {
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getInstalledOpenLimitLiftCm() {
-    auto result = (AttributeUInt16*)getAttributeById(16);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::InstalledOpenLimitLiftCm);
     if (result == nullptr) {
         result = new AttributeUInt16(16, DataType::UInt16);
         addAttribute(result);
@@ -4029,7 +4029,7 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getInstalledOpenLimitLiftCm() {
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getInstalledClosedLimitLiftCm() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::InstalledClosedLimitLiftCm);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -4038,7 +4038,7 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getInstalledClosedLimitLiftCm() 
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getInstalledOpenLimitTiltDdegree() {
-    auto result = (AttributeUInt16*)getAttributeById(18);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::InstalledOpenLimitTiltDdegree);
     if (result == nullptr) {
         result = new AttributeUInt16(18, DataType::UInt16);
         addAttribute(result);
@@ -4047,7 +4047,7 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getInstalledOpenLimitTiltDdegree
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getInstalledClosedLimitTiltDdegree() {
-    auto result = (AttributeUInt16*)getAttributeById(19);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::InstalledClosedLimitTiltDdegree);
     if (result == nullptr) {
         result = new AttributeUInt16(19, DataType::UInt16);
         addAttribute(result);
@@ -4056,7 +4056,7 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getInstalledClosedLimitTiltDdegr
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getVelocityLift() {
-    auto result = (AttributeUInt16*)getAttributeById(20);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::VelocityLift);
     if (result == nullptr) {
         result = new AttributeUInt16(20, DataType::UInt16);
         addAttribute(result);
@@ -4065,7 +4065,7 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getVelocityLift() {
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getAccelerationTimeLift() {
-    auto result = (AttributeUInt16*)getAttributeById(21);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::AccelerationTimeLift);
     if (result == nullptr) {
         result = new AttributeUInt16(21, DataType::UInt16);
         addAttribute(result);
@@ -4074,7 +4074,7 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getAccelerationTimeLift() {
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getDecelerationTimeLift() {
-    auto result = (AttributeUInt16*)getAttributeById(22);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::DecelerationTimeLift);
     if (result == nullptr) {
         result = new AttributeUInt16(22, DataType::UInt16);
         addAttribute(result);
@@ -4083,7 +4083,7 @@ AttributeUInt16* ClosuresWindowCoveringCluster::getDecelerationTimeLift() {
 }
 
 AttributeUInt8* ClosuresWindowCoveringCluster::getWindowCoveringMode() {
-    auto result = (AttributeUInt8*)getAttributeById(23);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::WindowCoveringMode);
     if (result == nullptr) {
         result = new AttributeUInt8(23, DataType::Map8);
         addAttribute(result);
@@ -4092,7 +4092,7 @@ AttributeUInt8* ClosuresWindowCoveringCluster::getWindowCoveringMode() {
 }
 
 AttributeOctstr* ClosuresWindowCoveringCluster::getIntermediateSetpointsLift() {
-    auto result = (AttributeOctstr*)getAttributeById(24);
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::IntermediateSetpointsLift);
     if (result == nullptr) {
         result = new AttributeOctstr(24);
         addAttribute(result);
@@ -4101,7 +4101,7 @@ AttributeOctstr* ClosuresWindowCoveringCluster::getIntermediateSetpointsLift() {
 }
 
 AttributeOctstr* ClosuresWindowCoveringCluster::getIntermediateSetpointsTilt() {
-    auto result = (AttributeOctstr*)getAttributeById(25);
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::IntermediateSetpointsTilt);
     if (result == nullptr) {
         result = new AttributeOctstr(25);
         addAttribute(result);
@@ -4110,7 +4110,7 @@ AttributeOctstr* ClosuresWindowCoveringCluster::getIntermediateSetpointsTilt() {
 }
 
 AttributeUInt16* ClosuresWindowCoveringCluster::getMoesCalibrationTime() {
-    auto result = (AttributeUInt16*)getAttributeById(61443);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)ClosuresWindowCoveringAttribute::MoesCalibrationTime);
     if (result == nullptr) {
         result = new AttributeUInt16(61443, DataType::UInt16);
         addAttribute(result);
@@ -4283,7 +4283,7 @@ void ClosuresWindowCoveringCluster::processCommand(uint8_t commandId, Memory& re
 }
 
 AttributeUInt8* BarrierControlCluster::getMovingState() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)BarrierControlAttribute::MovingState);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::Enum8);
         addAttribute(result);
@@ -4292,7 +4292,7 @@ AttributeUInt8* BarrierControlCluster::getMovingState() {
 }
 
 AttributeUInt16* BarrierControlCluster::getSafetyStatus() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)BarrierControlAttribute::SafetyStatus);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::Map16);
         addAttribute(result);
@@ -4301,7 +4301,7 @@ AttributeUInt16* BarrierControlCluster::getSafetyStatus() {
 }
 
 AttributeUInt8* BarrierControlCluster::getCapabilities() {
-    auto result = (AttributeUInt8*)getAttributeById(3);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)BarrierControlAttribute::Capabilities);
     if (result == nullptr) {
         result = new AttributeUInt8(3, DataType::Map8);
         addAttribute(result);
@@ -4310,7 +4310,7 @@ AttributeUInt8* BarrierControlCluster::getCapabilities() {
 }
 
 AttributeUInt16* BarrierControlCluster::getOpenEvents() {
-    auto result = (AttributeUInt16*)getAttributeById(4);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)BarrierControlAttribute::OpenEvents);
     if (result == nullptr) {
         result = new AttributeUInt16(4, DataType::UInt16);
         addAttribute(result);
@@ -4319,7 +4319,7 @@ AttributeUInt16* BarrierControlCluster::getOpenEvents() {
 }
 
 AttributeUInt16* BarrierControlCluster::getCloseEvents() {
-    auto result = (AttributeUInt16*)getAttributeById(5);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)BarrierControlAttribute::CloseEvents);
     if (result == nullptr) {
         result = new AttributeUInt16(5, DataType::UInt16);
         addAttribute(result);
@@ -4328,7 +4328,7 @@ AttributeUInt16* BarrierControlCluster::getCloseEvents() {
 }
 
 AttributeUInt16* BarrierControlCluster::getCommandOpenEvents() {
-    auto result = (AttributeUInt16*)getAttributeById(6);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)BarrierControlAttribute::CommandOpenEvents);
     if (result == nullptr) {
         result = new AttributeUInt16(6, DataType::UInt16);
         addAttribute(result);
@@ -4337,7 +4337,7 @@ AttributeUInt16* BarrierControlCluster::getCommandOpenEvents() {
 }
 
 AttributeUInt16* BarrierControlCluster::getCommandCloseEvents() {
-    auto result = (AttributeUInt16*)getAttributeById(7);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)BarrierControlAttribute::CommandCloseEvents);
     if (result == nullptr) {
         result = new AttributeUInt16(7, DataType::UInt16);
         addAttribute(result);
@@ -4346,7 +4346,7 @@ AttributeUInt16* BarrierControlCluster::getCommandCloseEvents() {
 }
 
 AttributeUInt16* BarrierControlCluster::getOpenPeriod() {
-    auto result = (AttributeUInt16*)getAttributeById(8);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)BarrierControlAttribute::OpenPeriod);
     if (result == nullptr) {
         result = new AttributeUInt16(8, DataType::UInt16);
         addAttribute(result);
@@ -4355,7 +4355,7 @@ AttributeUInt16* BarrierControlCluster::getOpenPeriod() {
 }
 
 AttributeUInt16* BarrierControlCluster::getClosePeriod() {
-    auto result = (AttributeUInt16*)getAttributeById(9);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)BarrierControlAttribute::ClosePeriod);
     if (result == nullptr) {
         result = new AttributeUInt16(9, DataType::UInt16);
         addAttribute(result);
@@ -4364,7 +4364,7 @@ AttributeUInt16* BarrierControlCluster::getClosePeriod() {
 }
 
 AttributeUInt8* BarrierControlCluster::getBarrierPosition() {
-    auto result = (AttributeUInt8*)getAttributeById(10);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)BarrierControlAttribute::BarrierPosition);
     if (result == nullptr) {
         result = new AttributeUInt8(10, DataType::UInt8);
         addAttribute(result);
@@ -4419,7 +4419,7 @@ void BarrierControlCluster::processCommand(uint8_t commandId, Memory& request, M
 }
 
 AttributeInt16* HvacPumpCfgCtrlCluster::getMaxPressure() {
-    auto result = (AttributeInt16*)getAttributeById(0);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::MaxPressure);
     if (result == nullptr) {
         result = new AttributeInt16(0, DataType::Int16);
         addAttribute(result);
@@ -4428,7 +4428,7 @@ AttributeInt16* HvacPumpCfgCtrlCluster::getMaxPressure() {
 }
 
 AttributeUInt16* HvacPumpCfgCtrlCluster::getMaxSpeed() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::MaxSpeed);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -4437,7 +4437,7 @@ AttributeUInt16* HvacPumpCfgCtrlCluster::getMaxSpeed() {
 }
 
 AttributeUInt16* HvacPumpCfgCtrlCluster::getMaxFlow() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::MaxFlow);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::UInt16);
         addAttribute(result);
@@ -4446,7 +4446,7 @@ AttributeUInt16* HvacPumpCfgCtrlCluster::getMaxFlow() {
 }
 
 AttributeInt16* HvacPumpCfgCtrlCluster::getMinConstPressure() {
-    auto result = (AttributeInt16*)getAttributeById(3);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::MinConstPressure);
     if (result == nullptr) {
         result = new AttributeInt16(3, DataType::Int16);
         addAttribute(result);
@@ -4455,7 +4455,7 @@ AttributeInt16* HvacPumpCfgCtrlCluster::getMinConstPressure() {
 }
 
 AttributeInt16* HvacPumpCfgCtrlCluster::getMaxConstPressure() {
-    auto result = (AttributeInt16*)getAttributeById(4);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::MaxConstPressure);
     if (result == nullptr) {
         result = new AttributeInt16(4, DataType::Int16);
         addAttribute(result);
@@ -4464,7 +4464,7 @@ AttributeInt16* HvacPumpCfgCtrlCluster::getMaxConstPressure() {
 }
 
 AttributeInt16* HvacPumpCfgCtrlCluster::getMinCompPressure() {
-    auto result = (AttributeInt16*)getAttributeById(5);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::MinCompPressure);
     if (result == nullptr) {
         result = new AttributeInt16(5, DataType::Int16);
         addAttribute(result);
@@ -4473,7 +4473,7 @@ AttributeInt16* HvacPumpCfgCtrlCluster::getMinCompPressure() {
 }
 
 AttributeInt16* HvacPumpCfgCtrlCluster::getMaxCompPressure() {
-    auto result = (AttributeInt16*)getAttributeById(6);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::MaxCompPressure);
     if (result == nullptr) {
         result = new AttributeInt16(6, DataType::Int16);
         addAttribute(result);
@@ -4482,7 +4482,7 @@ AttributeInt16* HvacPumpCfgCtrlCluster::getMaxCompPressure() {
 }
 
 AttributeUInt16* HvacPumpCfgCtrlCluster::getMinConstSpeed() {
-    auto result = (AttributeUInt16*)getAttributeById(7);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::MinConstSpeed);
     if (result == nullptr) {
         result = new AttributeUInt16(7, DataType::UInt16);
         addAttribute(result);
@@ -4491,7 +4491,7 @@ AttributeUInt16* HvacPumpCfgCtrlCluster::getMinConstSpeed() {
 }
 
 AttributeUInt16* HvacPumpCfgCtrlCluster::getMaxConstSpeed() {
-    auto result = (AttributeUInt16*)getAttributeById(8);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::MaxConstSpeed);
     if (result == nullptr) {
         result = new AttributeUInt16(8, DataType::UInt16);
         addAttribute(result);
@@ -4500,7 +4500,7 @@ AttributeUInt16* HvacPumpCfgCtrlCluster::getMaxConstSpeed() {
 }
 
 AttributeUInt16* HvacPumpCfgCtrlCluster::getMinConstFlow() {
-    auto result = (AttributeUInt16*)getAttributeById(9);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::MinConstFlow);
     if (result == nullptr) {
         result = new AttributeUInt16(9, DataType::UInt16);
         addAttribute(result);
@@ -4509,7 +4509,7 @@ AttributeUInt16* HvacPumpCfgCtrlCluster::getMinConstFlow() {
 }
 
 AttributeUInt16* HvacPumpCfgCtrlCluster::getMaxConstFlow() {
-    auto result = (AttributeUInt16*)getAttributeById(10);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::MaxConstFlow);
     if (result == nullptr) {
         result = new AttributeUInt16(10, DataType::UInt16);
         addAttribute(result);
@@ -4518,7 +4518,7 @@ AttributeUInt16* HvacPumpCfgCtrlCluster::getMaxConstFlow() {
 }
 
 AttributeInt16* HvacPumpCfgCtrlCluster::getMinConstTemp() {
-    auto result = (AttributeInt16*)getAttributeById(11);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::MinConstTemp);
     if (result == nullptr) {
         result = new AttributeInt16(11, DataType::Int16);
         addAttribute(result);
@@ -4527,7 +4527,7 @@ AttributeInt16* HvacPumpCfgCtrlCluster::getMinConstTemp() {
 }
 
 AttributeInt16* HvacPumpCfgCtrlCluster::getMaxConstTemp() {
-    auto result = (AttributeInt16*)getAttributeById(12);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::MaxConstTemp);
     if (result == nullptr) {
         result = new AttributeInt16(12, DataType::Int16);
         addAttribute(result);
@@ -4536,7 +4536,7 @@ AttributeInt16* HvacPumpCfgCtrlCluster::getMaxConstTemp() {
 }
 
 AttributeUInt16* HvacPumpCfgCtrlCluster::getPumpStatus() {
-    auto result = (AttributeUInt16*)getAttributeById(16);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::PumpStatus);
     if (result == nullptr) {
         result = new AttributeUInt16(16, DataType::Map16);
         addAttribute(result);
@@ -4545,7 +4545,7 @@ AttributeUInt16* HvacPumpCfgCtrlCluster::getPumpStatus() {
 }
 
 AttributeUInt8* HvacPumpCfgCtrlCluster::getEffectiveOperationMode() {
-    auto result = (AttributeUInt8*)getAttributeById(17);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::EffectiveOperationMode);
     if (result == nullptr) {
         result = new AttributeUInt8(17, DataType::Enum8);
         addAttribute(result);
@@ -4554,7 +4554,7 @@ AttributeUInt8* HvacPumpCfgCtrlCluster::getEffectiveOperationMode() {
 }
 
 AttributeUInt8* HvacPumpCfgCtrlCluster::getEffectiveControlMode() {
-    auto result = (AttributeUInt8*)getAttributeById(18);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::EffectiveControlMode);
     if (result == nullptr) {
         result = new AttributeUInt8(18, DataType::Enum8);
         addAttribute(result);
@@ -4563,7 +4563,7 @@ AttributeUInt8* HvacPumpCfgCtrlCluster::getEffectiveControlMode() {
 }
 
 AttributeInt16* HvacPumpCfgCtrlCluster::getCapacity() {
-    auto result = (AttributeInt16*)getAttributeById(19);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::Capacity);
     if (result == nullptr) {
         result = new AttributeInt16(19, DataType::Int16);
         addAttribute(result);
@@ -4572,7 +4572,7 @@ AttributeInt16* HvacPumpCfgCtrlCluster::getCapacity() {
 }
 
 AttributeUInt16* HvacPumpCfgCtrlCluster::getSpeed() {
-    auto result = (AttributeUInt16*)getAttributeById(20);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::Speed);
     if (result == nullptr) {
         result = new AttributeUInt16(20, DataType::UInt16);
         addAttribute(result);
@@ -4581,7 +4581,7 @@ AttributeUInt16* HvacPumpCfgCtrlCluster::getSpeed() {
 }
 
 AttributeUInt24* HvacPumpCfgCtrlCluster::getLifetimeRunningHours() {
-    auto result = (AttributeUInt24*)getAttributeById(21);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::LifetimeRunningHours);
     if (result == nullptr) {
         result = new AttributeUInt24(21, DataType::UInt24);
         addAttribute(result);
@@ -4590,7 +4590,7 @@ AttributeUInt24* HvacPumpCfgCtrlCluster::getLifetimeRunningHours() {
 }
 
 AttributeUInt24* HvacPumpCfgCtrlCluster::getPower() {
-    auto result = (AttributeUInt24*)getAttributeById(22);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::Power);
     if (result == nullptr) {
         result = new AttributeUInt24(22, DataType::UInt24);
         addAttribute(result);
@@ -4599,7 +4599,7 @@ AttributeUInt24* HvacPumpCfgCtrlCluster::getPower() {
 }
 
 AttributeUInt32* HvacPumpCfgCtrlCluster::getLifetimeEnergyConsumed() {
-    auto result = (AttributeUInt32*)getAttributeById(23);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::LifetimeEnergyConsumed);
     if (result == nullptr) {
         result = new AttributeUInt32(23, DataType::UInt32);
         addAttribute(result);
@@ -4608,7 +4608,7 @@ AttributeUInt32* HvacPumpCfgCtrlCluster::getLifetimeEnergyConsumed() {
 }
 
 AttributeUInt8* HvacPumpCfgCtrlCluster::getOperationMode() {
-    auto result = (AttributeUInt8*)getAttributeById(32);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::OperationMode);
     if (result == nullptr) {
         result = new AttributeUInt8(32, DataType::Enum8);
         addAttribute(result);
@@ -4617,7 +4617,7 @@ AttributeUInt8* HvacPumpCfgCtrlCluster::getOperationMode() {
 }
 
 AttributeUInt8* HvacPumpCfgCtrlCluster::getControlMode() {
-    auto result = (AttributeUInt8*)getAttributeById(33);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::ControlMode);
     if (result == nullptr) {
         result = new AttributeUInt8(33, DataType::Enum8);
         addAttribute(result);
@@ -4626,7 +4626,7 @@ AttributeUInt8* HvacPumpCfgCtrlCluster::getControlMode() {
 }
 
 AttributeUInt16* HvacPumpCfgCtrlCluster::getAlarmMask() {
-    auto result = (AttributeUInt16*)getAttributeById(34);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacPumpCfgCtrlAttribute::AlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt16(34, DataType::Map16);
         addAttribute(result);
@@ -4635,7 +4635,7 @@ AttributeUInt16* HvacPumpCfgCtrlCluster::getAlarmMask() {
 }
 
 AttributeInt16* HvacThermostatCluster::getLocalTemp() {
-    auto result = (AttributeInt16*)getAttributeById(0);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::LocalTemp);
     if (result == nullptr) {
         result = new AttributeInt16(0, DataType::Int16);
         addAttribute(result);
@@ -4644,7 +4644,7 @@ AttributeInt16* HvacThermostatCluster::getLocalTemp() {
 }
 
 AttributeInt16* HvacThermostatCluster::getOutdoorTemp() {
-    auto result = (AttributeInt16*)getAttributeById(1);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::OutdoorTemp);
     if (result == nullptr) {
         result = new AttributeInt16(1, DataType::Int16);
         addAttribute(result);
@@ -4653,7 +4653,7 @@ AttributeInt16* HvacThermostatCluster::getOutdoorTemp() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getOccupancy() {
-    auto result = (AttributeUInt8*)getAttributeById(2);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::Occupancy);
     if (result == nullptr) {
         result = new AttributeUInt8(2, DataType::Map8);
         addAttribute(result);
@@ -4662,7 +4662,7 @@ AttributeUInt8* HvacThermostatCluster::getOccupancy() {
 }
 
 AttributeInt16* HvacThermostatCluster::getAbsMinHeatSetpointLimit() {
-    auto result = (AttributeInt16*)getAttributeById(3);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::AbsMinHeatSetpointLimit);
     if (result == nullptr) {
         result = new AttributeInt16(3, DataType::Int16);
         addAttribute(result);
@@ -4671,7 +4671,7 @@ AttributeInt16* HvacThermostatCluster::getAbsMinHeatSetpointLimit() {
 }
 
 AttributeInt16* HvacThermostatCluster::getAbsMaxHeatSetpointLimit() {
-    auto result = (AttributeInt16*)getAttributeById(4);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::AbsMaxHeatSetpointLimit);
     if (result == nullptr) {
         result = new AttributeInt16(4, DataType::Int16);
         addAttribute(result);
@@ -4680,7 +4680,7 @@ AttributeInt16* HvacThermostatCluster::getAbsMaxHeatSetpointLimit() {
 }
 
 AttributeInt16* HvacThermostatCluster::getAbsMinCoolSetpointLimit() {
-    auto result = (AttributeInt16*)getAttributeById(5);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::AbsMinCoolSetpointLimit);
     if (result == nullptr) {
         result = new AttributeInt16(5, DataType::Int16);
         addAttribute(result);
@@ -4689,7 +4689,7 @@ AttributeInt16* HvacThermostatCluster::getAbsMinCoolSetpointLimit() {
 }
 
 AttributeInt16* HvacThermostatCluster::getAbsMaxCoolSetpointLimit() {
-    auto result = (AttributeInt16*)getAttributeById(6);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::AbsMaxCoolSetpointLimit);
     if (result == nullptr) {
         result = new AttributeInt16(6, DataType::Int16);
         addAttribute(result);
@@ -4698,7 +4698,7 @@ AttributeInt16* HvacThermostatCluster::getAbsMaxCoolSetpointLimit() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getPICoolingDemand() {
-    auto result = (AttributeUInt8*)getAttributeById(7);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::PICoolingDemand);
     if (result == nullptr) {
         result = new AttributeUInt8(7, DataType::UInt8);
         addAttribute(result);
@@ -4707,7 +4707,7 @@ AttributeUInt8* HvacThermostatCluster::getPICoolingDemand() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getPIHeatingDemand() {
-    auto result = (AttributeUInt8*)getAttributeById(8);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::PIHeatingDemand);
     if (result == nullptr) {
         result = new AttributeUInt8(8, DataType::UInt8);
         addAttribute(result);
@@ -4716,7 +4716,7 @@ AttributeUInt8* HvacThermostatCluster::getPIHeatingDemand() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getSystemTypeConfig() {
-    auto result = (AttributeUInt8*)getAttributeById(9);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::SystemTypeConfig);
     if (result == nullptr) {
         result = new AttributeUInt8(9, DataType::Map8);
         addAttribute(result);
@@ -4725,7 +4725,7 @@ AttributeUInt8* HvacThermostatCluster::getSystemTypeConfig() {
 }
 
 AttributeInt8* HvacThermostatCluster::getLocalTemperatureCalibration() {
-    auto result = (AttributeInt8*)getAttributeById(16);
+    auto result = (AttributeInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::LocalTemperatureCalibration);
     if (result == nullptr) {
         result = new AttributeInt8(16, DataType::Int8);
         addAttribute(result);
@@ -4734,7 +4734,7 @@ AttributeInt8* HvacThermostatCluster::getLocalTemperatureCalibration() {
 }
 
 AttributeInt16* HvacThermostatCluster::getOccupiedCoolingSetpoint() {
-    auto result = (AttributeInt16*)getAttributeById(17);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::OccupiedCoolingSetpoint);
     if (result == nullptr) {
         result = new AttributeInt16(17, DataType::Int16);
         addAttribute(result);
@@ -4743,7 +4743,7 @@ AttributeInt16* HvacThermostatCluster::getOccupiedCoolingSetpoint() {
 }
 
 AttributeInt16* HvacThermostatCluster::getOccupiedHeatingSetpoint() {
-    auto result = (AttributeInt16*)getAttributeById(18);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::OccupiedHeatingSetpoint);
     if (result == nullptr) {
         result = new AttributeInt16(18, DataType::Int16);
         addAttribute(result);
@@ -4752,7 +4752,7 @@ AttributeInt16* HvacThermostatCluster::getOccupiedHeatingSetpoint() {
 }
 
 AttributeInt16* HvacThermostatCluster::getUnoccupiedCoolingSetpoint() {
-    auto result = (AttributeInt16*)getAttributeById(19);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::UnoccupiedCoolingSetpoint);
     if (result == nullptr) {
         result = new AttributeInt16(19, DataType::Int16);
         addAttribute(result);
@@ -4761,7 +4761,7 @@ AttributeInt16* HvacThermostatCluster::getUnoccupiedCoolingSetpoint() {
 }
 
 AttributeInt16* HvacThermostatCluster::getUnoccupiedHeatingSetpoint() {
-    auto result = (AttributeInt16*)getAttributeById(20);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::UnoccupiedHeatingSetpoint);
     if (result == nullptr) {
         result = new AttributeInt16(20, DataType::Int16);
         addAttribute(result);
@@ -4770,7 +4770,7 @@ AttributeInt16* HvacThermostatCluster::getUnoccupiedHeatingSetpoint() {
 }
 
 AttributeInt16* HvacThermostatCluster::getMinHeatSetpointLimit() {
-    auto result = (AttributeInt16*)getAttributeById(21);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::MinHeatSetpointLimit);
     if (result == nullptr) {
         result = new AttributeInt16(21, DataType::Int16);
         addAttribute(result);
@@ -4779,7 +4779,7 @@ AttributeInt16* HvacThermostatCluster::getMinHeatSetpointLimit() {
 }
 
 AttributeInt16* HvacThermostatCluster::getMaxHeatSetpointLimit() {
-    auto result = (AttributeInt16*)getAttributeById(22);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::MaxHeatSetpointLimit);
     if (result == nullptr) {
         result = new AttributeInt16(22, DataType::Int16);
         addAttribute(result);
@@ -4788,7 +4788,7 @@ AttributeInt16* HvacThermostatCluster::getMaxHeatSetpointLimit() {
 }
 
 AttributeInt16* HvacThermostatCluster::getMinCoolSetpointLimit() {
-    auto result = (AttributeInt16*)getAttributeById(23);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::MinCoolSetpointLimit);
     if (result == nullptr) {
         result = new AttributeInt16(23, DataType::Int16);
         addAttribute(result);
@@ -4797,7 +4797,7 @@ AttributeInt16* HvacThermostatCluster::getMinCoolSetpointLimit() {
 }
 
 AttributeInt16* HvacThermostatCluster::getMaxCoolSetpointLimit() {
-    auto result = (AttributeInt16*)getAttributeById(24);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::MaxCoolSetpointLimit);
     if (result == nullptr) {
         result = new AttributeInt16(24, DataType::Int16);
         addAttribute(result);
@@ -4806,7 +4806,7 @@ AttributeInt16* HvacThermostatCluster::getMaxCoolSetpointLimit() {
 }
 
 AttributeInt8* HvacThermostatCluster::getMinSetpointDeadBand() {
-    auto result = (AttributeInt8*)getAttributeById(25);
+    auto result = (AttributeInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::MinSetpointDeadBand);
     if (result == nullptr) {
         result = new AttributeInt8(25, DataType::Int8);
         addAttribute(result);
@@ -4815,7 +4815,7 @@ AttributeInt8* HvacThermostatCluster::getMinSetpointDeadBand() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getRemoteSensing() {
-    auto result = (AttributeUInt8*)getAttributeById(26);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::RemoteSensing);
     if (result == nullptr) {
         result = new AttributeUInt8(26, DataType::Map8);
         addAttribute(result);
@@ -4824,7 +4824,7 @@ AttributeUInt8* HvacThermostatCluster::getRemoteSensing() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getCtrlSeqeOfOper() {
-    auto result = (AttributeUInt8*)getAttributeById(27);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::CtrlSeqeOfOper);
     if (result == nullptr) {
         result = new AttributeUInt8(27, DataType::Enum8);
         addAttribute(result);
@@ -4833,7 +4833,7 @@ AttributeUInt8* HvacThermostatCluster::getCtrlSeqeOfOper() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getSystemMode() {
-    auto result = (AttributeUInt8*)getAttributeById(28);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::SystemMode);
     if (result == nullptr) {
         result = new AttributeUInt8(28, DataType::Enum8);
         addAttribute(result);
@@ -4842,7 +4842,7 @@ AttributeUInt8* HvacThermostatCluster::getSystemMode() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getAlarmMask() {
-    auto result = (AttributeUInt8*)getAttributeById(29);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::AlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt8(29, DataType::Map8);
         addAttribute(result);
@@ -4851,7 +4851,7 @@ AttributeUInt8* HvacThermostatCluster::getAlarmMask() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getRunningMode() {
-    auto result = (AttributeUInt8*)getAttributeById(30);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::RunningMode);
     if (result == nullptr) {
         result = new AttributeUInt8(30, DataType::Enum8);
         addAttribute(result);
@@ -4860,7 +4860,7 @@ AttributeUInt8* HvacThermostatCluster::getRunningMode() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getStartOfWeek() {
-    auto result = (AttributeUInt8*)getAttributeById(32);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::StartOfWeek);
     if (result == nullptr) {
         result = new AttributeUInt8(32, DataType::Enum8);
         addAttribute(result);
@@ -4869,7 +4869,7 @@ AttributeUInt8* HvacThermostatCluster::getStartOfWeek() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getNumberOfWeeklyTrans() {
-    auto result = (AttributeUInt8*)getAttributeById(33);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::NumberOfWeeklyTrans);
     if (result == nullptr) {
         result = new AttributeUInt8(33, DataType::UInt8);
         addAttribute(result);
@@ -4878,7 +4878,7 @@ AttributeUInt8* HvacThermostatCluster::getNumberOfWeeklyTrans() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getNumberOfDailyTrans() {
-    auto result = (AttributeUInt8*)getAttributeById(34);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::NumberOfDailyTrans);
     if (result == nullptr) {
         result = new AttributeUInt8(34, DataType::UInt8);
         addAttribute(result);
@@ -4887,7 +4887,7 @@ AttributeUInt8* HvacThermostatCluster::getNumberOfDailyTrans() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getTempSetpointHold() {
-    auto result = (AttributeUInt8*)getAttributeById(35);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::TempSetpointHold);
     if (result == nullptr) {
         result = new AttributeUInt8(35, DataType::Enum8);
         addAttribute(result);
@@ -4896,7 +4896,7 @@ AttributeUInt8* HvacThermostatCluster::getTempSetpointHold() {
 }
 
 AttributeUInt16* HvacThermostatCluster::getTempSetpointHoldDuration() {
-    auto result = (AttributeUInt16*)getAttributeById(36);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::TempSetpointHoldDuration);
     if (result == nullptr) {
         result = new AttributeUInt16(36, DataType::UInt16);
         addAttribute(result);
@@ -4905,7 +4905,7 @@ AttributeUInt16* HvacThermostatCluster::getTempSetpointHoldDuration() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getProgramingOperMode() {
-    auto result = (AttributeUInt8*)getAttributeById(37);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::ProgramingOperMode);
     if (result == nullptr) {
         result = new AttributeUInt8(37, DataType::Map8);
         addAttribute(result);
@@ -4914,7 +4914,7 @@ AttributeUInt8* HvacThermostatCluster::getProgramingOperMode() {
 }
 
 AttributeUInt16* HvacThermostatCluster::getRunningState() {
-    auto result = (AttributeUInt16*)getAttributeById(41);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::RunningState);
     if (result == nullptr) {
         result = new AttributeUInt16(41, DataType::Map16);
         addAttribute(result);
@@ -4923,7 +4923,7 @@ AttributeUInt16* HvacThermostatCluster::getRunningState() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getSetpointChangeSource() {
-    auto result = (AttributeUInt8*)getAttributeById(48);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::SetpointChangeSource);
     if (result == nullptr) {
         result = new AttributeUInt8(48, DataType::Enum8);
         addAttribute(result);
@@ -4932,7 +4932,7 @@ AttributeUInt8* HvacThermostatCluster::getSetpointChangeSource() {
 }
 
 AttributeInt16* HvacThermostatCluster::getSetpointChangeAmount() {
-    auto result = (AttributeInt16*)getAttributeById(49);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::SetpointChangeAmount);
     if (result == nullptr) {
         result = new AttributeInt16(49, DataType::Int16);
         addAttribute(result);
@@ -4941,7 +4941,7 @@ AttributeInt16* HvacThermostatCluster::getSetpointChangeAmount() {
 }
 
 AttributeUInt32* HvacThermostatCluster::getSetpointChangeSourceTimeStamp() {
-    auto result = (AttributeUInt32*)getAttributeById(50);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)HvacThermostatAttribute::SetpointChangeSourceTimeStamp);
     if (result == nullptr) {
         result = new AttributeUInt32(50, DataType::UTC);
         addAttribute(result);
@@ -4950,7 +4950,7 @@ AttributeUInt32* HvacThermostatCluster::getSetpointChangeSourceTimeStamp() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getAcType() {
-    auto result = (AttributeUInt8*)getAttributeById(64);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::AcType);
     if (result == nullptr) {
         result = new AttributeUInt8(64, DataType::Enum8);
         addAttribute(result);
@@ -4959,7 +4959,7 @@ AttributeUInt8* HvacThermostatCluster::getAcType() {
 }
 
 AttributeUInt16* HvacThermostatCluster::getAcCapacity() {
-    auto result = (AttributeUInt16*)getAttributeById(65);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::AcCapacity);
     if (result == nullptr) {
         result = new AttributeUInt16(65, DataType::UInt16);
         addAttribute(result);
@@ -4968,7 +4968,7 @@ AttributeUInt16* HvacThermostatCluster::getAcCapacity() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getAcRefrigerantType() {
-    auto result = (AttributeUInt8*)getAttributeById(66);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::AcRefrigerantType);
     if (result == nullptr) {
         result = new AttributeUInt8(66, DataType::Enum8);
         addAttribute(result);
@@ -4977,7 +4977,7 @@ AttributeUInt8* HvacThermostatCluster::getAcRefrigerantType() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getAcConpressorType() {
-    auto result = (AttributeUInt8*)getAttributeById(67);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::AcConpressorType);
     if (result == nullptr) {
         result = new AttributeUInt8(67, DataType::Enum8);
         addAttribute(result);
@@ -4986,7 +4986,7 @@ AttributeUInt8* HvacThermostatCluster::getAcConpressorType() {
 }
 
 AttributeUInt32* HvacThermostatCluster::getAcErrorCode() {
-    auto result = (AttributeUInt32*)getAttributeById(68);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)HvacThermostatAttribute::AcErrorCode);
     if (result == nullptr) {
         result = new AttributeUInt32(68, DataType::Map32);
         addAttribute(result);
@@ -4995,7 +4995,7 @@ AttributeUInt32* HvacThermostatCluster::getAcErrorCode() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getAcLouverPosition() {
-    auto result = (AttributeUInt8*)getAttributeById(69);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::AcLouverPosition);
     if (result == nullptr) {
         result = new AttributeUInt8(69, DataType::Enum8);
         addAttribute(result);
@@ -5004,7 +5004,7 @@ AttributeUInt8* HvacThermostatCluster::getAcLouverPosition() {
 }
 
 AttributeInt16* HvacThermostatCluster::getAcCollTemp() {
-    auto result = (AttributeInt16*)getAttributeById(70);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::AcCollTemp);
     if (result == nullptr) {
         result = new AttributeInt16(70, DataType::Int16);
         addAttribute(result);
@@ -5013,7 +5013,7 @@ AttributeInt16* HvacThermostatCluster::getAcCollTemp() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getAcCapacityFormat() {
-    auto result = (AttributeUInt8*)getAttributeById(71);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::AcCapacityFormat);
     if (result == nullptr) {
         result = new AttributeUInt8(71, DataType::Enum8);
         addAttribute(result);
@@ -5022,9 +5022,171 @@ AttributeUInt8* HvacThermostatCluster::getAcCapacityFormat() {
 }
 
 AttributeUInt8* HvacThermostatCluster::getStelproSystemMode() {
-    auto result = (AttributeUInt8*)getAttributeById(16412);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::StelproSystemMode);
     if (result == nullptr) {
         result = new AttributeUInt8(16412, DataType::Enum8);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt16* HvacThermostatCluster::getElkoLoad() {
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoLoad);
+    if (result == nullptr) {
+        result = new AttributeUInt16(1025, DataType::UInt16);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeString* HvacThermostatCluster::getElkoDisplayText() {
+    auto result = (AttributeString*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoDisplayText);
+    if (result == nullptr) {
+        result = new AttributeString(1026);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt8* HvacThermostatCluster::getElkoSensor() {
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoSensor);
+    if (result == nullptr) {
+        result = new AttributeUInt8(1027, DataType::Enum8);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt8* HvacThermostatCluster::getElkoRegulatorTime() {
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoRegulatorTime);
+    if (result == nullptr) {
+        result = new AttributeUInt8(1028, DataType::UInt8);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt8* HvacThermostatCluster::getElkoRegulatorMode() {
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoRegulatorMode);
+    if (result == nullptr) {
+        result = new AttributeUInt8(1029, DataType::Bool);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt8* HvacThermostatCluster::getElkoPowerStatus() {
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoPowerStatus);
+    if (result == nullptr) {
+        result = new AttributeUInt8(1030, DataType::Bool);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeOctstr* HvacThermostatCluster::getElkoDateTime() {
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoDateTime);
+    if (result == nullptr) {
+        result = new AttributeOctstr(1031);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt16* HvacThermostatCluster::getElkoMeanPower() {
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoMeanPower);
+    if (result == nullptr) {
+        result = new AttributeUInt16(1032, DataType::UInt16);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeInt16* HvacThermostatCluster::getElkoExternalTemp() {
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoExternalTemp);
+    if (result == nullptr) {
+        result = new AttributeInt16(1033, DataType::Int16);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt8* HvacThermostatCluster::getElkoNightSwitching() {
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoNightSwitching);
+    if (result == nullptr) {
+        result = new AttributeUInt8(1041, DataType::Bool);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt8* HvacThermostatCluster::getElkoFrostGuard() {
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoFrostGuard);
+    if (result == nullptr) {
+        result = new AttributeUInt8(1042, DataType::Bool);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt8* HvacThermostatCluster::getElkoChildLock() {
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoChildLock);
+    if (result == nullptr) {
+        result = new AttributeUInt8(1043, DataType::Bool);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt8* HvacThermostatCluster::getElkoMaxFloorTemp() {
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoMaxFloorTemp);
+    if (result == nullptr) {
+        result = new AttributeUInt8(1044, DataType::UInt8);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt8* HvacThermostatCluster::getElkoRelayState() {
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoRelayState);
+    if (result == nullptr) {
+        result = new AttributeUInt8(1045, DataType::Bool);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeOctstr* HvacThermostatCluster::getElkoVersion() {
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoVersion);
+    if (result == nullptr) {
+        result = new AttributeOctstr(1046);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeInt8* HvacThermostatCluster::getElkoCalibration() {
+    auto result = (AttributeInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoCalibration);
+    if (result == nullptr) {
+        result = new AttributeInt8(1047, DataType::Int8);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt8* HvacThermostatCluster::getElkoLastMessageId() {
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoLastMessageId);
+    if (result == nullptr) {
+        result = new AttributeUInt8(1048, DataType::UInt8);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt8* HvacThermostatCluster::getElkoLastMessageStatus() {
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacThermostatAttribute::ElkoLastMessageStatus);
+    if (result == nullptr) {
+        result = new AttributeUInt8(1049, DataType::UInt8);
         addAttribute(result);
     }
     return result;
@@ -5177,6 +5339,19 @@ void HvacThermostatCluster::sendPlugwiseCalibrateValveCommand(DeviceManager& dev
     deviceManager.sendMessage(this, endpointId, buffer);
 }
 
+void HvacThermostatCluster::sendBoschCalibrateValveCommand(DeviceManager& deviceManager, uint8_t endpointId) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        65
+    ).write(buffer);
+
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void HvacThermostatCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
@@ -5246,6 +5421,11 @@ void HvacThermostatCluster::processCommand(uint8_t commandId, Memory& request, M
             response.writeUInt8((uint8_t)status_);
             return;
         }
+        case 65: {
+            auto status_ = onBoschCalibrateValveCommand();
+            response.writeUInt8((uint8_t)status_);
+            return;
+        }
         default:
             Cluster::processCommand(commandId, request, response);
             return;
@@ -5253,7 +5433,7 @@ void HvacThermostatCluster::processCommand(uint8_t commandId, Memory& request, M
 }
 
 AttributeUInt8* HvacFanCtrlCluster::getFanMode() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacFanCtrlAttribute::FanMode);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Enum8);
         addAttribute(result);
@@ -5262,7 +5442,7 @@ AttributeUInt8* HvacFanCtrlCluster::getFanMode() {
 }
 
 AttributeUInt8* HvacFanCtrlCluster::getFanModeSequence() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacFanCtrlAttribute::FanModeSequence);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::Enum8);
         addAttribute(result);
@@ -5271,7 +5451,7 @@ AttributeUInt8* HvacFanCtrlCluster::getFanModeSequence() {
 }
 
 AttributeUInt8* HvacDehumidificationCtrlCluster::getRelativeHumidity() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacDehumidificationCtrlAttribute::RelativeHumidity);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::UInt8);
         addAttribute(result);
@@ -5280,7 +5460,7 @@ AttributeUInt8* HvacDehumidificationCtrlCluster::getRelativeHumidity() {
 }
 
 AttributeUInt8* HvacDehumidificationCtrlCluster::getDehumidCooling() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacDehumidificationCtrlAttribute::DehumidCooling);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::UInt8);
         addAttribute(result);
@@ -5289,7 +5469,7 @@ AttributeUInt8* HvacDehumidificationCtrlCluster::getDehumidCooling() {
 }
 
 AttributeUInt8* HvacDehumidificationCtrlCluster::getRhDehumidSetpoint() {
-    auto result = (AttributeUInt8*)getAttributeById(16);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacDehumidificationCtrlAttribute::RhDehumidSetpoint);
     if (result == nullptr) {
         result = new AttributeUInt8(16, DataType::UInt8);
         addAttribute(result);
@@ -5298,7 +5478,7 @@ AttributeUInt8* HvacDehumidificationCtrlCluster::getRhDehumidSetpoint() {
 }
 
 AttributeUInt8* HvacDehumidificationCtrlCluster::getRelativeHumidityMode() {
-    auto result = (AttributeUInt8*)getAttributeById(17);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacDehumidificationCtrlAttribute::RelativeHumidityMode);
     if (result == nullptr) {
         result = new AttributeUInt8(17, DataType::Enum8);
         addAttribute(result);
@@ -5307,7 +5487,7 @@ AttributeUInt8* HvacDehumidificationCtrlCluster::getRelativeHumidityMode() {
 }
 
 AttributeUInt8* HvacDehumidificationCtrlCluster::getDehumidLockout() {
-    auto result = (AttributeUInt8*)getAttributeById(18);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacDehumidificationCtrlAttribute::DehumidLockout);
     if (result == nullptr) {
         result = new AttributeUInt8(18, DataType::Enum8);
         addAttribute(result);
@@ -5316,7 +5496,7 @@ AttributeUInt8* HvacDehumidificationCtrlCluster::getDehumidLockout() {
 }
 
 AttributeUInt8* HvacDehumidificationCtrlCluster::getDehumidHysteresis() {
-    auto result = (AttributeUInt8*)getAttributeById(19);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacDehumidificationCtrlAttribute::DehumidHysteresis);
     if (result == nullptr) {
         result = new AttributeUInt8(19, DataType::UInt8);
         addAttribute(result);
@@ -5325,7 +5505,7 @@ AttributeUInt8* HvacDehumidificationCtrlCluster::getDehumidHysteresis() {
 }
 
 AttributeUInt8* HvacDehumidificationCtrlCluster::getDehumidMaxCool() {
-    auto result = (AttributeUInt8*)getAttributeById(20);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacDehumidificationCtrlAttribute::DehumidMaxCool);
     if (result == nullptr) {
         result = new AttributeUInt8(20, DataType::UInt8);
         addAttribute(result);
@@ -5334,7 +5514,7 @@ AttributeUInt8* HvacDehumidificationCtrlCluster::getDehumidMaxCool() {
 }
 
 AttributeUInt8* HvacDehumidificationCtrlCluster::getRelativeHumidDisplay() {
-    auto result = (AttributeUInt8*)getAttributeById(21);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacDehumidificationCtrlAttribute::RelativeHumidDisplay);
     if (result == nullptr) {
         result = new AttributeUInt8(21, DataType::Enum8);
         addAttribute(result);
@@ -5343,7 +5523,7 @@ AttributeUInt8* HvacDehumidificationCtrlCluster::getRelativeHumidDisplay() {
 }
 
 AttributeUInt8* HvacUserInterfaceCfgCluster::getTempDisplayMode() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacUserInterfaceCfgAttribute::TempDisplayMode);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Enum8);
         addAttribute(result);
@@ -5352,7 +5532,7 @@ AttributeUInt8* HvacUserInterfaceCfgCluster::getTempDisplayMode() {
 }
 
 AttributeUInt8* HvacUserInterfaceCfgCluster::getKeypadLockout() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacUserInterfaceCfgAttribute::KeypadLockout);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::Enum8);
         addAttribute(result);
@@ -5361,7 +5541,7 @@ AttributeUInt8* HvacUserInterfaceCfgCluster::getKeypadLockout() {
 }
 
 AttributeUInt8* HvacUserInterfaceCfgCluster::getProgrammingVisibility() {
-    auto result = (AttributeUInt8*)getAttributeById(2);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HvacUserInterfaceCfgAttribute::ProgrammingVisibility);
     if (result == nullptr) {
         result = new AttributeUInt8(2, DataType::Enum8);
         addAttribute(result);
@@ -5370,7 +5550,7 @@ AttributeUInt8* HvacUserInterfaceCfgCluster::getProgrammingVisibility() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getCurrentHue() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::CurrentHue);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::UInt8);
         addAttribute(result);
@@ -5379,7 +5559,7 @@ AttributeUInt8* LightingColorCtrlCluster::getCurrentHue() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getCurrentSaturation() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::CurrentSaturation);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::UInt8);
         addAttribute(result);
@@ -5388,7 +5568,7 @@ AttributeUInt8* LightingColorCtrlCluster::getCurrentSaturation() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getRemainingTime() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::RemainingTime);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::UInt16);
         addAttribute(result);
@@ -5397,7 +5577,7 @@ AttributeUInt16* LightingColorCtrlCluster::getRemainingTime() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getCurrentX() {
-    auto result = (AttributeUInt16*)getAttributeById(3);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::CurrentX);
     if (result == nullptr) {
         result = new AttributeUInt16(3, DataType::UInt16);
         addAttribute(result);
@@ -5406,7 +5586,7 @@ AttributeUInt16* LightingColorCtrlCluster::getCurrentX() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getCurrentY() {
-    auto result = (AttributeUInt16*)getAttributeById(4);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::CurrentY);
     if (result == nullptr) {
         result = new AttributeUInt16(4, DataType::UInt16);
         addAttribute(result);
@@ -5415,7 +5595,7 @@ AttributeUInt16* LightingColorCtrlCluster::getCurrentY() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getDriftCompensation() {
-    auto result = (AttributeUInt8*)getAttributeById(5);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::DriftCompensation);
     if (result == nullptr) {
         result = new AttributeUInt8(5, DataType::Enum8);
         addAttribute(result);
@@ -5424,7 +5604,7 @@ AttributeUInt8* LightingColorCtrlCluster::getDriftCompensation() {
 }
 
 AttributeString* LightingColorCtrlCluster::getCompensationText() {
-    auto result = (AttributeString*)getAttributeById(6);
+    auto result = (AttributeString*)getAttributeById((uint16_t)LightingColorCtrlAttribute::CompensationText);
     if (result == nullptr) {
         result = new AttributeString(6);
         addAttribute(result);
@@ -5433,7 +5613,7 @@ AttributeString* LightingColorCtrlCluster::getCompensationText() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getColorTemperature() {
-    auto result = (AttributeUInt16*)getAttributeById(7);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorTemperature);
     if (result == nullptr) {
         result = new AttributeUInt16(7, DataType::UInt16);
         addAttribute(result);
@@ -5442,7 +5622,7 @@ AttributeUInt16* LightingColorCtrlCluster::getColorTemperature() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getColorMode() {
-    auto result = (AttributeUInt8*)getAttributeById(8);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorMode);
     if (result == nullptr) {
         result = new AttributeUInt8(8, DataType::Enum8);
         addAttribute(result);
@@ -5451,7 +5631,7 @@ AttributeUInt8* LightingColorCtrlCluster::getColorMode() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getOptions() {
-    auto result = (AttributeUInt8*)getAttributeById(15);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Options);
     if (result == nullptr) {
         result = new AttributeUInt8(15, DataType::Map8);
         addAttribute(result);
@@ -5460,7 +5640,7 @@ AttributeUInt8* LightingColorCtrlCluster::getOptions() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getNumPrimaries() {
-    auto result = (AttributeUInt8*)getAttributeById(16);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::NumPrimaries);
     if (result == nullptr) {
         result = new AttributeUInt8(16, DataType::UInt8);
         addAttribute(result);
@@ -5469,7 +5649,7 @@ AttributeUInt8* LightingColorCtrlCluster::getNumPrimaries() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getPrimary1X() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary1X);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -5478,7 +5658,7 @@ AttributeUInt16* LightingColorCtrlCluster::getPrimary1X() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getPrimary1Y() {
-    auto result = (AttributeUInt16*)getAttributeById(18);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary1Y);
     if (result == nullptr) {
         result = new AttributeUInt16(18, DataType::UInt16);
         addAttribute(result);
@@ -5487,7 +5667,7 @@ AttributeUInt16* LightingColorCtrlCluster::getPrimary1Y() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getPrimary1Intensity() {
-    auto result = (AttributeUInt8*)getAttributeById(19);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary1Intensity);
     if (result == nullptr) {
         result = new AttributeUInt8(19, DataType::UInt8);
         addAttribute(result);
@@ -5496,7 +5676,7 @@ AttributeUInt8* LightingColorCtrlCluster::getPrimary1Intensity() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getPrimary2X() {
-    auto result = (AttributeUInt16*)getAttributeById(21);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary2X);
     if (result == nullptr) {
         result = new AttributeUInt16(21, DataType::UInt16);
         addAttribute(result);
@@ -5505,7 +5685,7 @@ AttributeUInt16* LightingColorCtrlCluster::getPrimary2X() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getPrimary2Y() {
-    auto result = (AttributeUInt16*)getAttributeById(22);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary2Y);
     if (result == nullptr) {
         result = new AttributeUInt16(22, DataType::UInt16);
         addAttribute(result);
@@ -5514,7 +5694,7 @@ AttributeUInt16* LightingColorCtrlCluster::getPrimary2Y() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getPrimary2Intensity() {
-    auto result = (AttributeUInt8*)getAttributeById(23);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary2Intensity);
     if (result == nullptr) {
         result = new AttributeUInt8(23, DataType::UInt8);
         addAttribute(result);
@@ -5523,7 +5703,7 @@ AttributeUInt8* LightingColorCtrlCluster::getPrimary2Intensity() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getPrimary3X() {
-    auto result = (AttributeUInt16*)getAttributeById(25);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary3X);
     if (result == nullptr) {
         result = new AttributeUInt16(25, DataType::UInt16);
         addAttribute(result);
@@ -5532,7 +5712,7 @@ AttributeUInt16* LightingColorCtrlCluster::getPrimary3X() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getPrimary3Y() {
-    auto result = (AttributeUInt16*)getAttributeById(26);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary3Y);
     if (result == nullptr) {
         result = new AttributeUInt16(26, DataType::UInt16);
         addAttribute(result);
@@ -5541,7 +5721,7 @@ AttributeUInt16* LightingColorCtrlCluster::getPrimary3Y() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getPrimary3Intensity() {
-    auto result = (AttributeUInt8*)getAttributeById(27);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary3Intensity);
     if (result == nullptr) {
         result = new AttributeUInt8(27, DataType::UInt8);
         addAttribute(result);
@@ -5550,7 +5730,7 @@ AttributeUInt8* LightingColorCtrlCluster::getPrimary3Intensity() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getPrimary4X() {
-    auto result = (AttributeUInt16*)getAttributeById(32);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary4X);
     if (result == nullptr) {
         result = new AttributeUInt16(32, DataType::UInt16);
         addAttribute(result);
@@ -5559,7 +5739,7 @@ AttributeUInt16* LightingColorCtrlCluster::getPrimary4X() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getPrimary4Y() {
-    auto result = (AttributeUInt16*)getAttributeById(33);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary4Y);
     if (result == nullptr) {
         result = new AttributeUInt16(33, DataType::UInt16);
         addAttribute(result);
@@ -5568,7 +5748,7 @@ AttributeUInt16* LightingColorCtrlCluster::getPrimary4Y() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getPrimary4Intensity() {
-    auto result = (AttributeUInt8*)getAttributeById(34);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary4Intensity);
     if (result == nullptr) {
         result = new AttributeUInt8(34, DataType::UInt8);
         addAttribute(result);
@@ -5577,7 +5757,7 @@ AttributeUInt8* LightingColorCtrlCluster::getPrimary4Intensity() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getPrimary5X() {
-    auto result = (AttributeUInt16*)getAttributeById(36);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary5X);
     if (result == nullptr) {
         result = new AttributeUInt16(36, DataType::UInt16);
         addAttribute(result);
@@ -5586,7 +5766,7 @@ AttributeUInt16* LightingColorCtrlCluster::getPrimary5X() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getPrimary5Y() {
-    auto result = (AttributeUInt16*)getAttributeById(37);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary5Y);
     if (result == nullptr) {
         result = new AttributeUInt16(37, DataType::UInt16);
         addAttribute(result);
@@ -5595,7 +5775,7 @@ AttributeUInt16* LightingColorCtrlCluster::getPrimary5Y() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getPrimary5Intensity() {
-    auto result = (AttributeUInt8*)getAttributeById(38);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary5Intensity);
     if (result == nullptr) {
         result = new AttributeUInt8(38, DataType::UInt8);
         addAttribute(result);
@@ -5604,7 +5784,7 @@ AttributeUInt8* LightingColorCtrlCluster::getPrimary5Intensity() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getPrimary6X() {
-    auto result = (AttributeUInt16*)getAttributeById(40);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary6X);
     if (result == nullptr) {
         result = new AttributeUInt16(40, DataType::UInt16);
         addAttribute(result);
@@ -5613,7 +5793,7 @@ AttributeUInt16* LightingColorCtrlCluster::getPrimary6X() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getPrimary6Y() {
-    auto result = (AttributeUInt16*)getAttributeById(41);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary6Y);
     if (result == nullptr) {
         result = new AttributeUInt16(41, DataType::UInt16);
         addAttribute(result);
@@ -5622,7 +5802,7 @@ AttributeUInt16* LightingColorCtrlCluster::getPrimary6Y() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getPrimary6Intensity() {
-    auto result = (AttributeUInt8*)getAttributeById(42);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::Primary6Intensity);
     if (result == nullptr) {
         result = new AttributeUInt8(42, DataType::UInt8);
         addAttribute(result);
@@ -5631,7 +5811,7 @@ AttributeUInt8* LightingColorCtrlCluster::getPrimary6Intensity() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getWhitePointX() {
-    auto result = (AttributeUInt16*)getAttributeById(48);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::WhitePointX);
     if (result == nullptr) {
         result = new AttributeUInt16(48, DataType::UInt16);
         addAttribute(result);
@@ -5640,7 +5820,7 @@ AttributeUInt16* LightingColorCtrlCluster::getWhitePointX() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getWhitePointY() {
-    auto result = (AttributeUInt16*)getAttributeById(49);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::WhitePointY);
     if (result == nullptr) {
         result = new AttributeUInt16(49, DataType::UInt16);
         addAttribute(result);
@@ -5649,7 +5829,7 @@ AttributeUInt16* LightingColorCtrlCluster::getWhitePointY() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getColorPointRX() {
-    auto result = (AttributeUInt16*)getAttributeById(50);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorPointRX);
     if (result == nullptr) {
         result = new AttributeUInt16(50, DataType::UInt16);
         addAttribute(result);
@@ -5658,7 +5838,7 @@ AttributeUInt16* LightingColorCtrlCluster::getColorPointRX() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getColorPointRY() {
-    auto result = (AttributeUInt16*)getAttributeById(51);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorPointRY);
     if (result == nullptr) {
         result = new AttributeUInt16(51, DataType::UInt16);
         addAttribute(result);
@@ -5667,7 +5847,7 @@ AttributeUInt16* LightingColorCtrlCluster::getColorPointRY() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getColorPointRIntensity() {
-    auto result = (AttributeUInt8*)getAttributeById(52);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorPointRIntensity);
     if (result == nullptr) {
         result = new AttributeUInt8(52, DataType::UInt8);
         addAttribute(result);
@@ -5676,7 +5856,7 @@ AttributeUInt8* LightingColorCtrlCluster::getColorPointRIntensity() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getColorPointGX() {
-    auto result = (AttributeUInt16*)getAttributeById(54);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorPointGX);
     if (result == nullptr) {
         result = new AttributeUInt16(54, DataType::UInt16);
         addAttribute(result);
@@ -5685,7 +5865,7 @@ AttributeUInt16* LightingColorCtrlCluster::getColorPointGX() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getColorPointGY() {
-    auto result = (AttributeUInt16*)getAttributeById(55);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorPointGY);
     if (result == nullptr) {
         result = new AttributeUInt16(55, DataType::UInt16);
         addAttribute(result);
@@ -5694,7 +5874,7 @@ AttributeUInt16* LightingColorCtrlCluster::getColorPointGY() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getColorPointGIntensity() {
-    auto result = (AttributeUInt8*)getAttributeById(56);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorPointGIntensity);
     if (result == nullptr) {
         result = new AttributeUInt8(56, DataType::UInt8);
         addAttribute(result);
@@ -5703,7 +5883,7 @@ AttributeUInt8* LightingColorCtrlCluster::getColorPointGIntensity() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getColorPointBX() {
-    auto result = (AttributeUInt16*)getAttributeById(58);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorPointBX);
     if (result == nullptr) {
         result = new AttributeUInt16(58, DataType::UInt16);
         addAttribute(result);
@@ -5712,7 +5892,7 @@ AttributeUInt16* LightingColorCtrlCluster::getColorPointBX() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getColorPointBY() {
-    auto result = (AttributeUInt16*)getAttributeById(59);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorPointBY);
     if (result == nullptr) {
         result = new AttributeUInt16(59, DataType::UInt16);
         addAttribute(result);
@@ -5721,7 +5901,7 @@ AttributeUInt16* LightingColorCtrlCluster::getColorPointBY() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getColorPointBIntensity() {
-    auto result = (AttributeUInt8*)getAttributeById(60);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorPointBIntensity);
     if (result == nullptr) {
         result = new AttributeUInt8(60, DataType::UInt8);
         addAttribute(result);
@@ -5730,7 +5910,7 @@ AttributeUInt8* LightingColorCtrlCluster::getColorPointBIntensity() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getEnhancedCurrentHue() {
-    auto result = (AttributeUInt16*)getAttributeById(16384);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::EnhancedCurrentHue);
     if (result == nullptr) {
         result = new AttributeUInt16(16384, DataType::UInt16);
         addAttribute(result);
@@ -5739,7 +5919,7 @@ AttributeUInt16* LightingColorCtrlCluster::getEnhancedCurrentHue() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getEnhancedColorMode() {
-    auto result = (AttributeUInt8*)getAttributeById(16385);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::EnhancedColorMode);
     if (result == nullptr) {
         result = new AttributeUInt8(16385, DataType::Enum8);
         addAttribute(result);
@@ -5748,7 +5928,7 @@ AttributeUInt8* LightingColorCtrlCluster::getEnhancedColorMode() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getColorLoopActive() {
-    auto result = (AttributeUInt8*)getAttributeById(16386);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorLoopActive);
     if (result == nullptr) {
         result = new AttributeUInt8(16386, DataType::UInt8);
         addAttribute(result);
@@ -5757,7 +5937,7 @@ AttributeUInt8* LightingColorCtrlCluster::getColorLoopActive() {
 }
 
 AttributeUInt8* LightingColorCtrlCluster::getColorLoopDirection() {
-    auto result = (AttributeUInt8*)getAttributeById(16387);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorLoopDirection);
     if (result == nullptr) {
         result = new AttributeUInt8(16387, DataType::UInt8);
         addAttribute(result);
@@ -5766,7 +5946,7 @@ AttributeUInt8* LightingColorCtrlCluster::getColorLoopDirection() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getColorLoopTime() {
-    auto result = (AttributeUInt16*)getAttributeById(16388);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorLoopTime);
     if (result == nullptr) {
         result = new AttributeUInt16(16388, DataType::UInt16);
         addAttribute(result);
@@ -5775,7 +5955,7 @@ AttributeUInt16* LightingColorCtrlCluster::getColorLoopTime() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getColorLoopStartEnhancedHue() {
-    auto result = (AttributeUInt16*)getAttributeById(16389);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorLoopStartEnhancedHue);
     if (result == nullptr) {
         result = new AttributeUInt16(16389, DataType::UInt16);
         addAttribute(result);
@@ -5784,7 +5964,7 @@ AttributeUInt16* LightingColorCtrlCluster::getColorLoopStartEnhancedHue() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getColorLoopStoredEnhancedHue() {
-    auto result = (AttributeUInt16*)getAttributeById(16390);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorLoopStoredEnhancedHue);
     if (result == nullptr) {
         result = new AttributeUInt16(16390, DataType::UInt16);
         addAttribute(result);
@@ -5793,7 +5973,7 @@ AttributeUInt16* LightingColorCtrlCluster::getColorLoopStoredEnhancedHue() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getColorCapabilities() {
-    auto result = (AttributeUInt16*)getAttributeById(16394);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorCapabilities);
     if (result == nullptr) {
         result = new AttributeUInt16(16394, DataType::UInt16);
         addAttribute(result);
@@ -5802,7 +5982,7 @@ AttributeUInt16* LightingColorCtrlCluster::getColorCapabilities() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getColorTempPhysicalMin() {
-    auto result = (AttributeUInt16*)getAttributeById(16395);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorTempPhysicalMin);
     if (result == nullptr) {
         result = new AttributeUInt16(16395, DataType::UInt16);
         addAttribute(result);
@@ -5811,7 +5991,7 @@ AttributeUInt16* LightingColorCtrlCluster::getColorTempPhysicalMin() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getColorTempPhysicalMax() {
-    auto result = (AttributeUInt16*)getAttributeById(16396);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::ColorTempPhysicalMax);
     if (result == nullptr) {
         result = new AttributeUInt16(16396, DataType::UInt16);
         addAttribute(result);
@@ -5820,7 +6000,7 @@ AttributeUInt16* LightingColorCtrlCluster::getColorTempPhysicalMax() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getCoupleColorTempToLevelMin() {
-    auto result = (AttributeUInt16*)getAttributeById(16397);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::CoupleColorTempToLevelMin);
     if (result == nullptr) {
         result = new AttributeUInt16(16397, DataType::UInt16);
         addAttribute(result);
@@ -5829,7 +6009,7 @@ AttributeUInt16* LightingColorCtrlCluster::getCoupleColorTempToLevelMin() {
 }
 
 AttributeUInt16* LightingColorCtrlCluster::getStartUpColorTemperature() {
-    auto result = (AttributeUInt16*)getAttributeById(16400);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingColorCtrlAttribute::StartUpColorTemperature);
     if (result == nullptr) {
         result = new AttributeUInt16(16400, DataType::UInt16);
         addAttribute(result);
@@ -6306,7 +6486,7 @@ void LightingColorCtrlCluster::processCommand(uint8_t commandId, Memory& request
 }
 
 AttributeUInt8* LightingBallastCfgCluster::getPhysicalMinLevel() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingBallastCfgAttribute::PhysicalMinLevel);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::UInt8);
         addAttribute(result);
@@ -6315,7 +6495,7 @@ AttributeUInt8* LightingBallastCfgCluster::getPhysicalMinLevel() {
 }
 
 AttributeUInt8* LightingBallastCfgCluster::getPhysicalMaxLevel() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingBallastCfgAttribute::PhysicalMaxLevel);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::UInt8);
         addAttribute(result);
@@ -6324,7 +6504,7 @@ AttributeUInt8* LightingBallastCfgCluster::getPhysicalMaxLevel() {
 }
 
 AttributeUInt8* LightingBallastCfgCluster::getBallastStatus() {
-    auto result = (AttributeUInt8*)getAttributeById(2);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingBallastCfgAttribute::BallastStatus);
     if (result == nullptr) {
         result = new AttributeUInt8(2, DataType::Map8);
         addAttribute(result);
@@ -6333,7 +6513,7 @@ AttributeUInt8* LightingBallastCfgCluster::getBallastStatus() {
 }
 
 AttributeUInt8* LightingBallastCfgCluster::getMinLevel() {
-    auto result = (AttributeUInt8*)getAttributeById(16);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingBallastCfgAttribute::MinLevel);
     if (result == nullptr) {
         result = new AttributeUInt8(16, DataType::UInt8);
         addAttribute(result);
@@ -6342,7 +6522,7 @@ AttributeUInt8* LightingBallastCfgCluster::getMinLevel() {
 }
 
 AttributeUInt8* LightingBallastCfgCluster::getMaxLevel() {
-    auto result = (AttributeUInt8*)getAttributeById(17);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingBallastCfgAttribute::MaxLevel);
     if (result == nullptr) {
         result = new AttributeUInt8(17, DataType::UInt8);
         addAttribute(result);
@@ -6351,7 +6531,7 @@ AttributeUInt8* LightingBallastCfgCluster::getMaxLevel() {
 }
 
 AttributeUInt8* LightingBallastCfgCluster::getPowerOnLevel() {
-    auto result = (AttributeUInt8*)getAttributeById(18);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingBallastCfgAttribute::PowerOnLevel);
     if (result == nullptr) {
         result = new AttributeUInt8(18, DataType::UInt8);
         addAttribute(result);
@@ -6360,7 +6540,7 @@ AttributeUInt8* LightingBallastCfgCluster::getPowerOnLevel() {
 }
 
 AttributeUInt16* LightingBallastCfgCluster::getPowerOnFadeTime() {
-    auto result = (AttributeUInt16*)getAttributeById(19);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)LightingBallastCfgAttribute::PowerOnFadeTime);
     if (result == nullptr) {
         result = new AttributeUInt16(19, DataType::UInt16);
         addAttribute(result);
@@ -6369,7 +6549,7 @@ AttributeUInt16* LightingBallastCfgCluster::getPowerOnFadeTime() {
 }
 
 AttributeUInt8* LightingBallastCfgCluster::getIntrinsicBallastFactor() {
-    auto result = (AttributeUInt8*)getAttributeById(20);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingBallastCfgAttribute::IntrinsicBallastFactor);
     if (result == nullptr) {
         result = new AttributeUInt8(20, DataType::UInt8);
         addAttribute(result);
@@ -6378,7 +6558,7 @@ AttributeUInt8* LightingBallastCfgCluster::getIntrinsicBallastFactor() {
 }
 
 AttributeUInt8* LightingBallastCfgCluster::getBallastFactorAdjustment() {
-    auto result = (AttributeUInt8*)getAttributeById(21);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingBallastCfgAttribute::BallastFactorAdjustment);
     if (result == nullptr) {
         result = new AttributeUInt8(21, DataType::UInt8);
         addAttribute(result);
@@ -6387,7 +6567,7 @@ AttributeUInt8* LightingBallastCfgCluster::getBallastFactorAdjustment() {
 }
 
 AttributeUInt8* LightingBallastCfgCluster::getLampQuantity() {
-    auto result = (AttributeUInt8*)getAttributeById(32);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingBallastCfgAttribute::LampQuantity);
     if (result == nullptr) {
         result = new AttributeUInt8(32, DataType::UInt8);
         addAttribute(result);
@@ -6396,7 +6576,7 @@ AttributeUInt8* LightingBallastCfgCluster::getLampQuantity() {
 }
 
 AttributeString* LightingBallastCfgCluster::getLampType() {
-    auto result = (AttributeString*)getAttributeById(48);
+    auto result = (AttributeString*)getAttributeById((uint16_t)LightingBallastCfgAttribute::LampType);
     if (result == nullptr) {
         result = new AttributeString(48);
         addAttribute(result);
@@ -6405,7 +6585,7 @@ AttributeString* LightingBallastCfgCluster::getLampType() {
 }
 
 AttributeString* LightingBallastCfgCluster::getLampManufacturer() {
-    auto result = (AttributeString*)getAttributeById(49);
+    auto result = (AttributeString*)getAttributeById((uint16_t)LightingBallastCfgAttribute::LampManufacturer);
     if (result == nullptr) {
         result = new AttributeString(49);
         addAttribute(result);
@@ -6414,7 +6594,7 @@ AttributeString* LightingBallastCfgCluster::getLampManufacturer() {
 }
 
 AttributeUInt24* LightingBallastCfgCluster::getLampRatedHours() {
-    auto result = (AttributeUInt24*)getAttributeById(50);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)LightingBallastCfgAttribute::LampRatedHours);
     if (result == nullptr) {
         result = new AttributeUInt24(50, DataType::UInt24);
         addAttribute(result);
@@ -6423,7 +6603,7 @@ AttributeUInt24* LightingBallastCfgCluster::getLampRatedHours() {
 }
 
 AttributeUInt24* LightingBallastCfgCluster::getLampBurnHours() {
-    auto result = (AttributeUInt24*)getAttributeById(51);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)LightingBallastCfgAttribute::LampBurnHours);
     if (result == nullptr) {
         result = new AttributeUInt24(51, DataType::UInt24);
         addAttribute(result);
@@ -6432,7 +6612,7 @@ AttributeUInt24* LightingBallastCfgCluster::getLampBurnHours() {
 }
 
 AttributeUInt8* LightingBallastCfgCluster::getLampAlarmMode() {
-    auto result = (AttributeUInt8*)getAttributeById(52);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)LightingBallastCfgAttribute::LampAlarmMode);
     if (result == nullptr) {
         result = new AttributeUInt8(52, DataType::Map8);
         addAttribute(result);
@@ -6441,7 +6621,7 @@ AttributeUInt8* LightingBallastCfgCluster::getLampAlarmMode() {
 }
 
 AttributeUInt24* LightingBallastCfgCluster::getLampBurnHoursTripPoint() {
-    auto result = (AttributeUInt24*)getAttributeById(53);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)LightingBallastCfgAttribute::LampBurnHoursTripPoint);
     if (result == nullptr) {
         result = new AttributeUInt24(53, DataType::UInt24);
         addAttribute(result);
@@ -6450,7 +6630,7 @@ AttributeUInt24* LightingBallastCfgCluster::getLampBurnHoursTripPoint() {
 }
 
 AttributeUInt16* MsIlluminanceMeasurementCluster::getMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsIlluminanceMeasurementAttribute::MeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -6459,7 +6639,7 @@ AttributeUInt16* MsIlluminanceMeasurementCluster::getMeasuredValue() {
 }
 
 AttributeUInt16* MsIlluminanceMeasurementCluster::getMinMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsIlluminanceMeasurementAttribute::MinMeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -6468,7 +6648,7 @@ AttributeUInt16* MsIlluminanceMeasurementCluster::getMinMeasuredValue() {
 }
 
 AttributeUInt16* MsIlluminanceMeasurementCluster::getMaxMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsIlluminanceMeasurementAttribute::MaxMeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::UInt16);
         addAttribute(result);
@@ -6477,7 +6657,7 @@ AttributeUInt16* MsIlluminanceMeasurementCluster::getMaxMeasuredValue() {
 }
 
 AttributeUInt16* MsIlluminanceMeasurementCluster::getTolerance() {
-    auto result = (AttributeUInt16*)getAttributeById(3);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsIlluminanceMeasurementAttribute::Tolerance);
     if (result == nullptr) {
         result = new AttributeUInt16(3, DataType::UInt16);
         addAttribute(result);
@@ -6486,7 +6666,7 @@ AttributeUInt16* MsIlluminanceMeasurementCluster::getTolerance() {
 }
 
 AttributeUInt8* MsIlluminanceMeasurementCluster::getLightSensorType() {
-    auto result = (AttributeUInt8*)getAttributeById(4);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)MsIlluminanceMeasurementAttribute::LightSensorType);
     if (result == nullptr) {
         result = new AttributeUInt8(4, DataType::Enum8);
         addAttribute(result);
@@ -6495,7 +6675,7 @@ AttributeUInt8* MsIlluminanceMeasurementCluster::getLightSensorType() {
 }
 
 AttributeUInt8* MsIlluminanceLevelSensingCluster::getLevelStatus() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)MsIlluminanceLevelSensingAttribute::LevelStatus);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Enum8);
         addAttribute(result);
@@ -6504,7 +6684,7 @@ AttributeUInt8* MsIlluminanceLevelSensingCluster::getLevelStatus() {
 }
 
 AttributeUInt8* MsIlluminanceLevelSensingCluster::getLightSensorType() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)MsIlluminanceLevelSensingAttribute::LightSensorType);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::Enum8);
         addAttribute(result);
@@ -6513,7 +6693,7 @@ AttributeUInt8* MsIlluminanceLevelSensingCluster::getLightSensorType() {
 }
 
 AttributeUInt16* MsIlluminanceLevelSensingCluster::getIlluminanceTargetLevel() {
-    auto result = (AttributeUInt16*)getAttributeById(16);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsIlluminanceLevelSensingAttribute::IlluminanceTargetLevel);
     if (result == nullptr) {
         result = new AttributeUInt16(16, DataType::UInt16);
         addAttribute(result);
@@ -6522,7 +6702,7 @@ AttributeUInt16* MsIlluminanceLevelSensingCluster::getIlluminanceTargetLevel() {
 }
 
 AttributeInt16* MsTemperatureMeasurementCluster::getMeasuredValue() {
-    auto result = (AttributeInt16*)getAttributeById(0);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)MsTemperatureMeasurementAttribute::MeasuredValue);
     if (result == nullptr) {
         result = new AttributeInt16(0, DataType::Int16);
         addAttribute(result);
@@ -6531,7 +6711,7 @@ AttributeInt16* MsTemperatureMeasurementCluster::getMeasuredValue() {
 }
 
 AttributeInt16* MsTemperatureMeasurementCluster::getMinMeasuredValue() {
-    auto result = (AttributeInt16*)getAttributeById(1);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)MsTemperatureMeasurementAttribute::MinMeasuredValue);
     if (result == nullptr) {
         result = new AttributeInt16(1, DataType::Int16);
         addAttribute(result);
@@ -6540,7 +6720,7 @@ AttributeInt16* MsTemperatureMeasurementCluster::getMinMeasuredValue() {
 }
 
 AttributeInt16* MsTemperatureMeasurementCluster::getMaxMeasuredValue() {
-    auto result = (AttributeInt16*)getAttributeById(2);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)MsTemperatureMeasurementAttribute::MaxMeasuredValue);
     if (result == nullptr) {
         result = new AttributeInt16(2, DataType::Int16);
         addAttribute(result);
@@ -6549,7 +6729,7 @@ AttributeInt16* MsTemperatureMeasurementCluster::getMaxMeasuredValue() {
 }
 
 AttributeUInt16* MsTemperatureMeasurementCluster::getTolerance() {
-    auto result = (AttributeUInt16*)getAttributeById(3);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsTemperatureMeasurementAttribute::Tolerance);
     if (result == nullptr) {
         result = new AttributeUInt16(3, DataType::UInt16);
         addAttribute(result);
@@ -6558,7 +6738,7 @@ AttributeUInt16* MsTemperatureMeasurementCluster::getTolerance() {
 }
 
 AttributeInt16* MsPressureMeasurementCluster::getMeasuredValue() {
-    auto result = (AttributeInt16*)getAttributeById(0);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)MsPressureMeasurementAttribute::MeasuredValue);
     if (result == nullptr) {
         result = new AttributeInt16(0, DataType::Int16);
         addAttribute(result);
@@ -6567,7 +6747,7 @@ AttributeInt16* MsPressureMeasurementCluster::getMeasuredValue() {
 }
 
 AttributeInt16* MsPressureMeasurementCluster::getMinMeasuredValue() {
-    auto result = (AttributeInt16*)getAttributeById(1);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)MsPressureMeasurementAttribute::MinMeasuredValue);
     if (result == nullptr) {
         result = new AttributeInt16(1, DataType::Int16);
         addAttribute(result);
@@ -6576,7 +6756,7 @@ AttributeInt16* MsPressureMeasurementCluster::getMinMeasuredValue() {
 }
 
 AttributeInt16* MsPressureMeasurementCluster::getMaxMeasuredValue() {
-    auto result = (AttributeInt16*)getAttributeById(2);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)MsPressureMeasurementAttribute::MaxMeasuredValue);
     if (result == nullptr) {
         result = new AttributeInt16(2, DataType::Int16);
         addAttribute(result);
@@ -6585,7 +6765,7 @@ AttributeInt16* MsPressureMeasurementCluster::getMaxMeasuredValue() {
 }
 
 AttributeUInt16* MsPressureMeasurementCluster::getTolerance() {
-    auto result = (AttributeUInt16*)getAttributeById(3);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsPressureMeasurementAttribute::Tolerance);
     if (result == nullptr) {
         result = new AttributeUInt16(3, DataType::UInt16);
         addAttribute(result);
@@ -6594,7 +6774,7 @@ AttributeUInt16* MsPressureMeasurementCluster::getTolerance() {
 }
 
 AttributeInt16* MsPressureMeasurementCluster::getScaledValue() {
-    auto result = (AttributeInt16*)getAttributeById(16);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)MsPressureMeasurementAttribute::ScaledValue);
     if (result == nullptr) {
         result = new AttributeInt16(16, DataType::Int16);
         addAttribute(result);
@@ -6603,7 +6783,7 @@ AttributeInt16* MsPressureMeasurementCluster::getScaledValue() {
 }
 
 AttributeInt16* MsPressureMeasurementCluster::getMinScaledValue() {
-    auto result = (AttributeInt16*)getAttributeById(17);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)MsPressureMeasurementAttribute::MinScaledValue);
     if (result == nullptr) {
         result = new AttributeInt16(17, DataType::Int16);
         addAttribute(result);
@@ -6612,7 +6792,7 @@ AttributeInt16* MsPressureMeasurementCluster::getMinScaledValue() {
 }
 
 AttributeInt16* MsPressureMeasurementCluster::getMaxScaledValue() {
-    auto result = (AttributeInt16*)getAttributeById(18);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)MsPressureMeasurementAttribute::MaxScaledValue);
     if (result == nullptr) {
         result = new AttributeInt16(18, DataType::Int16);
         addAttribute(result);
@@ -6621,7 +6801,7 @@ AttributeInt16* MsPressureMeasurementCluster::getMaxScaledValue() {
 }
 
 AttributeUInt16* MsPressureMeasurementCluster::getScaledTolerance() {
-    auto result = (AttributeUInt16*)getAttributeById(19);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsPressureMeasurementAttribute::ScaledTolerance);
     if (result == nullptr) {
         result = new AttributeUInt16(19, DataType::UInt16);
         addAttribute(result);
@@ -6630,7 +6810,7 @@ AttributeUInt16* MsPressureMeasurementCluster::getScaledTolerance() {
 }
 
 AttributeInt8* MsPressureMeasurementCluster::getScale() {
-    auto result = (AttributeInt8*)getAttributeById(20);
+    auto result = (AttributeInt8*)getAttributeById((uint16_t)MsPressureMeasurementAttribute::Scale);
     if (result == nullptr) {
         result = new AttributeInt8(20, DataType::Int8);
         addAttribute(result);
@@ -6639,7 +6819,7 @@ AttributeInt8* MsPressureMeasurementCluster::getScale() {
 }
 
 AttributeUInt16* MsFlowMeasurementCluster::getMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsFlowMeasurementAttribute::MeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -6648,7 +6828,7 @@ AttributeUInt16* MsFlowMeasurementCluster::getMeasuredValue() {
 }
 
 AttributeUInt16* MsFlowMeasurementCluster::getMinMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsFlowMeasurementAttribute::MinMeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -6657,7 +6837,7 @@ AttributeUInt16* MsFlowMeasurementCluster::getMinMeasuredValue() {
 }
 
 AttributeUInt16* MsFlowMeasurementCluster::getMaxMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsFlowMeasurementAttribute::MaxMeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::UInt16);
         addAttribute(result);
@@ -6666,7 +6846,7 @@ AttributeUInt16* MsFlowMeasurementCluster::getMaxMeasuredValue() {
 }
 
 AttributeUInt16* MsFlowMeasurementCluster::getTolerance() {
-    auto result = (AttributeUInt16*)getAttributeById(3);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsFlowMeasurementAttribute::Tolerance);
     if (result == nullptr) {
         result = new AttributeUInt16(3, DataType::UInt16);
         addAttribute(result);
@@ -6675,7 +6855,7 @@ AttributeUInt16* MsFlowMeasurementCluster::getTolerance() {
 }
 
 AttributeUInt16* MsRelativeHumidityCluster::getMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsRelativeHumidityAttribute::MeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -6684,7 +6864,7 @@ AttributeUInt16* MsRelativeHumidityCluster::getMeasuredValue() {
 }
 
 AttributeUInt16* MsRelativeHumidityCluster::getMinMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsRelativeHumidityAttribute::MinMeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -6693,7 +6873,7 @@ AttributeUInt16* MsRelativeHumidityCluster::getMinMeasuredValue() {
 }
 
 AttributeUInt16* MsRelativeHumidityCluster::getMaxMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsRelativeHumidityAttribute::MaxMeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::UInt16);
         addAttribute(result);
@@ -6702,7 +6882,7 @@ AttributeUInt16* MsRelativeHumidityCluster::getMaxMeasuredValue() {
 }
 
 AttributeUInt16* MsRelativeHumidityCluster::getTolerance() {
-    auto result = (AttributeUInt16*)getAttributeById(3);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsRelativeHumidityAttribute::Tolerance);
     if (result == nullptr) {
         result = new AttributeUInt16(3, DataType::UInt16);
         addAttribute(result);
@@ -6711,7 +6891,7 @@ AttributeUInt16* MsRelativeHumidityCluster::getTolerance() {
 }
 
 AttributeUInt8* MsOccupancySensingCluster::getOccupancy() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)MsOccupancySensingAttribute::Occupancy);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Map8);
         addAttribute(result);
@@ -6720,7 +6900,7 @@ AttributeUInt8* MsOccupancySensingCluster::getOccupancy() {
 }
 
 AttributeUInt8* MsOccupancySensingCluster::getOccupancySensorType() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)MsOccupancySensingAttribute::OccupancySensorType);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::Enum8);
         addAttribute(result);
@@ -6729,7 +6909,7 @@ AttributeUInt8* MsOccupancySensingCluster::getOccupancySensorType() {
 }
 
 AttributeUInt16* MsOccupancySensingCluster::getPirOToUDelay() {
-    auto result = (AttributeUInt16*)getAttributeById(16);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsOccupancySensingAttribute::PirOToUDelay);
     if (result == nullptr) {
         result = new AttributeUInt16(16, DataType::UInt16);
         addAttribute(result);
@@ -6738,7 +6918,7 @@ AttributeUInt16* MsOccupancySensingCluster::getPirOToUDelay() {
 }
 
 AttributeUInt16* MsOccupancySensingCluster::getPirUToODelay() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsOccupancySensingAttribute::PirUToODelay);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -6747,7 +6927,7 @@ AttributeUInt16* MsOccupancySensingCluster::getPirUToODelay() {
 }
 
 AttributeUInt8* MsOccupancySensingCluster::getPirUToOThreshold() {
-    auto result = (AttributeUInt8*)getAttributeById(18);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)MsOccupancySensingAttribute::PirUToOThreshold);
     if (result == nullptr) {
         result = new AttributeUInt8(18, DataType::UInt8);
         addAttribute(result);
@@ -6756,7 +6936,7 @@ AttributeUInt8* MsOccupancySensingCluster::getPirUToOThreshold() {
 }
 
 AttributeUInt16* MsOccupancySensingCluster::getUltrasonicOToUDelay() {
-    auto result = (AttributeUInt16*)getAttributeById(32);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsOccupancySensingAttribute::UltrasonicOToUDelay);
     if (result == nullptr) {
         result = new AttributeUInt16(32, DataType::UInt16);
         addAttribute(result);
@@ -6765,7 +6945,7 @@ AttributeUInt16* MsOccupancySensingCluster::getUltrasonicOToUDelay() {
 }
 
 AttributeUInt16* MsOccupancySensingCluster::getUltrasonicUToODelay() {
-    auto result = (AttributeUInt16*)getAttributeById(33);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsOccupancySensingAttribute::UltrasonicUToODelay);
     if (result == nullptr) {
         result = new AttributeUInt16(33, DataType::UInt16);
         addAttribute(result);
@@ -6774,7 +6954,7 @@ AttributeUInt16* MsOccupancySensingCluster::getUltrasonicUToODelay() {
 }
 
 AttributeUInt8* MsOccupancySensingCluster::getUltrasonicUToOThreshold() {
-    auto result = (AttributeUInt8*)getAttributeById(34);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)MsOccupancySensingAttribute::UltrasonicUToOThreshold);
     if (result == nullptr) {
         result = new AttributeUInt8(34, DataType::UInt8);
         addAttribute(result);
@@ -6783,7 +6963,7 @@ AttributeUInt8* MsOccupancySensingCluster::getUltrasonicUToOThreshold() {
 }
 
 AttributeUInt16* MsSoilMoistureCluster::getMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsSoilMoistureAttribute::MeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -6792,7 +6972,7 @@ AttributeUInt16* MsSoilMoistureCluster::getMeasuredValue() {
 }
 
 AttributeUInt16* MsSoilMoistureCluster::getMinMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsSoilMoistureAttribute::MinMeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -6801,7 +6981,7 @@ AttributeUInt16* MsSoilMoistureCluster::getMinMeasuredValue() {
 }
 
 AttributeUInt16* MsSoilMoistureCluster::getMaxMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsSoilMoistureAttribute::MaxMeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::UInt16);
         addAttribute(result);
@@ -6810,7 +6990,7 @@ AttributeUInt16* MsSoilMoistureCluster::getMaxMeasuredValue() {
 }
 
 AttributeUInt16* MsSoilMoistureCluster::getTolerance() {
-    auto result = (AttributeUInt16*)getAttributeById(3);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)MsSoilMoistureAttribute::Tolerance);
     if (result == nullptr) {
         result = new AttributeUInt16(3, DataType::UInt16);
         addAttribute(result);
@@ -6819,7 +6999,7 @@ AttributeUInt16* MsSoilMoistureCluster::getTolerance() {
 }
 
 AttributeUInt16* PHMeasurementCluster::getMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PHMeasurementAttribute::MeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -6828,7 +7008,7 @@ AttributeUInt16* PHMeasurementCluster::getMeasuredValue() {
 }
 
 AttributeUInt16* PHMeasurementCluster::getMinMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PHMeasurementAttribute::MinMeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -6837,7 +7017,7 @@ AttributeUInt16* PHMeasurementCluster::getMinMeasuredValue() {
 }
 
 AttributeUInt16* PHMeasurementCluster::getMaxMeasuredValue() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PHMeasurementAttribute::MaxMeasuredValue);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::UInt16);
         addAttribute(result);
@@ -6846,7 +7026,7 @@ AttributeUInt16* PHMeasurementCluster::getMaxMeasuredValue() {
 }
 
 AttributeUInt16* PHMeasurementCluster::getTolerance() {
-    auto result = (AttributeUInt16*)getAttributeById(3);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PHMeasurementAttribute::Tolerance);
     if (result == nullptr) {
         result = new AttributeUInt16(3, DataType::UInt16);
         addAttribute(result);
@@ -6855,7 +7035,7 @@ AttributeUInt16* PHMeasurementCluster::getTolerance() {
 }
 
 AttributeSingle* MsCO2Cluster::getMeasuredValue() {
-    auto result = (AttributeSingle*)getAttributeById(0);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)MsCO2Attribute::MeasuredValue);
     if (result == nullptr) {
         result = new AttributeSingle(0, DataType::Single);
         addAttribute(result);
@@ -6864,7 +7044,7 @@ AttributeSingle* MsCO2Cluster::getMeasuredValue() {
 }
 
 AttributeSingle* MsCO2Cluster::getMinMeasuredValue() {
-    auto result = (AttributeSingle*)getAttributeById(1);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)MsCO2Attribute::MinMeasuredValue);
     if (result == nullptr) {
         result = new AttributeSingle(1, DataType::Single);
         addAttribute(result);
@@ -6873,7 +7053,7 @@ AttributeSingle* MsCO2Cluster::getMinMeasuredValue() {
 }
 
 AttributeSingle* MsCO2Cluster::getMaxMeasuredValue() {
-    auto result = (AttributeSingle*)getAttributeById(2);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)MsCO2Attribute::MaxMeasuredValue);
     if (result == nullptr) {
         result = new AttributeSingle(2, DataType::Single);
         addAttribute(result);
@@ -6881,8 +7061,44 @@ AttributeSingle* MsCO2Cluster::getMaxMeasuredValue() {
     return result;
 }
 
+AttributeUInt16* Pm25MeasurementCluster::getMeasuredValue() {
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)Pm25MeasurementAttribute::MeasuredValue);
+    if (result == nullptr) {
+        result = new AttributeUInt16(0, DataType::UInt16);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt16* Pm25MeasurementCluster::getMeasuredMinValue() {
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)Pm25MeasurementAttribute::MeasuredMinValue);
+    if (result == nullptr) {
+        result = new AttributeUInt16(1, DataType::UInt16);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt16* Pm25MeasurementCluster::getMeasuredMaxValue() {
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)Pm25MeasurementAttribute::MeasuredMaxValue);
+    if (result == nullptr) {
+        result = new AttributeUInt16(2, DataType::UInt16);
+        addAttribute(result);
+    }
+    return result;
+}
+
+AttributeUInt16* Pm25MeasurementCluster::getMeasuredTolerance() {
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)Pm25MeasurementAttribute::MeasuredTolerance);
+    if (result == nullptr) {
+        result = new AttributeUInt16(3, DataType::UInt16);
+        addAttribute(result);
+    }
+    return result;
+}
+
 AttributeUInt8* SsIasZoneCluster::getZoneState() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SsIasZoneAttribute::ZoneState);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Enum8);
         addAttribute(result);
@@ -6891,7 +7107,7 @@ AttributeUInt8* SsIasZoneCluster::getZoneState() {
 }
 
 AttributeUInt16* SsIasZoneCluster::getZoneType() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SsIasZoneAttribute::ZoneType);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::Enum16);
         addAttribute(result);
@@ -6900,7 +7116,7 @@ AttributeUInt16* SsIasZoneCluster::getZoneType() {
 }
 
 AttributeUInt16* SsIasZoneCluster::getZoneStatus() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SsIasZoneAttribute::ZoneStatus);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::Map16);
         addAttribute(result);
@@ -6909,7 +7125,7 @@ AttributeUInt16* SsIasZoneCluster::getZoneStatus() {
 }
 
 AttributeUInt64* SsIasZoneCluster::getIasCieAddr() {
-    auto result = (AttributeUInt64*)getAttributeById(16);
+    auto result = (AttributeUInt64*)getAttributeById((uint16_t)SsIasZoneAttribute::IasCieAddr);
     if (result == nullptr) {
         result = new AttributeUInt64(16, DataType::EUI64);
         addAttribute(result);
@@ -6918,7 +7134,7 @@ AttributeUInt64* SsIasZoneCluster::getIasCieAddr() {
 }
 
 AttributeUInt8* SsIasZoneCluster::getZoneId() {
-    auto result = (AttributeUInt8*)getAttributeById(17);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SsIasZoneAttribute::ZoneId);
     if (result == nullptr) {
         result = new AttributeUInt8(17, DataType::UInt8);
         addAttribute(result);
@@ -6927,7 +7143,7 @@ AttributeUInt8* SsIasZoneCluster::getZoneId() {
 }
 
 AttributeUInt8* SsIasZoneCluster::getNumZoneSensitivityLevelsSupported() {
-    auto result = (AttributeUInt8*)getAttributeById(18);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SsIasZoneAttribute::NumZoneSensitivityLevelsSupported);
     if (result == nullptr) {
         result = new AttributeUInt8(18, DataType::UInt8);
         addAttribute(result);
@@ -6936,7 +7152,7 @@ AttributeUInt8* SsIasZoneCluster::getNumZoneSensitivityLevelsSupported() {
 }
 
 AttributeUInt8* SsIasZoneCluster::getCurrentZoneSensitivityLevel() {
-    auto result = (AttributeUInt8*)getAttributeById(19);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SsIasZoneAttribute::CurrentZoneSensitivityLevel);
     if (result == nullptr) {
         result = new AttributeUInt8(19, DataType::UInt8);
         addAttribute(result);
@@ -6999,6 +7215,20 @@ void SsIasZoneCluster::sendBoschTestTamperCommand(DeviceManager& deviceManager, 
     deviceManager.sendMessage(this, endpointId, buffer);
 }
 
+void SsIasZoneCluster::sendBoschSmokeDetectorSirenCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t data) {
+    auto buffer = deviceManager.getBuffer();
+
+    Frame(
+        FrameControl(FrameType::Cluster, Direction::ToServer, true),
+        nextTransactionSequenceNumber++,
+        128
+    ).write(buffer);
+
+    buffer.writeUInt16Le(data);
+
+    deviceManager.sendMessage(this, endpointId, buffer);
+}
+
 void SsIasZoneCluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {
     switch (commandId) {
         case 0: {
@@ -7021,6 +7251,12 @@ void SsIasZoneCluster::processCommand(uint8_t commandId, Memory& request, Memory
         case 243: {
             auto data = request.readUInt8();
             auto status_ = onBoschTestTamperCommand(data);
+            response.writeUInt8((uint8_t)status_);
+            return;
+        }
+        case 128: {
+            auto data = request.readUInt16Le();
+            auto status_ = onBoschSmokeDetectorSirenCommand(data);
             response.writeUInt8((uint8_t)status_);
             return;
         }
@@ -7172,7 +7408,7 @@ void SsIasAceCluster::processCommand(uint8_t commandId, Memory& request, Memory&
 }
 
 AttributeUInt16* SsIasWdCluster::getMaxDuration() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SsIasWdAttribute::MaxDuration);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -7235,7 +7471,7 @@ void SsIasWdCluster::processCommand(uint8_t commandId, Memory& request, Memory& 
 }
 
 AttributeUInt16* PiGenericTunnelCluster::getMaxIncomeTransSize() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiGenericTunnelAttribute::MaxIncomeTransSize);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -7244,7 +7480,7 @@ AttributeUInt16* PiGenericTunnelCluster::getMaxIncomeTransSize() {
 }
 
 AttributeUInt16* PiGenericTunnelCluster::getMaxOutgoTransSize() {
-    auto result = (AttributeUInt16*)getAttributeById(2);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiGenericTunnelAttribute::MaxOutgoTransSize);
     if (result == nullptr) {
         result = new AttributeUInt16(2, DataType::UInt16);
         addAttribute(result);
@@ -7253,7 +7489,7 @@ AttributeUInt16* PiGenericTunnelCluster::getMaxOutgoTransSize() {
 }
 
 AttributeOctstr* PiGenericTunnelCluster::getProtocolAddr() {
-    auto result = (AttributeOctstr*)getAttributeById(3);
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)PiGenericTunnelAttribute::ProtocolAddr);
     if (result == nullptr) {
         result = new AttributeOctstr(3);
         addAttribute(result);
@@ -7318,7 +7554,7 @@ void PiBacnetProtocolTunnelCluster::processCommand(uint8_t commandId, Memory& re
 }
 
 AttributeSingle* PiAnalogInputRegCluster::getCovIncrement() {
-    auto result = (AttributeSingle*)getAttributeById(22);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)PiAnalogInputRegAttribute::CovIncrement);
     if (result == nullptr) {
         result = new AttributeSingle(22, DataType::Single);
         addAttribute(result);
@@ -7327,7 +7563,7 @@ AttributeSingle* PiAnalogInputRegCluster::getCovIncrement() {
 }
 
 AttributeString* PiAnalogInputRegCluster::getDeviceType() {
-    auto result = (AttributeString*)getAttributeById(31);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiAnalogInputRegAttribute::DeviceType);
     if (result == nullptr) {
         result = new AttributeString(31);
         addAttribute(result);
@@ -7336,7 +7572,7 @@ AttributeString* PiAnalogInputRegCluster::getDeviceType() {
 }
 
 AttributeUInt32* PiAnalogInputRegCluster::getObjectId() {
-    auto result = (AttributeUInt32*)getAttributeById(75);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiAnalogInputRegAttribute::ObjectId);
     if (result == nullptr) {
         result = new AttributeUInt32(75, DataType::BacOID);
         addAttribute(result);
@@ -7345,7 +7581,7 @@ AttributeUInt32* PiAnalogInputRegCluster::getObjectId() {
 }
 
 AttributeString* PiAnalogInputRegCluster::getObjectName() {
-    auto result = (AttributeString*)getAttributeById(77);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiAnalogInputRegAttribute::ObjectName);
     if (result == nullptr) {
         result = new AttributeString(77);
         addAttribute(result);
@@ -7354,7 +7590,7 @@ AttributeString* PiAnalogInputRegCluster::getObjectName() {
 }
 
 AttributeUInt16* PiAnalogInputRegCluster::getObjectType() {
-    auto result = (AttributeUInt16*)getAttributeById(79);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiAnalogInputRegAttribute::ObjectType);
     if (result == nullptr) {
         result = new AttributeUInt16(79, DataType::Enum16);
         addAttribute(result);
@@ -7363,7 +7599,7 @@ AttributeUInt16* PiAnalogInputRegCluster::getObjectType() {
 }
 
 AttributeUInt8* PiAnalogInputRegCluster::getUpdateInterval() {
-    auto result = (AttributeUInt8*)getAttributeById(118);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogInputRegAttribute::UpdateInterval);
     if (result == nullptr) {
         result = new AttributeUInt8(118, DataType::UInt8);
         addAttribute(result);
@@ -7372,7 +7608,7 @@ AttributeUInt8* PiAnalogInputRegCluster::getUpdateInterval() {
 }
 
 AttributeString* PiAnalogInputRegCluster::getProfileName() {
-    auto result = (AttributeString*)getAttributeById(168);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiAnalogInputRegAttribute::ProfileName);
     if (result == nullptr) {
         result = new AttributeString(168);
         addAttribute(result);
@@ -7381,7 +7617,7 @@ AttributeString* PiAnalogInputRegCluster::getProfileName() {
 }
 
 AttributeUInt8* PiAnalogInputExtCluster::getAckedTransitions() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogInputExtAttribute::AckedTransitions);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Map8);
         addAttribute(result);
@@ -7390,7 +7626,7 @@ AttributeUInt8* PiAnalogInputExtCluster::getAckedTransitions() {
 }
 
 AttributeUInt16* PiAnalogInputExtCluster::getNotificationClass() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiAnalogInputExtAttribute::NotificationClass);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -7399,7 +7635,7 @@ AttributeUInt16* PiAnalogInputExtCluster::getNotificationClass() {
 }
 
 AttributeSingle* PiAnalogInputExtCluster::getDeadband() {
-    auto result = (AttributeSingle*)getAttributeById(25);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)PiAnalogInputExtAttribute::Deadband);
     if (result == nullptr) {
         result = new AttributeSingle(25, DataType::Single);
         addAttribute(result);
@@ -7408,7 +7644,7 @@ AttributeSingle* PiAnalogInputExtCluster::getDeadband() {
 }
 
 AttributeUInt8* PiAnalogInputExtCluster::getEventEnable() {
-    auto result = (AttributeUInt8*)getAttributeById(35);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogInputExtAttribute::EventEnable);
     if (result == nullptr) {
         result = new AttributeUInt8(35, DataType::Map8);
         addAttribute(result);
@@ -7417,7 +7653,7 @@ AttributeUInt8* PiAnalogInputExtCluster::getEventEnable() {
 }
 
 AttributeUInt8* PiAnalogInputExtCluster::getEventState() {
-    auto result = (AttributeUInt8*)getAttributeById(36);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogInputExtAttribute::EventState);
     if (result == nullptr) {
         result = new AttributeUInt8(36, DataType::Enum8);
         addAttribute(result);
@@ -7426,7 +7662,7 @@ AttributeUInt8* PiAnalogInputExtCluster::getEventState() {
 }
 
 AttributeSingle* PiAnalogInputExtCluster::getHighLimit() {
-    auto result = (AttributeSingle*)getAttributeById(45);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)PiAnalogInputExtAttribute::HighLimit);
     if (result == nullptr) {
         result = new AttributeSingle(45, DataType::Single);
         addAttribute(result);
@@ -7435,7 +7671,7 @@ AttributeSingle* PiAnalogInputExtCluster::getHighLimit() {
 }
 
 AttributeUInt8* PiAnalogInputExtCluster::getLimitEnable() {
-    auto result = (AttributeUInt8*)getAttributeById(52);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogInputExtAttribute::LimitEnable);
     if (result == nullptr) {
         result = new AttributeUInt8(52, DataType::Map8);
         addAttribute(result);
@@ -7444,7 +7680,7 @@ AttributeUInt8* PiAnalogInputExtCluster::getLimitEnable() {
 }
 
 AttributeSingle* PiAnalogInputExtCluster::getLowLimit() {
-    auto result = (AttributeSingle*)getAttributeById(59);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)PiAnalogInputExtAttribute::LowLimit);
     if (result == nullptr) {
         result = new AttributeSingle(59, DataType::Single);
         addAttribute(result);
@@ -7453,7 +7689,7 @@ AttributeSingle* PiAnalogInputExtCluster::getLowLimit() {
 }
 
 AttributeUInt8* PiAnalogInputExtCluster::getNotifyType() {
-    auto result = (AttributeUInt8*)getAttributeById(72);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogInputExtAttribute::NotifyType);
     if (result == nullptr) {
         result = new AttributeUInt8(72, DataType::Enum8);
         addAttribute(result);
@@ -7462,7 +7698,7 @@ AttributeUInt8* PiAnalogInputExtCluster::getNotifyType() {
 }
 
 AttributeUInt8* PiAnalogInputExtCluster::getTimeDelay() {
-    auto result = (AttributeUInt8*)getAttributeById(113);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogInputExtAttribute::TimeDelay);
     if (result == nullptr) {
         result = new AttributeUInt8(113, DataType::UInt8);
         addAttribute(result);
@@ -7551,7 +7787,7 @@ void PiAnalogInputExtCluster::processCommand(uint8_t commandId, Memory& request,
 }
 
 AttributeSingle* PiAnalogOutputRegCluster::getCovIncrement() {
-    auto result = (AttributeSingle*)getAttributeById(22);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)PiAnalogOutputRegAttribute::CovIncrement);
     if (result == nullptr) {
         result = new AttributeSingle(22, DataType::Single);
         addAttribute(result);
@@ -7560,7 +7796,7 @@ AttributeSingle* PiAnalogOutputRegCluster::getCovIncrement() {
 }
 
 AttributeString* PiAnalogOutputRegCluster::getDeviceType() {
-    auto result = (AttributeString*)getAttributeById(31);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiAnalogOutputRegAttribute::DeviceType);
     if (result == nullptr) {
         result = new AttributeString(31);
         addAttribute(result);
@@ -7569,7 +7805,7 @@ AttributeString* PiAnalogOutputRegCluster::getDeviceType() {
 }
 
 AttributeUInt32* PiAnalogOutputRegCluster::getObjectId() {
-    auto result = (AttributeUInt32*)getAttributeById(75);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiAnalogOutputRegAttribute::ObjectId);
     if (result == nullptr) {
         result = new AttributeUInt32(75, DataType::BacOID);
         addAttribute(result);
@@ -7578,7 +7814,7 @@ AttributeUInt32* PiAnalogOutputRegCluster::getObjectId() {
 }
 
 AttributeString* PiAnalogOutputRegCluster::getObjectName() {
-    auto result = (AttributeString*)getAttributeById(77);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiAnalogOutputRegAttribute::ObjectName);
     if (result == nullptr) {
         result = new AttributeString(77);
         addAttribute(result);
@@ -7587,7 +7823,7 @@ AttributeString* PiAnalogOutputRegCluster::getObjectName() {
 }
 
 AttributeUInt16* PiAnalogOutputRegCluster::getObjectType() {
-    auto result = (AttributeUInt16*)getAttributeById(79);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiAnalogOutputRegAttribute::ObjectType);
     if (result == nullptr) {
         result = new AttributeUInt16(79, DataType::Enum16);
         addAttribute(result);
@@ -7596,7 +7832,7 @@ AttributeUInt16* PiAnalogOutputRegCluster::getObjectType() {
 }
 
 AttributeUInt8* PiAnalogOutputRegCluster::getUpdateInterval() {
-    auto result = (AttributeUInt8*)getAttributeById(118);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogOutputRegAttribute::UpdateInterval);
     if (result == nullptr) {
         result = new AttributeUInt8(118, DataType::UInt8);
         addAttribute(result);
@@ -7605,7 +7841,7 @@ AttributeUInt8* PiAnalogOutputRegCluster::getUpdateInterval() {
 }
 
 AttributeString* PiAnalogOutputRegCluster::getProfileName() {
-    auto result = (AttributeString*)getAttributeById(168);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiAnalogOutputRegAttribute::ProfileName);
     if (result == nullptr) {
         result = new AttributeString(168);
         addAttribute(result);
@@ -7614,7 +7850,7 @@ AttributeString* PiAnalogOutputRegCluster::getProfileName() {
 }
 
 AttributeUInt8* PiAnalogOutputExtCluster::getAckedTransitions() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogOutputExtAttribute::AckedTransitions);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Map8);
         addAttribute(result);
@@ -7623,7 +7859,7 @@ AttributeUInt8* PiAnalogOutputExtCluster::getAckedTransitions() {
 }
 
 AttributeUInt16* PiAnalogOutputExtCluster::getNotificationClass() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiAnalogOutputExtAttribute::NotificationClass);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -7632,7 +7868,7 @@ AttributeUInt16* PiAnalogOutputExtCluster::getNotificationClass() {
 }
 
 AttributeSingle* PiAnalogOutputExtCluster::getDeadband() {
-    auto result = (AttributeSingle*)getAttributeById(25);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)PiAnalogOutputExtAttribute::Deadband);
     if (result == nullptr) {
         result = new AttributeSingle(25, DataType::Single);
         addAttribute(result);
@@ -7641,7 +7877,7 @@ AttributeSingle* PiAnalogOutputExtCluster::getDeadband() {
 }
 
 AttributeUInt8* PiAnalogOutputExtCluster::getEventEnable() {
-    auto result = (AttributeUInt8*)getAttributeById(35);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogOutputExtAttribute::EventEnable);
     if (result == nullptr) {
         result = new AttributeUInt8(35, DataType::Map8);
         addAttribute(result);
@@ -7650,7 +7886,7 @@ AttributeUInt8* PiAnalogOutputExtCluster::getEventEnable() {
 }
 
 AttributeUInt8* PiAnalogOutputExtCluster::getEventState() {
-    auto result = (AttributeUInt8*)getAttributeById(36);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogOutputExtAttribute::EventState);
     if (result == nullptr) {
         result = new AttributeUInt8(36, DataType::Enum8);
         addAttribute(result);
@@ -7659,7 +7895,7 @@ AttributeUInt8* PiAnalogOutputExtCluster::getEventState() {
 }
 
 AttributeSingle* PiAnalogOutputExtCluster::getHighLimit() {
-    auto result = (AttributeSingle*)getAttributeById(45);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)PiAnalogOutputExtAttribute::HighLimit);
     if (result == nullptr) {
         result = new AttributeSingle(45, DataType::Single);
         addAttribute(result);
@@ -7668,7 +7904,7 @@ AttributeSingle* PiAnalogOutputExtCluster::getHighLimit() {
 }
 
 AttributeUInt8* PiAnalogOutputExtCluster::getLimitEnable() {
-    auto result = (AttributeUInt8*)getAttributeById(52);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogOutputExtAttribute::LimitEnable);
     if (result == nullptr) {
         result = new AttributeUInt8(52, DataType::Map8);
         addAttribute(result);
@@ -7677,7 +7913,7 @@ AttributeUInt8* PiAnalogOutputExtCluster::getLimitEnable() {
 }
 
 AttributeSingle* PiAnalogOutputExtCluster::getLowLimit() {
-    auto result = (AttributeSingle*)getAttributeById(59);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)PiAnalogOutputExtAttribute::LowLimit);
     if (result == nullptr) {
         result = new AttributeSingle(59, DataType::Single);
         addAttribute(result);
@@ -7686,7 +7922,7 @@ AttributeSingle* PiAnalogOutputExtCluster::getLowLimit() {
 }
 
 AttributeUInt8* PiAnalogOutputExtCluster::getNotifyType() {
-    auto result = (AttributeUInt8*)getAttributeById(72);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogOutputExtAttribute::NotifyType);
     if (result == nullptr) {
         result = new AttributeUInt8(72, DataType::Enum8);
         addAttribute(result);
@@ -7695,7 +7931,7 @@ AttributeUInt8* PiAnalogOutputExtCluster::getNotifyType() {
 }
 
 AttributeUInt8* PiAnalogOutputExtCluster::getTimeDelay() {
-    auto result = (AttributeUInt8*)getAttributeById(113);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogOutputExtAttribute::TimeDelay);
     if (result == nullptr) {
         result = new AttributeUInt8(113, DataType::UInt8);
         addAttribute(result);
@@ -7704,7 +7940,7 @@ AttributeUInt8* PiAnalogOutputExtCluster::getTimeDelay() {
 }
 
 AttributeSingle* PiAnalogValueRegCluster::getCovIncrement() {
-    auto result = (AttributeSingle*)getAttributeById(22);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)PiAnalogValueRegAttribute::CovIncrement);
     if (result == nullptr) {
         result = new AttributeSingle(22, DataType::Single);
         addAttribute(result);
@@ -7713,7 +7949,7 @@ AttributeSingle* PiAnalogValueRegCluster::getCovIncrement() {
 }
 
 AttributeUInt32* PiAnalogValueRegCluster::getObjectId() {
-    auto result = (AttributeUInt32*)getAttributeById(75);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiAnalogValueRegAttribute::ObjectId);
     if (result == nullptr) {
         result = new AttributeUInt32(75, DataType::BacOID);
         addAttribute(result);
@@ -7722,7 +7958,7 @@ AttributeUInt32* PiAnalogValueRegCluster::getObjectId() {
 }
 
 AttributeString* PiAnalogValueRegCluster::getObjectName() {
-    auto result = (AttributeString*)getAttributeById(77);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiAnalogValueRegAttribute::ObjectName);
     if (result == nullptr) {
         result = new AttributeString(77);
         addAttribute(result);
@@ -7731,7 +7967,7 @@ AttributeString* PiAnalogValueRegCluster::getObjectName() {
 }
 
 AttributeUInt16* PiAnalogValueRegCluster::getObjectType() {
-    auto result = (AttributeUInt16*)getAttributeById(79);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiAnalogValueRegAttribute::ObjectType);
     if (result == nullptr) {
         result = new AttributeUInt16(79, DataType::Enum16);
         addAttribute(result);
@@ -7740,7 +7976,7 @@ AttributeUInt16* PiAnalogValueRegCluster::getObjectType() {
 }
 
 AttributeString* PiAnalogValueRegCluster::getProfileName() {
-    auto result = (AttributeString*)getAttributeById(168);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiAnalogValueRegAttribute::ProfileName);
     if (result == nullptr) {
         result = new AttributeString(168);
         addAttribute(result);
@@ -7749,7 +7985,7 @@ AttributeString* PiAnalogValueRegCluster::getProfileName() {
 }
 
 AttributeUInt8* PiAnalogValueExtCluster::getAckedTransitions() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogValueExtAttribute::AckedTransitions);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Map8);
         addAttribute(result);
@@ -7758,7 +7994,7 @@ AttributeUInt8* PiAnalogValueExtCluster::getAckedTransitions() {
 }
 
 AttributeUInt16* PiAnalogValueExtCluster::getNotificationClass() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiAnalogValueExtAttribute::NotificationClass);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -7767,7 +8003,7 @@ AttributeUInt16* PiAnalogValueExtCluster::getNotificationClass() {
 }
 
 AttributeSingle* PiAnalogValueExtCluster::getDeadband() {
-    auto result = (AttributeSingle*)getAttributeById(25);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)PiAnalogValueExtAttribute::Deadband);
     if (result == nullptr) {
         result = new AttributeSingle(25, DataType::Single);
         addAttribute(result);
@@ -7776,7 +8012,7 @@ AttributeSingle* PiAnalogValueExtCluster::getDeadband() {
 }
 
 AttributeUInt8* PiAnalogValueExtCluster::getEventEnable() {
-    auto result = (AttributeUInt8*)getAttributeById(35);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogValueExtAttribute::EventEnable);
     if (result == nullptr) {
         result = new AttributeUInt8(35, DataType::Map8);
         addAttribute(result);
@@ -7785,7 +8021,7 @@ AttributeUInt8* PiAnalogValueExtCluster::getEventEnable() {
 }
 
 AttributeUInt8* PiAnalogValueExtCluster::getEventState() {
-    auto result = (AttributeUInt8*)getAttributeById(36);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogValueExtAttribute::EventState);
     if (result == nullptr) {
         result = new AttributeUInt8(36, DataType::Enum8);
         addAttribute(result);
@@ -7794,7 +8030,7 @@ AttributeUInt8* PiAnalogValueExtCluster::getEventState() {
 }
 
 AttributeSingle* PiAnalogValueExtCluster::getHighLimit() {
-    auto result = (AttributeSingle*)getAttributeById(45);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)PiAnalogValueExtAttribute::HighLimit);
     if (result == nullptr) {
         result = new AttributeSingle(45, DataType::Single);
         addAttribute(result);
@@ -7803,7 +8039,7 @@ AttributeSingle* PiAnalogValueExtCluster::getHighLimit() {
 }
 
 AttributeUInt8* PiAnalogValueExtCluster::getLimitEnable() {
-    auto result = (AttributeUInt8*)getAttributeById(52);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogValueExtAttribute::LimitEnable);
     if (result == nullptr) {
         result = new AttributeUInt8(52, DataType::Map8);
         addAttribute(result);
@@ -7812,7 +8048,7 @@ AttributeUInt8* PiAnalogValueExtCluster::getLimitEnable() {
 }
 
 AttributeSingle* PiAnalogValueExtCluster::getLowLimit() {
-    auto result = (AttributeSingle*)getAttributeById(59);
+    auto result = (AttributeSingle*)getAttributeById((uint16_t)PiAnalogValueExtAttribute::LowLimit);
     if (result == nullptr) {
         result = new AttributeSingle(59, DataType::Single);
         addAttribute(result);
@@ -7821,7 +8057,7 @@ AttributeSingle* PiAnalogValueExtCluster::getLowLimit() {
 }
 
 AttributeUInt8* PiAnalogValueExtCluster::getNotifyType() {
-    auto result = (AttributeUInt8*)getAttributeById(72);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogValueExtAttribute::NotifyType);
     if (result == nullptr) {
         result = new AttributeUInt8(72, DataType::Enum8);
         addAttribute(result);
@@ -7830,7 +8066,7 @@ AttributeUInt8* PiAnalogValueExtCluster::getNotifyType() {
 }
 
 AttributeUInt8* PiAnalogValueExtCluster::getTimeDelay() {
-    auto result = (AttributeUInt8*)getAttributeById(113);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiAnalogValueExtAttribute::TimeDelay);
     if (result == nullptr) {
         result = new AttributeUInt8(113, DataType::UInt8);
         addAttribute(result);
@@ -7839,7 +8075,7 @@ AttributeUInt8* PiAnalogValueExtCluster::getTimeDelay() {
 }
 
 AttributeUInt32* PiBinaryInputRegCluster::getChangeOfStateCount() {
-    auto result = (AttributeUInt32*)getAttributeById(15);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiBinaryInputRegAttribute::ChangeOfStateCount);
     if (result == nullptr) {
         result = new AttributeUInt32(15, DataType::UInt32);
         addAttribute(result);
@@ -7848,7 +8084,7 @@ AttributeUInt32* PiBinaryInputRegCluster::getChangeOfStateCount() {
 }
 
 AttributeDateTime* PiBinaryInputRegCluster::getChangeOfStateTime() {
-    auto result = (AttributeDateTime*)getAttributeById(16);
+    auto result = (AttributeDateTime*)getAttributeById((uint16_t)PiBinaryInputRegAttribute::ChangeOfStateTime);
     if (result == nullptr) {
         result = new AttributeDateTime(16, DataType::DateTime);
         addAttribute(result);
@@ -7857,7 +8093,7 @@ AttributeDateTime* PiBinaryInputRegCluster::getChangeOfStateTime() {
 }
 
 AttributeString* PiBinaryInputRegCluster::getDeviceType() {
-    auto result = (AttributeString*)getAttributeById(31);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiBinaryInputRegAttribute::DeviceType);
     if (result == nullptr) {
         result = new AttributeString(31);
         addAttribute(result);
@@ -7866,7 +8102,7 @@ AttributeString* PiBinaryInputRegCluster::getDeviceType() {
 }
 
 AttributeUInt32* PiBinaryInputRegCluster::getElapsedActiveTime() {
-    auto result = (AttributeUInt32*)getAttributeById(33);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiBinaryInputRegAttribute::ElapsedActiveTime);
     if (result == nullptr) {
         result = new AttributeUInt32(33, DataType::UInt32);
         addAttribute(result);
@@ -7875,7 +8111,7 @@ AttributeUInt32* PiBinaryInputRegCluster::getElapsedActiveTime() {
 }
 
 AttributeUInt32* PiBinaryInputRegCluster::getObjectIdentifier() {
-    auto result = (AttributeUInt32*)getAttributeById(75);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiBinaryInputRegAttribute::ObjectIdentifier);
     if (result == nullptr) {
         result = new AttributeUInt32(75, DataType::BacOID);
         addAttribute(result);
@@ -7884,7 +8120,7 @@ AttributeUInt32* PiBinaryInputRegCluster::getObjectIdentifier() {
 }
 
 AttributeString* PiBinaryInputRegCluster::getObjectName() {
-    auto result = (AttributeString*)getAttributeById(77);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiBinaryInputRegAttribute::ObjectName);
     if (result == nullptr) {
         result = new AttributeString(77);
         addAttribute(result);
@@ -7893,7 +8129,7 @@ AttributeString* PiBinaryInputRegCluster::getObjectName() {
 }
 
 AttributeUInt16* PiBinaryInputRegCluster::getObjectType() {
-    auto result = (AttributeUInt16*)getAttributeById(79);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiBinaryInputRegAttribute::ObjectType);
     if (result == nullptr) {
         result = new AttributeUInt16(79, DataType::Enum16);
         addAttribute(result);
@@ -7902,7 +8138,7 @@ AttributeUInt16* PiBinaryInputRegCluster::getObjectType() {
 }
 
 AttributeDateTime* PiBinaryInputRegCluster::getTimeOfATReset() {
-    auto result = (AttributeDateTime*)getAttributeById(114);
+    auto result = (AttributeDateTime*)getAttributeById((uint16_t)PiBinaryInputRegAttribute::TimeOfATReset);
     if (result == nullptr) {
         result = new AttributeDateTime(114, DataType::DateTime);
         addAttribute(result);
@@ -7911,7 +8147,7 @@ AttributeDateTime* PiBinaryInputRegCluster::getTimeOfATReset() {
 }
 
 AttributeDateTime* PiBinaryInputRegCluster::getTimeOfSCReset() {
-    auto result = (AttributeDateTime*)getAttributeById(115);
+    auto result = (AttributeDateTime*)getAttributeById((uint16_t)PiBinaryInputRegAttribute::TimeOfSCReset);
     if (result == nullptr) {
         result = new AttributeDateTime(115, DataType::DateTime);
         addAttribute(result);
@@ -7920,7 +8156,7 @@ AttributeDateTime* PiBinaryInputRegCluster::getTimeOfSCReset() {
 }
 
 AttributeString* PiBinaryInputRegCluster::getProfileName() {
-    auto result = (AttributeString*)getAttributeById(168);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiBinaryInputRegAttribute::ProfileName);
     if (result == nullptr) {
         result = new AttributeString(168);
         addAttribute(result);
@@ -7929,7 +8165,7 @@ AttributeString* PiBinaryInputRegCluster::getProfileName() {
 }
 
 AttributeUInt8* PiBinaryInputExtCluster::getAckedTransitions() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryInputExtAttribute::AckedTransitions);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Map8);
         addAttribute(result);
@@ -7938,7 +8174,7 @@ AttributeUInt8* PiBinaryInputExtCluster::getAckedTransitions() {
 }
 
 AttributeUInt8* PiBinaryInputExtCluster::getAlarmValue() {
-    auto result = (AttributeUInt8*)getAttributeById(6);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryInputExtAttribute::AlarmValue);
     if (result == nullptr) {
         result = new AttributeUInt8(6, DataType::Bool);
         addAttribute(result);
@@ -7947,7 +8183,7 @@ AttributeUInt8* PiBinaryInputExtCluster::getAlarmValue() {
 }
 
 AttributeUInt16* PiBinaryInputExtCluster::getNotificationClass() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiBinaryInputExtAttribute::NotificationClass);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -7956,7 +8192,7 @@ AttributeUInt16* PiBinaryInputExtCluster::getNotificationClass() {
 }
 
 AttributeUInt8* PiBinaryInputExtCluster::getEventEnable() {
-    auto result = (AttributeUInt8*)getAttributeById(35);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryInputExtAttribute::EventEnable);
     if (result == nullptr) {
         result = new AttributeUInt8(35, DataType::Map8);
         addAttribute(result);
@@ -7965,7 +8201,7 @@ AttributeUInt8* PiBinaryInputExtCluster::getEventEnable() {
 }
 
 AttributeUInt8* PiBinaryInputExtCluster::getEventState() {
-    auto result = (AttributeUInt8*)getAttributeById(36);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryInputExtAttribute::EventState);
     if (result == nullptr) {
         result = new AttributeUInt8(36, DataType::Enum8);
         addAttribute(result);
@@ -7974,7 +8210,7 @@ AttributeUInt8* PiBinaryInputExtCluster::getEventState() {
 }
 
 AttributeUInt8* PiBinaryInputExtCluster::getNotifyType() {
-    auto result = (AttributeUInt8*)getAttributeById(72);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryInputExtAttribute::NotifyType);
     if (result == nullptr) {
         result = new AttributeUInt8(72, DataType::Enum8);
         addAttribute(result);
@@ -7983,7 +8219,7 @@ AttributeUInt8* PiBinaryInputExtCluster::getNotifyType() {
 }
 
 AttributeUInt8* PiBinaryInputExtCluster::getTimeDelay() {
-    auto result = (AttributeUInt8*)getAttributeById(113);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryInputExtAttribute::TimeDelay);
     if (result == nullptr) {
         result = new AttributeUInt8(113, DataType::UInt8);
         addAttribute(result);
@@ -7992,7 +8228,7 @@ AttributeUInt8* PiBinaryInputExtCluster::getTimeDelay() {
 }
 
 AttributeUInt32* PiBinaryOutputRegCluster::getChangeOfStateCount() {
-    auto result = (AttributeUInt32*)getAttributeById(15);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiBinaryOutputRegAttribute::ChangeOfStateCount);
     if (result == nullptr) {
         result = new AttributeUInt32(15, DataType::UInt32);
         addAttribute(result);
@@ -8001,7 +8237,7 @@ AttributeUInt32* PiBinaryOutputRegCluster::getChangeOfStateCount() {
 }
 
 AttributeDateTime* PiBinaryOutputRegCluster::getChangeOfStateTime() {
-    auto result = (AttributeDateTime*)getAttributeById(16);
+    auto result = (AttributeDateTime*)getAttributeById((uint16_t)PiBinaryOutputRegAttribute::ChangeOfStateTime);
     if (result == nullptr) {
         result = new AttributeDateTime(16, DataType::DateTime);
         addAttribute(result);
@@ -8010,7 +8246,7 @@ AttributeDateTime* PiBinaryOutputRegCluster::getChangeOfStateTime() {
 }
 
 AttributeString* PiBinaryOutputRegCluster::getDeviceType() {
-    auto result = (AttributeString*)getAttributeById(31);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiBinaryOutputRegAttribute::DeviceType);
     if (result == nullptr) {
         result = new AttributeString(31);
         addAttribute(result);
@@ -8019,7 +8255,7 @@ AttributeString* PiBinaryOutputRegCluster::getDeviceType() {
 }
 
 AttributeUInt32* PiBinaryOutputRegCluster::getElapsedActiveTime() {
-    auto result = (AttributeUInt32*)getAttributeById(33);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiBinaryOutputRegAttribute::ElapsedActiveTime);
     if (result == nullptr) {
         result = new AttributeUInt32(33, DataType::UInt32);
         addAttribute(result);
@@ -8028,7 +8264,7 @@ AttributeUInt32* PiBinaryOutputRegCluster::getElapsedActiveTime() {
 }
 
 AttributeUInt8* PiBinaryOutputRegCluster::getFeedBackValue() {
-    auto result = (AttributeUInt8*)getAttributeById(40);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryOutputRegAttribute::FeedBackValue);
     if (result == nullptr) {
         result = new AttributeUInt8(40, DataType::Enum8);
         addAttribute(result);
@@ -8037,7 +8273,7 @@ AttributeUInt8* PiBinaryOutputRegCluster::getFeedBackValue() {
 }
 
 AttributeUInt32* PiBinaryOutputRegCluster::getObjectIdentifier() {
-    auto result = (AttributeUInt32*)getAttributeById(75);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiBinaryOutputRegAttribute::ObjectIdentifier);
     if (result == nullptr) {
         result = new AttributeUInt32(75, DataType::BacOID);
         addAttribute(result);
@@ -8046,7 +8282,7 @@ AttributeUInt32* PiBinaryOutputRegCluster::getObjectIdentifier() {
 }
 
 AttributeString* PiBinaryOutputRegCluster::getObjectName() {
-    auto result = (AttributeString*)getAttributeById(77);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiBinaryOutputRegAttribute::ObjectName);
     if (result == nullptr) {
         result = new AttributeString(77);
         addAttribute(result);
@@ -8055,7 +8291,7 @@ AttributeString* PiBinaryOutputRegCluster::getObjectName() {
 }
 
 AttributeUInt16* PiBinaryOutputRegCluster::getObjectType() {
-    auto result = (AttributeUInt16*)getAttributeById(79);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiBinaryOutputRegAttribute::ObjectType);
     if (result == nullptr) {
         result = new AttributeUInt16(79, DataType::Enum16);
         addAttribute(result);
@@ -8064,7 +8300,7 @@ AttributeUInt16* PiBinaryOutputRegCluster::getObjectType() {
 }
 
 AttributeDateTime* PiBinaryOutputRegCluster::getTimeOfATReset() {
-    auto result = (AttributeDateTime*)getAttributeById(114);
+    auto result = (AttributeDateTime*)getAttributeById((uint16_t)PiBinaryOutputRegAttribute::TimeOfATReset);
     if (result == nullptr) {
         result = new AttributeDateTime(114, DataType::DateTime);
         addAttribute(result);
@@ -8073,7 +8309,7 @@ AttributeDateTime* PiBinaryOutputRegCluster::getTimeOfATReset() {
 }
 
 AttributeDateTime* PiBinaryOutputRegCluster::getTimeOfSCReset() {
-    auto result = (AttributeDateTime*)getAttributeById(115);
+    auto result = (AttributeDateTime*)getAttributeById((uint16_t)PiBinaryOutputRegAttribute::TimeOfSCReset);
     if (result == nullptr) {
         result = new AttributeDateTime(115, DataType::DateTime);
         addAttribute(result);
@@ -8082,7 +8318,7 @@ AttributeDateTime* PiBinaryOutputRegCluster::getTimeOfSCReset() {
 }
 
 AttributeString* PiBinaryOutputRegCluster::getProfileName() {
-    auto result = (AttributeString*)getAttributeById(168);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiBinaryOutputRegAttribute::ProfileName);
     if (result == nullptr) {
         result = new AttributeString(168);
         addAttribute(result);
@@ -8091,7 +8327,7 @@ AttributeString* PiBinaryOutputRegCluster::getProfileName() {
 }
 
 AttributeUInt8* PiBinaryOutputExtCluster::getAckedTransitions() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryOutputExtAttribute::AckedTransitions);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Map8);
         addAttribute(result);
@@ -8100,7 +8336,7 @@ AttributeUInt8* PiBinaryOutputExtCluster::getAckedTransitions() {
 }
 
 AttributeUInt16* PiBinaryOutputExtCluster::getNotificationClass() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiBinaryOutputExtAttribute::NotificationClass);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -8109,7 +8345,7 @@ AttributeUInt16* PiBinaryOutputExtCluster::getNotificationClass() {
 }
 
 AttributeUInt8* PiBinaryOutputExtCluster::getEventEnable() {
-    auto result = (AttributeUInt8*)getAttributeById(35);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryOutputExtAttribute::EventEnable);
     if (result == nullptr) {
         result = new AttributeUInt8(35, DataType::Map8);
         addAttribute(result);
@@ -8118,7 +8354,7 @@ AttributeUInt8* PiBinaryOutputExtCluster::getEventEnable() {
 }
 
 AttributeUInt8* PiBinaryOutputExtCluster::getEventState() {
-    auto result = (AttributeUInt8*)getAttributeById(36);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryOutputExtAttribute::EventState);
     if (result == nullptr) {
         result = new AttributeUInt8(36, DataType::Enum8);
         addAttribute(result);
@@ -8127,7 +8363,7 @@ AttributeUInt8* PiBinaryOutputExtCluster::getEventState() {
 }
 
 AttributeUInt8* PiBinaryOutputExtCluster::getNotifyType() {
-    auto result = (AttributeUInt8*)getAttributeById(72);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryOutputExtAttribute::NotifyType);
     if (result == nullptr) {
         result = new AttributeUInt8(72, DataType::Enum8);
         addAttribute(result);
@@ -8136,7 +8372,7 @@ AttributeUInt8* PiBinaryOutputExtCluster::getNotifyType() {
 }
 
 AttributeUInt8* PiBinaryOutputExtCluster::getTimeDelay() {
-    auto result = (AttributeUInt8*)getAttributeById(113);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryOutputExtAttribute::TimeDelay);
     if (result == nullptr) {
         result = new AttributeUInt8(113, DataType::UInt8);
         addAttribute(result);
@@ -8145,7 +8381,7 @@ AttributeUInt8* PiBinaryOutputExtCluster::getTimeDelay() {
 }
 
 AttributeUInt32* PiBinaryValueRegCluster::getChangeOfStateCount() {
-    auto result = (AttributeUInt32*)getAttributeById(15);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiBinaryValueRegAttribute::ChangeOfStateCount);
     if (result == nullptr) {
         result = new AttributeUInt32(15, DataType::UInt32);
         addAttribute(result);
@@ -8154,7 +8390,7 @@ AttributeUInt32* PiBinaryValueRegCluster::getChangeOfStateCount() {
 }
 
 AttributeDateTime* PiBinaryValueRegCluster::getChangeOfStateTime() {
-    auto result = (AttributeDateTime*)getAttributeById(16);
+    auto result = (AttributeDateTime*)getAttributeById((uint16_t)PiBinaryValueRegAttribute::ChangeOfStateTime);
     if (result == nullptr) {
         result = new AttributeDateTime(16, DataType::DateTime);
         addAttribute(result);
@@ -8163,7 +8399,7 @@ AttributeDateTime* PiBinaryValueRegCluster::getChangeOfStateTime() {
 }
 
 AttributeUInt32* PiBinaryValueRegCluster::getElapsedActiveTime() {
-    auto result = (AttributeUInt32*)getAttributeById(33);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiBinaryValueRegAttribute::ElapsedActiveTime);
     if (result == nullptr) {
         result = new AttributeUInt32(33, DataType::UInt32);
         addAttribute(result);
@@ -8172,7 +8408,7 @@ AttributeUInt32* PiBinaryValueRegCluster::getElapsedActiveTime() {
 }
 
 AttributeUInt32* PiBinaryValueRegCluster::getObjectIdentifier() {
-    auto result = (AttributeUInt32*)getAttributeById(75);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiBinaryValueRegAttribute::ObjectIdentifier);
     if (result == nullptr) {
         result = new AttributeUInt32(75, DataType::BacOID);
         addAttribute(result);
@@ -8181,7 +8417,7 @@ AttributeUInt32* PiBinaryValueRegCluster::getObjectIdentifier() {
 }
 
 AttributeString* PiBinaryValueRegCluster::getObjectName() {
-    auto result = (AttributeString*)getAttributeById(77);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiBinaryValueRegAttribute::ObjectName);
     if (result == nullptr) {
         result = new AttributeString(77);
         addAttribute(result);
@@ -8190,7 +8426,7 @@ AttributeString* PiBinaryValueRegCluster::getObjectName() {
 }
 
 AttributeUInt16* PiBinaryValueRegCluster::getObjectType() {
-    auto result = (AttributeUInt16*)getAttributeById(79);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiBinaryValueRegAttribute::ObjectType);
     if (result == nullptr) {
         result = new AttributeUInt16(79, DataType::Enum16);
         addAttribute(result);
@@ -8199,7 +8435,7 @@ AttributeUInt16* PiBinaryValueRegCluster::getObjectType() {
 }
 
 AttributeDateTime* PiBinaryValueRegCluster::getTimeOfATReset() {
-    auto result = (AttributeDateTime*)getAttributeById(114);
+    auto result = (AttributeDateTime*)getAttributeById((uint16_t)PiBinaryValueRegAttribute::TimeOfATReset);
     if (result == nullptr) {
         result = new AttributeDateTime(114, DataType::DateTime);
         addAttribute(result);
@@ -8208,7 +8444,7 @@ AttributeDateTime* PiBinaryValueRegCluster::getTimeOfATReset() {
 }
 
 AttributeDateTime* PiBinaryValueRegCluster::getTimeOfSCReset() {
-    auto result = (AttributeDateTime*)getAttributeById(115);
+    auto result = (AttributeDateTime*)getAttributeById((uint16_t)PiBinaryValueRegAttribute::TimeOfSCReset);
     if (result == nullptr) {
         result = new AttributeDateTime(115, DataType::DateTime);
         addAttribute(result);
@@ -8217,7 +8453,7 @@ AttributeDateTime* PiBinaryValueRegCluster::getTimeOfSCReset() {
 }
 
 AttributeString* PiBinaryValueRegCluster::getProfileName() {
-    auto result = (AttributeString*)getAttributeById(168);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiBinaryValueRegAttribute::ProfileName);
     if (result == nullptr) {
         result = new AttributeString(168);
         addAttribute(result);
@@ -8226,7 +8462,7 @@ AttributeString* PiBinaryValueRegCluster::getProfileName() {
 }
 
 AttributeUInt8* PiBinaryValueExtCluster::getAckedTransitions() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryValueExtAttribute::AckedTransitions);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Map8);
         addAttribute(result);
@@ -8235,7 +8471,7 @@ AttributeUInt8* PiBinaryValueExtCluster::getAckedTransitions() {
 }
 
 AttributeUInt8* PiBinaryValueExtCluster::getAlarmValue() {
-    auto result = (AttributeUInt8*)getAttributeById(6);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryValueExtAttribute::AlarmValue);
     if (result == nullptr) {
         result = new AttributeUInt8(6, DataType::Bool);
         addAttribute(result);
@@ -8244,7 +8480,7 @@ AttributeUInt8* PiBinaryValueExtCluster::getAlarmValue() {
 }
 
 AttributeUInt16* PiBinaryValueExtCluster::getNotificationClass() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiBinaryValueExtAttribute::NotificationClass);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -8253,7 +8489,7 @@ AttributeUInt16* PiBinaryValueExtCluster::getNotificationClass() {
 }
 
 AttributeUInt8* PiBinaryValueExtCluster::getEventEnable() {
-    auto result = (AttributeUInt8*)getAttributeById(35);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryValueExtAttribute::EventEnable);
     if (result == nullptr) {
         result = new AttributeUInt8(35, DataType::Map8);
         addAttribute(result);
@@ -8262,7 +8498,7 @@ AttributeUInt8* PiBinaryValueExtCluster::getEventEnable() {
 }
 
 AttributeUInt8* PiBinaryValueExtCluster::getEventState() {
-    auto result = (AttributeUInt8*)getAttributeById(36);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryValueExtAttribute::EventState);
     if (result == nullptr) {
         result = new AttributeUInt8(36, DataType::Enum8);
         addAttribute(result);
@@ -8271,7 +8507,7 @@ AttributeUInt8* PiBinaryValueExtCluster::getEventState() {
 }
 
 AttributeUInt8* PiBinaryValueExtCluster::getNotifyType() {
-    auto result = (AttributeUInt8*)getAttributeById(72);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryValueExtAttribute::NotifyType);
     if (result == nullptr) {
         result = new AttributeUInt8(72, DataType::Enum8);
         addAttribute(result);
@@ -8280,7 +8516,7 @@ AttributeUInt8* PiBinaryValueExtCluster::getNotifyType() {
 }
 
 AttributeUInt8* PiBinaryValueExtCluster::getTimeDelay() {
-    auto result = (AttributeUInt8*)getAttributeById(113);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiBinaryValueExtAttribute::TimeDelay);
     if (result == nullptr) {
         result = new AttributeUInt8(113, DataType::UInt8);
         addAttribute(result);
@@ -8289,7 +8525,7 @@ AttributeUInt8* PiBinaryValueExtCluster::getTimeDelay() {
 }
 
 AttributeString* PiMultistateInputRegCluster::getDeviceType() {
-    auto result = (AttributeString*)getAttributeById(31);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiMultistateInputRegAttribute::DeviceType);
     if (result == nullptr) {
         result = new AttributeString(31);
         addAttribute(result);
@@ -8298,7 +8534,7 @@ AttributeString* PiMultistateInputRegCluster::getDeviceType() {
 }
 
 AttributeUInt32* PiMultistateInputRegCluster::getObjectId() {
-    auto result = (AttributeUInt32*)getAttributeById(75);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiMultistateInputRegAttribute::ObjectId);
     if (result == nullptr) {
         result = new AttributeUInt32(75, DataType::BacOID);
         addAttribute(result);
@@ -8307,7 +8543,7 @@ AttributeUInt32* PiMultistateInputRegCluster::getObjectId() {
 }
 
 AttributeString* PiMultistateInputRegCluster::getObjectName() {
-    auto result = (AttributeString*)getAttributeById(77);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiMultistateInputRegAttribute::ObjectName);
     if (result == nullptr) {
         result = new AttributeString(77);
         addAttribute(result);
@@ -8316,7 +8552,7 @@ AttributeString* PiMultistateInputRegCluster::getObjectName() {
 }
 
 AttributeUInt16* PiMultistateInputRegCluster::getObjectType() {
-    auto result = (AttributeUInt16*)getAttributeById(79);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiMultistateInputRegAttribute::ObjectType);
     if (result == nullptr) {
         result = new AttributeUInt16(79, DataType::Enum16);
         addAttribute(result);
@@ -8325,7 +8561,7 @@ AttributeUInt16* PiMultistateInputRegCluster::getObjectType() {
 }
 
 AttributeString* PiMultistateInputRegCluster::getProfileName() {
-    auto result = (AttributeString*)getAttributeById(168);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiMultistateInputRegAttribute::ProfileName);
     if (result == nullptr) {
         result = new AttributeString(168);
         addAttribute(result);
@@ -8334,7 +8570,7 @@ AttributeString* PiMultistateInputRegCluster::getProfileName() {
 }
 
 AttributeUInt8* PiMultistateInputExtCluster::getAckedTransitions() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateInputExtAttribute::AckedTransitions);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Map8);
         addAttribute(result);
@@ -8343,7 +8579,7 @@ AttributeUInt8* PiMultistateInputExtCluster::getAckedTransitions() {
 }
 
 AttributeUInt16* PiMultistateInputExtCluster::getAlarmValue() {
-    auto result = (AttributeUInt16*)getAttributeById(6);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiMultistateInputExtAttribute::AlarmValue);
     if (result == nullptr) {
         result = new AttributeUInt16(6, DataType::UInt16);
         addAttribute(result);
@@ -8352,7 +8588,7 @@ AttributeUInt16* PiMultistateInputExtCluster::getAlarmValue() {
 }
 
 AttributeUInt16* PiMultistateInputExtCluster::getNotificationClass() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiMultistateInputExtAttribute::NotificationClass);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -8361,7 +8597,7 @@ AttributeUInt16* PiMultistateInputExtCluster::getNotificationClass() {
 }
 
 AttributeUInt8* PiMultistateInputExtCluster::getEventEnable() {
-    auto result = (AttributeUInt8*)getAttributeById(35);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateInputExtAttribute::EventEnable);
     if (result == nullptr) {
         result = new AttributeUInt8(35, DataType::Map8);
         addAttribute(result);
@@ -8370,7 +8606,7 @@ AttributeUInt8* PiMultistateInputExtCluster::getEventEnable() {
 }
 
 AttributeUInt8* PiMultistateInputExtCluster::getEventState() {
-    auto result = (AttributeUInt8*)getAttributeById(36);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateInputExtAttribute::EventState);
     if (result == nullptr) {
         result = new AttributeUInt8(36, DataType::Enum8);
         addAttribute(result);
@@ -8379,7 +8615,7 @@ AttributeUInt8* PiMultistateInputExtCluster::getEventState() {
 }
 
 AttributeUInt16* PiMultistateInputExtCluster::getFaultValues() {
-    auto result = (AttributeUInt16*)getAttributeById(37);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiMultistateInputExtAttribute::FaultValues);
     if (result == nullptr) {
         result = new AttributeUInt16(37, DataType::UInt16);
         addAttribute(result);
@@ -8388,7 +8624,7 @@ AttributeUInt16* PiMultistateInputExtCluster::getFaultValues() {
 }
 
 AttributeUInt8* PiMultistateInputExtCluster::getNotifyType() {
-    auto result = (AttributeUInt8*)getAttributeById(72);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateInputExtAttribute::NotifyType);
     if (result == nullptr) {
         result = new AttributeUInt8(72, DataType::Enum8);
         addAttribute(result);
@@ -8397,7 +8633,7 @@ AttributeUInt8* PiMultistateInputExtCluster::getNotifyType() {
 }
 
 AttributeUInt8* PiMultistateInputExtCluster::getTimeDelay() {
-    auto result = (AttributeUInt8*)getAttributeById(113);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateInputExtAttribute::TimeDelay);
     if (result == nullptr) {
         result = new AttributeUInt8(113, DataType::UInt8);
         addAttribute(result);
@@ -8406,7 +8642,7 @@ AttributeUInt8* PiMultistateInputExtCluster::getTimeDelay() {
 }
 
 AttributeString* PiMultistateOutputRegCluster::getDeviceType() {
-    auto result = (AttributeString*)getAttributeById(31);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiMultistateOutputRegAttribute::DeviceType);
     if (result == nullptr) {
         result = new AttributeString(31);
         addAttribute(result);
@@ -8415,7 +8651,7 @@ AttributeString* PiMultistateOutputRegCluster::getDeviceType() {
 }
 
 AttributeUInt8* PiMultistateOutputRegCluster::getFeedBackValue() {
-    auto result = (AttributeUInt8*)getAttributeById(40);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateOutputRegAttribute::FeedBackValue);
     if (result == nullptr) {
         result = new AttributeUInt8(40, DataType::Enum8);
         addAttribute(result);
@@ -8424,7 +8660,7 @@ AttributeUInt8* PiMultistateOutputRegCluster::getFeedBackValue() {
 }
 
 AttributeUInt32* PiMultistateOutputRegCluster::getObjectId() {
-    auto result = (AttributeUInt32*)getAttributeById(75);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiMultistateOutputRegAttribute::ObjectId);
     if (result == nullptr) {
         result = new AttributeUInt32(75, DataType::BacOID);
         addAttribute(result);
@@ -8433,7 +8669,7 @@ AttributeUInt32* PiMultistateOutputRegCluster::getObjectId() {
 }
 
 AttributeString* PiMultistateOutputRegCluster::getObjectName() {
-    auto result = (AttributeString*)getAttributeById(77);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiMultistateOutputRegAttribute::ObjectName);
     if (result == nullptr) {
         result = new AttributeString(77);
         addAttribute(result);
@@ -8442,7 +8678,7 @@ AttributeString* PiMultistateOutputRegCluster::getObjectName() {
 }
 
 AttributeUInt16* PiMultistateOutputRegCluster::getObjectType() {
-    auto result = (AttributeUInt16*)getAttributeById(79);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiMultistateOutputRegAttribute::ObjectType);
     if (result == nullptr) {
         result = new AttributeUInt16(79, DataType::Enum16);
         addAttribute(result);
@@ -8451,7 +8687,7 @@ AttributeUInt16* PiMultistateOutputRegCluster::getObjectType() {
 }
 
 AttributeString* PiMultistateOutputRegCluster::getProfileName() {
-    auto result = (AttributeString*)getAttributeById(168);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiMultistateOutputRegAttribute::ProfileName);
     if (result == nullptr) {
         result = new AttributeString(168);
         addAttribute(result);
@@ -8460,7 +8696,7 @@ AttributeString* PiMultistateOutputRegCluster::getProfileName() {
 }
 
 AttributeUInt8* PiMultistateOutputExtCluster::getAckedTransitions() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateOutputExtAttribute::AckedTransitions);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Map8);
         addAttribute(result);
@@ -8469,7 +8705,7 @@ AttributeUInt8* PiMultistateOutputExtCluster::getAckedTransitions() {
 }
 
 AttributeUInt16* PiMultistateOutputExtCluster::getNotificationClass() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiMultistateOutputExtAttribute::NotificationClass);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -8478,7 +8714,7 @@ AttributeUInt16* PiMultistateOutputExtCluster::getNotificationClass() {
 }
 
 AttributeUInt8* PiMultistateOutputExtCluster::getEventEnable() {
-    auto result = (AttributeUInt8*)getAttributeById(35);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateOutputExtAttribute::EventEnable);
     if (result == nullptr) {
         result = new AttributeUInt8(35, DataType::Map8);
         addAttribute(result);
@@ -8487,7 +8723,7 @@ AttributeUInt8* PiMultistateOutputExtCluster::getEventEnable() {
 }
 
 AttributeUInt8* PiMultistateOutputExtCluster::getEventState() {
-    auto result = (AttributeUInt8*)getAttributeById(36);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateOutputExtAttribute::EventState);
     if (result == nullptr) {
         result = new AttributeUInt8(36, DataType::Enum8);
         addAttribute(result);
@@ -8496,7 +8732,7 @@ AttributeUInt8* PiMultistateOutputExtCluster::getEventState() {
 }
 
 AttributeUInt8* PiMultistateOutputExtCluster::getNotifyType() {
-    auto result = (AttributeUInt8*)getAttributeById(72);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateOutputExtAttribute::NotifyType);
     if (result == nullptr) {
         result = new AttributeUInt8(72, DataType::Enum8);
         addAttribute(result);
@@ -8505,7 +8741,7 @@ AttributeUInt8* PiMultistateOutputExtCluster::getNotifyType() {
 }
 
 AttributeUInt8* PiMultistateOutputExtCluster::getTimeDelay() {
-    auto result = (AttributeUInt8*)getAttributeById(113);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateOutputExtAttribute::TimeDelay);
     if (result == nullptr) {
         result = new AttributeUInt8(113, DataType::UInt8);
         addAttribute(result);
@@ -8514,7 +8750,7 @@ AttributeUInt8* PiMultistateOutputExtCluster::getTimeDelay() {
 }
 
 AttributeUInt32* PiMultistateValueRegCluster::getObjectId() {
-    auto result = (AttributeUInt32*)getAttributeById(75);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)PiMultistateValueRegAttribute::ObjectId);
     if (result == nullptr) {
         result = new AttributeUInt32(75, DataType::BacOID);
         addAttribute(result);
@@ -8523,7 +8759,7 @@ AttributeUInt32* PiMultistateValueRegCluster::getObjectId() {
 }
 
 AttributeString* PiMultistateValueRegCluster::getObjectName() {
-    auto result = (AttributeString*)getAttributeById(77);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiMultistateValueRegAttribute::ObjectName);
     if (result == nullptr) {
         result = new AttributeString(77);
         addAttribute(result);
@@ -8532,7 +8768,7 @@ AttributeString* PiMultistateValueRegCluster::getObjectName() {
 }
 
 AttributeUInt16* PiMultistateValueRegCluster::getObjectType() {
-    auto result = (AttributeUInt16*)getAttributeById(79);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiMultistateValueRegAttribute::ObjectType);
     if (result == nullptr) {
         result = new AttributeUInt16(79, DataType::Enum16);
         addAttribute(result);
@@ -8541,7 +8777,7 @@ AttributeUInt16* PiMultistateValueRegCluster::getObjectType() {
 }
 
 AttributeString* PiMultistateValueRegCluster::getProfileName() {
-    auto result = (AttributeString*)getAttributeById(168);
+    auto result = (AttributeString*)getAttributeById((uint16_t)PiMultistateValueRegAttribute::ProfileName);
     if (result == nullptr) {
         result = new AttributeString(168);
         addAttribute(result);
@@ -8550,7 +8786,7 @@ AttributeString* PiMultistateValueRegCluster::getProfileName() {
 }
 
 AttributeUInt8* PiMultistateValueExtCluster::getAckedTransitions() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateValueExtAttribute::AckedTransitions);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Map8);
         addAttribute(result);
@@ -8559,7 +8795,7 @@ AttributeUInt8* PiMultistateValueExtCluster::getAckedTransitions() {
 }
 
 AttributeUInt16* PiMultistateValueExtCluster::getAlarmValue() {
-    auto result = (AttributeUInt16*)getAttributeById(6);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiMultistateValueExtAttribute::AlarmValue);
     if (result == nullptr) {
         result = new AttributeUInt16(6, DataType::UInt16);
         addAttribute(result);
@@ -8568,7 +8804,7 @@ AttributeUInt16* PiMultistateValueExtCluster::getAlarmValue() {
 }
 
 AttributeUInt16* PiMultistateValueExtCluster::getNotificationClass() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiMultistateValueExtAttribute::NotificationClass);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -8577,7 +8813,7 @@ AttributeUInt16* PiMultistateValueExtCluster::getNotificationClass() {
 }
 
 AttributeUInt8* PiMultistateValueExtCluster::getEventEnable() {
-    auto result = (AttributeUInt8*)getAttributeById(35);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateValueExtAttribute::EventEnable);
     if (result == nullptr) {
         result = new AttributeUInt8(35, DataType::Map8);
         addAttribute(result);
@@ -8586,7 +8822,7 @@ AttributeUInt8* PiMultistateValueExtCluster::getEventEnable() {
 }
 
 AttributeUInt8* PiMultistateValueExtCluster::getEventState() {
-    auto result = (AttributeUInt8*)getAttributeById(36);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateValueExtAttribute::EventState);
     if (result == nullptr) {
         result = new AttributeUInt8(36, DataType::Enum8);
         addAttribute(result);
@@ -8595,7 +8831,7 @@ AttributeUInt8* PiMultistateValueExtCluster::getEventState() {
 }
 
 AttributeUInt16* PiMultistateValueExtCluster::getFaultValues() {
-    auto result = (AttributeUInt16*)getAttributeById(37);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiMultistateValueExtAttribute::FaultValues);
     if (result == nullptr) {
         result = new AttributeUInt16(37, DataType::UInt16);
         addAttribute(result);
@@ -8604,7 +8840,7 @@ AttributeUInt16* PiMultistateValueExtCluster::getFaultValues() {
 }
 
 AttributeUInt8* PiMultistateValueExtCluster::getNotifyType() {
-    auto result = (AttributeUInt8*)getAttributeById(72);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateValueExtAttribute::NotifyType);
     if (result == nullptr) {
         result = new AttributeUInt8(72, DataType::Enum8);
         addAttribute(result);
@@ -8613,7 +8849,7 @@ AttributeUInt8* PiMultistateValueExtCluster::getNotifyType() {
 }
 
 AttributeUInt8* PiMultistateValueExtCluster::getTimeDelay() {
-    auto result = (AttributeUInt8*)getAttributeById(113);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiMultistateValueExtAttribute::TimeDelay);
     if (result == nullptr) {
         result = new AttributeUInt8(113, DataType::UInt8);
         addAttribute(result);
@@ -8622,7 +8858,7 @@ AttributeUInt8* PiMultistateValueExtCluster::getTimeDelay() {
 }
 
 AttributeUInt64* Pi11073ProtocolTunnelCluster::getManagerTarget() {
-    auto result = (AttributeUInt64*)getAttributeById(1);
+    auto result = (AttributeUInt64*)getAttributeById((uint16_t)Pi11073ProtocolTunnelAttribute::ManagerTarget);
     if (result == nullptr) {
         result = new AttributeUInt64(1, DataType::EUI64);
         addAttribute(result);
@@ -8631,7 +8867,7 @@ AttributeUInt64* Pi11073ProtocolTunnelCluster::getManagerTarget() {
 }
 
 AttributeUInt8* Pi11073ProtocolTunnelCluster::getManagerEndpoint() {
-    auto result = (AttributeUInt8*)getAttributeById(2);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)Pi11073ProtocolTunnelAttribute::ManagerEndpoint);
     if (result == nullptr) {
         result = new AttributeUInt8(2, DataType::UInt8);
         addAttribute(result);
@@ -8640,7 +8876,7 @@ AttributeUInt8* Pi11073ProtocolTunnelCluster::getManagerEndpoint() {
 }
 
 AttributeUInt8* Pi11073ProtocolTunnelCluster::getConnected() {
-    auto result = (AttributeUInt8*)getAttributeById(3);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)Pi11073ProtocolTunnelAttribute::Connected);
     if (result == nullptr) {
         result = new AttributeUInt8(3, DataType::Bool);
         addAttribute(result);
@@ -8649,7 +8885,7 @@ AttributeUInt8* Pi11073ProtocolTunnelCluster::getConnected() {
 }
 
 AttributeUInt8* Pi11073ProtocolTunnelCluster::getPreemptible() {
-    auto result = (AttributeUInt8*)getAttributeById(4);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)Pi11073ProtocolTunnelAttribute::Preemptible);
     if (result == nullptr) {
         result = new AttributeUInt8(4, DataType::Bool);
         addAttribute(result);
@@ -8658,7 +8894,7 @@ AttributeUInt8* Pi11073ProtocolTunnelCluster::getPreemptible() {
 }
 
 AttributeUInt16* Pi11073ProtocolTunnelCluster::getIdleTimeout() {
-    auto result = (AttributeUInt16*)getAttributeById(5);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)Pi11073ProtocolTunnelAttribute::IdleTimeout);
     if (result == nullptr) {
         result = new AttributeUInt16(5, DataType::UInt16);
         addAttribute(result);
@@ -8747,7 +8983,7 @@ void Pi11073ProtocolTunnelCluster::processCommand(uint8_t commandId, Memory& req
 }
 
 AttributeUInt8* PiIso7818ProtocolTunnelCluster::getStatus() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)PiIso7818ProtocolTunnelAttribute::Status);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::UInt8);
         addAttribute(result);
@@ -8756,7 +8992,7 @@ AttributeUInt8* PiIso7818ProtocolTunnelCluster::getStatus() {
 }
 
 AttributeUInt16* PiRetailTunnelCluster::getManufacturerCode() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiRetailTunnelAttribute::ManufacturerCode);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -8765,7 +9001,7 @@ AttributeUInt16* PiRetailTunnelCluster::getManufacturerCode() {
 }
 
 AttributeUInt16* PiRetailTunnelCluster::getMsProfile() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)PiRetailTunnelAttribute::MsProfile);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -8774,7 +9010,7 @@ AttributeUInt16* PiRetailTunnelCluster::getMsProfile() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentSummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(0);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentSummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(0, DataType::UInt48);
         addAttribute(result);
@@ -8783,7 +9019,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentSummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentSummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(1);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentSummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(1, DataType::UInt48);
         addAttribute(result);
@@ -8792,7 +9028,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentSummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentMaxDemandDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(2);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentMaxDemandDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(2, DataType::UInt48);
         addAttribute(result);
@@ -8801,7 +9037,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentMaxDemandDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentMaxDemandReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(3);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentMaxDemandReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(3, DataType::UInt48);
         addAttribute(result);
@@ -8810,7 +9046,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentMaxDemandReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getDftSumm() {
-    auto result = (AttributeUInt48*)getAttributeById(4);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::DftSumm);
     if (result == nullptr) {
         result = new AttributeUInt48(4, DataType::UInt48);
         addAttribute(result);
@@ -8819,7 +9055,7 @@ AttributeUInt48* SeMeteringCluster::getDftSumm() {
 }
 
 AttributeUInt16* SeMeteringCluster::getDailyFreezeTime() {
-    auto result = (AttributeUInt16*)getAttributeById(5);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SeMeteringAttribute::DailyFreezeTime);
     if (result == nullptr) {
         result = new AttributeUInt16(5, DataType::UInt16);
         addAttribute(result);
@@ -8828,7 +9064,7 @@ AttributeUInt16* SeMeteringCluster::getDailyFreezeTime() {
 }
 
 AttributeInt8* SeMeteringCluster::getPowerFactor() {
-    auto result = (AttributeInt8*)getAttributeById(6);
+    auto result = (AttributeInt8*)getAttributeById((uint16_t)SeMeteringAttribute::PowerFactor);
     if (result == nullptr) {
         result = new AttributeInt8(6, DataType::Int8);
         addAttribute(result);
@@ -8837,7 +9073,7 @@ AttributeInt8* SeMeteringCluster::getPowerFactor() {
 }
 
 AttributeUInt32* SeMeteringCluster::getReadingSnapshotTime() {
-    auto result = (AttributeUInt32*)getAttributeById(7);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::ReadingSnapshotTime);
     if (result == nullptr) {
         result = new AttributeUInt32(7, DataType::UTC);
         addAttribute(result);
@@ -8846,7 +9082,7 @@ AttributeUInt32* SeMeteringCluster::getReadingSnapshotTime() {
 }
 
 AttributeUInt32* SeMeteringCluster::getCurrentMaxDemandDeliverdTime() {
-    auto result = (AttributeUInt32*)getAttributeById(8);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentMaxDemandDeliverdTime);
     if (result == nullptr) {
         result = new AttributeUInt32(8, DataType::UTC);
         addAttribute(result);
@@ -8855,7 +9091,7 @@ AttributeUInt32* SeMeteringCluster::getCurrentMaxDemandDeliverdTime() {
 }
 
 AttributeUInt32* SeMeteringCluster::getCurrentMaxDemandReceivedTime() {
-    auto result = (AttributeUInt32*)getAttributeById(9);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentMaxDemandReceivedTime);
     if (result == nullptr) {
         result = new AttributeUInt32(9, DataType::UTC);
         addAttribute(result);
@@ -8864,7 +9100,7 @@ AttributeUInt32* SeMeteringCluster::getCurrentMaxDemandReceivedTime() {
 }
 
 AttributeUInt8* SeMeteringCluster::getDefaultUpdatePeriod() {
-    auto result = (AttributeUInt8*)getAttributeById(10);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::DefaultUpdatePeriod);
     if (result == nullptr) {
         result = new AttributeUInt8(10, DataType::UInt8);
         addAttribute(result);
@@ -8873,7 +9109,7 @@ AttributeUInt8* SeMeteringCluster::getDefaultUpdatePeriod() {
 }
 
 AttributeUInt8* SeMeteringCluster::getFastPollUpdatePeriod() {
-    auto result = (AttributeUInt8*)getAttributeById(11);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::FastPollUpdatePeriod);
     if (result == nullptr) {
         result = new AttributeUInt8(11, DataType::UInt8);
         addAttribute(result);
@@ -8882,7 +9118,7 @@ AttributeUInt8* SeMeteringCluster::getFastPollUpdatePeriod() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentBlockPeriodConsumpDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(12);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentBlockPeriodConsumpDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(12, DataType::UInt48);
         addAttribute(result);
@@ -8891,7 +9127,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentBlockPeriodConsumpDelivered() {
 }
 
 AttributeUInt24* SeMeteringCluster::getDailyConsumpTarget() {
-    auto result = (AttributeUInt24*)getAttributeById(13);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)SeMeteringAttribute::DailyConsumpTarget);
     if (result == nullptr) {
         result = new AttributeUInt24(13, DataType::UInt24);
         addAttribute(result);
@@ -8900,7 +9136,7 @@ AttributeUInt24* SeMeteringCluster::getDailyConsumpTarget() {
 }
 
 AttributeUInt8* SeMeteringCluster::getCurrentBlock() {
-    auto result = (AttributeUInt8*)getAttributeById(14);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentBlock);
     if (result == nullptr) {
         result = new AttributeUInt8(14, DataType::Enum8);
         addAttribute(result);
@@ -8909,7 +9145,7 @@ AttributeUInt8* SeMeteringCluster::getCurrentBlock() {
 }
 
 AttributeUInt8* SeMeteringCluster::getProfileIntervalPeriod() {
-    auto result = (AttributeUInt8*)getAttributeById(15);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::ProfileIntervalPeriod);
     if (result == nullptr) {
         result = new AttributeUInt8(15, DataType::Enum8);
         addAttribute(result);
@@ -8918,7 +9154,7 @@ AttributeUInt8* SeMeteringCluster::getProfileIntervalPeriod() {
 }
 
 AttributeUInt16* SeMeteringCluster::getIntervalReadReportingPeriod() {
-    auto result = (AttributeUInt16*)getAttributeById(16);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SeMeteringAttribute::IntervalReadReportingPeriod);
     if (result == nullptr) {
         result = new AttributeUInt16(16, DataType::UInt16);
         addAttribute(result);
@@ -8927,7 +9163,7 @@ AttributeUInt16* SeMeteringCluster::getIntervalReadReportingPeriod() {
 }
 
 AttributeUInt16* SeMeteringCluster::getPresetReadingTime() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SeMeteringAttribute::PresetReadingTime);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -8936,7 +9172,7 @@ AttributeUInt16* SeMeteringCluster::getPresetReadingTime() {
 }
 
 AttributeUInt16* SeMeteringCluster::getVolumePerReport() {
-    auto result = (AttributeUInt16*)getAttributeById(18);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SeMeteringAttribute::VolumePerReport);
     if (result == nullptr) {
         result = new AttributeUInt16(18, DataType::UInt16);
         addAttribute(result);
@@ -8945,7 +9181,7 @@ AttributeUInt16* SeMeteringCluster::getVolumePerReport() {
 }
 
 AttributeUInt8* SeMeteringCluster::getFlowRestriction() {
-    auto result = (AttributeUInt8*)getAttributeById(19);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::FlowRestriction);
     if (result == nullptr) {
         result = new AttributeUInt8(19, DataType::UInt8);
         addAttribute(result);
@@ -8954,7 +9190,7 @@ AttributeUInt8* SeMeteringCluster::getFlowRestriction() {
 }
 
 AttributeUInt8* SeMeteringCluster::getSupplyStatus() {
-    auto result = (AttributeUInt8*)getAttributeById(20);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::SupplyStatus);
     if (result == nullptr) {
         result = new AttributeUInt8(20, DataType::Enum8);
         addAttribute(result);
@@ -8963,7 +9199,7 @@ AttributeUInt8* SeMeteringCluster::getSupplyStatus() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentInEnergyCarrierSumm() {
-    auto result = (AttributeUInt48*)getAttributeById(21);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentInEnergyCarrierSumm);
     if (result == nullptr) {
         result = new AttributeUInt48(21, DataType::UInt48);
         addAttribute(result);
@@ -8972,7 +9208,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentInEnergyCarrierSumm() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentOutEnergyCarrierSumm() {
-    auto result = (AttributeUInt48*)getAttributeById(22);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentOutEnergyCarrierSumm);
     if (result == nullptr) {
         result = new AttributeUInt48(22, DataType::UInt48);
         addAttribute(result);
@@ -8981,7 +9217,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentOutEnergyCarrierSumm() {
 }
 
 AttributeInt24* SeMeteringCluster::getInletTempreature() {
-    auto result = (AttributeInt24*)getAttributeById(23);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::InletTempreature);
     if (result == nullptr) {
         result = new AttributeInt24(23, DataType::Int24);
         addAttribute(result);
@@ -8990,7 +9226,7 @@ AttributeInt24* SeMeteringCluster::getInletTempreature() {
 }
 
 AttributeInt24* SeMeteringCluster::getOutletTempreature() {
-    auto result = (AttributeInt24*)getAttributeById(24);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::OutletTempreature);
     if (result == nullptr) {
         result = new AttributeInt24(24, DataType::Int24);
         addAttribute(result);
@@ -8999,7 +9235,7 @@ AttributeInt24* SeMeteringCluster::getOutletTempreature() {
 }
 
 AttributeInt24* SeMeteringCluster::getControlTempreature() {
-    auto result = (AttributeInt24*)getAttributeById(25);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::ControlTempreature);
     if (result == nullptr) {
         result = new AttributeInt24(25, DataType::Int24);
         addAttribute(result);
@@ -9008,7 +9244,7 @@ AttributeInt24* SeMeteringCluster::getControlTempreature() {
 }
 
 AttributeInt24* SeMeteringCluster::getCurrentInEnergyCarrierDemand() {
-    auto result = (AttributeInt24*)getAttributeById(26);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentInEnergyCarrierDemand);
     if (result == nullptr) {
         result = new AttributeInt24(26, DataType::Int24);
         addAttribute(result);
@@ -9017,7 +9253,7 @@ AttributeInt24* SeMeteringCluster::getCurrentInEnergyCarrierDemand() {
 }
 
 AttributeInt24* SeMeteringCluster::getCurrentOutEnergyCarrierDemand() {
-    auto result = (AttributeInt24*)getAttributeById(27);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentOutEnergyCarrierDemand);
     if (result == nullptr) {
         result = new AttributeInt24(27, DataType::Int24);
         addAttribute(result);
@@ -9026,7 +9262,7 @@ AttributeInt24* SeMeteringCluster::getCurrentOutEnergyCarrierDemand() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentBlockPeriodConsumpReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(29);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentBlockPeriodConsumpReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(29, DataType::UInt48);
         addAttribute(result);
@@ -9035,7 +9271,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentBlockPeriodConsumpReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentBlockReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(30);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentBlockReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(30, DataType::UInt48);
         addAttribute(result);
@@ -9044,7 +9280,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentBlockReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getDFTSummationReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(31);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::DFTSummationReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(31, DataType::UInt48);
         addAttribute(result);
@@ -9053,7 +9289,7 @@ AttributeUInt48* SeMeteringCluster::getDFTSummationReceived() {
 }
 
 AttributeUInt8* SeMeteringCluster::getActiveRegisterTierDelivered() {
-    auto result = (AttributeUInt8*)getAttributeById(32);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::ActiveRegisterTierDelivered);
     if (result == nullptr) {
         result = new AttributeUInt8(32, DataType::Enum8);
         addAttribute(result);
@@ -9062,7 +9298,7 @@ AttributeUInt8* SeMeteringCluster::getActiveRegisterTierDelivered() {
 }
 
 AttributeUInt8* SeMeteringCluster::getActiveRegisterTierReceived() {
-    auto result = (AttributeUInt8*)getAttributeById(33);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::ActiveRegisterTierReceived);
     if (result == nullptr) {
         result = new AttributeUInt8(33, DataType::Enum8);
         addAttribute(result);
@@ -9071,7 +9307,7 @@ AttributeUInt8* SeMeteringCluster::getActiveRegisterTierReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier1SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(256);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier1SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(256, DataType::UInt48);
         addAttribute(result);
@@ -9080,7 +9316,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier1SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier1SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(257);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier1SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(257, DataType::UInt48);
         addAttribute(result);
@@ -9089,7 +9325,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier1SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier2SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(258);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier2SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(258, DataType::UInt48);
         addAttribute(result);
@@ -9098,7 +9334,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier2SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier2SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(259);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier2SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(259, DataType::UInt48);
         addAttribute(result);
@@ -9107,7 +9343,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier2SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier3SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(260);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier3SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(260, DataType::UInt48);
         addAttribute(result);
@@ -9116,7 +9352,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier3SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier3SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(261);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier3SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(261, DataType::UInt48);
         addAttribute(result);
@@ -9125,7 +9361,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier3SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier4SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(262);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier4SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(262, DataType::UInt48);
         addAttribute(result);
@@ -9134,7 +9370,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier4SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier4SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(263);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier4SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(263, DataType::UInt48);
         addAttribute(result);
@@ -9143,7 +9379,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier4SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier5SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(264);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier5SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(264, DataType::UInt48);
         addAttribute(result);
@@ -9152,7 +9388,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier5SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier5SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(265);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier5SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(265, DataType::UInt48);
         addAttribute(result);
@@ -9161,7 +9397,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier5SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier6SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(266);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier6SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(266, DataType::UInt48);
         addAttribute(result);
@@ -9170,7 +9406,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier6SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier6SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(267);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier6SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(267, DataType::UInt48);
         addAttribute(result);
@@ -9179,7 +9415,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier6SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier7SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(268);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier7SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(268, DataType::UInt48);
         addAttribute(result);
@@ -9188,7 +9424,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier7SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier7SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(269);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier7SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(269, DataType::UInt48);
         addAttribute(result);
@@ -9197,7 +9433,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier7SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier8SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(270);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier8SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(270, DataType::UInt48);
         addAttribute(result);
@@ -9206,7 +9442,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier8SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier8SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(271);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier8SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(271, DataType::UInt48);
         addAttribute(result);
@@ -9215,7 +9451,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier8SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier9SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(272);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier9SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(272, DataType::UInt48);
         addAttribute(result);
@@ -9224,7 +9460,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier9SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier9SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(273);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier9SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(273, DataType::UInt48);
         addAttribute(result);
@@ -9233,7 +9469,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier9SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier10SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(274);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier10SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(274, DataType::UInt48);
         addAttribute(result);
@@ -9242,7 +9478,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier10SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier10SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(275);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier10SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(275, DataType::UInt48);
         addAttribute(result);
@@ -9251,7 +9487,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier10SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier11SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(276);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier11SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(276, DataType::UInt48);
         addAttribute(result);
@@ -9260,7 +9496,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier11SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier11SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(277);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier11SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(277, DataType::UInt48);
         addAttribute(result);
@@ -9269,7 +9505,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier11SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier12SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(278);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier12SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(278, DataType::UInt48);
         addAttribute(result);
@@ -9278,7 +9514,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier12SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier12SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(279);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier12SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(279, DataType::UInt48);
         addAttribute(result);
@@ -9287,7 +9523,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier12SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier13SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(280);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier13SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(280, DataType::UInt48);
         addAttribute(result);
@@ -9296,7 +9532,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier13SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier13SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(281);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier13SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(281, DataType::UInt48);
         addAttribute(result);
@@ -9305,7 +9541,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier13SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier14SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(282);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier14SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(282, DataType::UInt48);
         addAttribute(result);
@@ -9314,7 +9550,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier14SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier14SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(283);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier14SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(283, DataType::UInt48);
         addAttribute(result);
@@ -9323,7 +9559,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier14SummReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier15SummDelivered() {
-    auto result = (AttributeUInt48*)getAttributeById(284);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier15SummDelivered);
     if (result == nullptr) {
         result = new AttributeUInt48(284, DataType::UInt48);
         addAttribute(result);
@@ -9332,7 +9568,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier15SummDelivered() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentTier15SummReceived() {
-    auto result = (AttributeUInt48*)getAttributeById(285);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentTier15SummReceived);
     if (result == nullptr) {
         result = new AttributeUInt48(285, DataType::UInt48);
         addAttribute(result);
@@ -9341,7 +9577,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentTier15SummReceived() {
 }
 
 AttributeUInt8* SeMeteringCluster::getStatus() {
-    auto result = (AttributeUInt8*)getAttributeById(512);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::Status);
     if (result == nullptr) {
         result = new AttributeUInt8(512, DataType::Map8);
         addAttribute(result);
@@ -9350,7 +9586,7 @@ AttributeUInt8* SeMeteringCluster::getStatus() {
 }
 
 AttributeUInt8* SeMeteringCluster::getRemainingBattLife() {
-    auto result = (AttributeUInt8*)getAttributeById(513);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::RemainingBattLife);
     if (result == nullptr) {
         result = new AttributeUInt8(513, DataType::UInt8);
         addAttribute(result);
@@ -9359,7 +9595,7 @@ AttributeUInt8* SeMeteringCluster::getRemainingBattLife() {
 }
 
 AttributeUInt24* SeMeteringCluster::getHoursInOperation() {
-    auto result = (AttributeUInt24*)getAttributeById(514);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)SeMeteringAttribute::HoursInOperation);
     if (result == nullptr) {
         result = new AttributeUInt24(514, DataType::UInt24);
         addAttribute(result);
@@ -9368,7 +9604,7 @@ AttributeUInt24* SeMeteringCluster::getHoursInOperation() {
 }
 
 AttributeUInt24* SeMeteringCluster::getHoursInFault() {
-    auto result = (AttributeUInt24*)getAttributeById(515);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)SeMeteringAttribute::HoursInFault);
     if (result == nullptr) {
         result = new AttributeUInt24(515, DataType::UInt24);
         addAttribute(result);
@@ -9377,7 +9613,7 @@ AttributeUInt24* SeMeteringCluster::getHoursInFault() {
 }
 
 AttributeUInt64* SeMeteringCluster::getExtendedStatus() {
-    auto result = (AttributeUInt64*)getAttributeById(516);
+    auto result = (AttributeUInt64*)getAttributeById((uint16_t)SeMeteringAttribute::ExtendedStatus);
     if (result == nullptr) {
         result = new AttributeUInt64(516, DataType::Map64);
         addAttribute(result);
@@ -9386,7 +9622,7 @@ AttributeUInt64* SeMeteringCluster::getExtendedStatus() {
 }
 
 AttributeUInt8* SeMeteringCluster::getUnitOfMeasure() {
-    auto result = (AttributeUInt8*)getAttributeById(768);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::UnitOfMeasure);
     if (result == nullptr) {
         result = new AttributeUInt8(768, DataType::Enum8);
         addAttribute(result);
@@ -9395,7 +9631,7 @@ AttributeUInt8* SeMeteringCluster::getUnitOfMeasure() {
 }
 
 AttributeUInt24* SeMeteringCluster::getMultiplier() {
-    auto result = (AttributeUInt24*)getAttributeById(769);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)SeMeteringAttribute::Multiplier);
     if (result == nullptr) {
         result = new AttributeUInt24(769, DataType::UInt24);
         addAttribute(result);
@@ -9404,7 +9640,7 @@ AttributeUInt24* SeMeteringCluster::getMultiplier() {
 }
 
 AttributeUInt24* SeMeteringCluster::getDivisor() {
-    auto result = (AttributeUInt24*)getAttributeById(770);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)SeMeteringAttribute::Divisor);
     if (result == nullptr) {
         result = new AttributeUInt24(770, DataType::UInt24);
         addAttribute(result);
@@ -9413,7 +9649,7 @@ AttributeUInt24* SeMeteringCluster::getDivisor() {
 }
 
 AttributeUInt8* SeMeteringCluster::getSummaFormatting() {
-    auto result = (AttributeUInt8*)getAttributeById(771);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::SummaFormatting);
     if (result == nullptr) {
         result = new AttributeUInt8(771, DataType::Map8);
         addAttribute(result);
@@ -9422,7 +9658,7 @@ AttributeUInt8* SeMeteringCluster::getSummaFormatting() {
 }
 
 AttributeUInt8* SeMeteringCluster::getDemandFormatting() {
-    auto result = (AttributeUInt8*)getAttributeById(772);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::DemandFormatting);
     if (result == nullptr) {
         result = new AttributeUInt8(772, DataType::Map8);
         addAttribute(result);
@@ -9431,7 +9667,7 @@ AttributeUInt8* SeMeteringCluster::getDemandFormatting() {
 }
 
 AttributeUInt8* SeMeteringCluster::getHistoricalConsumpFormatting() {
-    auto result = (AttributeUInt8*)getAttributeById(773);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::HistoricalConsumpFormatting);
     if (result == nullptr) {
         result = new AttributeUInt8(773, DataType::Map8);
         addAttribute(result);
@@ -9440,7 +9676,7 @@ AttributeUInt8* SeMeteringCluster::getHistoricalConsumpFormatting() {
 }
 
 AttributeUInt8* SeMeteringCluster::getMeteringDeviceType() {
-    auto result = (AttributeUInt8*)getAttributeById(774);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::MeteringDeviceType);
     if (result == nullptr) {
         result = new AttributeUInt8(774, DataType::Map8);
         addAttribute(result);
@@ -9449,7 +9685,7 @@ AttributeUInt8* SeMeteringCluster::getMeteringDeviceType() {
 }
 
 AttributeOctstr* SeMeteringCluster::getSiteId() {
-    auto result = (AttributeOctstr*)getAttributeById(775);
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)SeMeteringAttribute::SiteId);
     if (result == nullptr) {
         result = new AttributeOctstr(775);
         addAttribute(result);
@@ -9458,7 +9694,7 @@ AttributeOctstr* SeMeteringCluster::getSiteId() {
 }
 
 AttributeOctstr* SeMeteringCluster::getMeterSerialNumber() {
-    auto result = (AttributeOctstr*)getAttributeById(776);
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)SeMeteringAttribute::MeterSerialNumber);
     if (result == nullptr) {
         result = new AttributeOctstr(776);
         addAttribute(result);
@@ -9467,7 +9703,7 @@ AttributeOctstr* SeMeteringCluster::getMeterSerialNumber() {
 }
 
 AttributeUInt8* SeMeteringCluster::getEnergyCarrierUnitOfMeas() {
-    auto result = (AttributeUInt8*)getAttributeById(777);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::EnergyCarrierUnitOfMeas);
     if (result == nullptr) {
         result = new AttributeUInt8(777, DataType::Enum8);
         addAttribute(result);
@@ -9476,7 +9712,7 @@ AttributeUInt8* SeMeteringCluster::getEnergyCarrierUnitOfMeas() {
 }
 
 AttributeUInt8* SeMeteringCluster::getEnergyCarrierSummFormatting() {
-    auto result = (AttributeUInt8*)getAttributeById(778);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::EnergyCarrierSummFormatting);
     if (result == nullptr) {
         result = new AttributeUInt8(778, DataType::Map8);
         addAttribute(result);
@@ -9485,7 +9721,7 @@ AttributeUInt8* SeMeteringCluster::getEnergyCarrierSummFormatting() {
 }
 
 AttributeUInt8* SeMeteringCluster::getEnergyCarrierDemandFormatting() {
-    auto result = (AttributeUInt8*)getAttributeById(779);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::EnergyCarrierDemandFormatting);
     if (result == nullptr) {
         result = new AttributeUInt8(779, DataType::Map8);
         addAttribute(result);
@@ -9494,7 +9730,7 @@ AttributeUInt8* SeMeteringCluster::getEnergyCarrierDemandFormatting() {
 }
 
 AttributeUInt8* SeMeteringCluster::getTemperatureUnitOfMeas() {
-    auto result = (AttributeUInt8*)getAttributeById(780);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::TemperatureUnitOfMeas);
     if (result == nullptr) {
         result = new AttributeUInt8(780, DataType::Enum8);
         addAttribute(result);
@@ -9503,7 +9739,7 @@ AttributeUInt8* SeMeteringCluster::getTemperatureUnitOfMeas() {
 }
 
 AttributeUInt8* SeMeteringCluster::getTemperatureFormatting() {
-    auto result = (AttributeUInt8*)getAttributeById(781);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::TemperatureFormatting);
     if (result == nullptr) {
         result = new AttributeUInt8(781, DataType::Map8);
         addAttribute(result);
@@ -9512,7 +9748,7 @@ AttributeUInt8* SeMeteringCluster::getTemperatureFormatting() {
 }
 
 AttributeOctstr* SeMeteringCluster::getModuleSerialNumber() {
-    auto result = (AttributeOctstr*)getAttributeById(782);
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)SeMeteringAttribute::ModuleSerialNumber);
     if (result == nullptr) {
         result = new AttributeOctstr(782);
         addAttribute(result);
@@ -9521,7 +9757,7 @@ AttributeOctstr* SeMeteringCluster::getModuleSerialNumber() {
 }
 
 AttributeOctstr* SeMeteringCluster::getOperatingTariffLevel() {
-    auto result = (AttributeOctstr*)getAttributeById(783);
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)SeMeteringAttribute::OperatingTariffLevel);
     if (result == nullptr) {
         result = new AttributeOctstr(783);
         addAttribute(result);
@@ -9530,7 +9766,7 @@ AttributeOctstr* SeMeteringCluster::getOperatingTariffLevel() {
 }
 
 AttributeInt24* SeMeteringCluster::getInstantaneousDemand() {
-    auto result = (AttributeInt24*)getAttributeById(1024);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::InstantaneousDemand);
     if (result == nullptr) {
         result = new AttributeInt24(1024, DataType::Int24);
         addAttribute(result);
@@ -9539,7 +9775,7 @@ AttributeInt24* SeMeteringCluster::getInstantaneousDemand() {
 }
 
 AttributeUInt24* SeMeteringCluster::getCurrentdayConsumpDelivered() {
-    auto result = (AttributeUInt24*)getAttributeById(1025);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentdayConsumpDelivered);
     if (result == nullptr) {
         result = new AttributeUInt24(1025, DataType::UInt24);
         addAttribute(result);
@@ -9548,7 +9784,7 @@ AttributeUInt24* SeMeteringCluster::getCurrentdayConsumpDelivered() {
 }
 
 AttributeUInt24* SeMeteringCluster::getCurrentdayConsumpReceived() {
-    auto result = (AttributeUInt24*)getAttributeById(1026);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentdayConsumpReceived);
     if (result == nullptr) {
         result = new AttributeUInt24(1026, DataType::UInt24);
         addAttribute(result);
@@ -9557,7 +9793,7 @@ AttributeUInt24* SeMeteringCluster::getCurrentdayConsumpReceived() {
 }
 
 AttributeUInt24* SeMeteringCluster::getPreviousdayConsumpDelivered() {
-    auto result = (AttributeUInt24*)getAttributeById(1027);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)SeMeteringAttribute::PreviousdayConsumpDelivered);
     if (result == nullptr) {
         result = new AttributeUInt24(1027, DataType::UInt24);
         addAttribute(result);
@@ -9566,7 +9802,7 @@ AttributeUInt24* SeMeteringCluster::getPreviousdayConsumpDelivered() {
 }
 
 AttributeUInt24* SeMeteringCluster::getPreviousdayConsumpReceived() {
-    auto result = (AttributeUInt24*)getAttributeById(1028);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)SeMeteringAttribute::PreviousdayConsumpReceived);
     if (result == nullptr) {
         result = new AttributeUInt24(1028, DataType::UInt24);
         addAttribute(result);
@@ -9575,7 +9811,7 @@ AttributeUInt24* SeMeteringCluster::getPreviousdayConsumpReceived() {
 }
 
 AttributeUInt32* SeMeteringCluster::getCurPartProfileIntStartTimeDelivered() {
-    auto result = (AttributeUInt32*)getAttributeById(1029);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::CurPartProfileIntStartTimeDelivered);
     if (result == nullptr) {
         result = new AttributeUInt32(1029, DataType::UTC);
         addAttribute(result);
@@ -9584,7 +9820,7 @@ AttributeUInt32* SeMeteringCluster::getCurPartProfileIntStartTimeDelivered() {
 }
 
 AttributeUInt32* SeMeteringCluster::getCurPartProfileIntStartTimeReceived() {
-    auto result = (AttributeUInt32*)getAttributeById(1030);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::CurPartProfileIntStartTimeReceived);
     if (result == nullptr) {
         result = new AttributeUInt32(1030, DataType::UTC);
         addAttribute(result);
@@ -9593,7 +9829,7 @@ AttributeUInt32* SeMeteringCluster::getCurPartProfileIntStartTimeReceived() {
 }
 
 AttributeUInt24* SeMeteringCluster::getCurPartProfileIntValueDelivered() {
-    auto result = (AttributeUInt24*)getAttributeById(1031);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurPartProfileIntValueDelivered);
     if (result == nullptr) {
         result = new AttributeUInt24(1031, DataType::UInt24);
         addAttribute(result);
@@ -9602,7 +9838,7 @@ AttributeUInt24* SeMeteringCluster::getCurPartProfileIntValueDelivered() {
 }
 
 AttributeUInt24* SeMeteringCluster::getCurPartProfileIntValueReceived() {
-    auto result = (AttributeUInt24*)getAttributeById(1032);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurPartProfileIntValueReceived);
     if (result == nullptr) {
         result = new AttributeUInt24(1032, DataType::UInt24);
         addAttribute(result);
@@ -9611,7 +9847,7 @@ AttributeUInt24* SeMeteringCluster::getCurPartProfileIntValueReceived() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentDayMaxPressure() {
-    auto result = (AttributeUInt48*)getAttributeById(1033);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentDayMaxPressure);
     if (result == nullptr) {
         result = new AttributeUInt48(1033, DataType::UInt48);
         addAttribute(result);
@@ -9620,7 +9856,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentDayMaxPressure() {
 }
 
 AttributeUInt48* SeMeteringCluster::getCurrentDayMinPressure() {
-    auto result = (AttributeUInt48*)getAttributeById(1034);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentDayMinPressure);
     if (result == nullptr) {
         result = new AttributeUInt48(1034, DataType::UInt48);
         addAttribute(result);
@@ -9629,7 +9865,7 @@ AttributeUInt48* SeMeteringCluster::getCurrentDayMinPressure() {
 }
 
 AttributeUInt48* SeMeteringCluster::getPreviousDayMaxPressure() {
-    auto result = (AttributeUInt48*)getAttributeById(1035);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::PreviousDayMaxPressure);
     if (result == nullptr) {
         result = new AttributeUInt48(1035, DataType::UInt48);
         addAttribute(result);
@@ -9638,7 +9874,7 @@ AttributeUInt48* SeMeteringCluster::getPreviousDayMaxPressure() {
 }
 
 AttributeUInt48* SeMeteringCluster::getPreviousDayMinPressure() {
-    auto result = (AttributeUInt48*)getAttributeById(1036);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::PreviousDayMinPressure);
     if (result == nullptr) {
         result = new AttributeUInt48(1036, DataType::UInt48);
         addAttribute(result);
@@ -9647,7 +9883,7 @@ AttributeUInt48* SeMeteringCluster::getPreviousDayMinPressure() {
 }
 
 AttributeInt24* SeMeteringCluster::getCurrentDayMaxDemand() {
-    auto result = (AttributeInt24*)getAttributeById(1037);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentDayMaxDemand);
     if (result == nullptr) {
         result = new AttributeInt24(1037, DataType::Int24);
         addAttribute(result);
@@ -9656,7 +9892,7 @@ AttributeInt24* SeMeteringCluster::getCurrentDayMaxDemand() {
 }
 
 AttributeInt24* SeMeteringCluster::getPreviousDayMaxDemand() {
-    auto result = (AttributeInt24*)getAttributeById(1038);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::PreviousDayMaxDemand);
     if (result == nullptr) {
         result = new AttributeInt24(1038, DataType::Int24);
         addAttribute(result);
@@ -9665,7 +9901,7 @@ AttributeInt24* SeMeteringCluster::getPreviousDayMaxDemand() {
 }
 
 AttributeInt24* SeMeteringCluster::getCurrentMonthMaxDemand() {
-    auto result = (AttributeInt24*)getAttributeById(1039);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentMonthMaxDemand);
     if (result == nullptr) {
         result = new AttributeInt24(1039, DataType::Int24);
         addAttribute(result);
@@ -9674,7 +9910,7 @@ AttributeInt24* SeMeteringCluster::getCurrentMonthMaxDemand() {
 }
 
 AttributeInt24* SeMeteringCluster::getCurrentYearMaxDemand() {
-    auto result = (AttributeInt24*)getAttributeById(1040);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentYearMaxDemand);
     if (result == nullptr) {
         result = new AttributeInt24(1040, DataType::Int24);
         addAttribute(result);
@@ -9683,7 +9919,7 @@ AttributeInt24* SeMeteringCluster::getCurrentYearMaxDemand() {
 }
 
 AttributeInt24* SeMeteringCluster::getCurrentdayMaxEnergyCarrDemand() {
-    auto result = (AttributeInt24*)getAttributeById(1041);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentdayMaxEnergyCarrDemand);
     if (result == nullptr) {
         result = new AttributeInt24(1041, DataType::Int24);
         addAttribute(result);
@@ -9692,7 +9928,7 @@ AttributeInt24* SeMeteringCluster::getCurrentdayMaxEnergyCarrDemand() {
 }
 
 AttributeInt24* SeMeteringCluster::getPreviousdayMaxEnergyCarrDemand() {
-    auto result = (AttributeInt24*)getAttributeById(1042);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::PreviousdayMaxEnergyCarrDemand);
     if (result == nullptr) {
         result = new AttributeInt24(1042, DataType::Int24);
         addAttribute(result);
@@ -9701,7 +9937,7 @@ AttributeInt24* SeMeteringCluster::getPreviousdayMaxEnergyCarrDemand() {
 }
 
 AttributeInt24* SeMeteringCluster::getCurMonthMaxEnergyCarrDemand() {
-    auto result = (AttributeInt24*)getAttributeById(1043);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurMonthMaxEnergyCarrDemand);
     if (result == nullptr) {
         result = new AttributeInt24(1043, DataType::Int24);
         addAttribute(result);
@@ -9710,7 +9946,7 @@ AttributeInt24* SeMeteringCluster::getCurMonthMaxEnergyCarrDemand() {
 }
 
 AttributeInt24* SeMeteringCluster::getCurMonthMinEnergyCarrDemand() {
-    auto result = (AttributeInt24*)getAttributeById(1044);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurMonthMinEnergyCarrDemand);
     if (result == nullptr) {
         result = new AttributeInt24(1044, DataType::Int24);
         addAttribute(result);
@@ -9719,7 +9955,7 @@ AttributeInt24* SeMeteringCluster::getCurMonthMinEnergyCarrDemand() {
 }
 
 AttributeInt24* SeMeteringCluster::getCurYearMaxEnergyCarrDemand() {
-    auto result = (AttributeInt24*)getAttributeById(1045);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurYearMaxEnergyCarrDemand);
     if (result == nullptr) {
         result = new AttributeInt24(1045, DataType::Int24);
         addAttribute(result);
@@ -9728,7 +9964,7 @@ AttributeInt24* SeMeteringCluster::getCurYearMaxEnergyCarrDemand() {
 }
 
 AttributeInt24* SeMeteringCluster::getCurYearMinEnergyCarrDemand() {
-    auto result = (AttributeInt24*)getAttributeById(1046);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurYearMinEnergyCarrDemand);
     if (result == nullptr) {
         result = new AttributeInt24(1046, DataType::Int24);
         addAttribute(result);
@@ -9737,7 +9973,7 @@ AttributeInt24* SeMeteringCluster::getCurYearMinEnergyCarrDemand() {
 }
 
 AttributeUInt8* SeMeteringCluster::getMaxNumberOfPeriodsDelivered() {
-    auto result = (AttributeUInt8*)getAttributeById(1280);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::MaxNumberOfPeriodsDelivered);
     if (result == nullptr) {
         result = new AttributeUInt8(1280, DataType::UInt8);
         addAttribute(result);
@@ -9746,7 +9982,7 @@ AttributeUInt8* SeMeteringCluster::getMaxNumberOfPeriodsDelivered() {
 }
 
 AttributeUInt24* SeMeteringCluster::getCurrentDemandDelivered() {
-    auto result = (AttributeUInt24*)getAttributeById(1536);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)SeMeteringAttribute::CurrentDemandDelivered);
     if (result == nullptr) {
         result = new AttributeUInt24(1536, DataType::UInt24);
         addAttribute(result);
@@ -9755,7 +9991,7 @@ AttributeUInt24* SeMeteringCluster::getCurrentDemandDelivered() {
 }
 
 AttributeUInt24* SeMeteringCluster::getDemandLimit() {
-    auto result = (AttributeUInt24*)getAttributeById(1537);
+    auto result = (AttributeUInt24*)getAttributeById((uint16_t)SeMeteringAttribute::DemandLimit);
     if (result == nullptr) {
         result = new AttributeUInt24(1537, DataType::UInt24);
         addAttribute(result);
@@ -9764,7 +10000,7 @@ AttributeUInt24* SeMeteringCluster::getDemandLimit() {
 }
 
 AttributeUInt8* SeMeteringCluster::getDemandIntegrationPeriod() {
-    auto result = (AttributeUInt8*)getAttributeById(1538);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::DemandIntegrationPeriod);
     if (result == nullptr) {
         result = new AttributeUInt8(1538, DataType::UInt8);
         addAttribute(result);
@@ -9773,7 +10009,7 @@ AttributeUInt8* SeMeteringCluster::getDemandIntegrationPeriod() {
 }
 
 AttributeUInt8* SeMeteringCluster::getNumberOfDemandSubintervals() {
-    auto result = (AttributeUInt8*)getAttributeById(1539);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)SeMeteringAttribute::NumberOfDemandSubintervals);
     if (result == nullptr) {
         result = new AttributeUInt8(1539, DataType::UInt8);
         addAttribute(result);
@@ -9782,7 +10018,7 @@ AttributeUInt8* SeMeteringCluster::getNumberOfDemandSubintervals() {
 }
 
 AttributeUInt16* SeMeteringCluster::getDemandLimitArmDuration() {
-    auto result = (AttributeUInt16*)getAttributeById(1540);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SeMeteringAttribute::DemandLimitArmDuration);
     if (result == nullptr) {
         result = new AttributeUInt16(1540, DataType::UInt16);
         addAttribute(result);
@@ -9791,7 +10027,7 @@ AttributeUInt16* SeMeteringCluster::getDemandLimitArmDuration() {
 }
 
 AttributeUInt16* SeMeteringCluster::getGenericAlarmMask() {
-    auto result = (AttributeUInt16*)getAttributeById(2048);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SeMeteringAttribute::GenericAlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt16(2048, DataType::Map16);
         addAttribute(result);
@@ -9800,7 +10036,7 @@ AttributeUInt16* SeMeteringCluster::getGenericAlarmMask() {
 }
 
 AttributeUInt32* SeMeteringCluster::getElectricityAlarmMask() {
-    auto result = (AttributeUInt32*)getAttributeById(2049);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::ElectricityAlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt32(2049, DataType::Map32);
         addAttribute(result);
@@ -9809,7 +10045,7 @@ AttributeUInt32* SeMeteringCluster::getElectricityAlarmMask() {
 }
 
 AttributeUInt16* SeMeteringCluster::getGenFlowPressureAlarmMask() {
-    auto result = (AttributeUInt16*)getAttributeById(2050);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SeMeteringAttribute::GenFlowPressureAlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt16(2050, DataType::Map16);
         addAttribute(result);
@@ -9818,7 +10054,7 @@ AttributeUInt16* SeMeteringCluster::getGenFlowPressureAlarmMask() {
 }
 
 AttributeUInt16* SeMeteringCluster::getWaterSpecificAlarmMask() {
-    auto result = (AttributeUInt16*)getAttributeById(2051);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SeMeteringAttribute::WaterSpecificAlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt16(2051, DataType::Map16);
         addAttribute(result);
@@ -9827,7 +10063,7 @@ AttributeUInt16* SeMeteringCluster::getWaterSpecificAlarmMask() {
 }
 
 AttributeUInt16* SeMeteringCluster::getHeatCoolSpecificAlarmMASK() {
-    auto result = (AttributeUInt16*)getAttributeById(2052);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SeMeteringAttribute::HeatCoolSpecificAlarmMASK);
     if (result == nullptr) {
         result = new AttributeUInt16(2052, DataType::Map16);
         addAttribute(result);
@@ -9836,7 +10072,7 @@ AttributeUInt16* SeMeteringCluster::getHeatCoolSpecificAlarmMASK() {
 }
 
 AttributeUInt16* SeMeteringCluster::getGasSpecificAlarmMask() {
-    auto result = (AttributeUInt16*)getAttributeById(2053);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SeMeteringAttribute::GasSpecificAlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt16(2053, DataType::Map16);
         addAttribute(result);
@@ -9845,7 +10081,7 @@ AttributeUInt16* SeMeteringCluster::getGasSpecificAlarmMask() {
 }
 
 AttributeUInt48* SeMeteringCluster::getExtendedGenericAlarmMask() {
-    auto result = (AttributeUInt48*)getAttributeById(2054);
+    auto result = (AttributeUInt48*)getAttributeById((uint16_t)SeMeteringAttribute::ExtendedGenericAlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt48(2054, DataType::Map48);
         addAttribute(result);
@@ -9854,7 +10090,7 @@ AttributeUInt48* SeMeteringCluster::getExtendedGenericAlarmMask() {
 }
 
 AttributeUInt16* SeMeteringCluster::getManufactureAlarmMask() {
-    auto result = (AttributeUInt16*)getAttributeById(2055);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)SeMeteringAttribute::ManufactureAlarmMask);
     if (result == nullptr) {
         result = new AttributeUInt16(2055, DataType::Map16);
         addAttribute(result);
@@ -9863,7 +10099,7 @@ AttributeUInt16* SeMeteringCluster::getManufactureAlarmMask() {
 }
 
 AttributeUInt32* SeMeteringCluster::getBillToDate() {
-    auto result = (AttributeUInt32*)getAttributeById(2560);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::BillToDate);
     if (result == nullptr) {
         result = new AttributeUInt32(2560, DataType::UInt32);
         addAttribute(result);
@@ -9872,7 +10108,7 @@ AttributeUInt32* SeMeteringCluster::getBillToDate() {
 }
 
 AttributeUInt32* SeMeteringCluster::getBillToDateTimeStamp() {
-    auto result = (AttributeUInt32*)getAttributeById(2561);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::BillToDateTimeStamp);
     if (result == nullptr) {
         result = new AttributeUInt32(2561, DataType::UTC);
         addAttribute(result);
@@ -9881,7 +10117,7 @@ AttributeUInt32* SeMeteringCluster::getBillToDateTimeStamp() {
 }
 
 AttributeUInt32* SeMeteringCluster::getProjectedBill() {
-    auto result = (AttributeUInt32*)getAttributeById(2562);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::ProjectedBill);
     if (result == nullptr) {
         result = new AttributeUInt32(2562, DataType::UInt32);
         addAttribute(result);
@@ -9890,7 +10126,7 @@ AttributeUInt32* SeMeteringCluster::getProjectedBill() {
 }
 
 AttributeUInt32* SeMeteringCluster::getProjectedBillTimeStamp() {
-    auto result = (AttributeUInt32*)getAttributeById(2563);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::ProjectedBillTimeStamp);
     if (result == nullptr) {
         result = new AttributeUInt32(2563, DataType::UTC);
         addAttribute(result);
@@ -9899,7 +10135,7 @@ AttributeUInt32* SeMeteringCluster::getProjectedBillTimeStamp() {
 }
 
 AttributeUInt32* SeMeteringCluster::getNotificationControlFlags() {
-    auto result = (AttributeUInt32*)getAttributeById(0);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::NotificationControlFlags);
     if (result == nullptr) {
         result = new AttributeUInt32(0, DataType::Map32);
         addAttribute(result);
@@ -9908,7 +10144,7 @@ AttributeUInt32* SeMeteringCluster::getNotificationControlFlags() {
 }
 
 AttributeUInt32* SeMeteringCluster::getNotificationFlags() {
-    auto result = (AttributeUInt32*)getAttributeById(1);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::NotificationFlags);
     if (result == nullptr) {
         result = new AttributeUInt32(1, DataType::Map32);
         addAttribute(result);
@@ -9917,7 +10153,7 @@ AttributeUInt32* SeMeteringCluster::getNotificationFlags() {
 }
 
 AttributeUInt32* SeMeteringCluster::getPriceNotificationFlags() {
-    auto result = (AttributeUInt32*)getAttributeById(2);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::PriceNotificationFlags);
     if (result == nullptr) {
         result = new AttributeUInt32(2, DataType::Map32);
         addAttribute(result);
@@ -9926,7 +10162,7 @@ AttributeUInt32* SeMeteringCluster::getPriceNotificationFlags() {
 }
 
 AttributeUInt32* SeMeteringCluster::getCalendarNotificationFlags() {
-    auto result = (AttributeUInt32*)getAttributeById(3);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::CalendarNotificationFlags);
     if (result == nullptr) {
         result = new AttributeUInt32(3, DataType::Map32);
         addAttribute(result);
@@ -9935,7 +10171,7 @@ AttributeUInt32* SeMeteringCluster::getCalendarNotificationFlags() {
 }
 
 AttributeUInt32* SeMeteringCluster::getPrePayNotificationFlags() {
-    auto result = (AttributeUInt32*)getAttributeById(4);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::PrePayNotificationFlags);
     if (result == nullptr) {
         result = new AttributeUInt32(4, DataType::Map32);
         addAttribute(result);
@@ -9944,7 +10180,7 @@ AttributeUInt32* SeMeteringCluster::getPrePayNotificationFlags() {
 }
 
 AttributeUInt32* SeMeteringCluster::getDeviceManagementFlags() {
-    auto result = (AttributeUInt32*)getAttributeById(5);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)SeMeteringAttribute::DeviceManagementFlags);
     if (result == nullptr) {
         result = new AttributeUInt32(5, DataType::Map32);
         addAttribute(result);
@@ -10123,7 +10359,7 @@ void SeMeteringCluster::processCommand(uint8_t commandId, Memory& request, Memor
 }
 
 AttributeString* TelecommunicationsInformationCluster::getNodeDescription() {
-    auto result = (AttributeString*)getAttributeById(0);
+    auto result = (AttributeString*)getAttributeById((uint16_t)TelecommunicationsInformationAttribute::NodeDescription);
     if (result == nullptr) {
         result = new AttributeString(0);
         addAttribute(result);
@@ -10132,7 +10368,7 @@ AttributeString* TelecommunicationsInformationCluster::getNodeDescription() {
 }
 
 AttributeUInt8* TelecommunicationsInformationCluster::getDeliveryEnable() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsInformationAttribute::DeliveryEnable);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::Bool);
         addAttribute(result);
@@ -10141,7 +10377,7 @@ AttributeUInt8* TelecommunicationsInformationCluster::getDeliveryEnable() {
 }
 
 AttributeUInt32* TelecommunicationsInformationCluster::getPushInformationTimer() {
-    auto result = (AttributeUInt32*)getAttributeById(2);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)TelecommunicationsInformationAttribute::PushInformationTimer);
     if (result == nullptr) {
         result = new AttributeUInt32(2, DataType::UInt32);
         addAttribute(result);
@@ -10150,7 +10386,7 @@ AttributeUInt32* TelecommunicationsInformationCluster::getPushInformationTimer()
 }
 
 AttributeUInt8* TelecommunicationsInformationCluster::getEnableSecureConfiguration() {
-    auto result = (AttributeUInt8*)getAttributeById(3);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsInformationAttribute::EnableSecureConfiguration);
     if (result == nullptr) {
         result = new AttributeUInt8(3, DataType::Bool);
         addAttribute(result);
@@ -10159,7 +10395,7 @@ AttributeUInt8* TelecommunicationsInformationCluster::getEnableSecureConfigurati
 }
 
 AttributeUInt16* TelecommunicationsInformationCluster::getNumberOfContents() {
-    auto result = (AttributeUInt16*)getAttributeById(16);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)TelecommunicationsInformationAttribute::NumberOfContents);
     if (result == nullptr) {
         result = new AttributeUInt16(16, DataType::UInt16);
         addAttribute(result);
@@ -10168,7 +10404,7 @@ AttributeUInt16* TelecommunicationsInformationCluster::getNumberOfContents() {
 }
 
 AttributeUInt16* TelecommunicationsInformationCluster::getContentRootID() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)TelecommunicationsInformationAttribute::ContentRootID);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -10177,7 +10413,7 @@ AttributeUInt16* TelecommunicationsInformationCluster::getContentRootID() {
 }
 
 AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCodecType() {
-    auto result = (AttributeUInt8*)getAttributeById(0);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsVoiceOverZigbeeAttribute::CodecType);
     if (result == nullptr) {
         result = new AttributeUInt8(0, DataType::Enum8);
         addAttribute(result);
@@ -10186,7 +10422,7 @@ AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCodecType() {
 }
 
 AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getSamplingFrequency() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsVoiceOverZigbeeAttribute::SamplingFrequency);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::Enum8);
         addAttribute(result);
@@ -10195,7 +10431,7 @@ AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getSamplingFrequency()
 }
 
 AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCodecrate() {
-    auto result = (AttributeUInt8*)getAttributeById(2);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsVoiceOverZigbeeAttribute::Codecrate);
     if (result == nullptr) {
         result = new AttributeUInt8(2, DataType::Enum8);
         addAttribute(result);
@@ -10204,7 +10440,7 @@ AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCodecrate() {
 }
 
 AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getEstablishmentTimeout() {
-    auto result = (AttributeUInt8*)getAttributeById(3);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsVoiceOverZigbeeAttribute::EstablishmentTimeout);
     if (result == nullptr) {
         result = new AttributeUInt8(3, DataType::UInt8);
         addAttribute(result);
@@ -10213,7 +10449,7 @@ AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getEstablishmentTimeou
 }
 
 AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCodecTypeSub1() {
-    auto result = (AttributeUInt8*)getAttributeById(4);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsVoiceOverZigbeeAttribute::CodecTypeSub1);
     if (result == nullptr) {
         result = new AttributeUInt8(4, DataType::Enum8);
         addAttribute(result);
@@ -10222,7 +10458,7 @@ AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCodecTypeSub1() {
 }
 
 AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCodecTypeSub2() {
-    auto result = (AttributeUInt8*)getAttributeById(5);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsVoiceOverZigbeeAttribute::CodecTypeSub2);
     if (result == nullptr) {
         result = new AttributeUInt8(5, DataType::Enum8);
         addAttribute(result);
@@ -10231,7 +10467,7 @@ AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCodecTypeSub2() {
 }
 
 AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCodecTypeSub3() {
-    auto result = (AttributeUInt8*)getAttributeById(6);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsVoiceOverZigbeeAttribute::CodecTypeSub3);
     if (result == nullptr) {
         result = new AttributeUInt8(6, DataType::Enum8);
         addAttribute(result);
@@ -10240,7 +10476,7 @@ AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCodecTypeSub3() {
 }
 
 AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCompressionType() {
-    auto result = (AttributeUInt8*)getAttributeById(7);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsVoiceOverZigbeeAttribute::CompressionType);
     if (result == nullptr) {
         result = new AttributeUInt8(7, DataType::Enum8);
         addAttribute(result);
@@ -10249,7 +10485,7 @@ AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCompressionType() {
 }
 
 AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCompressionRate() {
-    auto result = (AttributeUInt8*)getAttributeById(8);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsVoiceOverZigbeeAttribute::CompressionRate);
     if (result == nullptr) {
         result = new AttributeUInt8(8, DataType::Enum8);
         addAttribute(result);
@@ -10258,7 +10494,7 @@ AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getCompressionRate() {
 }
 
 AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getOptionFlags() {
-    auto result = (AttributeUInt8*)getAttributeById(9);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsVoiceOverZigbeeAttribute::OptionFlags);
     if (result == nullptr) {
         result = new AttributeUInt8(9, DataType::Map8);
         addAttribute(result);
@@ -10267,7 +10503,7 @@ AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getOptionFlags() {
 }
 
 AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getThreshold() {
-    auto result = (AttributeUInt8*)getAttributeById(10);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsVoiceOverZigbeeAttribute::Threshold);
     if (result == nullptr) {
         result = new AttributeUInt8(10, DataType::UInt8);
         addAttribute(result);
@@ -10276,7 +10512,7 @@ AttributeUInt8* TelecommunicationsVoiceOverZigbeeCluster::getThreshold() {
 }
 
 AttributeUInt16* TelecommunicationsChattingCluster::getUID() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)TelecommunicationsChattingAttribute::UID);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -10285,7 +10521,7 @@ AttributeUInt16* TelecommunicationsChattingCluster::getUID() {
 }
 
 AttributeString* TelecommunicationsChattingCluster::getNickname() {
-    auto result = (AttributeString*)getAttributeById(1);
+    auto result = (AttributeString*)getAttributeById((uint16_t)TelecommunicationsChattingAttribute::Nickname);
     if (result == nullptr) {
         result = new AttributeString(1);
         addAttribute(result);
@@ -10294,7 +10530,7 @@ AttributeString* TelecommunicationsChattingCluster::getNickname() {
 }
 
 AttributeUInt16* TelecommunicationsChattingCluster::getCID() {
-    auto result = (AttributeUInt16*)getAttributeById(16);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)TelecommunicationsChattingAttribute::CID);
     if (result == nullptr) {
         result = new AttributeUInt16(16, DataType::UInt16);
         addAttribute(result);
@@ -10303,7 +10539,7 @@ AttributeUInt16* TelecommunicationsChattingCluster::getCID() {
 }
 
 AttributeString* TelecommunicationsChattingCluster::getName() {
-    auto result = (AttributeString*)getAttributeById(17);
+    auto result = (AttributeString*)getAttributeById((uint16_t)TelecommunicationsChattingAttribute::Name);
     if (result == nullptr) {
         result = new AttributeString(17);
         addAttribute(result);
@@ -10312,7 +10548,7 @@ AttributeString* TelecommunicationsChattingCluster::getName() {
 }
 
 AttributeUInt8* TelecommunicationsChattingCluster::getEnableAddChat() {
-    auto result = (AttributeUInt8*)getAttributeById(18);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)TelecommunicationsChattingAttribute::EnableAddChat);
     if (result == nullptr) {
         result = new AttributeUInt8(18, DataType::Bool);
         addAttribute(result);
@@ -10321,7 +10557,7 @@ AttributeUInt8* TelecommunicationsChattingCluster::getEnableAddChat() {
 }
 
 AttributeUInt56* HaApplianceIdentificationCluster::getBasicIdentification() {
-    auto result = (AttributeUInt56*)getAttributeById(0);
+    auto result = (AttributeUInt56*)getAttributeById((uint16_t)HaApplianceIdentificationAttribute::BasicIdentification);
     if (result == nullptr) {
         result = new AttributeUInt56(0, DataType::UInt56);
         addAttribute(result);
@@ -10330,7 +10566,7 @@ AttributeUInt56* HaApplianceIdentificationCluster::getBasicIdentification() {
 }
 
 AttributeString* HaApplianceIdentificationCluster::getCompanyName() {
-    auto result = (AttributeString*)getAttributeById(16);
+    auto result = (AttributeString*)getAttributeById((uint16_t)HaApplianceIdentificationAttribute::CompanyName);
     if (result == nullptr) {
         result = new AttributeString(16);
         addAttribute(result);
@@ -10339,7 +10575,7 @@ AttributeString* HaApplianceIdentificationCluster::getCompanyName() {
 }
 
 AttributeUInt16* HaApplianceIdentificationCluster::getCompanyId() {
-    auto result = (AttributeUInt16*)getAttributeById(17);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaApplianceIdentificationAttribute::CompanyId);
     if (result == nullptr) {
         result = new AttributeUInt16(17, DataType::UInt16);
         addAttribute(result);
@@ -10348,7 +10584,7 @@ AttributeUInt16* HaApplianceIdentificationCluster::getCompanyId() {
 }
 
 AttributeString* HaApplianceIdentificationCluster::getBrandName() {
-    auto result = (AttributeString*)getAttributeById(18);
+    auto result = (AttributeString*)getAttributeById((uint16_t)HaApplianceIdentificationAttribute::BrandName);
     if (result == nullptr) {
         result = new AttributeString(18);
         addAttribute(result);
@@ -10357,7 +10593,7 @@ AttributeString* HaApplianceIdentificationCluster::getBrandName() {
 }
 
 AttributeUInt16* HaApplianceIdentificationCluster::getBrandId() {
-    auto result = (AttributeUInt16*)getAttributeById(19);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaApplianceIdentificationAttribute::BrandId);
     if (result == nullptr) {
         result = new AttributeUInt16(19, DataType::UInt16);
         addAttribute(result);
@@ -10366,7 +10602,7 @@ AttributeUInt16* HaApplianceIdentificationCluster::getBrandId() {
 }
 
 AttributeOctstr* HaApplianceIdentificationCluster::getModel() {
-    auto result = (AttributeOctstr*)getAttributeById(20);
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)HaApplianceIdentificationAttribute::Model);
     if (result == nullptr) {
         result = new AttributeOctstr(20);
         addAttribute(result);
@@ -10375,7 +10611,7 @@ AttributeOctstr* HaApplianceIdentificationCluster::getModel() {
 }
 
 AttributeOctstr* HaApplianceIdentificationCluster::getPartNumber() {
-    auto result = (AttributeOctstr*)getAttributeById(21);
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)HaApplianceIdentificationAttribute::PartNumber);
     if (result == nullptr) {
         result = new AttributeOctstr(21);
         addAttribute(result);
@@ -10384,7 +10620,7 @@ AttributeOctstr* HaApplianceIdentificationCluster::getPartNumber() {
 }
 
 AttributeOctstr* HaApplianceIdentificationCluster::getProductRevision() {
-    auto result = (AttributeOctstr*)getAttributeById(22);
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)HaApplianceIdentificationAttribute::ProductRevision);
     if (result == nullptr) {
         result = new AttributeOctstr(22);
         addAttribute(result);
@@ -10393,7 +10629,7 @@ AttributeOctstr* HaApplianceIdentificationCluster::getProductRevision() {
 }
 
 AttributeOctstr* HaApplianceIdentificationCluster::getSoftwareRevision() {
-    auto result = (AttributeOctstr*)getAttributeById(23);
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)HaApplianceIdentificationAttribute::SoftwareRevision);
     if (result == nullptr) {
         result = new AttributeOctstr(23);
         addAttribute(result);
@@ -10402,7 +10638,7 @@ AttributeOctstr* HaApplianceIdentificationCluster::getSoftwareRevision() {
 }
 
 AttributeOctstr* HaApplianceIdentificationCluster::getProductTypeName() {
-    auto result = (AttributeOctstr*)getAttributeById(24);
+    auto result = (AttributeOctstr*)getAttributeById((uint16_t)HaApplianceIdentificationAttribute::ProductTypeName);
     if (result == nullptr) {
         result = new AttributeOctstr(24);
         addAttribute(result);
@@ -10411,7 +10647,7 @@ AttributeOctstr* HaApplianceIdentificationCluster::getProductTypeName() {
 }
 
 AttributeUInt16* HaApplianceIdentificationCluster::getProductTypeId() {
-    auto result = (AttributeUInt16*)getAttributeById(25);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaApplianceIdentificationAttribute::ProductTypeId);
     if (result == nullptr) {
         result = new AttributeUInt16(25, DataType::UInt16);
         addAttribute(result);
@@ -10420,7 +10656,7 @@ AttributeUInt16* HaApplianceIdentificationCluster::getProductTypeId() {
 }
 
 AttributeUInt8* HaApplianceIdentificationCluster::getCecedSpecificationVersion() {
-    auto result = (AttributeUInt8*)getAttributeById(26);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HaApplianceIdentificationAttribute::CecedSpecificationVersion);
     if (result == nullptr) {
         result = new AttributeUInt8(26, DataType::UInt8);
         addAttribute(result);
@@ -10429,7 +10665,7 @@ AttributeUInt8* HaApplianceIdentificationCluster::getCecedSpecificationVersion()
 }
 
 AttributeString* HaMeterIdentificationCluster::getCompanyName() {
-    auto result = (AttributeString*)getAttributeById(0);
+    auto result = (AttributeString*)getAttributeById((uint16_t)HaMeterIdentificationAttribute::CompanyName);
     if (result == nullptr) {
         result = new AttributeString(0);
         addAttribute(result);
@@ -10438,7 +10674,7 @@ AttributeString* HaMeterIdentificationCluster::getCompanyName() {
 }
 
 AttributeUInt16* HaMeterIdentificationCluster::getMeterTypeId() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaMeterIdentificationAttribute::MeterTypeId);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -10447,7 +10683,7 @@ AttributeUInt16* HaMeterIdentificationCluster::getMeterTypeId() {
 }
 
 AttributeUInt16* HaMeterIdentificationCluster::getDataQualityId() {
-    auto result = (AttributeUInt16*)getAttributeById(4);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaMeterIdentificationAttribute::DataQualityId);
     if (result == nullptr) {
         result = new AttributeUInt16(4, DataType::UInt16);
         addAttribute(result);
@@ -10456,7 +10692,7 @@ AttributeUInt16* HaMeterIdentificationCluster::getDataQualityId() {
 }
 
 AttributeString* HaMeterIdentificationCluster::getCustomerName() {
-    auto result = (AttributeString*)getAttributeById(5);
+    auto result = (AttributeString*)getAttributeById((uint16_t)HaMeterIdentificationAttribute::CustomerName);
     if (result == nullptr) {
         result = new AttributeString(5);
         addAttribute(result);
@@ -10465,7 +10701,7 @@ AttributeString* HaMeterIdentificationCluster::getCustomerName() {
 }
 
 AttributeString* HaMeterIdentificationCluster::getModel() {
-    auto result = (AttributeString*)getAttributeById(6);
+    auto result = (AttributeString*)getAttributeById((uint16_t)HaMeterIdentificationAttribute::Model);
     if (result == nullptr) {
         result = new AttributeString(6);
         addAttribute(result);
@@ -10474,7 +10710,7 @@ AttributeString* HaMeterIdentificationCluster::getModel() {
 }
 
 AttributeString* HaMeterIdentificationCluster::getPartNumber() {
-    auto result = (AttributeString*)getAttributeById(7);
+    auto result = (AttributeString*)getAttributeById((uint16_t)HaMeterIdentificationAttribute::PartNumber);
     if (result == nullptr) {
         result = new AttributeString(7);
         addAttribute(result);
@@ -10483,7 +10719,7 @@ AttributeString* HaMeterIdentificationCluster::getPartNumber() {
 }
 
 AttributeString* HaMeterIdentificationCluster::getProductRevision() {
-    auto result = (AttributeString*)getAttributeById(8);
+    auto result = (AttributeString*)getAttributeById((uint16_t)HaMeterIdentificationAttribute::ProductRevision);
     if (result == nullptr) {
         result = new AttributeString(8);
         addAttribute(result);
@@ -10492,7 +10728,7 @@ AttributeString* HaMeterIdentificationCluster::getProductRevision() {
 }
 
 AttributeString* HaMeterIdentificationCluster::getSoftwareRevision() {
-    auto result = (AttributeString*)getAttributeById(10);
+    auto result = (AttributeString*)getAttributeById((uint16_t)HaMeterIdentificationAttribute::SoftwareRevision);
     if (result == nullptr) {
         result = new AttributeString(10);
         addAttribute(result);
@@ -10501,7 +10737,7 @@ AttributeString* HaMeterIdentificationCluster::getSoftwareRevision() {
 }
 
 AttributeString* HaMeterIdentificationCluster::getUtilityName() {
-    auto result = (AttributeString*)getAttributeById(11);
+    auto result = (AttributeString*)getAttributeById((uint16_t)HaMeterIdentificationAttribute::UtilityName);
     if (result == nullptr) {
         result = new AttributeString(11);
         addAttribute(result);
@@ -10510,7 +10746,7 @@ AttributeString* HaMeterIdentificationCluster::getUtilityName() {
 }
 
 AttributeString* HaMeterIdentificationCluster::getPod() {
-    auto result = (AttributeString*)getAttributeById(12);
+    auto result = (AttributeString*)getAttributeById((uint16_t)HaMeterIdentificationAttribute::Pod);
     if (result == nullptr) {
         result = new AttributeString(12);
         addAttribute(result);
@@ -10519,7 +10755,7 @@ AttributeString* HaMeterIdentificationCluster::getPod() {
 }
 
 AttributeInt24* HaMeterIdentificationCluster::getAvailablePower() {
-    auto result = (AttributeInt24*)getAttributeById(13);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)HaMeterIdentificationAttribute::AvailablePower);
     if (result == nullptr) {
         result = new AttributeInt24(13, DataType::Int24);
         addAttribute(result);
@@ -10528,7 +10764,7 @@ AttributeInt24* HaMeterIdentificationCluster::getAvailablePower() {
 }
 
 AttributeInt24* HaMeterIdentificationCluster::getPowerThreshold() {
-    auto result = (AttributeInt24*)getAttributeById(14);
+    auto result = (AttributeInt24*)getAttributeById((uint16_t)HaMeterIdentificationAttribute::PowerThreshold);
     if (result == nullptr) {
         result = new AttributeInt24(14, DataType::Int24);
         addAttribute(result);
@@ -10563,7 +10799,7 @@ void HaApplianceEventsAlertsCluster::processCommand(uint8_t commandId, Memory& r
 }
 
 AttributeUInt32* HaApplianceStatisticsCluster::getLogMaxSize() {
-    auto result = (AttributeUInt32*)getAttributeById(0);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)HaApplianceStatisticsAttribute::LogMaxSize);
     if (result == nullptr) {
         result = new AttributeUInt32(0, DataType::UInt32);
         addAttribute(result);
@@ -10572,7 +10808,7 @@ AttributeUInt32* HaApplianceStatisticsCluster::getLogMaxSize() {
 }
 
 AttributeUInt8* HaApplianceStatisticsCluster::getLogQueueMaxSize() {
-    auto result = (AttributeUInt8*)getAttributeById(1);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HaApplianceStatisticsAttribute::LogQueueMaxSize);
     if (result == nullptr) {
         result = new AttributeUInt8(1, DataType::UInt8);
         addAttribute(result);
@@ -10627,7 +10863,7 @@ void HaApplianceStatisticsCluster::processCommand(uint8_t commandId, Memory& req
 }
 
 AttributeUInt32* HaElectricalMeasurementCluster::getMeasurementType() {
-    auto result = (AttributeUInt32*)getAttributeById(0);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::MeasurementType);
     if (result == nullptr) {
         result = new AttributeUInt32(0, DataType::Map32);
         addAttribute(result);
@@ -10636,7 +10872,7 @@ AttributeUInt32* HaElectricalMeasurementCluster::getMeasurementType() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getDcVoltage() {
-    auto result = (AttributeInt16*)getAttributeById(256);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcVoltage);
     if (result == nullptr) {
         result = new AttributeInt16(256, DataType::Int16);
         addAttribute(result);
@@ -10645,7 +10881,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getDcVoltage() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getDcVoltageMin() {
-    auto result = (AttributeInt16*)getAttributeById(257);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcVoltageMin);
     if (result == nullptr) {
         result = new AttributeInt16(257, DataType::Int16);
         addAttribute(result);
@@ -10654,7 +10890,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getDcVoltageMin() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getDcvoltagemax() {
-    auto result = (AttributeInt16*)getAttributeById(258);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::Dcvoltagemax);
     if (result == nullptr) {
         result = new AttributeInt16(258, DataType::Int16);
         addAttribute(result);
@@ -10663,7 +10899,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getDcvoltagemax() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getDcCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(259);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(259, DataType::Int16);
         addAttribute(result);
@@ -10672,7 +10908,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getDcCurrent() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getDcCurrentMin() {
-    auto result = (AttributeInt16*)getAttributeById(260);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcCurrentMin);
     if (result == nullptr) {
         result = new AttributeInt16(260, DataType::Int16);
         addAttribute(result);
@@ -10681,7 +10917,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getDcCurrentMin() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getDcCurrentMax() {
-    auto result = (AttributeInt16*)getAttributeById(261);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcCurrentMax);
     if (result == nullptr) {
         result = new AttributeInt16(261, DataType::Int16);
         addAttribute(result);
@@ -10690,7 +10926,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getDcCurrentMax() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getDcPower() {
-    auto result = (AttributeInt16*)getAttributeById(262);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcPower);
     if (result == nullptr) {
         result = new AttributeInt16(262, DataType::Int16);
         addAttribute(result);
@@ -10699,7 +10935,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getDcPower() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getDcPowerMin() {
-    auto result = (AttributeInt16*)getAttributeById(263);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcPowerMin);
     if (result == nullptr) {
         result = new AttributeInt16(263, DataType::Int16);
         addAttribute(result);
@@ -10708,7 +10944,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getDcPowerMin() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getDcPowerMax() {
-    auto result = (AttributeInt16*)getAttributeById(264);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcPowerMax);
     if (result == nullptr) {
         result = new AttributeInt16(264, DataType::Int16);
         addAttribute(result);
@@ -10717,7 +10953,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getDcPowerMax() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getDcVoltageMultiplier() {
-    auto result = (AttributeUInt16*)getAttributeById(512);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcVoltageMultiplier);
     if (result == nullptr) {
         result = new AttributeUInt16(512, DataType::UInt16);
         addAttribute(result);
@@ -10726,7 +10962,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getDcVoltageMultiplier() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getDcVoltageDivisor() {
-    auto result = (AttributeUInt16*)getAttributeById(513);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcVoltageDivisor);
     if (result == nullptr) {
         result = new AttributeUInt16(513, DataType::UInt16);
         addAttribute(result);
@@ -10735,7 +10971,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getDcVoltageDivisor() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getDcCurrentMultiplier() {
-    auto result = (AttributeUInt16*)getAttributeById(514);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcCurrentMultiplier);
     if (result == nullptr) {
         result = new AttributeUInt16(514, DataType::UInt16);
         addAttribute(result);
@@ -10744,7 +10980,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getDcCurrentMultiplier() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getDcCurrentDivisor() {
-    auto result = (AttributeUInt16*)getAttributeById(515);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcCurrentDivisor);
     if (result == nullptr) {
         result = new AttributeUInt16(515, DataType::UInt16);
         addAttribute(result);
@@ -10753,7 +10989,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getDcCurrentDivisor() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getDcPowerMultiplier() {
-    auto result = (AttributeUInt16*)getAttributeById(516);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcPowerMultiplier);
     if (result == nullptr) {
         result = new AttributeUInt16(516, DataType::UInt16);
         addAttribute(result);
@@ -10762,7 +10998,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getDcPowerMultiplier() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getDcPowerDivisor() {
-    auto result = (AttributeUInt16*)getAttributeById(517);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcPowerDivisor);
     if (result == nullptr) {
         result = new AttributeUInt16(517, DataType::UInt16);
         addAttribute(result);
@@ -10771,7 +11007,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getDcPowerDivisor() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAcFrequency() {
-    auto result = (AttributeUInt16*)getAttributeById(768);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcFrequency);
     if (result == nullptr) {
         result = new AttributeUInt16(768, DataType::UInt16);
         addAttribute(result);
@@ -10780,7 +11016,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAcFrequency() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAcFrequencyMin() {
-    auto result = (AttributeUInt16*)getAttributeById(769);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcFrequencyMin);
     if (result == nullptr) {
         result = new AttributeUInt16(769, DataType::UInt16);
         addAttribute(result);
@@ -10789,7 +11025,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAcFrequencyMin() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAcFrequencyMax() {
-    auto result = (AttributeUInt16*)getAttributeById(770);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcFrequencyMax);
     if (result == nullptr) {
         result = new AttributeUInt16(770, DataType::UInt16);
         addAttribute(result);
@@ -10798,7 +11034,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAcFrequencyMax() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getNeutralCurrent() {
-    auto result = (AttributeUInt16*)getAttributeById(771);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::NeutralCurrent);
     if (result == nullptr) {
         result = new AttributeUInt16(771, DataType::UInt16);
         addAttribute(result);
@@ -10807,7 +11043,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getNeutralCurrent() {
 }
 
 AttributeInt32* HaElectricalMeasurementCluster::getTotalActivePower() {
-    auto result = (AttributeInt32*)getAttributeById(772);
+    auto result = (AttributeInt32*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::TotalActivePower);
     if (result == nullptr) {
         result = new AttributeInt32(772, DataType::Int32);
         addAttribute(result);
@@ -10816,7 +11052,7 @@ AttributeInt32* HaElectricalMeasurementCluster::getTotalActivePower() {
 }
 
 AttributeInt32* HaElectricalMeasurementCluster::getTotalReactivePower() {
-    auto result = (AttributeInt32*)getAttributeById(773);
+    auto result = (AttributeInt32*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::TotalReactivePower);
     if (result == nullptr) {
         result = new AttributeInt32(773, DataType::Int32);
         addAttribute(result);
@@ -10825,7 +11061,7 @@ AttributeInt32* HaElectricalMeasurementCluster::getTotalReactivePower() {
 }
 
 AttributeUInt32* HaElectricalMeasurementCluster::getTotalApparentPower() {
-    auto result = (AttributeUInt32*)getAttributeById(774);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::TotalApparentPower);
     if (result == nullptr) {
         result = new AttributeUInt32(774, DataType::UInt32);
         addAttribute(result);
@@ -10834,7 +11070,7 @@ AttributeUInt32* HaElectricalMeasurementCluster::getTotalApparentPower() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getMeas1stHarmonicCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(775);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::Meas1stHarmonicCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(775, DataType::Int16);
         addAttribute(result);
@@ -10843,7 +11079,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getMeas1stHarmonicCurrent() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getMeas3rdHarmonicCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(776);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::Meas3rdHarmonicCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(776, DataType::Int16);
         addAttribute(result);
@@ -10852,7 +11088,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getMeas3rdHarmonicCurrent() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getMeas5thHarmonicCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(777);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::Meas5thHarmonicCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(777, DataType::Int16);
         addAttribute(result);
@@ -10861,7 +11097,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getMeas5thHarmonicCurrent() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getMeas7thHarmonicCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(778);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::Meas7thHarmonicCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(778, DataType::Int16);
         addAttribute(result);
@@ -10870,7 +11106,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getMeas7thHarmonicCurrent() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getMeas9thHarmonicCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(779);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::Meas9thHarmonicCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(779, DataType::Int16);
         addAttribute(result);
@@ -10879,7 +11115,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getMeas9thHarmonicCurrent() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getMeas11thHarmonicCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(780);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::Meas11thHarmonicCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(780, DataType::Int16);
         addAttribute(result);
@@ -10888,7 +11124,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getMeas11thHarmonicCurrent() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getMeasPhase1stHarmonicCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(781);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::MeasPhase1stHarmonicCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(781, DataType::Int16);
         addAttribute(result);
@@ -10897,7 +11133,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getMeasPhase1stHarmonicCurrent()
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getMeasPhase3rdHarmonicCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(782);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::MeasPhase3rdHarmonicCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(782, DataType::Int16);
         addAttribute(result);
@@ -10906,7 +11142,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getMeasPhase3rdHarmonicCurrent()
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getMeasPhase5thHarmonicCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(783);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::MeasPhase5thHarmonicCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(783, DataType::Int16);
         addAttribute(result);
@@ -10915,7 +11151,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getMeasPhase5thHarmonicCurrent()
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getMeasPhase7thHarmonicCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(784);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::MeasPhase7thHarmonicCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(784, DataType::Int16);
         addAttribute(result);
@@ -10924,7 +11160,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getMeasPhase7thHarmonicCurrent()
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getMeasPhase9thHarmonicCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(785);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::MeasPhase9thHarmonicCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(785, DataType::Int16);
         addAttribute(result);
@@ -10933,7 +11169,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getMeasPhase9thHarmonicCurrent()
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getMeasPhase11thHarmonicCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(786);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::MeasPhase11thHarmonicCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(786, DataType::Int16);
         addAttribute(result);
@@ -10942,7 +11178,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getMeasPhase11thHarmonicCurrent(
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAcFrequencyMultiplier() {
-    auto result = (AttributeUInt16*)getAttributeById(1024);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcFrequencyMultiplier);
     if (result == nullptr) {
         result = new AttributeUInt16(1024, DataType::UInt16);
         addAttribute(result);
@@ -10951,7 +11187,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAcFrequencyMultiplier() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAcFrequencyDivisor() {
-    auto result = (AttributeUInt16*)getAttributeById(1025);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcFrequencyDivisor);
     if (result == nullptr) {
         result = new AttributeUInt16(1025, DataType::UInt16);
         addAttribute(result);
@@ -10960,7 +11196,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAcFrequencyDivisor() {
 }
 
 AttributeUInt32* HaElectricalMeasurementCluster::getPowerMultiplier() {
-    auto result = (AttributeUInt32*)getAttributeById(1026);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::PowerMultiplier);
     if (result == nullptr) {
         result = new AttributeUInt32(1026, DataType::UInt32);
         addAttribute(result);
@@ -10969,7 +11205,7 @@ AttributeUInt32* HaElectricalMeasurementCluster::getPowerMultiplier() {
 }
 
 AttributeUInt32* HaElectricalMeasurementCluster::getPowerDivisor() {
-    auto result = (AttributeUInt32*)getAttributeById(1027);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::PowerDivisor);
     if (result == nullptr) {
         result = new AttributeUInt32(1027, DataType::UInt32);
         addAttribute(result);
@@ -10978,7 +11214,7 @@ AttributeUInt32* HaElectricalMeasurementCluster::getPowerDivisor() {
 }
 
 AttributeInt8* HaElectricalMeasurementCluster::getHarmonicCurrentMultiplier() {
-    auto result = (AttributeInt8*)getAttributeById(1028);
+    auto result = (AttributeInt8*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::HarmonicCurrentMultiplier);
     if (result == nullptr) {
         result = new AttributeInt8(1028, DataType::Int8);
         addAttribute(result);
@@ -10987,7 +11223,7 @@ AttributeInt8* HaElectricalMeasurementCluster::getHarmonicCurrentMultiplier() {
 }
 
 AttributeInt8* HaElectricalMeasurementCluster::getPhaseHarmonicCurrentMultiplier() {
-    auto result = (AttributeInt8*)getAttributeById(1029);
+    auto result = (AttributeInt8*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::PhaseHarmonicCurrentMultiplier);
     if (result == nullptr) {
         result = new AttributeInt8(1029, DataType::Int8);
         addAttribute(result);
@@ -10996,7 +11232,7 @@ AttributeInt8* HaElectricalMeasurementCluster::getPhaseHarmonicCurrentMultiplier
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getInstantaneousVoltage() {
-    auto result = (AttributeInt16*)getAttributeById(1280);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::InstantaneousVoltage);
     if (result == nullptr) {
         result = new AttributeInt16(1280, DataType::Int16);
         addAttribute(result);
@@ -11005,7 +11241,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getInstantaneousVoltage() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getInstantaneousLineCurrent() {
-    auto result = (AttributeUInt16*)getAttributeById(1281);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::InstantaneousLineCurrent);
     if (result == nullptr) {
         result = new AttributeUInt16(1281, DataType::UInt16);
         addAttribute(result);
@@ -11014,7 +11250,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getInstantaneousLineCurrent() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getInstantaneousActiveCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(1282);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::InstantaneousActiveCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(1282, DataType::Int16);
         addAttribute(result);
@@ -11023,7 +11259,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getInstantaneousActiveCurrent() 
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getInstantaneousReactiveCurrent() {
-    auto result = (AttributeInt16*)getAttributeById(1283);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::InstantaneousReactiveCurrent);
     if (result == nullptr) {
         result = new AttributeInt16(1283, DataType::Int16);
         addAttribute(result);
@@ -11032,7 +11268,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getInstantaneousReactiveCurrent(
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getInstantaneousPower() {
-    auto result = (AttributeInt16*)getAttributeById(1284);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::InstantaneousPower);
     if (result == nullptr) {
         result = new AttributeInt16(1284, DataType::Int16);
         addAttribute(result);
@@ -11041,7 +11277,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getInstantaneousPower() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltage() {
-    auto result = (AttributeUInt16*)getAttributeById(1285);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltage);
     if (result == nullptr) {
         result = new AttributeUInt16(1285, DataType::UInt16);
         addAttribute(result);
@@ -11050,7 +11286,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltage() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageMin() {
-    auto result = (AttributeUInt16*)getAttributeById(1286);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageMin);
     if (result == nullptr) {
         result = new AttributeUInt16(1286, DataType::UInt16);
         addAttribute(result);
@@ -11059,7 +11295,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageMin() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageMax() {
-    auto result = (AttributeUInt16*)getAttributeById(1287);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageMax);
     if (result == nullptr) {
         result = new AttributeUInt16(1287, DataType::UInt16);
         addAttribute(result);
@@ -11068,7 +11304,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageMax() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrent() {
-    auto result = (AttributeUInt16*)getAttributeById(1288);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsCurrent);
     if (result == nullptr) {
         result = new AttributeUInt16(1288, DataType::UInt16);
         addAttribute(result);
@@ -11077,7 +11313,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrent() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentMin() {
-    auto result = (AttributeUInt16*)getAttributeById(1289);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsCurrentMin);
     if (result == nullptr) {
         result = new AttributeUInt16(1289, DataType::UInt16);
         addAttribute(result);
@@ -11086,7 +11322,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentMin() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentMax() {
-    auto result = (AttributeUInt16*)getAttributeById(1290);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsCurrentMax);
     if (result == nullptr) {
         result = new AttributeUInt16(1290, DataType::UInt16);
         addAttribute(result);
@@ -11095,7 +11331,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentMax() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getActivePower() {
-    auto result = (AttributeInt16*)getAttributeById(1291);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ActivePower);
     if (result == nullptr) {
         result = new AttributeInt16(1291, DataType::Int16);
         addAttribute(result);
@@ -11104,7 +11340,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getActivePower() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getActivePowerMin() {
-    auto result = (AttributeInt16*)getAttributeById(1292);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ActivePowerMin);
     if (result == nullptr) {
         result = new AttributeInt16(1292, DataType::Int16);
         addAttribute(result);
@@ -11113,7 +11349,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getActivePowerMin() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getActivePowerMax() {
-    auto result = (AttributeInt16*)getAttributeById(1293);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ActivePowerMax);
     if (result == nullptr) {
         result = new AttributeInt16(1293, DataType::Int16);
         addAttribute(result);
@@ -11122,7 +11358,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getActivePowerMax() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getReactivePower() {
-    auto result = (AttributeInt16*)getAttributeById(1294);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ReactivePower);
     if (result == nullptr) {
         result = new AttributeInt16(1294, DataType::Int16);
         addAttribute(result);
@@ -11131,7 +11367,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getReactivePower() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getApparentPower() {
-    auto result = (AttributeUInt16*)getAttributeById(1295);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ApparentPower);
     if (result == nullptr) {
         result = new AttributeUInt16(1295, DataType::UInt16);
         addAttribute(result);
@@ -11140,7 +11376,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getApparentPower() {
 }
 
 AttributeInt8* HaElectricalMeasurementCluster::getPowerFactor() {
-    auto result = (AttributeInt8*)getAttributeById(1296);
+    auto result = (AttributeInt8*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::PowerFactor);
     if (result == nullptr) {
         result = new AttributeInt8(1296, DataType::Int8);
         addAttribute(result);
@@ -11149,7 +11385,7 @@ AttributeInt8* HaElectricalMeasurementCluster::getPowerFactor() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsVoltageMeasPeriod() {
-    auto result = (AttributeUInt16*)getAttributeById(1297);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AverageRmsVoltageMeasPeriod);
     if (result == nullptr) {
         result = new AttributeUInt16(1297, DataType::UInt16);
         addAttribute(result);
@@ -11158,7 +11394,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsVoltageMeasPeriod(
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsOverVoltageCounter() {
-    auto result = (AttributeUInt16*)getAttributeById(1298);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AverageRmsOverVoltageCounter);
     if (result == nullptr) {
         result = new AttributeUInt16(1298, DataType::UInt16);
         addAttribute(result);
@@ -11167,7 +11403,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsOverVoltageCounter
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsUnderVoltageCounter() {
-    auto result = (AttributeUInt16*)getAttributeById(1299);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AverageRmsUnderVoltageCounter);
     if (result == nullptr) {
         result = new AttributeUInt16(1299, DataType::UInt16);
         addAttribute(result);
@@ -11176,7 +11412,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsUnderVoltageCounte
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsExtremeOverVoltagePeriod() {
-    auto result = (AttributeUInt16*)getAttributeById(1300);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsExtremeOverVoltagePeriod);
     if (result == nullptr) {
         result = new AttributeUInt16(1300, DataType::UInt16);
         addAttribute(result);
@@ -11185,7 +11421,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsExtremeOverVoltagePeriod(
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsExtremeUnderVoltagePeriod() {
-    auto result = (AttributeUInt16*)getAttributeById(1301);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsExtremeUnderVoltagePeriod);
     if (result == nullptr) {
         result = new AttributeUInt16(1301, DataType::UInt16);
         addAttribute(result);
@@ -11194,7 +11430,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsExtremeUnderVoltagePeriod
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageSagPeriod() {
-    auto result = (AttributeUInt16*)getAttributeById(1302);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageSagPeriod);
     if (result == nullptr) {
         result = new AttributeUInt16(1302, DataType::UInt16);
         addAttribute(result);
@@ -11203,7 +11439,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageSagPeriod() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageSwellPeriod() {
-    auto result = (AttributeUInt16*)getAttributeById(1303);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageSwellPeriod);
     if (result == nullptr) {
         result = new AttributeUInt16(1303, DataType::UInt16);
         addAttribute(result);
@@ -11212,7 +11448,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageSwellPeriod() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAcVoltageMultiplier() {
-    auto result = (AttributeUInt16*)getAttributeById(1536);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcVoltageMultiplier);
     if (result == nullptr) {
         result = new AttributeUInt16(1536, DataType::UInt16);
         addAttribute(result);
@@ -11221,7 +11457,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAcVoltageMultiplier() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAcVoltageDivisor() {
-    auto result = (AttributeUInt16*)getAttributeById(1537);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcVoltageDivisor);
     if (result == nullptr) {
         result = new AttributeUInt16(1537, DataType::UInt16);
         addAttribute(result);
@@ -11230,7 +11466,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAcVoltageDivisor() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAcCurrentMultiplier() {
-    auto result = (AttributeUInt16*)getAttributeById(1538);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcCurrentMultiplier);
     if (result == nullptr) {
         result = new AttributeUInt16(1538, DataType::UInt16);
         addAttribute(result);
@@ -11239,7 +11475,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAcCurrentMultiplier() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAcCurrentDivisor() {
-    auto result = (AttributeUInt16*)getAttributeById(1539);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcCurrentDivisor);
     if (result == nullptr) {
         result = new AttributeUInt16(1539, DataType::UInt16);
         addAttribute(result);
@@ -11248,7 +11484,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAcCurrentDivisor() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAcPowerMultiplier() {
-    auto result = (AttributeUInt16*)getAttributeById(1540);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcPowerMultiplier);
     if (result == nullptr) {
         result = new AttributeUInt16(1540, DataType::UInt16);
         addAttribute(result);
@@ -11257,7 +11493,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAcPowerMultiplier() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAcPowerDivisor() {
-    auto result = (AttributeUInt16*)getAttributeById(1541);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcPowerDivisor);
     if (result == nullptr) {
         result = new AttributeUInt16(1541, DataType::UInt16);
         addAttribute(result);
@@ -11266,7 +11502,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAcPowerDivisor() {
 }
 
 AttributeUInt8* HaElectricalMeasurementCluster::getDcOverloadAlarmsMask() {
-    auto result = (AttributeUInt8*)getAttributeById(1792);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcOverloadAlarmsMask);
     if (result == nullptr) {
         result = new AttributeUInt8(1792, DataType::Map8);
         addAttribute(result);
@@ -11275,7 +11511,7 @@ AttributeUInt8* HaElectricalMeasurementCluster::getDcOverloadAlarmsMask() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getDcVoltageOverload() {
-    auto result = (AttributeInt16*)getAttributeById(1793);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcVoltageOverload);
     if (result == nullptr) {
         result = new AttributeInt16(1793, DataType::Int16);
         addAttribute(result);
@@ -11284,7 +11520,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getDcVoltageOverload() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getDcCurrentOverload() {
-    auto result = (AttributeInt16*)getAttributeById(1794);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::DcCurrentOverload);
     if (result == nullptr) {
         result = new AttributeInt16(1794, DataType::Int16);
         addAttribute(result);
@@ -11293,7 +11529,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getDcCurrentOverload() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAcAlarmsMask() {
-    auto result = (AttributeUInt16*)getAttributeById(2048);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcAlarmsMask);
     if (result == nullptr) {
         result = new AttributeUInt16(2048, DataType::Map16);
         addAttribute(result);
@@ -11302,7 +11538,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAcAlarmsMask() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getAcVoltageOverload() {
-    auto result = (AttributeInt16*)getAttributeById(2049);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcVoltageOverload);
     if (result == nullptr) {
         result = new AttributeInt16(2049, DataType::Int16);
         addAttribute(result);
@@ -11311,7 +11547,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getAcVoltageOverload() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getAcCurrentOverload() {
-    auto result = (AttributeInt16*)getAttributeById(2050);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcCurrentOverload);
     if (result == nullptr) {
         result = new AttributeInt16(2050, DataType::Int16);
         addAttribute(result);
@@ -11320,7 +11556,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getAcCurrentOverload() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getAcActivePowerOverload() {
-    auto result = (AttributeInt16*)getAttributeById(2051);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcActivePowerOverload);
     if (result == nullptr) {
         result = new AttributeInt16(2051, DataType::Int16);
         addAttribute(result);
@@ -11329,7 +11565,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getAcActivePowerOverload() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getAcReactivePowerOverload() {
-    auto result = (AttributeInt16*)getAttributeById(2052);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AcReactivePowerOverload);
     if (result == nullptr) {
         result = new AttributeInt16(2052, DataType::Int16);
         addAttribute(result);
@@ -11338,7 +11574,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getAcReactivePowerOverload() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getAverageRmsOverVoltage() {
-    auto result = (AttributeInt16*)getAttributeById(2053);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AverageRmsOverVoltage);
     if (result == nullptr) {
         result = new AttributeInt16(2053, DataType::Int16);
         addAttribute(result);
@@ -11347,7 +11583,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getAverageRmsOverVoltage() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getAverageRmsUnderVoltage() {
-    auto result = (AttributeInt16*)getAttributeById(2054);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AverageRmsUnderVoltage);
     if (result == nullptr) {
         result = new AttributeInt16(2054, DataType::Int16);
         addAttribute(result);
@@ -11356,7 +11592,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getAverageRmsUnderVoltage() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getRmsExtremeOverVoltage() {
-    auto result = (AttributeInt16*)getAttributeById(2055);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsExtremeOverVoltage);
     if (result == nullptr) {
         result = new AttributeInt16(2055, DataType::Int16);
         addAttribute(result);
@@ -11365,7 +11601,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getRmsExtremeOverVoltage() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getRmsExtremeUnderVoltage() {
-    auto result = (AttributeInt16*)getAttributeById(2056);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsExtremeUnderVoltage);
     if (result == nullptr) {
         result = new AttributeInt16(2056, DataType::Int16);
         addAttribute(result);
@@ -11374,7 +11610,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getRmsExtremeUnderVoltage() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getRmsVoltageSag() {
-    auto result = (AttributeInt16*)getAttributeById(2057);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageSag);
     if (result == nullptr) {
         result = new AttributeInt16(2057, DataType::Int16);
         addAttribute(result);
@@ -11383,7 +11619,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getRmsVoltageSag() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getRmsVoltageSwell() {
-    auto result = (AttributeInt16*)getAttributeById(2058);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageSwell);
     if (result == nullptr) {
         result = new AttributeInt16(2058, DataType::Int16);
         addAttribute(result);
@@ -11392,7 +11628,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getRmsVoltageSwell() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getLineCurrentPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2305);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::LineCurrentPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2305, DataType::UInt16);
         addAttribute(result);
@@ -11401,7 +11637,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getLineCurrentPhB() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getActiveCurrentPhB() {
-    auto result = (AttributeInt16*)getAttributeById(2306);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ActiveCurrentPhB);
     if (result == nullptr) {
         result = new AttributeInt16(2306, DataType::Int16);
         addAttribute(result);
@@ -11410,7 +11646,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getActiveCurrentPhB() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getReactiveCurrentPhB() {
-    auto result = (AttributeInt16*)getAttributeById(2307);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ReactiveCurrentPhB);
     if (result == nullptr) {
         result = new AttributeInt16(2307, DataType::Int16);
         addAttribute(result);
@@ -11419,7 +11655,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getReactiveCurrentPhB() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltagePhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2309);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltagePhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2309, DataType::UInt16);
         addAttribute(result);
@@ -11428,7 +11664,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltagePhB() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageMinPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2310);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageMinPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2310, DataType::UInt16);
         addAttribute(result);
@@ -11437,7 +11673,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageMinPhB() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageMaxPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2311);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageMaxPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2311, DataType::UInt16);
         addAttribute(result);
@@ -11446,7 +11682,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageMaxPhB() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2312);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsCurrentPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2312, DataType::UInt16);
         addAttribute(result);
@@ -11455,7 +11691,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentPhB() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentMinPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2313);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsCurrentMinPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2313, DataType::UInt16);
         addAttribute(result);
@@ -11464,7 +11700,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentMinPhB() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentMaxPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2314);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsCurrentMaxPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2314, DataType::UInt16);
         addAttribute(result);
@@ -11473,7 +11709,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentMaxPhB() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getActivePowerPhB() {
-    auto result = (AttributeInt16*)getAttributeById(2315);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ActivePowerPhB);
     if (result == nullptr) {
         result = new AttributeInt16(2315, DataType::Int16);
         addAttribute(result);
@@ -11482,7 +11718,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getActivePowerPhB() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getActivePowerMinPhB() {
-    auto result = (AttributeInt16*)getAttributeById(2316);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ActivePowerMinPhB);
     if (result == nullptr) {
         result = new AttributeInt16(2316, DataType::Int16);
         addAttribute(result);
@@ -11491,7 +11727,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getActivePowerMinPhB() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getActivePowerMaxPhB() {
-    auto result = (AttributeInt16*)getAttributeById(2317);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ActivePowerMaxPhB);
     if (result == nullptr) {
         result = new AttributeInt16(2317, DataType::Int16);
         addAttribute(result);
@@ -11500,7 +11736,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getActivePowerMaxPhB() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getReactivePowerPhB() {
-    auto result = (AttributeInt16*)getAttributeById(2318);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ReactivePowerPhB);
     if (result == nullptr) {
         result = new AttributeInt16(2318, DataType::Int16);
         addAttribute(result);
@@ -11509,7 +11745,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getReactivePowerPhB() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getApparentPowerPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2319);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ApparentPowerPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2319, DataType::UInt16);
         addAttribute(result);
@@ -11518,7 +11754,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getApparentPowerPhB() {
 }
 
 AttributeInt8* HaElectricalMeasurementCluster::getPowerFactorPhB() {
-    auto result = (AttributeInt8*)getAttributeById(2320);
+    auto result = (AttributeInt8*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::PowerFactorPhB);
     if (result == nullptr) {
         result = new AttributeInt8(2320, DataType::Int8);
         addAttribute(result);
@@ -11527,7 +11763,7 @@ AttributeInt8* HaElectricalMeasurementCluster::getPowerFactorPhB() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsVoltageMeasurePeriodPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2321);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AverageRmsVoltageMeasurePeriodPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2321, DataType::UInt16);
         addAttribute(result);
@@ -11536,7 +11772,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsVoltageMeasurePeri
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsOverVoltageCounterPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2322);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AverageRmsOverVoltageCounterPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2322, DataType::UInt16);
         addAttribute(result);
@@ -11545,7 +11781,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsOverVoltageCounter
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAverageUnderVoltageCounterPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2323);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AverageUnderVoltageCounterPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2323, DataType::UInt16);
         addAttribute(result);
@@ -11554,7 +11790,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAverageUnderVoltageCounterPh
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsExtremeOverVoltagePeriodPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2324);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsExtremeOverVoltagePeriodPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2324, DataType::UInt16);
         addAttribute(result);
@@ -11563,7 +11799,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsExtremeOverVoltagePeriodP
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsExtremeUnderVoltagePeriodPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2325);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsExtremeUnderVoltagePeriodPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2325, DataType::UInt16);
         addAttribute(result);
@@ -11572,7 +11808,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsExtremeUnderVoltagePeriod
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageSagPeriodPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2326);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageSagPeriodPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2326, DataType::UInt16);
         addAttribute(result);
@@ -11581,7 +11817,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageSagPeriodPhB() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageSwellPeriodPhB() {
-    auto result = (AttributeUInt16*)getAttributeById(2327);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageSwellPeriodPhB);
     if (result == nullptr) {
         result = new AttributeUInt16(2327, DataType::UInt16);
         addAttribute(result);
@@ -11590,7 +11826,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageSwellPeriodPhB() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getLineCurrentPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2561);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::LineCurrentPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2561, DataType::UInt16);
         addAttribute(result);
@@ -11599,7 +11835,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getLineCurrentPhC() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getActiveCurrentPhC() {
-    auto result = (AttributeInt16*)getAttributeById(2562);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ActiveCurrentPhC);
     if (result == nullptr) {
         result = new AttributeInt16(2562, DataType::Int16);
         addAttribute(result);
@@ -11608,7 +11844,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getActiveCurrentPhC() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getReactiveCurrentPhC() {
-    auto result = (AttributeInt16*)getAttributeById(2563);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ReactiveCurrentPhC);
     if (result == nullptr) {
         result = new AttributeInt16(2563, DataType::Int16);
         addAttribute(result);
@@ -11617,7 +11853,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getReactiveCurrentPhC() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltagePhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2565);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltagePhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2565, DataType::UInt16);
         addAttribute(result);
@@ -11626,7 +11862,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltagePhC() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageMinPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2566);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageMinPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2566, DataType::UInt16);
         addAttribute(result);
@@ -11635,7 +11871,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageMinPhC() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageMaxPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2567);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageMaxPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2567, DataType::UInt16);
         addAttribute(result);
@@ -11644,7 +11880,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageMaxPhC() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2568);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsCurrentPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2568, DataType::UInt16);
         addAttribute(result);
@@ -11653,7 +11889,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentPhC() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentMinPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2569);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsCurrentMinPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2569, DataType::UInt16);
         addAttribute(result);
@@ -11662,7 +11898,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentMinPhC() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentMaxPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2570);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsCurrentMaxPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2570, DataType::UInt16);
         addAttribute(result);
@@ -11671,7 +11907,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsCurrentMaxPhC() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getActivePowerPhC() {
-    auto result = (AttributeInt16*)getAttributeById(2571);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ActivePowerPhC);
     if (result == nullptr) {
         result = new AttributeInt16(2571, DataType::Int16);
         addAttribute(result);
@@ -11680,7 +11916,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getActivePowerPhC() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getActivePowerMinPhC() {
-    auto result = (AttributeInt16*)getAttributeById(2572);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ActivePowerMinPhC);
     if (result == nullptr) {
         result = new AttributeInt16(2572, DataType::Int16);
         addAttribute(result);
@@ -11689,7 +11925,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getActivePowerMinPhC() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getActivePowerMaxPhC() {
-    auto result = (AttributeInt16*)getAttributeById(2573);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ActivePowerMaxPhC);
     if (result == nullptr) {
         result = new AttributeInt16(2573, DataType::Int16);
         addAttribute(result);
@@ -11698,7 +11934,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getActivePowerMaxPhC() {
 }
 
 AttributeInt16* HaElectricalMeasurementCluster::getReactivePowerPhC() {
-    auto result = (AttributeInt16*)getAttributeById(2574);
+    auto result = (AttributeInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ReactivePowerPhC);
     if (result == nullptr) {
         result = new AttributeInt16(2574, DataType::Int16);
         addAttribute(result);
@@ -11707,7 +11943,7 @@ AttributeInt16* HaElectricalMeasurementCluster::getReactivePowerPhC() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getApparentPowerPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2575);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::ApparentPowerPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2575, DataType::UInt16);
         addAttribute(result);
@@ -11716,7 +11952,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getApparentPowerPhC() {
 }
 
 AttributeInt8* HaElectricalMeasurementCluster::getPowerFactorPhC() {
-    auto result = (AttributeInt8*)getAttributeById(2576);
+    auto result = (AttributeInt8*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::PowerFactorPhC);
     if (result == nullptr) {
         result = new AttributeInt8(2576, DataType::Int8);
         addAttribute(result);
@@ -11725,7 +11961,7 @@ AttributeInt8* HaElectricalMeasurementCluster::getPowerFactorPhC() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsVoltageMeasPeriodPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2577);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AverageRmsVoltageMeasPeriodPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2577, DataType::UInt16);
         addAttribute(result);
@@ -11734,7 +11970,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsVoltageMeasPeriodP
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsOverVoltageCounterPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2578);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AverageRmsOverVoltageCounterPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2578, DataType::UInt16);
         addAttribute(result);
@@ -11743,7 +11979,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAverageRmsOverVoltageCounter
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getAverageUnderVoltageCounterPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2579);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::AverageUnderVoltageCounterPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2579, DataType::UInt16);
         addAttribute(result);
@@ -11752,7 +11988,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getAverageUnderVoltageCounterPh
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsExtremeOverVoltagePeriodPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2580);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsExtremeOverVoltagePeriodPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2580, DataType::UInt16);
         addAttribute(result);
@@ -11761,7 +11997,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsExtremeOverVoltagePeriodP
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsExtremeUnderVoltagePeriodPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2581);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsExtremeUnderVoltagePeriodPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2581, DataType::UInt16);
         addAttribute(result);
@@ -11770,7 +12006,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsExtremeUnderVoltagePeriod
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageSagPeriodPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2582);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageSagPeriodPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2582, DataType::UInt16);
         addAttribute(result);
@@ -11779,7 +12015,7 @@ AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageSagPeriodPhC() {
 }
 
 AttributeUInt16* HaElectricalMeasurementCluster::getRmsVoltageSwellPeriodPhC() {
-    auto result = (AttributeUInt16*)getAttributeById(2583);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaElectricalMeasurementAttribute::RmsVoltageSwellPeriodPhC);
     if (result == nullptr) {
         result = new AttributeUInt16(2583, DataType::UInt16);
         addAttribute(result);
@@ -11838,7 +12074,7 @@ void HaElectricalMeasurementCluster::processCommand(uint8_t commandId, Memory& r
 }
 
 AttributeUInt16* HaDiagnosticCluster::getNumberOfResets() {
-    auto result = (AttributeUInt16*)getAttributeById(0);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::NumberOfResets);
     if (result == nullptr) {
         result = new AttributeUInt16(0, DataType::UInt16);
         addAttribute(result);
@@ -11847,7 +12083,7 @@ AttributeUInt16* HaDiagnosticCluster::getNumberOfResets() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getPersistentMemoryWrites() {
-    auto result = (AttributeUInt16*)getAttributeById(1);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::PersistentMemoryWrites);
     if (result == nullptr) {
         result = new AttributeUInt16(1, DataType::UInt16);
         addAttribute(result);
@@ -11856,7 +12092,7 @@ AttributeUInt16* HaDiagnosticCluster::getPersistentMemoryWrites() {
 }
 
 AttributeUInt32* HaDiagnosticCluster::getMacRxBcast() {
-    auto result = (AttributeUInt32*)getAttributeById(256);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)HaDiagnosticAttribute::MacRxBcast);
     if (result == nullptr) {
         result = new AttributeUInt32(256, DataType::UInt32);
         addAttribute(result);
@@ -11865,7 +12101,7 @@ AttributeUInt32* HaDiagnosticCluster::getMacRxBcast() {
 }
 
 AttributeUInt32* HaDiagnosticCluster::getMacTxBcast() {
-    auto result = (AttributeUInt32*)getAttributeById(257);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)HaDiagnosticAttribute::MacTxBcast);
     if (result == nullptr) {
         result = new AttributeUInt32(257, DataType::UInt32);
         addAttribute(result);
@@ -11874,7 +12110,7 @@ AttributeUInt32* HaDiagnosticCluster::getMacTxBcast() {
 }
 
 AttributeUInt32* HaDiagnosticCluster::getMacRxUcast() {
-    auto result = (AttributeUInt32*)getAttributeById(258);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)HaDiagnosticAttribute::MacRxUcast);
     if (result == nullptr) {
         result = new AttributeUInt32(258, DataType::UInt32);
         addAttribute(result);
@@ -11883,7 +12119,7 @@ AttributeUInt32* HaDiagnosticCluster::getMacRxUcast() {
 }
 
 AttributeUInt32* HaDiagnosticCluster::getMacTxUcast() {
-    auto result = (AttributeUInt32*)getAttributeById(259);
+    auto result = (AttributeUInt32*)getAttributeById((uint16_t)HaDiagnosticAttribute::MacTxUcast);
     if (result == nullptr) {
         result = new AttributeUInt32(259, DataType::UInt32);
         addAttribute(result);
@@ -11892,7 +12128,7 @@ AttributeUInt32* HaDiagnosticCluster::getMacTxUcast() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getMacTxUcastRetry() {
-    auto result = (AttributeUInt16*)getAttributeById(260);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::MacTxUcastRetry);
     if (result == nullptr) {
         result = new AttributeUInt16(260, DataType::UInt16);
         addAttribute(result);
@@ -11901,7 +12137,7 @@ AttributeUInt16* HaDiagnosticCluster::getMacTxUcastRetry() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getMacTxUcastFail() {
-    auto result = (AttributeUInt16*)getAttributeById(261);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::MacTxUcastFail);
     if (result == nullptr) {
         result = new AttributeUInt16(261, DataType::UInt16);
         addAttribute(result);
@@ -11910,7 +12146,7 @@ AttributeUInt16* HaDiagnosticCluster::getMacTxUcastFail() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getAPSRxBcast() {
-    auto result = (AttributeUInt16*)getAttributeById(262);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::APSRxBcast);
     if (result == nullptr) {
         result = new AttributeUInt16(262, DataType::UInt16);
         addAttribute(result);
@@ -11919,7 +12155,7 @@ AttributeUInt16* HaDiagnosticCluster::getAPSRxBcast() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getAPSTxBcast() {
-    auto result = (AttributeUInt16*)getAttributeById(263);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::APSTxBcast);
     if (result == nullptr) {
         result = new AttributeUInt16(263, DataType::UInt16);
         addAttribute(result);
@@ -11928,7 +12164,7 @@ AttributeUInt16* HaDiagnosticCluster::getAPSTxBcast() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getAPSRxUcast() {
-    auto result = (AttributeUInt16*)getAttributeById(264);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::APSRxUcast);
     if (result == nullptr) {
         result = new AttributeUInt16(264, DataType::UInt16);
         addAttribute(result);
@@ -11937,7 +12173,7 @@ AttributeUInt16* HaDiagnosticCluster::getAPSRxUcast() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getAPSTxUcastSuccess() {
-    auto result = (AttributeUInt16*)getAttributeById(265);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::APSTxUcastSuccess);
     if (result == nullptr) {
         result = new AttributeUInt16(265, DataType::UInt16);
         addAttribute(result);
@@ -11946,7 +12182,7 @@ AttributeUInt16* HaDiagnosticCluster::getAPSTxUcastSuccess() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getAPSTxUcastRetry() {
-    auto result = (AttributeUInt16*)getAttributeById(266);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::APSTxUcastRetry);
     if (result == nullptr) {
         result = new AttributeUInt16(266, DataType::UInt16);
         addAttribute(result);
@@ -11955,7 +12191,7 @@ AttributeUInt16* HaDiagnosticCluster::getAPSTxUcastRetry() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getAPSTxUcastFail() {
-    auto result = (AttributeUInt16*)getAttributeById(267);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::APSTxUcastFail);
     if (result == nullptr) {
         result = new AttributeUInt16(267, DataType::UInt16);
         addAttribute(result);
@@ -11964,7 +12200,7 @@ AttributeUInt16* HaDiagnosticCluster::getAPSTxUcastFail() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getRouteDiscInitiated() {
-    auto result = (AttributeUInt16*)getAttributeById(268);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::RouteDiscInitiated);
     if (result == nullptr) {
         result = new AttributeUInt16(268, DataType::UInt16);
         addAttribute(result);
@@ -11973,7 +12209,7 @@ AttributeUInt16* HaDiagnosticCluster::getRouteDiscInitiated() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getNeighborAdded() {
-    auto result = (AttributeUInt16*)getAttributeById(269);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::NeighborAdded);
     if (result == nullptr) {
         result = new AttributeUInt16(269, DataType::UInt16);
         addAttribute(result);
@@ -11982,7 +12218,7 @@ AttributeUInt16* HaDiagnosticCluster::getNeighborAdded() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getNeighborRemoved() {
-    auto result = (AttributeUInt16*)getAttributeById(270);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::NeighborRemoved);
     if (result == nullptr) {
         result = new AttributeUInt16(270, DataType::UInt16);
         addAttribute(result);
@@ -11991,7 +12227,7 @@ AttributeUInt16* HaDiagnosticCluster::getNeighborRemoved() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getNeighborStale() {
-    auto result = (AttributeUInt16*)getAttributeById(271);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::NeighborStale);
     if (result == nullptr) {
         result = new AttributeUInt16(271, DataType::UInt16);
         addAttribute(result);
@@ -12000,7 +12236,7 @@ AttributeUInt16* HaDiagnosticCluster::getNeighborStale() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getJoinIndication() {
-    auto result = (AttributeUInt16*)getAttributeById(272);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::JoinIndication);
     if (result == nullptr) {
         result = new AttributeUInt16(272, DataType::UInt16);
         addAttribute(result);
@@ -12009,7 +12245,7 @@ AttributeUInt16* HaDiagnosticCluster::getJoinIndication() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getChildMoved() {
-    auto result = (AttributeUInt16*)getAttributeById(273);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::ChildMoved);
     if (result == nullptr) {
         result = new AttributeUInt16(273, DataType::UInt16);
         addAttribute(result);
@@ -12018,7 +12254,7 @@ AttributeUInt16* HaDiagnosticCluster::getChildMoved() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getNwkFcFailure() {
-    auto result = (AttributeUInt16*)getAttributeById(274);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::NwkFcFailure);
     if (result == nullptr) {
         result = new AttributeUInt16(274, DataType::UInt16);
         addAttribute(result);
@@ -12027,7 +12263,7 @@ AttributeUInt16* HaDiagnosticCluster::getNwkFcFailure() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getApsFcFailure() {
-    auto result = (AttributeUInt16*)getAttributeById(275);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::ApsFcFailure);
     if (result == nullptr) {
         result = new AttributeUInt16(275, DataType::UInt16);
         addAttribute(result);
@@ -12036,7 +12272,7 @@ AttributeUInt16* HaDiagnosticCluster::getApsFcFailure() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getApsUnauthorizedKey() {
-    auto result = (AttributeUInt16*)getAttributeById(276);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::ApsUnauthorizedKey);
     if (result == nullptr) {
         result = new AttributeUInt16(276, DataType::UInt16);
         addAttribute(result);
@@ -12045,7 +12281,7 @@ AttributeUInt16* HaDiagnosticCluster::getApsUnauthorizedKey() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getNwkDecryptFailures() {
-    auto result = (AttributeUInt16*)getAttributeById(277);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::NwkDecryptFailures);
     if (result == nullptr) {
         result = new AttributeUInt16(277, DataType::UInt16);
         addAttribute(result);
@@ -12054,7 +12290,7 @@ AttributeUInt16* HaDiagnosticCluster::getNwkDecryptFailures() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getApsDecryptFailures() {
-    auto result = (AttributeUInt16*)getAttributeById(278);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::ApsDecryptFailures);
     if (result == nullptr) {
         result = new AttributeUInt16(278, DataType::UInt16);
         addAttribute(result);
@@ -12063,7 +12299,7 @@ AttributeUInt16* HaDiagnosticCluster::getApsDecryptFailures() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getPacketBufferAllocateFailures() {
-    auto result = (AttributeUInt16*)getAttributeById(279);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::PacketBufferAllocateFailures);
     if (result == nullptr) {
         result = new AttributeUInt16(279, DataType::UInt16);
         addAttribute(result);
@@ -12072,7 +12308,7 @@ AttributeUInt16* HaDiagnosticCluster::getPacketBufferAllocateFailures() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getRelayedUcast() {
-    auto result = (AttributeUInt16*)getAttributeById(280);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::RelayedUcast);
     if (result == nullptr) {
         result = new AttributeUInt16(280, DataType::UInt16);
         addAttribute(result);
@@ -12081,7 +12317,7 @@ AttributeUInt16* HaDiagnosticCluster::getRelayedUcast() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getPhyToMacQueueLimitReached() {
-    auto result = (AttributeUInt16*)getAttributeById(281);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::PhyToMacQueueLimitReached);
     if (result == nullptr) {
         result = new AttributeUInt16(281, DataType::UInt16);
         addAttribute(result);
@@ -12090,7 +12326,7 @@ AttributeUInt16* HaDiagnosticCluster::getPhyToMacQueueLimitReached() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getPacketValidateDropCount() {
-    auto result = (AttributeUInt16*)getAttributeById(282);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::PacketValidateDropCount);
     if (result == nullptr) {
         result = new AttributeUInt16(282, DataType::UInt16);
         addAttribute(result);
@@ -12099,7 +12335,7 @@ AttributeUInt16* HaDiagnosticCluster::getPacketValidateDropCount() {
 }
 
 AttributeUInt16* HaDiagnosticCluster::getAverageMacRetryPerApsMessageSent() {
-    auto result = (AttributeUInt16*)getAttributeById(283);
+    auto result = (AttributeUInt16*)getAttributeById((uint16_t)HaDiagnosticAttribute::AverageMacRetryPerApsMessageSent);
     if (result == nullptr) {
         result = new AttributeUInt16(283, DataType::UInt16);
         addAttribute(result);
@@ -12108,7 +12344,7 @@ AttributeUInt16* HaDiagnosticCluster::getAverageMacRetryPerApsMessageSent() {
 }
 
 AttributeUInt8* HaDiagnosticCluster::getLastMessageLqi() {
-    auto result = (AttributeUInt8*)getAttributeById(284);
+    auto result = (AttributeUInt8*)getAttributeById((uint16_t)HaDiagnosticAttribute::LastMessageLqi);
     if (result == nullptr) {
         result = new AttributeUInt8(284, DataType::UInt8);
         addAttribute(result);
@@ -12117,7 +12353,7 @@ AttributeUInt8* HaDiagnosticCluster::getLastMessageLqi() {
 }
 
 AttributeInt8* HaDiagnosticCluster::getLastMessageRssi() {
-    auto result = (AttributeInt8*)getAttributeById(285);
+    auto result = (AttributeInt8*)getAttributeById((uint16_t)HaDiagnosticAttribute::LastMessageRssi);
     if (result == nullptr) {
         result = new AttributeInt8(285, DataType::Int8);
         addAttribute(result);
@@ -12200,7 +12436,7 @@ void TouchlinkCluster::processCommand(uint8_t commandId, Memory& request, Memory
 }
 
 AttributeString* WiserDeviceInfoCluster::getDeviceInfo() {
-    auto result = (AttributeString*)getAttributeById(32);
+    auto result = (AttributeString*)getAttributeById((uint16_t)WiserDeviceInfoAttribute::DeviceInfo);
     if (result == nullptr) {
         result = new AttributeString(32);
         addAttribute(result);

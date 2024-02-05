@@ -142,7 +142,9 @@ public class Generator
 
                 for (int i = bytes - 1; i >= 0; i--)
                 {
-                    cw.WriteLine($"_data[_position + {bytes - i - 1}] = (value >> {i * 8}) & 0xff;");
+                    cw.WriteLine(
+                        $"_data[_position + {bytes - i - 1}] = (value >> {i * 8}) & 0xff;"
+                    );
                 }
 
                 cw.WriteLine($"_position += {bytes};");
@@ -167,12 +169,12 @@ public class Generator
         foreach (var type in DataType.AllTypes)
         {
             if (
-                type.TypeName == null ||
-                type.DataTypeName == "String16" ||
-                type.DataTypeName == "String" ||
-                type.DataTypeName == "Octstr16" ||
-                type.DataTypeName == "Octstr" ||
-                type.DataTypeName == "Semi"
+                type.TypeName == null
+                || type.DataTypeName == "String16"
+                || type.DataTypeName == "String"
+                || type.DataTypeName == "Octstr16"
+                || type.DataTypeName == "Octstr"
+                || type.DataTypeName == "Semi"
             )
                 continue;
             if (!seen.Add(type.MemoryMethodName))
@@ -188,7 +190,9 @@ public class Generator
             cwh.WriteLine("public:");
             cwh.Indent();
 
-            cwh.WriteLine($"Attribute{type.MemoryMethodName}(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {{");
+            cwh.WriteLine(
+                $"Attribute{type.MemoryMethodName}(uint16_t attributeId, DataType dataType) : Attribute(attributeId, dataType) {{"
+            );
             cwh.WriteLine("}");
             cwh.WriteLine();
 
@@ -196,8 +200,12 @@ public class Generator
             cwh.WriteLine();
             cwh.WriteLine($"void setValue({type.TypeName} value) {{");
             cwh.Indent();
+            cwh.WriteLine("if (_value != value) {");
+            cwh.Indent();
             cwh.WriteLine("_value = value;");
             cwh.WriteLine("markDirty();");
+            cwh.UnIndent();
+            cwh.WriteLine("}");
             cwh.UnIndent();
             cwh.WriteLine("}");
             cwh.WriteLine();
@@ -310,9 +318,13 @@ public class Generator
         cw.Indent();
         cw.WriteLine("switch (dataType) {");
 
-        foreach (var typeGroup in DataType.AllTypes
-                     .Where(p => p.Length != -1 && p.TypeName != null && p.DataTypeName != "Semi")
-                     .GroupBy(p => p.Length))
+        foreach (
+            var typeGroup in DataType
+                .AllTypes.Where(p =>
+                    p.Length != -1 && p.TypeName != null && p.DataTypeName != "Semi"
+                )
+                .GroupBy(p => p.Length)
+        )
         {
             foreach (var type in typeGroup)
             {
@@ -371,7 +383,11 @@ public class Generator
         int end = content.LastIndexOf("}") + 1;
 
         string data = content.Substring(start, end - start);
-        data = Regex.Replace(data, @"(DataType|ManufacturerCode|BuffaloZclDataType)\.\w+", p => $"'{p.Value}'");
+        data = Regex.Replace(
+            data,
+            @"(DataType|ManufacturerCode|BuffaloZclDataType)\.\w+",
+            p => $"'{p.Value}'"
+        );
         data = Regex.Replace(data, "0b[01]+", p => BitToHex(p.Value));
 
         var obj = JObject.Parse(data);
@@ -392,21 +408,38 @@ public class Generator
         foreach (var (key, _) in obj)
         {
             var cluster = (JObject)obj[key];
-            if (key.StartsWith("manuSpecific") || !String.IsNullOrEmpty((string)cluster["manufacturerCode"]))
+            if (
+                key.StartsWith("manuSpecific")
+                || !String.IsNullOrEmpty((string)cluster["manufacturerCode"])
+            )
                 continue;
 
             // Parse the commands.
 
-            var responses = ParseCommands((JObject)cluster["commandsResponse"]).ToDictionary(p => p.Id, p => p);
+            var responses = ParseCommands((JObject)cluster["commandsResponse"])
+                .ToDictionary(p => p.Id, p => p);
             var commands = ParseCommands((JObject)cluster["commands"], responses);
 
             commands.RemoveAll(p =>
-                p.Parameters.Any(p1 => p1.TypeName == null) || (
-                    p.Response != null &&
-                    p.Response.Parameters.Any(p1 => p1.TypeName == null)
-                )
+                p.Parameters.Any(p1 => p1.TypeName == null)
+                || (p.Response != null && p.Response.Parameters.Any(p1 => p1.TypeName == null))
             );
 
+            cwh.WriteLine();
+
+            // Attribute enum definition.
+
+            cwh.WriteLine($"enum class {key.ToUpperFirst()}Attribute: uint16_t {{");
+            cwh.Indent();
+
+            foreach (var (attributeName, _) in (JObject)cluster["attributes"]!)
+            {
+                var attribute = (JObject)cluster["attributes"][attributeName];
+                cwh.WriteLine($"{attributeName.ToUpperFirst()} = {attribute["ID"]},");
+            }
+
+            cwh.UnIndent();
+            cwh.WriteLine("};");
             cwh.WriteLine();
 
             // Class definition.
@@ -417,7 +450,9 @@ public class Generator
 
             // Constructor.
 
-            cwh.WriteLine($"{key.ToUpperFirst()}Cluster(ClusterType type = ClusterType::Input) : Cluster({cluster["ID"]}, type) {{");
+            cwh.WriteLine(
+                $"{key.ToUpperFirst()}Cluster(ClusterType type = ClusterType::Input) : Cluster({cluster["ID"]}, type) {{"
+            );
             cwh.WriteLine("}");
 
             // Attribute getters and setters.
@@ -425,7 +460,10 @@ public class Generator
             foreach (var (attributeName, _) in (JObject)cluster["attributes"]!)
             {
                 var attribute = (JObject)cluster["attributes"][attributeName];
-                if (attributeName.StartsWith("tuya") || !String.IsNullOrEmpty((string)attribute["manufacturerCode"]))
+                if (
+                    attributeName.StartsWith("tuya")
+                    || !String.IsNullOrEmpty((string)attribute["manufacturerCode"])
+                )
                     continue;
 
                 var attributeType = (string)attribute["type"];
@@ -434,18 +472,28 @@ public class Generator
                 if (type?.TypeName == null)
                     continue;
 
-                cwh.WriteLine($"Attribute{type.MemoryMethodName}* get{attributeName.ToUpperFirst()}();");
+                cwh.WriteLine(
+                    $"Attribute{type.MemoryMethodName}* get{attributeName.ToUpperFirst()}();"
+                );
 
                 cw.WriteLine();
-                cw.WriteLine($"Attribute{type.MemoryMethodName}* {key.ToUpperFirst()}Cluster::get{attributeName.ToUpperFirst()}() {{");
+                cw.WriteLine(
+                    $"Attribute{type.MemoryMethodName}* {key.ToUpperFirst()}Cluster::get{attributeName.ToUpperFirst()}() {{"
+                );
                 cw.Indent();
-                cw.WriteLine($"auto result = (Attribute{type.MemoryMethodName}*)getAttributeById({attribute["ID"]});");
+                cw.WriteLine(
+                    $"auto result = (Attribute{type.MemoryMethodName}*)getAttributeById((uint16_t){key.ToUpperFirst()}Attribute::{attributeName.ToUpperFirst()});"
+                );
                 cw.WriteLine("if (result == nullptr) {");
                 cw.Indent();
                 if (type.DataTypeName == "String" || type.DataTypeName == "Octstr")
-                    cw.WriteLine($"result = new Attribute{type.MemoryMethodName}({attribute["ID"]});");
+                    cw.WriteLine(
+                        $"result = new Attribute{type.MemoryMethodName}({attribute["ID"]});"
+                    );
                 else
-                    cw.WriteLine($"result = new Attribute{type.MemoryMethodName}({attribute["ID"]}, DataType::{type.DataTypeName});");
+                    cw.WriteLine(
+                        $"result = new Attribute{type.MemoryMethodName}({attribute["ID"]}, DataType::{type.DataTypeName});"
+                    );
                 cw.WriteLine("addAttribute(result);");
                 cw.UnIndent();
                 cw.WriteLine("}");
@@ -482,8 +530,12 @@ public class Generator
                     {
                         string argumentTypeName = GetArgumentTypeName(parameter.TypeName);
 
-                        cwh.WriteLine($"{parameter.TypeName} get{parameter.Name.ToUpperFirst()}() {{ return _{parameter.Name}; }}");
-                        cwh.WriteLine($"void set{parameter.Name.ToUpperFirst()}({argumentTypeName} {parameter.Name}) {{ _{parameter.Name} = {parameter.Name}; }}");
+                        cwh.WriteLine(
+                            $"{parameter.TypeName} get{parameter.Name.ToUpperFirst()}() {{ return _{parameter.Name}; }}"
+                        );
+                        cwh.WriteLine(
+                            $"void set{parameter.Name.ToUpperFirst()}({argumentTypeName} {parameter.Name}) {{ _{parameter.Name} = {parameter.Name}; }}"
+                        );
                         cwh.WriteLine();
                     }
 
@@ -523,7 +575,9 @@ public class Generator
                 if (command.Response == null)
                 {
                     cwh.WriteLine();
-                    cwh.Write($"void send{command.Name.ToUpperFirst()}Command(DeviceManager& deviceManager, uint8_t endpointId");
+                    cwh.Write(
+                        $"void send{command.Name.ToUpperFirst()}Command(DeviceManager& deviceManager, uint8_t endpointId"
+                    );
 
                     for (var i = 0; i < command.Parameters.Count; i++)
                     {
@@ -534,7 +588,9 @@ public class Generator
                     cwh.WriteLine(");");
 
                     cw.WriteLine();
-                    cw.Write($"void {key.ToUpperFirst()}Cluster::send{command.Name.ToUpperFirst()}Command(DeviceManager& deviceManager, uint8_t endpointId");
+                    cw.Write(
+                        $"void {key.ToUpperFirst()}Cluster::send{command.Name.ToUpperFirst()}Command(DeviceManager& deviceManager, uint8_t endpointId"
+                    );
 
                     for (var i = 0; i < command.Parameters.Count; i++)
                     {
@@ -559,7 +615,9 @@ public class Generator
                     foreach (var parameter in command.Parameters)
                     {
                         var type = GetDataType(parameter.DataType, parameter.Name);
-                        cw.WriteLine($"buffer.write{type.EndianMemoryMethodName}({parameter.Name});");
+                        cw.WriteLine(
+                            $"buffer.write{type.EndianMemoryMethodName}({parameter.Name});"
+                        );
                     }
 
                     cw.WriteLine();
@@ -575,10 +633,14 @@ public class Generator
             if (commands.Count > 0)
             {
                 cwh.WriteLine();
-                cwh.WriteLine("void processCommand(uint8_t commandId, Memory& request, Memory& response) override;");
+                cwh.WriteLine(
+                    "void processCommand(uint8_t commandId, Memory& request, Memory& response) override;"
+                );
 
                 cw.WriteLine();
-                cw.WriteLine($"void {key.ToUpperFirst()}Cluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {{");
+                cw.WriteLine(
+                    $"void {key.ToUpperFirst()}Cluster::processCommand(uint8_t commandId, Memory& request, Memory& response) {{"
+                );
                 cw.Indent();
 
                 cw.WriteLine("switch (commandId) {");
@@ -594,7 +656,9 @@ public class Generator
                     foreach (var parameter in command.Parameters)
                     {
                         var type = GetDataType(parameter.DataType, parameter.Name);
-                        cw.WriteLine($"auto {parameter.Name} = request.read{type.EndianMemoryMethodName}();");
+                        cw.WriteLine(
+                            $"auto {parameter.Name} = request.read{type.EndianMemoryMethodName}();"
+                        );
                     }
 
                     if (command.Response != null)
@@ -630,7 +694,9 @@ public class Generator
                         foreach (var parameter in command.Response.Parameters)
                         {
                             var type = GetDataType(parameter.DataType, parameter.Name);
-                            cw.WriteLine($"response.write{type.EndianMemoryMethodName}(response_.get{parameter.Name.ToUpperFirst()}());");
+                            cw.WriteLine(
+                                $"response.write{type.EndianMemoryMethodName}(response_.get{parameter.Name.ToUpperFirst()}());"
+                            );
                         }
 
                         cw.UnIndent();
@@ -688,9 +754,15 @@ public class Generator
             var parsed = new Command((int)command["ID"], commandName, response);
             commands.Add(parsed);
 
-            parsed.Parameters.AddRange(parameters.Select(p =>
-                ((string)p["type"], GetDataType((string)p["type"], (string)p["name"]).TypeName, (string)p["name"])
-            ));
+            parsed.Parameters.AddRange(
+                parameters.Select(p =>
+                    (
+                        (string)p["type"],
+                        GetDataType((string)p["type"], (string)p["name"]).TypeName,
+                        (string)p["name"]
+                    )
+                )
+            );
         }
 
         return commands;
@@ -705,7 +777,17 @@ public class Generator
 
     private void WriteFile(string fileName, string code, bool rewrite = false)
     {
-        string target = Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), "..", "..", "..", "..", "..", "ZigBeeHomeAutomation", "src", fileName);
+        string target = Path.Combine(
+            Path.GetDirectoryName(GetType().Assembly.Location),
+            "..",
+            "..",
+            "..",
+            "..",
+            "..",
+            "ZigBeeHomeAutomation",
+            "src",
+            fileName
+        );
 
         if (rewrite)
         {
@@ -730,7 +812,9 @@ public class Generator
             return File.ReadAllText(cacheFileName);
 #endif
 
-        string data = new WebClient().DownloadString("https://raw.githubusercontent.com/Koenkk/zigbee-herdsman/master/src/zcl/definition/cluster.ts");
+        string data = new WebClient().DownloadString(
+            "https://raw.githubusercontent.com/Koenkk/zigbee-herdsman/master/src/zcl/definition/cluster.ts"
+        );
 
 #if DEBUG
         File.WriteAllText(cacheFileName, data);
@@ -756,8 +840,8 @@ public class Generator
     private DataType GetDataType(string type, string name)
     {
         if (
-            type == "DataType.struct" &&
-            name is "changeOfStateTime" or "timeOfATReset" or "timeOfSCReset"
+            type == "DataType.struct"
+            && name is "changeOfStateTime" or "timeOfATReset" or "timeOfSCReset"
         )
             return DataType.GetByHerdsmanName("DateTime");
 

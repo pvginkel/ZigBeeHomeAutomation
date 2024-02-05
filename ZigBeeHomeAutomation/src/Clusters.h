@@ -1,5 +1,27 @@
 #pragma once
 
+enum class GenBasicAttribute: uint16_t {
+    ZclVersion = 0,
+    AppVersion = 1,
+    StackVersion = 2,
+    HwVersion = 3,
+    ManufacturerName = 4,
+    ModelId = 5,
+    DateCode = 6,
+    PowerSource = 7,
+    AppProfileVersion = 8,
+    SwBuildId = 16384,
+    LocationDesc = 16,
+    PhysicalEnv = 17,
+    DeviceEnabled = 18,
+    AlarmMask = 19,
+    DisableLocalConfig = 20,
+    DevelcoPrimarySwVersion = 32768,
+    DevelcoPrimaryHwVersion = 32800,
+    DevelcoLedControl = 33024,
+    SchneiderMeterRadioPower = 57856,
+};
+
 class GenBasicCluster: public Cluster {
 public:
     GenBasicCluster(ClusterType type = ClusterType::Input) : Cluster(0, type) {
@@ -27,6 +49,32 @@ public:
     void sendResetFactDefaultCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
+};
+
+enum class GenPowerCfgAttribute: uint16_t {
+    MainsVoltage = 0,
+    MainsFrequency = 1,
+    MainsAlarmMask = 16,
+    MainsVoltMinThres = 17,
+    MainsVoltMaxThres = 18,
+    MainsVoltageDwellTripPoint = 19,
+    BatteryVoltage = 32,
+    BatteryPercentageRemaining = 33,
+    BatteryManufacturer = 48,
+    BatterySize = 49,
+    BatteryAHrRating = 50,
+    BatteryQuantity = 51,
+    BatteryRatedVoltage = 52,
+    BatteryAlarmMask = 53,
+    BatteryVoltMinThres = 54,
+    BatteryVoltThres1 = 55,
+    BatteryVoltThres2 = 56,
+    BatteryVoltThres3 = 57,
+    BatteryPercentMinThres = 58,
+    BatteryPercentThres1 = 59,
+    BatteryPercentThres2 = 60,
+    BatteryPercentThres3 = 61,
+    BatteryAlarmState = 62,
 };
 
 class GenPowerCfgCluster: public Cluster {
@@ -58,6 +106,18 @@ public:
     AttributeUInt32* getBatteryAlarmState();
 };
 
+enum class GenDeviceTempCfgAttribute: uint16_t {
+    CurrentTemperature = 0,
+    MinTempExperienced = 1,
+    MaxTempExperienced = 2,
+    OverTempTotalDwell = 3,
+    DevTempAlarmMask = 16,
+    LowTempThres = 17,
+    HighTempThres = 18,
+    LowTempDwellTripPoint = 19,
+    HighTempDwellTripPoint = 20,
+};
+
 class GenDeviceTempCfgCluster: public Cluster {
 public:
     GenDeviceTempCfgCluster(ClusterType type = ClusterType::Input) : Cluster(2, type) {
@@ -71,6 +131,11 @@ public:
     AttributeInt16* getHighTempThres();
     AttributeUInt24* getLowTempDwellTripPoint();
     AttributeUInt24* getHighTempDwellTripPoint();
+};
+
+enum class GenIdentifyAttribute: uint16_t {
+    IdentifyTime = 0,
+    IdentifyCommissionState = 1,
 };
 
 class GenIdentifyCluster: public Cluster {
@@ -110,6 +175,10 @@ public:
     void sendTriggerEffectCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t effectid, uint8_t effectvariant);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
+};
+
+enum class GenGroupsAttribute: uint16_t {
+    NameSupport = 0,
 };
 
 class GenGroupsCluster: public Cluster {
@@ -171,6 +240,15 @@ public:
     void sendAddIfIdentifyingCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t groupid, String groupname);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
+};
+
+enum class GenScenesAttribute: uint16_t {
+    Count = 0,
+    CurrentScene = 1,
+    CurrentGroup = 2,
+    SceneValid = 3,
+    NameSupport = 4,
+    LastCfgBy = 5,
 };
 
 class GenScenesCluster: public Cluster {
@@ -291,6 +369,22 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class GenOnOffAttribute: uint16_t {
+    OnOff = 0,
+    GlobalSceneCtrl = 16384,
+    OnTime = 16385,
+    OffWaitTime = 16386,
+    StartUpOnOff = 16387,
+    TuyaBacklightSwitch = 20480,
+    TuyaBacklightMode = 32769,
+    MoesStartUpOnOff = 32770,
+    TuyaOperationMode = 32772,
+    ElkoPreWarningTime = 57344,
+    ElkoOnTimeReload = 57345,
+    ElkoOnTimeReloadOptions = 57346,
+    NodonTransitionTime = 1,
+};
+
 class GenOnOffCluster: public Cluster {
 public:
     GenOnOffCluster(ClusterType type = ClusterType::Input) : Cluster(6, type) {
@@ -341,12 +435,47 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class GenOnOffSwitchCfgAttribute: uint16_t {
+    SwitchType = 0,
+    SwitchMultiFunction = 2,
+    SwitchActions = 16,
+};
+
 class GenOnOffSwitchCfgCluster: public Cluster {
 public:
     GenOnOffSwitchCfgCluster(ClusterType type = ClusterType::Input) : Cluster(7, type) {
     }
     AttributeUInt8* getSwitchType();
     AttributeUInt8* getSwitchActions();
+};
+
+enum class GenLevelCtrlAttribute: uint16_t {
+    CurrentLevel = 0,
+    RemainingTime = 1,
+    MinLevel = 2,
+    MaxLevel = 3,
+    Options = 15,
+    OnOffTransitionTime = 16,
+    OnLevel = 17,
+    OnTransitionTime = 18,
+    OffTransitionTime = 19,
+    DefaultMoveRate = 20,
+    StartUpCurrentLevel = 16384,
+    ElkoStartUpCurrentLevel = 16384,
+    UbisysMinimumOnLevel = 0,
+    UbisysValveType = 1,
+    UbisysCyclePeriod = 2,
+    UbisysSeason = 3,
+    UbisysBackupLevel = 4,
+    UbisysAlternateBackupLevel = 5,
+    UbisysLowerRange = 6,
+    UbisysUpperRange = 7,
+    UbisysPumpThresholdOn = 8,
+    UbisysPumpThresholdOff = 9,
+    UbisysHeatingDemandEnableThreshold = 10,
+    UbisysHeatingDemandDisableThreshold = 11,
+    UbisysCoolingDemandEnableThreshold = 12,
+    UbisysCoolingDemandDisableThreshold = 13,
 };
 
 class GenLevelCtrlCluster: public Cluster {
@@ -422,6 +551,10 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class GenAlarmsAttribute: uint16_t {
+    AlarmCount = 0,
+};
+
 class GenAlarmsCluster: public Cluster {
 public:
     GenAlarmsCluster(ClusterType type = ClusterType::Input) : Cluster(9, type) {
@@ -461,6 +594,19 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class GenTimeAttribute: uint16_t {
+    Time = 0,
+    TimeStatus = 1,
+    TimeZone = 2,
+    DstStart = 3,
+    DstEnd = 4,
+    DstShift = 5,
+    StandardTime = 6,
+    LocalTime = 7,
+    LastSetTime = 8,
+    ValidUntilTime = 9,
+};
+
 class GenTimeCluster: public Cluster {
 public:
     GenTimeCluster(ClusterType type = ClusterType::Input) : Cluster(10, type) {
@@ -475,6 +621,22 @@ public:
     AttributeUInt32* getLocalTime();
     AttributeUInt32* getLastSetTime();
     AttributeUInt32* getValidUntilTime();
+};
+
+enum class GenRssiLocationAttribute: uint16_t {
+    Type = 0,
+    Method = 1,
+    Age = 2,
+    QualityMeasure = 3,
+    NumOfDevices = 4,
+    Coordinate1 = 16,
+    Coordinate2 = 17,
+    Coordinate3 = 18,
+    Power = 19,
+    PathLossExponent = 20,
+    ReportingPeriod = 21,
+    CalcPeriod = 22,
+    NumRSSIMeasurements = 23,
 };
 
 class GenRssiLocationCluster: public Cluster {
@@ -522,6 +684,19 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class GenAnalogInputAttribute: uint16_t {
+    Description = 28,
+    MaxPresentValue = 65,
+    MinPresentValue = 69,
+    OutOfService = 81,
+    PresentValue = 85,
+    Reliability = 103,
+    Resolution = 106,
+    StatusFlags = 111,
+    EngineeringUnits = 117,
+    ApplicationType = 256,
+};
+
 class GenAnalogInputCluster: public Cluster {
 public:
     GenAnalogInputCluster(ClusterType type = ClusterType::Input) : Cluster(12, type) {
@@ -536,6 +711,21 @@ public:
     AttributeUInt8* getStatusFlags();
     AttributeUInt16* getEngineeringUnits();
     AttributeUInt32* getApplicationType();
+};
+
+enum class GenAnalogOutputAttribute: uint16_t {
+    Description = 28,
+    MaxPresentValue = 65,
+    MinPresentValue = 69,
+    OutOfService = 81,
+    PresentValue = 85,
+    PriorityArray = 87,
+    Reliability = 103,
+    RelinquishDefault = 104,
+    Resolution = 106,
+    StatusFlags = 111,
+    EngineeringUnits = 117,
+    ApplicationType = 256,
 };
 
 class GenAnalogOutputCluster: public Cluster {
@@ -555,6 +745,18 @@ public:
     AttributeUInt32* getApplicationType();
 };
 
+enum class GenAnalogValueAttribute: uint16_t {
+    Description = 28,
+    OutOfService = 81,
+    PresentValue = 85,
+    PriorityArray = 87,
+    Reliability = 103,
+    RelinquishDefault = 104,
+    StatusFlags = 111,
+    EngineeringUnits = 117,
+    ApplicationType = 256,
+};
+
 class GenAnalogValueCluster: public Cluster {
 public:
     GenAnalogValueCluster(ClusterType type = ClusterType::Input) : Cluster(14, type) {
@@ -567,6 +769,18 @@ public:
     AttributeUInt8* getStatusFlags();
     AttributeUInt16* getEngineeringUnits();
     AttributeUInt32* getApplicationType();
+};
+
+enum class GenBinaryInputAttribute: uint16_t {
+    ActiveText = 4,
+    Description = 28,
+    InactiveText = 46,
+    OutOfService = 81,
+    Polarity = 84,
+    PresentValue = 85,
+    Reliability = 103,
+    StatusFlags = 111,
+    ApplicationType = 256,
 };
 
 class GenBinaryInputCluster: public Cluster {
@@ -582,6 +796,22 @@ public:
     AttributeUInt8* getReliability();
     AttributeUInt8* getStatusFlags();
     AttributeUInt32* getApplicationType();
+};
+
+enum class GenBinaryOutputAttribute: uint16_t {
+    ActiveText = 4,
+    Description = 28,
+    InactiveText = 46,
+    MinimumOffTime = 66,
+    MinimumOnTime = 67,
+    OutOfService = 81,
+    Polarity = 84,
+    PresentValue = 85,
+    PriorityArray = 87,
+    Reliability = 103,
+    RelinquishDefault = 104,
+    StatusFlags = 111,
+    ApplicationType = 256,
 };
 
 class GenBinaryOutputCluster: public Cluster {
@@ -602,6 +832,21 @@ public:
     AttributeUInt32* getApplicationType();
 };
 
+enum class GenBinaryValueAttribute: uint16_t {
+    ActiveText = 4,
+    Description = 28,
+    InactiveText = 46,
+    MinimumOffTime = 66,
+    MinimumOnTime = 67,
+    OutOfService = 81,
+    PresentValue = 85,
+    PriorityArray = 87,
+    Reliability = 103,
+    RelinquishDefault = 104,
+    StatusFlags = 111,
+    ApplicationType = 256,
+};
+
 class GenBinaryValueCluster: public Cluster {
 public:
     GenBinaryValueCluster(ClusterType type = ClusterType::Input) : Cluster(17, type) {
@@ -619,6 +864,17 @@ public:
     AttributeUInt32* getApplicationType();
 };
 
+enum class GenMultistateInputAttribute: uint16_t {
+    StateText = 14,
+    Description = 28,
+    NumberOfStates = 74,
+    OutOfService = 81,
+    PresentValue = 85,
+    Reliability = 103,
+    StatusFlags = 111,
+    ApplicationType = 256,
+};
+
 class GenMultistateInputCluster: public Cluster {
 public:
     GenMultistateInputCluster(ClusterType type = ClusterType::Input) : Cluster(18, type) {
@@ -630,6 +886,19 @@ public:
     AttributeUInt8* getReliability();
     AttributeUInt8* getStatusFlags();
     AttributeUInt32* getApplicationType();
+};
+
+enum class GenMultistateOutputAttribute: uint16_t {
+    StateText = 14,
+    Description = 28,
+    NumberOfStates = 74,
+    OutOfService = 81,
+    PresentValue = 85,
+    PriorityArray = 87,
+    Reliability = 103,
+    RelinquishDefault = 104,
+    StatusFlags = 111,
+    ApplicationType = 256,
 };
 
 class GenMultistateOutputCluster: public Cluster {
@@ -646,6 +915,19 @@ public:
     AttributeUInt32* getApplicationType();
 };
 
+enum class GenMultistateValueAttribute: uint16_t {
+    StateText = 14,
+    Description = 28,
+    NumberOfStates = 74,
+    OutOfService = 81,
+    PresentValue = 85,
+    PriorityArray = 87,
+    Reliability = 103,
+    RelinquishDefault = 104,
+    StatusFlags = 111,
+    ApplicationType = 256,
+};
+
 class GenMultistateValueCluster: public Cluster {
 public:
     GenMultistateValueCluster(ClusterType type = ClusterType::Input) : Cluster(20, type) {
@@ -658,6 +940,33 @@ public:
     AttributeUInt16* getRelinquishDefault();
     AttributeUInt8* getStatusFlags();
     AttributeUInt32* getApplicationType();
+};
+
+enum class GenCommissioningAttribute: uint16_t {
+    Shortress = 0,
+    ExtendedPANId = 1,
+    PanId = 2,
+    Channelmask = 3,
+    ProtocolVersion = 4,
+    StackProfile = 5,
+    StartupControl = 6,
+    TrustCenterress = 16,
+    TrustCenterMasterKey = 17,
+    NetworkKey = 18,
+    UseInsecureJoin = 19,
+    PreconfiguredLinkKey = 20,
+    NetworkKeySeqNum = 21,
+    NetworkKeyType = 22,
+    NetworkManagerress = 23,
+    ScanAttempts = 32,
+    TimeBetweenScans = 33,
+    RejoinInterval = 34,
+    MaxRejoinInterval = 35,
+    IndirectPollRate = 48,
+    ParentRetryThreshold = 49,
+    ConcentratorFlag = 64,
+    ConcentratorRus = 65,
+    ConcentratorDiscoveryTime = 66,
 };
 
 class GenCommissioningCluster: public Cluster {
@@ -711,6 +1020,20 @@ public:
     void sendResetStartupParamsCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t options, uint8_t index);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
+};
+
+enum class GenOtaAttribute: uint16_t {
+    UpgradeServerId = 0,
+    FileOffset = 1,
+    CurrentFileVersion = 2,
+    CurrentZigbeeStackVersion = 3,
+    DownloadedFileVersion = 4,
+    DownloadedZigbeeStackVersion = 5,
+    ImageUpgradeStatus = 6,
+    ManufacturerId = 7,
+    ImageTypeId = 8,
+    MinimumBlockReqDelay = 9,
+    ImageStamp = 10,
 };
 
 class GenOtaCluster: public Cluster {
@@ -790,6 +1113,16 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class GenPollCtrlAttribute: uint16_t {
+    CheckinInterval = 0,
+    LongPollInterval = 1,
+    ShortPollInterval = 2,
+    FastPollTimeout = 3,
+    CheckinIntervalMin = 4,
+    LongPollIntervalMin = 5,
+    FastPollTimeoutMax = 6,
+};
+
 class GenPollCtrlCluster: public Cluster {
 public:
     GenPollCtrlCluster(ClusterType type = ClusterType::Input) : Cluster(32, type) {
@@ -829,10 +1162,18 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class GreenPowerAttribute: uint16_t {
+};
+
 class GreenPowerCluster: public Cluster {
 public:
     GreenPowerCluster(ClusterType type = ClusterType::Input) : Cluster(33, type) {
     }
+};
+
+enum class MobileDeviceCfgAttribute: uint16_t {
+    KeepAliveTime = 0,
+    RejoinTimeout = 1,
 };
 
 class MobileDeviceCfgCluster: public Cluster {
@@ -843,11 +1184,20 @@ public:
     AttributeUInt16* getRejoinTimeout();
 };
 
+enum class NeighborCleaningAttribute: uint16_t {
+    NeighborCleaningTimeout = 0,
+};
+
 class NeighborCleaningCluster: public Cluster {
 public:
     NeighborCleaningCluster(ClusterType type = ClusterType::Input) : Cluster(35, type) {
     }
     AttributeUInt16* getNeighborCleaningTimeout();
+};
+
+enum class NearestGatewayAttribute: uint16_t {
+    NearestGateway = 0,
+    NewMobileNode = 1,
 };
 
 class NearestGatewayCluster: public Cluster {
@@ -856,6 +1206,14 @@ public:
     }
     AttributeUInt16* getNearestGateway();
     AttributeUInt16* getNewMobileNode();
+};
+
+enum class ClosuresShadeCfgAttribute: uint16_t {
+    PhysicalClosedLimit = 0,
+    MotorStepSize = 1,
+    Status = 2,
+    LosedLimit = 16,
+    Mode = 18,
 };
 
 class ClosuresShadeCfgCluster: public Cluster {
@@ -867,6 +1225,51 @@ public:
     AttributeUInt8* getStatus();
     AttributeUInt16* getLosedLimit();
     AttributeUInt8* getMode();
+};
+
+enum class ClosuresDoorLockAttribute: uint16_t {
+    LockState = 0,
+    LockType = 38,
+    ActuatorEnabled = 2,
+    DoorState = 3,
+    DoorOpenEvents = 4,
+    DoorClosedEvents = 5,
+    OpenPeriod = 6,
+    NumOfLockRecordsSupported = 16,
+    NumOfTotalUsersSupported = 17,
+    NumOfPinUsersSupported = 18,
+    NumOfRfidUsersSupported = 19,
+    NumOfWeekDaySchedulesSupportedPerUser = 20,
+    NumOfYearDaySchedulesSupportedPerUser = 21,
+    NumOfHolidayScheduledsSupported = 22,
+    MaxPinLen = 23,
+    MinPinLen = 24,
+    MaxRfidLen = 25,
+    MinRfidLen = 26,
+    EnableLogging = 32,
+    Language = 33,
+    LedSettings = 34,
+    AutoRelockTime = 35,
+    SoundVolume = 36,
+    OperatingMode = 37,
+    DefaultConfigurationRegister = 39,
+    EnableLocalProgramming = 40,
+    EnableOneTouchLocking = 41,
+    EnableInsideStatusLed = 42,
+    EnablePrivacyModeButton = 43,
+    WrongCodeEntryLimit = 48,
+    UserCodeTemporaryDisableTime = 49,
+    SendPinOta = 50,
+    RequirePinForRfOperation = 51,
+    ZigbeeSecurityLevel = 52,
+    AlarmMask = 64,
+    KeypadOperationEventMask = 65,
+    RfOperationEventMask = 66,
+    ManualOperationEventMask = 67,
+    RfidOperationEventMask = 68,
+    KeypadProgrammingEventMask = 69,
+    RfProgrammingEventMask = 70,
+    RfidProgrammingEventMask = 71,
 };
 
 class ClosuresDoorLockCluster: public Cluster {
@@ -1373,6 +1776,54 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class ClosuresWindowCoveringAttribute: uint16_t {
+    WindowCoveringType = 0,
+    PhysicalClosedLimitLiftCm = 1,
+    PhysicalClosedLimitTiltDdegree = 2,
+    CurrentPositionLiftCm = 3,
+    CurrentPositionTiltDdegree = 4,
+    NumOfActuationsLift = 5,
+    NumOfActuationsTilt = 6,
+    ConfigStatus = 7,
+    CurrentPositionLiftPercentage = 8,
+    CurrentPositionTiltPercentage = 9,
+    OperationalStatus = 10,
+    InstalledOpenLimitLiftCm = 16,
+    InstalledClosedLimitLiftCm = 17,
+    InstalledOpenLimitTiltDdegree = 18,
+    InstalledClosedLimitTiltDdegree = 19,
+    VelocityLift = 20,
+    AccelerationTimeLift = 21,
+    DecelerationTimeLift = 22,
+    WindowCoveringMode = 23,
+    IntermediateSetpointsLift = 24,
+    IntermediateSetpointsTilt = 25,
+    UbisysTurnaroundGuardTime = 4096,
+    UbisysLiftToTiltTransitionSteps = 4097,
+    UbisysTotalSteps = 4098,
+    UbisysLiftToTiltTransitionSteps2 = 4099,
+    UbisysTotalSteps2 = 4100,
+    UbisysAdditionalSteps = 4101,
+    UbisysInactivePowerThreshold = 4102,
+    UbisysStartupSteps = 4103,
+    TuyaMovingState = 61440,
+    TuyaCalibration = 61441,
+    StepPositionLift = 61441,
+    TuyaMotorReversal = 61442,
+    CalibrationMode = 61442,
+    MoesCalibrationTime = 61443,
+    TargetPositionTiltPercentage = 61443,
+    StepPositionTilt = 61444,
+    ElkoDriveCloseDuration = 57344,
+    ElkoProtectionStatus = 57360,
+    ElkoProtectionSensor = 57363,
+    ElkoSunProtectionIlluminanceThreshold = 57362,
+    ElkoLiftDriveUpTime = 57364,
+    ElkoLiftDriveDownTime = 57365,
+    ElkoTiltOpenCloseAndStepTime = 57366,
+    ElkoTiltPositionPercentageAfterMoveToLevel = 57367,
+};
+
 class ClosuresWindowCoveringCluster: public Cluster {
 public:
     ClosuresWindowCoveringCluster(ClusterType type = ClusterType::Input) : Cluster(258, type) {
@@ -1451,6 +1902,19 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class BarrierControlAttribute: uint16_t {
+    MovingState = 1,
+    SafetyStatus = 2,
+    Capabilities = 3,
+    OpenEvents = 4,
+    CloseEvents = 5,
+    CommandOpenEvents = 6,
+    CommandCloseEvents = 7,
+    OpenPeriod = 8,
+    ClosePeriod = 9,
+    BarrierPosition = 10,
+};
+
 class BarrierControlCluster: public Cluster {
 public:
     BarrierControlCluster(ClusterType type = ClusterType::Input) : Cluster(259, type) {
@@ -1481,6 +1945,33 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class HvacPumpCfgCtrlAttribute: uint16_t {
+    MaxPressure = 0,
+    MaxSpeed = 1,
+    MaxFlow = 2,
+    MinConstPressure = 3,
+    MaxConstPressure = 4,
+    MinCompPressure = 5,
+    MaxCompPressure = 6,
+    MinConstSpeed = 7,
+    MaxConstSpeed = 8,
+    MinConstFlow = 9,
+    MaxConstFlow = 10,
+    MinConstTemp = 11,
+    MaxConstTemp = 12,
+    PumpStatus = 16,
+    EffectiveOperationMode = 17,
+    EffectiveControlMode = 18,
+    Capacity = 19,
+    Speed = 20,
+    LifetimeRunningHours = 21,
+    Power = 22,
+    LifetimeEnergyConsumed = 23,
+    OperationMode = 32,
+    ControlMode = 33,
+    AlarmMask = 34,
+};
+
 class HvacPumpCfgCtrlCluster: public Cluster {
 public:
     HvacPumpCfgCtrlCluster(ClusterType type = ClusterType::Input) : Cluster(512, type) {
@@ -1509,6 +2000,125 @@ public:
     AttributeUInt8* getOperationMode();
     AttributeUInt8* getControlMode();
     AttributeUInt16* getAlarmMask();
+};
+
+enum class HvacThermostatAttribute: uint16_t {
+    LocalTemp = 0,
+    OutdoorTemp = 1,
+    Occupancy = 2,
+    AbsMinHeatSetpointLimit = 3,
+    AbsMaxHeatSetpointLimit = 4,
+    AbsMinCoolSetpointLimit = 5,
+    AbsMaxCoolSetpointLimit = 6,
+    PICoolingDemand = 7,
+    PIHeatingDemand = 8,
+    SystemTypeConfig = 9,
+    LocalTemperatureCalibration = 16,
+    OccupiedCoolingSetpoint = 17,
+    OccupiedHeatingSetpoint = 18,
+    UnoccupiedCoolingSetpoint = 19,
+    UnoccupiedHeatingSetpoint = 20,
+    MinHeatSetpointLimit = 21,
+    MaxHeatSetpointLimit = 22,
+    MinCoolSetpointLimit = 23,
+    MaxCoolSetpointLimit = 24,
+    MinSetpointDeadBand = 25,
+    RemoteSensing = 26,
+    CtrlSeqeOfOper = 27,
+    SystemMode = 28,
+    AlarmMask = 29,
+    RunningMode = 30,
+    StartOfWeek = 32,
+    NumberOfWeeklyTrans = 33,
+    NumberOfDailyTrans = 34,
+    TempSetpointHold = 35,
+    TempSetpointHoldDuration = 36,
+    ProgramingOperMode = 37,
+    RunningState = 41,
+    SetpointChangeSource = 48,
+    SetpointChangeAmount = 49,
+    SetpointChangeSourceTimeStamp = 50,
+    AcType = 64,
+    AcCapacity = 65,
+    AcRefrigerantType = 66,
+    AcConpressorType = 67,
+    AcErrorCode = 68,
+    AcLouverPosition = 69,
+    AcCollTemp = 70,
+    AcCapacityFormat = 71,
+    SinopeOccupancy = 1024,
+    SinopeMainCycleOutput = 1025,
+    SinopeBacklight = 1026,
+    SinopeAuxCycleOutput = 1028,
+    StelproSystemMode = 16412,
+    StelproOutdoorTemp = 16385,
+    ViessmannWindowOpenInternal = 16384,
+    ViessmannWindowOpenForce = 16387,
+    ViessmannAssemblyMode = 16402,
+    SchneiderWiserSpecific = 57616,
+    DanfossWindowOpenInternal = 16384,
+    DanfossWindowOpenExternal = 16387,
+    DanfossDayOfWeek = 16400,
+    DanfossTriggerTime = 16401,
+    DanfossMountedModeActive = 16402,
+    DanfossMountedModeControl = 16403,
+    DanfossThermostatOrientation = 16404,
+    DanfossExternalMeasuredRoomSensor = 16405,
+    DanfossRadiatorCovered = 16406,
+    DanfossAlgorithmScaleFactor = 16416,
+    DanfossHeatAvailable = 16432,
+    DanfossHeatRequired = 16433,
+    DanfossLoadBalancingEnable = 16434,
+    DanfossLoadRoomMean = 16448,
+    DanfossLoadEstimate = 16458,
+    DanfossRegulationSetpointOffset = 16459,
+    DanfossAdaptionRunControl = 16460,
+    DanfossAdaptionRunStatus = 16461,
+    DanfossAdaptionRunSettings = 16462,
+    DanfossPreheatStatus = 16463,
+    DanfossPreheatTime = 16464,
+    DanfossWindowOpenFeatureEnable = 16465,
+    DanfossRoomStatusCode = 16640,
+    DanfossOutputStatus = 16656,
+    DanfossRoomFloorSensorMode = 16672,
+    DanfossFloorMinSetpoint = 16673,
+    DanfossFloorMaxSetpoint = 16674,
+    ElkoLoad = 1025,
+    ElkoDisplayText = 1026,
+    ElkoSensor = 1027,
+    ElkoRegulatorTime = 1028,
+    ElkoRegulatorMode = 1029,
+    ElkoPowerStatus = 1030,
+    ElkoDateTime = 1031,
+    ElkoMeanPower = 1032,
+    ElkoExternalTemp = 1033,
+    ElkoNightSwitching = 1041,
+    ElkoFrostGuard = 1042,
+    ElkoChildLock = 1043,
+    ElkoMaxFloorTemp = 1044,
+    ElkoRelayState = 1045,
+    ElkoVersion = 1046,
+    ElkoCalibration = 1047,
+    ElkoLastMessageId = 1048,
+    ElkoLastMessageStatus = 1049,
+    FourNoksHysteresisHigh = 257,
+    FourNoksHysteresisLow = 258,
+    UbisysClassBTemperatureOffset = 0,
+    UbisysReturnFlowTemperatureWeight = 1,
+    UbisysRawOutdoorTemperature = 2,
+    UbisysRawLocalTemperatureA = 3,
+    UbisysRawLocalTemperatureB = 4,
+    UbisysRawForwardFlowTemperature = 5,
+    UbisysRawReturnFlowTemperature = 6,
+    UbisysInstalledExtensions = 7,
+    UbisysTemperatureOffset = 16,
+    UbisysDefaultOccupiedHeatingSetpoint = 17,
+    UbisysVacationMode = 18,
+    UbisysRemoteTemperature = 19,
+    UbisysRemoteTemperatureValidDuration = 20,
+    UbisysProportionalGain = 32,
+    UbisysProportionalShift = 33,
+    UbisysIntegralFactor = 34,
 };
 
 class HvacThermostatCluster: public Cluster {
@@ -1559,6 +2169,24 @@ public:
     AttributeInt16* getAcCollTemp();
     AttributeUInt8* getAcCapacityFormat();
     AttributeUInt8* getStelproSystemMode();
+    AttributeUInt16* getElkoLoad();
+    AttributeString* getElkoDisplayText();
+    AttributeUInt8* getElkoSensor();
+    AttributeUInt8* getElkoRegulatorTime();
+    AttributeUInt8* getElkoRegulatorMode();
+    AttributeUInt8* getElkoPowerStatus();
+    AttributeOctstr* getElkoDateTime();
+    AttributeUInt16* getElkoMeanPower();
+    AttributeInt16* getElkoExternalTemp();
+    AttributeUInt8* getElkoNightSwitching();
+    AttributeUInt8* getElkoFrostGuard();
+    AttributeUInt8* getElkoChildLock();
+    AttributeUInt8* getElkoMaxFloorTemp();
+    AttributeUInt8* getElkoRelayState();
+    AttributeOctstr* getElkoVersion();
+    AttributeInt8* getElkoCalibration();
+    AttributeUInt8* getElkoLastMessageId();
+    AttributeUInt8* getElkoLastMessageStatus();
 
     virtual Status onSetpointRaiseLowerCommand(uint8_t mode, int8_t amount) {
         return Status::UnsupportedAttribute;
@@ -1620,7 +2248,18 @@ public:
 
     void sendPlugwiseCalibrateValveCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
+    virtual Status onBoschCalibrateValveCommand() {
+        return Status::UnsupportedAttribute;
+    }
+
+    void sendBoschCalibrateValveCommand(DeviceManager& deviceManager, uint8_t endpointId);
+
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
+};
+
+enum class HvacFanCtrlAttribute: uint16_t {
+    FanMode = 0,
+    FanModeSequence = 1,
 };
 
 class HvacFanCtrlCluster: public Cluster {
@@ -1629,6 +2268,17 @@ public:
     }
     AttributeUInt8* getFanMode();
     AttributeUInt8* getFanModeSequence();
+};
+
+enum class HvacDehumidificationCtrlAttribute: uint16_t {
+    RelativeHumidity = 0,
+    DehumidCooling = 1,
+    RhDehumidSetpoint = 16,
+    RelativeHumidityMode = 17,
+    DehumidLockout = 18,
+    DehumidHysteresis = 19,
+    DehumidMaxCool = 20,
+    RelativeHumidDisplay = 21,
 };
 
 class HvacDehumidificationCtrlCluster: public Cluster {
@@ -1645,6 +2295,13 @@ public:
     AttributeUInt8* getRelativeHumidDisplay();
 };
 
+enum class HvacUserInterfaceCfgAttribute: uint16_t {
+    TempDisplayMode = 0,
+    KeypadLockout = 1,
+    ProgrammingVisibility = 2,
+    DanfossViewingDirection = 16384,
+};
+
 class HvacUserInterfaceCfgCluster: public Cluster {
 public:
     HvacUserInterfaceCfgCluster(ClusterType type = ClusterType::Input) : Cluster(516, type) {
@@ -1652,6 +2309,63 @@ public:
     AttributeUInt8* getTempDisplayMode();
     AttributeUInt8* getKeypadLockout();
     AttributeUInt8* getProgrammingVisibility();
+};
+
+enum class LightingColorCtrlAttribute: uint16_t {
+    CurrentHue = 0,
+    CurrentSaturation = 1,
+    RemainingTime = 2,
+    CurrentX = 3,
+    CurrentY = 4,
+    DriftCompensation = 5,
+    CompensationText = 6,
+    ColorTemperature = 7,
+    ColorMode = 8,
+    Options = 15,
+    NumPrimaries = 16,
+    Primary1X = 17,
+    Primary1Y = 18,
+    Primary1Intensity = 19,
+    Primary2X = 21,
+    Primary2Y = 22,
+    Primary2Intensity = 23,
+    Primary3X = 25,
+    Primary3Y = 26,
+    Primary3Intensity = 27,
+    Primary4X = 32,
+    Primary4Y = 33,
+    Primary4Intensity = 34,
+    Primary5X = 36,
+    Primary5Y = 37,
+    Primary5Intensity = 38,
+    Primary6X = 40,
+    Primary6Y = 41,
+    Primary6Intensity = 42,
+    WhitePointX = 48,
+    WhitePointY = 49,
+    ColorPointRX = 50,
+    ColorPointRY = 51,
+    ColorPointRIntensity = 52,
+    ColorPointGX = 54,
+    ColorPointGY = 55,
+    ColorPointGIntensity = 56,
+    ColorPointBX = 58,
+    ColorPointBY = 59,
+    ColorPointBIntensity = 60,
+    EnhancedCurrentHue = 16384,
+    EnhancedColorMode = 16385,
+    ColorLoopActive = 16386,
+    ColorLoopDirection = 16387,
+    ColorLoopTime = 16388,
+    ColorLoopStartEnhancedHue = 16389,
+    ColorLoopStoredEnhancedHue = 16390,
+    ColorCapabilities = 16394,
+    ColorTempPhysicalMin = 16395,
+    ColorTempPhysicalMax = 16396,
+    CoupleColorTempToLevelMin = 16397,
+    StartUpColorTemperature = 16400,
+    TuyaBrightness = 61441,
+    TuyaRgbMode = 61440,
 };
 
 class LightingColorCtrlCluster: public Cluster {
@@ -1828,6 +2542,27 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class LightingBallastCfgAttribute: uint16_t {
+    PhysicalMinLevel = 0,
+    PhysicalMaxLevel = 1,
+    BallastStatus = 2,
+    MinLevel = 16,
+    MaxLevel = 17,
+    PowerOnLevel = 18,
+    PowerOnFadeTime = 19,
+    IntrinsicBallastFactor = 20,
+    BallastFactorAdjustment = 21,
+    LampQuantity = 32,
+    LampType = 48,
+    LampManufacturer = 49,
+    LampRatedHours = 50,
+    LampBurnHours = 51,
+    LampAlarmMode = 52,
+    LampBurnHoursTripPoint = 53,
+    ElkoControlMode = 57344,
+    WiserControlMode = 57344,
+};
+
 class LightingBallastCfgCluster: public Cluster {
 public:
     LightingBallastCfgCluster(ClusterType type = ClusterType::Input) : Cluster(769, type) {
@@ -1850,6 +2585,14 @@ public:
     AttributeUInt24* getLampBurnHoursTripPoint();
 };
 
+enum class MsIlluminanceMeasurementAttribute: uint16_t {
+    MeasuredValue = 0,
+    MinMeasuredValue = 1,
+    MaxMeasuredValue = 2,
+    Tolerance = 3,
+    LightSensorType = 4,
+};
+
 class MsIlluminanceMeasurementCluster: public Cluster {
 public:
     MsIlluminanceMeasurementCluster(ClusterType type = ClusterType::Input) : Cluster(1024, type) {
@@ -1861,6 +2604,12 @@ public:
     AttributeUInt8* getLightSensorType();
 };
 
+enum class MsIlluminanceLevelSensingAttribute: uint16_t {
+    LevelStatus = 0,
+    LightSensorType = 1,
+    IlluminanceTargetLevel = 16,
+};
+
 class MsIlluminanceLevelSensingCluster: public Cluster {
 public:
     MsIlluminanceLevelSensingCluster(ClusterType type = ClusterType::Input) : Cluster(1025, type) {
@@ -1868,6 +2617,16 @@ public:
     AttributeUInt8* getLevelStatus();
     AttributeUInt8* getLightSensorType();
     AttributeUInt16* getIlluminanceTargetLevel();
+};
+
+enum class MsTemperatureMeasurementAttribute: uint16_t {
+    MeasuredValue = 0,
+    MinMeasuredValue = 1,
+    MaxMeasuredValue = 2,
+    Tolerance = 3,
+    MinPercentChange = 16,
+    MinAbsoluteChange = 17,
+    SprutTemperatureOffset = 26112,
 };
 
 class MsTemperatureMeasurementCluster: public Cluster {
@@ -1878,6 +2637,18 @@ public:
     AttributeInt16* getMinMeasuredValue();
     AttributeInt16* getMaxMeasuredValue();
     AttributeUInt16* getTolerance();
+};
+
+enum class MsPressureMeasurementAttribute: uint16_t {
+    MeasuredValue = 0,
+    MinMeasuredValue = 1,
+    MaxMeasuredValue = 2,
+    Tolerance = 3,
+    ScaledValue = 16,
+    MinScaledValue = 17,
+    MaxScaledValue = 18,
+    ScaledTolerance = 19,
+    Scale = 20,
 };
 
 class MsPressureMeasurementCluster: public Cluster {
@@ -1895,6 +2666,13 @@ public:
     AttributeInt8* getScale();
 };
 
+enum class MsFlowMeasurementAttribute: uint16_t {
+    MeasuredValue = 0,
+    MinMeasuredValue = 1,
+    MaxMeasuredValue = 2,
+    Tolerance = 3,
+};
+
 class MsFlowMeasurementCluster: public Cluster {
 public:
     MsFlowMeasurementCluster(ClusterType type = ClusterType::Input) : Cluster(1028, type) {
@@ -1905,6 +2683,14 @@ public:
     AttributeUInt16* getTolerance();
 };
 
+enum class MsRelativeHumidityAttribute: uint16_t {
+    MeasuredValue = 0,
+    MinMeasuredValue = 1,
+    MaxMeasuredValue = 2,
+    Tolerance = 3,
+    SprutHeater = 26112,
+};
+
 class MsRelativeHumidityCluster: public Cluster {
 public:
     MsRelativeHumidityCluster(ClusterType type = ClusterType::Input) : Cluster(1029, type) {
@@ -1913,6 +2699,23 @@ public:
     AttributeUInt16* getMinMeasuredValue();
     AttributeUInt16* getMaxMeasuredValue();
     AttributeUInt16* getTolerance();
+};
+
+enum class MsOccupancySensingAttribute: uint16_t {
+    Occupancy = 0,
+    OccupancySensorType = 1,
+    PirOToUDelay = 16,
+    PirUToODelay = 17,
+    PirUToOThreshold = 18,
+    UltrasonicOToUDelay = 32,
+    UltrasonicUToODelay = 33,
+    UltrasonicUToOThreshold = 34,
+    ElkoOccupancyDfltOperationMode = 57344,
+    ElkoOccupancyOperationMode = 57345,
+    ElkoForceOffTimeout = 57346,
+    ElkoOccupancySensitivity = 57347,
+    SprutOccupancyLevel = 26112,
+    SprutOccupancySensitivity = 26113,
 };
 
 class MsOccupancySensingCluster: public Cluster {
@@ -1929,6 +2732,13 @@ public:
     AttributeUInt8* getUltrasonicUToOThreshold();
 };
 
+enum class MsSoilMoistureAttribute: uint16_t {
+    MeasuredValue = 0,
+    MinMeasuredValue = 1,
+    MaxMeasuredValue = 2,
+    Tolerance = 3,
+};
+
 class MsSoilMoistureCluster: public Cluster {
 public:
     MsSoilMoistureCluster(ClusterType type = ClusterType::Input) : Cluster(1032, type) {
@@ -1937,6 +2747,13 @@ public:
     AttributeUInt16* getMinMeasuredValue();
     AttributeUInt16* getMaxMeasuredValue();
     AttributeUInt16* getTolerance();
+};
+
+enum class PHMeasurementAttribute: uint16_t {
+    MeasuredValue = 0,
+    MinMeasuredValue = 1,
+    MaxMeasuredValue = 2,
+    Tolerance = 3,
 };
 
 class PHMeasurementCluster: public Cluster {
@@ -1949,6 +2766,14 @@ public:
     AttributeUInt16* getTolerance();
 };
 
+enum class MsCO2Attribute: uint16_t {
+    MeasuredValue = 0,
+    MinMeasuredValue = 1,
+    MaxMeasuredValue = 2,
+    SprutCO2Calibration = 26112,
+    SprutCO2AutoCalibration = 26113,
+};
+
 class MsCO2Cluster: public Cluster {
 public:
     MsCO2Cluster(ClusterType type = ClusterType::Input) : Cluster(1037, type) {
@@ -1956,6 +2781,35 @@ public:
     AttributeSingle* getMeasuredValue();
     AttributeSingle* getMinMeasuredValue();
     AttributeSingle* getMaxMeasuredValue();
+};
+
+enum class Pm25MeasurementAttribute: uint16_t {
+    MeasuredValueIkea = 0,
+    MeasuredValue = 0,
+    MeasuredMinValue = 1,
+    MeasuredMaxValue = 2,
+    MeasuredTolerance = 3,
+};
+
+class Pm25MeasurementCluster: public Cluster {
+public:
+    Pm25MeasurementCluster(ClusterType type = ClusterType::Input) : Cluster(1066, type) {
+    }
+    AttributeUInt16* getMeasuredValue();
+    AttributeUInt16* getMeasuredMinValue();
+    AttributeUInt16* getMeasuredMaxValue();
+    AttributeUInt16* getMeasuredTolerance();
+};
+
+enum class SsIasZoneAttribute: uint16_t {
+    ZoneState = 0,
+    ZoneType = 1,
+    ZoneStatus = 2,
+    IasCieAddr = 16,
+    ZoneId = 17,
+    NumZoneSensitivityLevelsSupported = 18,
+    CurrentZoneSensitivityLevel = 19,
+    DevelcoAlarmOffDelay = 32769,
 };
 
 class SsIasZoneCluster: public Cluster {
@@ -1994,7 +2848,16 @@ public:
 
     void sendBoschTestTamperCommand(DeviceManager& deviceManager, uint8_t endpointId, uint8_t data);
 
+    virtual Status onBoschSmokeDetectorSirenCommand(uint16_t data) {
+        return Status::UnsupportedAttribute;
+    }
+
+    void sendBoschSmokeDetectorSirenCommand(DeviceManager& deviceManager, uint8_t endpointId, uint16_t data);
+
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
+};
+
+enum class SsIasAceAttribute: uint16_t {
 };
 
 class SsIasAceCluster: public Cluster {
@@ -2165,6 +3028,10 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class SsIasWdAttribute: uint16_t {
+    MaxDuration = 0,
+};
+
 class SsIasWdCluster: public Cluster {
 public:
     SsIasWdCluster(ClusterType type = ClusterType::Input) : Cluster(1282, type) {
@@ -2186,6 +3053,12 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class PiGenericTunnelAttribute: uint16_t {
+    MaxIncomeTransSize = 1,
+    MaxOutgoTransSize = 2,
+    ProtocolAddr = 3,
+};
+
 class PiGenericTunnelCluster: public Cluster {
 public:
     PiGenericTunnelCluster(ClusterType type = ClusterType::Input) : Cluster(1536, type) {
@@ -2203,6 +3076,9 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class PiBacnetProtocolTunnelAttribute: uint16_t {
+};
+
 class PiBacnetProtocolTunnelCluster: public Cluster {
 public:
     PiBacnetProtocolTunnelCluster(ClusterType type = ClusterType::Input) : Cluster(1537, type) {
@@ -2217,6 +3093,16 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class PiAnalogInputRegAttribute: uint16_t {
+    CovIncrement = 22,
+    DeviceType = 31,
+    ObjectId = 75,
+    ObjectName = 77,
+    ObjectType = 79,
+    UpdateInterval = 118,
+    ProfileName = 168,
+};
+
 class PiAnalogInputRegCluster: public Cluster {
 public:
     PiAnalogInputRegCluster(ClusterType type = ClusterType::Input) : Cluster(1538, type) {
@@ -2228,6 +3114,20 @@ public:
     AttributeUInt16* getObjectType();
     AttributeUInt8* getUpdateInterval();
     AttributeString* getProfileName();
+};
+
+enum class PiAnalogInputExtAttribute: uint16_t {
+    AckedTransitions = 0,
+    NotificationClass = 17,
+    Deadband = 25,
+    EventEnable = 35,
+    EventState = 36,
+    HighLimit = 45,
+    LimitEnable = 52,
+    LowLimit = 59,
+    NotifyType = 72,
+    TimeDelay = 113,
+    EventTimeStamps = 130,
 };
 
 class PiAnalogInputExtCluster: public Cluster {
@@ -2272,6 +3172,16 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class PiAnalogOutputRegAttribute: uint16_t {
+    CovIncrement = 22,
+    DeviceType = 31,
+    ObjectId = 75,
+    ObjectName = 77,
+    ObjectType = 79,
+    UpdateInterval = 118,
+    ProfileName = 168,
+};
+
 class PiAnalogOutputRegCluster: public Cluster {
 public:
     PiAnalogOutputRegCluster(ClusterType type = ClusterType::Input) : Cluster(1540, type) {
@@ -2283,6 +3193,20 @@ public:
     AttributeUInt16* getObjectType();
     AttributeUInt8* getUpdateInterval();
     AttributeString* getProfileName();
+};
+
+enum class PiAnalogOutputExtAttribute: uint16_t {
+    AckedTransitions = 0,
+    NotificationClass = 17,
+    Deadband = 25,
+    EventEnable = 35,
+    EventState = 36,
+    HighLimit = 45,
+    LimitEnable = 52,
+    LowLimit = 59,
+    NotifyType = 72,
+    TimeDelay = 113,
+    EventTimeStamps = 130,
 };
 
 class PiAnalogOutputExtCluster: public Cluster {
@@ -2301,6 +3225,14 @@ public:
     AttributeUInt8* getTimeDelay();
 };
 
+enum class PiAnalogValueRegAttribute: uint16_t {
+    CovIncrement = 22,
+    ObjectId = 75,
+    ObjectName = 77,
+    ObjectType = 79,
+    ProfileName = 168,
+};
+
 class PiAnalogValueRegCluster: public Cluster {
 public:
     PiAnalogValueRegCluster(ClusterType type = ClusterType::Input) : Cluster(1542, type) {
@@ -2310,6 +3242,20 @@ public:
     AttributeString* getObjectName();
     AttributeUInt16* getObjectType();
     AttributeString* getProfileName();
+};
+
+enum class PiAnalogValueExtAttribute: uint16_t {
+    AckedTransitions = 0,
+    NotificationClass = 17,
+    Deadband = 25,
+    EventEnable = 35,
+    EventState = 36,
+    HighLimit = 45,
+    LimitEnable = 52,
+    LowLimit = 59,
+    NotifyType = 72,
+    TimeDelay = 113,
+    EventTimeStamps = 130,
 };
 
 class PiAnalogValueExtCluster: public Cluster {
@@ -2328,6 +3274,19 @@ public:
     AttributeUInt8* getTimeDelay();
 };
 
+enum class PiBinaryInputRegAttribute: uint16_t {
+    ChangeOfStateCount = 15,
+    ChangeOfStateTime = 16,
+    DeviceType = 31,
+    ElapsedActiveTime = 33,
+    ObjectIdentifier = 75,
+    ObjectName = 77,
+    ObjectType = 79,
+    TimeOfATReset = 114,
+    TimeOfSCReset = 115,
+    ProfileName = 168,
+};
+
 class PiBinaryInputRegCluster: public Cluster {
 public:
     PiBinaryInputRegCluster(ClusterType type = ClusterType::Input) : Cluster(1544, type) {
@@ -2344,6 +3303,17 @@ public:
     AttributeString* getProfileName();
 };
 
+enum class PiBinaryInputExtAttribute: uint16_t {
+    AckedTransitions = 0,
+    AlarmValue = 6,
+    NotificationClass = 17,
+    EventEnable = 35,
+    EventState = 36,
+    NotifyType = 72,
+    TimeDelay = 113,
+    EventTimeStamps = 130,
+};
+
 class PiBinaryInputExtCluster: public Cluster {
 public:
     PiBinaryInputExtCluster(ClusterType type = ClusterType::Input) : Cluster(1545, type) {
@@ -2355,6 +3325,20 @@ public:
     AttributeUInt8* getEventState();
     AttributeUInt8* getNotifyType();
     AttributeUInt8* getTimeDelay();
+};
+
+enum class PiBinaryOutputRegAttribute: uint16_t {
+    ChangeOfStateCount = 15,
+    ChangeOfStateTime = 16,
+    DeviceType = 31,
+    ElapsedActiveTime = 33,
+    FeedBackValue = 40,
+    ObjectIdentifier = 75,
+    ObjectName = 77,
+    ObjectType = 79,
+    TimeOfATReset = 114,
+    TimeOfSCReset = 115,
+    ProfileName = 168,
 };
 
 class PiBinaryOutputRegCluster: public Cluster {
@@ -2374,6 +3358,16 @@ public:
     AttributeString* getProfileName();
 };
 
+enum class PiBinaryOutputExtAttribute: uint16_t {
+    AckedTransitions = 0,
+    NotificationClass = 17,
+    EventEnable = 35,
+    EventState = 36,
+    NotifyType = 72,
+    TimeDelay = 113,
+    EventTimeStamps = 130,
+};
+
 class PiBinaryOutputExtCluster: public Cluster {
 public:
     PiBinaryOutputExtCluster(ClusterType type = ClusterType::Input) : Cluster(1547, type) {
@@ -2384,6 +3378,18 @@ public:
     AttributeUInt8* getEventState();
     AttributeUInt8* getNotifyType();
     AttributeUInt8* getTimeDelay();
+};
+
+enum class PiBinaryValueRegAttribute: uint16_t {
+    ChangeOfStateCount = 15,
+    ChangeOfStateTime = 16,
+    ElapsedActiveTime = 33,
+    ObjectIdentifier = 75,
+    ObjectName = 77,
+    ObjectType = 79,
+    TimeOfATReset = 114,
+    TimeOfSCReset = 115,
+    ProfileName = 168,
 };
 
 class PiBinaryValueRegCluster: public Cluster {
@@ -2401,6 +3407,17 @@ public:
     AttributeString* getProfileName();
 };
 
+enum class PiBinaryValueExtAttribute: uint16_t {
+    AckedTransitions = 0,
+    AlarmValue = 6,
+    NotificationClass = 17,
+    EventEnable = 35,
+    EventState = 36,
+    NotifyType = 72,
+    TimeDelay = 113,
+    EventTimeStamps = 130,
+};
+
 class PiBinaryValueExtCluster: public Cluster {
 public:
     PiBinaryValueExtCluster(ClusterType type = ClusterType::Input) : Cluster(1549, type) {
@@ -2414,6 +3431,14 @@ public:
     AttributeUInt8* getTimeDelay();
 };
 
+enum class PiMultistateInputRegAttribute: uint16_t {
+    DeviceType = 31,
+    ObjectId = 75,
+    ObjectName = 77,
+    ObjectType = 79,
+    ProfileName = 168,
+};
+
 class PiMultistateInputRegCluster: public Cluster {
 public:
     PiMultistateInputRegCluster(ClusterType type = ClusterType::Input) : Cluster(1550, type) {
@@ -2423,6 +3448,18 @@ public:
     AttributeString* getObjectName();
     AttributeUInt16* getObjectType();
     AttributeString* getProfileName();
+};
+
+enum class PiMultistateInputExtAttribute: uint16_t {
+    AckedTransitions = 0,
+    AlarmValue = 6,
+    NotificationClass = 17,
+    EventEnable = 35,
+    EventState = 36,
+    FaultValues = 37,
+    NotifyType = 72,
+    TimeDelay = 113,
+    EventTimeStamps = 130,
 };
 
 class PiMultistateInputExtCluster: public Cluster {
@@ -2439,6 +3476,15 @@ public:
     AttributeUInt8* getTimeDelay();
 };
 
+enum class PiMultistateOutputRegAttribute: uint16_t {
+    DeviceType = 31,
+    FeedBackValue = 40,
+    ObjectId = 75,
+    ObjectName = 77,
+    ObjectType = 79,
+    ProfileName = 168,
+};
+
 class PiMultistateOutputRegCluster: public Cluster {
 public:
     PiMultistateOutputRegCluster(ClusterType type = ClusterType::Input) : Cluster(1552, type) {
@@ -2449,6 +3495,16 @@ public:
     AttributeString* getObjectName();
     AttributeUInt16* getObjectType();
     AttributeString* getProfileName();
+};
+
+enum class PiMultistateOutputExtAttribute: uint16_t {
+    AckedTransitions = 0,
+    NotificationClass = 17,
+    EventEnable = 35,
+    EventState = 36,
+    NotifyType = 72,
+    TimeDelay = 113,
+    EventTimeStamps = 130,
 };
 
 class PiMultistateOutputExtCluster: public Cluster {
@@ -2463,6 +3519,13 @@ public:
     AttributeUInt8* getTimeDelay();
 };
 
+enum class PiMultistateValueRegAttribute: uint16_t {
+    ObjectId = 75,
+    ObjectName = 77,
+    ObjectType = 79,
+    ProfileName = 168,
+};
+
 class PiMultistateValueRegCluster: public Cluster {
 public:
     PiMultistateValueRegCluster(ClusterType type = ClusterType::Input) : Cluster(1554, type) {
@@ -2471,6 +3534,18 @@ public:
     AttributeString* getObjectName();
     AttributeUInt16* getObjectType();
     AttributeString* getProfileName();
+};
+
+enum class PiMultistateValueExtAttribute: uint16_t {
+    AckedTransitions = 0,
+    AlarmValue = 6,
+    NotificationClass = 17,
+    EventEnable = 35,
+    EventState = 36,
+    FaultValues = 37,
+    NotifyType = 72,
+    TimeDelay = 113,
+    EventTimeStamps = 130,
 };
 
 class PiMultistateValueExtCluster: public Cluster {
@@ -2485,6 +3560,15 @@ public:
     AttributeUInt16* getFaultValues();
     AttributeUInt8* getNotifyType();
     AttributeUInt8* getTimeDelay();
+};
+
+enum class Pi11073ProtocolTunnelAttribute: uint16_t {
+    DeviceidList = 0,
+    ManagerTarget = 1,
+    ManagerEndpoint = 2,
+    Connected = 3,
+    Preemptible = 4,
+    IdleTimeout = 5,
 };
 
 class Pi11073ProtocolTunnelCluster: public Cluster {
@@ -2524,11 +3608,20 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class PiIso7818ProtocolTunnelAttribute: uint16_t {
+    Status = 0,
+};
+
 class PiIso7818ProtocolTunnelCluster: public Cluster {
 public:
     PiIso7818ProtocolTunnelCluster(ClusterType type = ClusterType::Input) : Cluster(1557, type) {
     }
     AttributeUInt8* getStatus();
+};
+
+enum class PiRetailTunnelAttribute: uint16_t {
+    ManufacturerCode = 0,
+    MsProfile = 1,
 };
 
 class PiRetailTunnelCluster: public Cluster {
@@ -2537,6 +3630,211 @@ public:
     }
     AttributeUInt16* getManufacturerCode();
     AttributeUInt16* getMsProfile();
+};
+
+enum class SeMeteringAttribute: uint16_t {
+    CurrentSummDelivered = 0,
+    CurrentSummReceived = 1,
+    CurrentMaxDemandDelivered = 2,
+    CurrentMaxDemandReceived = 3,
+    DftSumm = 4,
+    DailyFreezeTime = 5,
+    PowerFactor = 6,
+    ReadingSnapshotTime = 7,
+    CurrentMaxDemandDeliverdTime = 8,
+    CurrentMaxDemandReceivedTime = 9,
+    DefaultUpdatePeriod = 10,
+    FastPollUpdatePeriod = 11,
+    CurrentBlockPeriodConsumpDelivered = 12,
+    DailyConsumpTarget = 13,
+    CurrentBlock = 14,
+    ProfileIntervalPeriod = 15,
+    IntervalReadReportingPeriod = 16,
+    PresetReadingTime = 17,
+    VolumePerReport = 18,
+    FlowRestriction = 19,
+    SupplyStatus = 20,
+    CurrentInEnergyCarrierSumm = 21,
+    CurrentOutEnergyCarrierSumm = 22,
+    InletTempreature = 23,
+    OutletTempreature = 24,
+    ControlTempreature = 25,
+    CurrentInEnergyCarrierDemand = 26,
+    CurrentOutEnergyCarrierDemand = 27,
+    CurrentBlockPeriodConsumpReceived = 29,
+    CurrentBlockReceived = 30,
+    DFTSummationReceived = 31,
+    ActiveRegisterTierDelivered = 32,
+    ActiveRegisterTierReceived = 33,
+    CurrentTier1SummDelivered = 256,
+    CurrentTier1SummReceived = 257,
+    CurrentTier2SummDelivered = 258,
+    CurrentTier2SummReceived = 259,
+    CurrentTier3SummDelivered = 260,
+    CurrentTier3SummReceived = 261,
+    CurrentTier4SummDelivered = 262,
+    CurrentTier4SummReceived = 263,
+    CurrentTier5SummDelivered = 264,
+    CurrentTier5SummReceived = 265,
+    CurrentTier6SummDelivered = 266,
+    CurrentTier6SummReceived = 267,
+    CurrentTier7SummDelivered = 268,
+    CurrentTier7SummReceived = 269,
+    CurrentTier8SummDelivered = 270,
+    CurrentTier8SummReceived = 271,
+    CurrentTier9SummDelivered = 272,
+    CurrentTier9SummReceived = 273,
+    CurrentTier10SummDelivered = 274,
+    CurrentTier10SummReceived = 275,
+    CurrentTier11SummDelivered = 276,
+    CurrentTier11SummReceived = 277,
+    CurrentTier12SummDelivered = 278,
+    CurrentTier12SummReceived = 279,
+    CurrentTier13SummDelivered = 280,
+    CurrentTier13SummReceived = 281,
+    CurrentTier14SummDelivered = 282,
+    CurrentTier14SummReceived = 283,
+    CurrentTier15SummDelivered = 284,
+    CurrentTier15SummReceived = 285,
+    Status = 512,
+    RemainingBattLife = 513,
+    HoursInOperation = 514,
+    HoursInFault = 515,
+    ExtendedStatus = 516,
+    UnitOfMeasure = 768,
+    Multiplier = 769,
+    Divisor = 770,
+    SummaFormatting = 771,
+    DemandFormatting = 772,
+    HistoricalConsumpFormatting = 773,
+    MeteringDeviceType = 774,
+    SiteId = 775,
+    MeterSerialNumber = 776,
+    EnergyCarrierUnitOfMeas = 777,
+    EnergyCarrierSummFormatting = 778,
+    EnergyCarrierDemandFormatting = 779,
+    TemperatureUnitOfMeas = 780,
+    TemperatureFormatting = 781,
+    ModuleSerialNumber = 782,
+    OperatingTariffLevel = 783,
+    InstantaneousDemand = 1024,
+    CurrentdayConsumpDelivered = 1025,
+    CurrentdayConsumpReceived = 1026,
+    PreviousdayConsumpDelivered = 1027,
+    PreviousdayConsumpReceived = 1028,
+    CurPartProfileIntStartTimeDelivered = 1029,
+    CurPartProfileIntStartTimeReceived = 1030,
+    CurPartProfileIntValueDelivered = 1031,
+    CurPartProfileIntValueReceived = 1032,
+    CurrentDayMaxPressure = 1033,
+    CurrentDayMinPressure = 1034,
+    PreviousDayMaxPressure = 1035,
+    PreviousDayMinPressure = 1036,
+    CurrentDayMaxDemand = 1037,
+    PreviousDayMaxDemand = 1038,
+    CurrentMonthMaxDemand = 1039,
+    CurrentYearMaxDemand = 1040,
+    CurrentdayMaxEnergyCarrDemand = 1041,
+    PreviousdayMaxEnergyCarrDemand = 1042,
+    CurMonthMaxEnergyCarrDemand = 1043,
+    CurMonthMinEnergyCarrDemand = 1044,
+    CurYearMaxEnergyCarrDemand = 1045,
+    CurYearMinEnergyCarrDemand = 1046,
+    MaxNumberOfPeriodsDelivered = 1280,
+    CurrentDemandDelivered = 1536,
+    DemandLimit = 1537,
+    DemandIntegrationPeriod = 1538,
+    NumberOfDemandSubintervals = 1539,
+    DemandLimitArmDuration = 1540,
+    GenericAlarmMask = 2048,
+    ElectricityAlarmMask = 2049,
+    GenFlowPressureAlarmMask = 2050,
+    WaterSpecificAlarmMask = 2051,
+    HeatCoolSpecificAlarmMASK = 2052,
+    GasSpecificAlarmMask = 2053,
+    ExtendedGenericAlarmMask = 2054,
+    ManufactureAlarmMask = 2055,
+    BillToDate = 2560,
+    BillToDateTimeStamp = 2561,
+    ProjectedBill = 2562,
+    ProjectedBillTimeStamp = 2563,
+    NotificationControlFlags = 0,
+    NotificationFlags = 1,
+    PriceNotificationFlags = 2,
+    CalendarNotificationFlags = 3,
+    PrePayNotificationFlags = 4,
+    DeviceManagementFlags = 5,
+    ChangeReportingProfile = 256,
+    DevelcoPulseConfiguration = 768,
+    DevelcoCurrentSummation = 769,
+    DevelcoInterfaceMode = 770,
+    OwonL1PhasePower = 8192,
+    OwonL2PhasePower = 8193,
+    OwonL3PhasePower = 8194,
+    OwonL1PhaseReactivePower = 8448,
+    OwonL2PhaseReactivePower = 8449,
+    OwonL3PhaseReactivePower = 8450,
+    OwonReactivePowerSum = 8451,
+    OwonL1PhaseVoltage = 12288,
+    OwonL2PhaseVoltage = 12289,
+    OwonL3PhaseVoltage = 12290,
+    OwonL1PhaseCurrent = 12544,
+    OwonL2PhaseCurrent = 12545,
+    OwonL3PhaseCurrent = 12546,
+    OwonCurrentSum = 12547,
+    OwonLeakageCurrent = 12548,
+    OwonL1Energy = 16384,
+    OwonL2Energy = 16385,
+    OwonL3Energy = 16386,
+    OwonL1ReactiveEnergy = 16640,
+    OwonL2ReactiveEnergy = 16641,
+    OwonL3ReactiveEnergy = 16642,
+    OwonReactiveEnergySum = 16643,
+    OwonL1PowerFactor = 16644,
+    OwonL2PowerFactor = 16645,
+    OwonL3PowerFactor = 16646,
+    OwonFrequency = 20485,
+    OwonReportMap = 4096,
+    OwonLastHistoricalRecordTime = 20480,
+    OwonOldestHistoricalRecordTime = 20481,
+    OwonMinimumReportCycle = 20482,
+    OwonMaximumReportCycle = 20483,
+    OwonSentHistoricalRecordState = 20484,
+    OwonAccumulativeEnergyThreshold = 20486,
+    OwonReportMode = 20487,
+    OwonPercentChangeInPower = 20487,
+    SchneiderActiveEnergyTotal = 16400,
+    SchneiderReactiveEnergyTotal = 16401,
+    SchneiderApparentEnergyTotal = 16402,
+    SchneiderPartialActiveEnergyTotal = 16404,
+    SchneiderPartialReactiveEnergyTotal = 16405,
+    SchneiderPartialApparentEnergyTotal = 16406,
+    SchneiderPartialActiveEnergyL1Phase = 16640,
+    SchneiderPartialReactiveEnergyL1Phase = 16641,
+    SchneiderPartialApparentEnergyL1Phase = 16642,
+    SchneiderActiveEnergyL1Phase = 16643,
+    SchneiderReactiveEnergyL1Phase = 16644,
+    SchneiderApparentEnergyL1Phase = 16645,
+    SchneiderPartialActiveEnergyL2Phase = 16896,
+    SchneiderPartialReactiveEnergyL2Phase = 16897,
+    SchneiderPartialApparentEnergyL2Phase = 16898,
+    SchneiderActiveEnergyL2Phase = 16899,
+    SchneiderReactiveEnergyL2Phase = 16900,
+    SchneiderApparentEnergyL2Phase = 16901,
+    SchneiderPartialActiveEnergyL3Phase = 17152,
+    SchneiderPartialReactiveEnergyL3Phase = 17153,
+    SchneiderPartialApparentEnergyL3Phase = 17154,
+    SchneiderActiveEnergyL3Phase = 17155,
+    SchneiderReactiveEnergyL3Phase = 17156,
+    SchneiderApparentEnergyL3Phase = 17157,
+    SchneiderActiveEnergyMultiplier = 17408,
+    SchneiderActiveEnergyDivisor = 17409,
+    SchneiderReactiveEnergyMultiplier = 17410,
+    SchneiderReactiveEnergyDivisor = 17411,
+    SchneiderApparentEnergyMultiplier = 17412,
+    SchneiderApparentEnergyDivisor = 17413,
+    SchneiderEnergyResetDateTime = 17665,
+    SchneiderEnergyCountersReportingPeriod = 17920,
 };
 
 class SeMeteringCluster: public Cluster {
@@ -2732,6 +4030,24 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class TunnelingAttribute: uint16_t {
+};
+
+class TunnelingCluster: public Cluster {
+public:
+    TunnelingCluster(ClusterType type = ClusterType::Input) : Cluster(1796, type) {
+    }
+};
+
+enum class TelecommunicationsInformationAttribute: uint16_t {
+    NodeDescription = 0,
+    DeliveryEnable = 1,
+    PushInformationTimer = 2,
+    EnableSecureConfiguration = 3,
+    NumberOfContents = 16,
+    ContentRootID = 17,
+};
+
 class TelecommunicationsInformationCluster: public Cluster {
 public:
     TelecommunicationsInformationCluster(ClusterType type = ClusterType::Input) : Cluster(2304, type) {
@@ -2742,6 +4058,20 @@ public:
     AttributeUInt8* getEnableSecureConfiguration();
     AttributeUInt16* getNumberOfContents();
     AttributeUInt16* getContentRootID();
+};
+
+enum class TelecommunicationsVoiceOverZigbeeAttribute: uint16_t {
+    CodecType = 0,
+    SamplingFrequency = 1,
+    Codecrate = 2,
+    EstablishmentTimeout = 3,
+    CodecTypeSub1 = 4,
+    CodecTypeSub2 = 5,
+    CodecTypeSub3 = 6,
+    CompressionType = 7,
+    CompressionRate = 8,
+    OptionFlags = 9,
+    Threshold = 10,
 };
 
 class TelecommunicationsVoiceOverZigbeeCluster: public Cluster {
@@ -2761,6 +4091,14 @@ public:
     AttributeUInt8* getThreshold();
 };
 
+enum class TelecommunicationsChattingAttribute: uint16_t {
+    UID = 0,
+    Nickname = 1,
+    CID = 16,
+    Name = 17,
+    EnableAddChat = 18,
+};
+
 class TelecommunicationsChattingCluster: public Cluster {
 public:
     TelecommunicationsChattingCluster(ClusterType type = ClusterType::Input) : Cluster(2309, type) {
@@ -2770,6 +4108,21 @@ public:
     AttributeUInt16* getCID();
     AttributeString* getName();
     AttributeUInt8* getEnableAddChat();
+};
+
+enum class HaApplianceIdentificationAttribute: uint16_t {
+    BasicIdentification = 0,
+    CompanyName = 16,
+    CompanyId = 17,
+    BrandName = 18,
+    BrandId = 19,
+    Model = 20,
+    PartNumber = 21,
+    ProductRevision = 22,
+    SoftwareRevision = 23,
+    ProductTypeName = 24,
+    ProductTypeId = 25,
+    CecedSpecificationVersion = 26,
 };
 
 class HaApplianceIdentificationCluster: public Cluster {
@@ -2790,6 +4143,21 @@ public:
     AttributeUInt8* getCecedSpecificationVersion();
 };
 
+enum class HaMeterIdentificationAttribute: uint16_t {
+    CompanyName = 0,
+    MeterTypeId = 1,
+    DataQualityId = 4,
+    CustomerName = 5,
+    Model = 6,
+    PartNumber = 7,
+    ProductRevision = 8,
+    SoftwareRevision = 10,
+    UtilityName = 11,
+    Pod = 12,
+    AvailablePower = 13,
+    PowerThreshold = 14,
+};
+
 class HaMeterIdentificationCluster: public Cluster {
 public:
     HaMeterIdentificationCluster(ClusterType type = ClusterType::Input) : Cluster(2817, type) {
@@ -2808,6 +4176,9 @@ public:
     AttributeInt24* getPowerThreshold();
 };
 
+enum class HaApplianceEventsAlertsAttribute: uint16_t {
+};
+
 class HaApplianceEventsAlertsCluster: public Cluster {
 public:
     HaApplianceEventsAlertsCluster(ClusterType type = ClusterType::Input) : Cluster(2818, type) {
@@ -2820,6 +4191,11 @@ public:
     void sendGetAlertsCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
+};
+
+enum class HaApplianceStatisticsAttribute: uint16_t {
+    LogMaxSize = 0,
+    LogQueueMaxSize = 1,
 };
 
 class HaApplianceStatisticsCluster: public Cluster {
@@ -2842,6 +4218,159 @@ public:
     void sendLogQueueCommand(DeviceManager& deviceManager, uint8_t endpointId);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
+};
+
+enum class HaElectricalMeasurementAttribute: uint16_t {
+    MeasurementType = 0,
+    DcVoltage = 256,
+    DcVoltageMin = 257,
+    Dcvoltagemax = 258,
+    DcCurrent = 259,
+    DcCurrentMin = 260,
+    DcCurrentMax = 261,
+    DcPower = 262,
+    DcPowerMin = 263,
+    DcPowerMax = 264,
+    DcVoltageMultiplier = 512,
+    DcVoltageDivisor = 513,
+    DcCurrentMultiplier = 514,
+    DcCurrentDivisor = 515,
+    DcPowerMultiplier = 516,
+    DcPowerDivisor = 517,
+    AcFrequency = 768,
+    AcFrequencyMin = 769,
+    AcFrequencyMax = 770,
+    NeutralCurrent = 771,
+    TotalActivePower = 772,
+    TotalReactivePower = 773,
+    TotalApparentPower = 774,
+    Meas1stHarmonicCurrent = 775,
+    Meas3rdHarmonicCurrent = 776,
+    Meas5thHarmonicCurrent = 777,
+    Meas7thHarmonicCurrent = 778,
+    Meas9thHarmonicCurrent = 779,
+    Meas11thHarmonicCurrent = 780,
+    MeasPhase1stHarmonicCurrent = 781,
+    MeasPhase3rdHarmonicCurrent = 782,
+    MeasPhase5thHarmonicCurrent = 783,
+    MeasPhase7thHarmonicCurrent = 784,
+    MeasPhase9thHarmonicCurrent = 785,
+    MeasPhase11thHarmonicCurrent = 786,
+    AcFrequencyMultiplier = 1024,
+    AcFrequencyDivisor = 1025,
+    PowerMultiplier = 1026,
+    PowerDivisor = 1027,
+    HarmonicCurrentMultiplier = 1028,
+    PhaseHarmonicCurrentMultiplier = 1029,
+    InstantaneousVoltage = 1280,
+    InstantaneousLineCurrent = 1281,
+    InstantaneousActiveCurrent = 1282,
+    InstantaneousReactiveCurrent = 1283,
+    InstantaneousPower = 1284,
+    RmsVoltage = 1285,
+    RmsVoltageMin = 1286,
+    RmsVoltageMax = 1287,
+    RmsCurrent = 1288,
+    RmsCurrentMin = 1289,
+    RmsCurrentMax = 1290,
+    ActivePower = 1291,
+    ActivePowerMin = 1292,
+    ActivePowerMax = 1293,
+    ReactivePower = 1294,
+    ApparentPower = 1295,
+    PowerFactor = 1296,
+    AverageRmsVoltageMeasPeriod = 1297,
+    AverageRmsOverVoltageCounter = 1298,
+    AverageRmsUnderVoltageCounter = 1299,
+    RmsExtremeOverVoltagePeriod = 1300,
+    RmsExtremeUnderVoltagePeriod = 1301,
+    RmsVoltageSagPeriod = 1302,
+    RmsVoltageSwellPeriod = 1303,
+    AcVoltageMultiplier = 1536,
+    AcVoltageDivisor = 1537,
+    AcCurrentMultiplier = 1538,
+    AcCurrentDivisor = 1539,
+    AcPowerMultiplier = 1540,
+    AcPowerDivisor = 1541,
+    DcOverloadAlarmsMask = 1792,
+    DcVoltageOverload = 1793,
+    DcCurrentOverload = 1794,
+    AcAlarmsMask = 2048,
+    AcVoltageOverload = 2049,
+    AcCurrentOverload = 2050,
+    AcActivePowerOverload = 2051,
+    AcReactivePowerOverload = 2052,
+    AverageRmsOverVoltage = 2053,
+    AverageRmsUnderVoltage = 2054,
+    RmsExtremeOverVoltage = 2055,
+    RmsExtremeUnderVoltage = 2056,
+    RmsVoltageSag = 2057,
+    RmsVoltageSwell = 2058,
+    LineCurrentPhB = 2305,
+    ActiveCurrentPhB = 2306,
+    ReactiveCurrentPhB = 2307,
+    RmsVoltagePhB = 2309,
+    RmsVoltageMinPhB = 2310,
+    RmsVoltageMaxPhB = 2311,
+    RmsCurrentPhB = 2312,
+    RmsCurrentMinPhB = 2313,
+    RmsCurrentMaxPhB = 2314,
+    ActivePowerPhB = 2315,
+    ActivePowerMinPhB = 2316,
+    ActivePowerMaxPhB = 2317,
+    ReactivePowerPhB = 2318,
+    ApparentPowerPhB = 2319,
+    PowerFactorPhB = 2320,
+    AverageRmsVoltageMeasurePeriodPhB = 2321,
+    AverageRmsOverVoltageCounterPhB = 2322,
+    AverageUnderVoltageCounterPhB = 2323,
+    RmsExtremeOverVoltagePeriodPhB = 2324,
+    RmsExtremeUnderVoltagePeriodPhB = 2325,
+    RmsVoltageSagPeriodPhB = 2326,
+    RmsVoltageSwellPeriodPhB = 2327,
+    LineCurrentPhC = 2561,
+    ActiveCurrentPhC = 2562,
+    ReactiveCurrentPhC = 2563,
+    RmsVoltagePhC = 2565,
+    RmsVoltageMinPhC = 2566,
+    RmsVoltageMaxPhC = 2567,
+    RmsCurrentPhC = 2568,
+    RmsCurrentMinPhC = 2569,
+    RmsCurrentMaxPhC = 2570,
+    ActivePowerPhC = 2571,
+    ActivePowerMinPhC = 2572,
+    ActivePowerMaxPhC = 2573,
+    ReactivePowerPhC = 2574,
+    ApparentPowerPhC = 2575,
+    PowerFactorPhC = 2576,
+    AverageRmsVoltageMeasPeriodPhC = 2577,
+    AverageRmsOverVoltageCounterPhC = 2578,
+    AverageUnderVoltageCounterPhC = 2579,
+    RmsExtremeOverVoltagePeriodPhC = 2580,
+    RmsExtremeUnderVoltagePeriodPhC = 2581,
+    RmsVoltageSagPeriodPhC = 2582,
+    RmsVoltageSwellPeriodPhC = 2583,
+    SchneiderActivePowerDemandTotal = 17152,
+    SchneiderReactivePowerDemandTotal = 17155,
+    SchneiderApparentPowerDemandTotal = 17176,
+    SchneiderDemandIntervalDuration = 17177,
+    SchneiderDemandDateTime = 17184,
+    SchneiderActivePowerDemandPhase1 = 17673,
+    SchneiderReactivePowerDemandPhase1 = 17674,
+    SchneiderApparentPowerDemandPhase1 = 17675,
+    SchneiderDemandIntervalMinimalVoltageL1 = 17680,
+    SchneiderDemandIntervalMaximalCurrentI1 = 17683,
+    SchneiderActivePowerDemandPhase2 = 18697,
+    SchneiderReactivePowerDemandPhase2 = 18698,
+    SchneiderApparentPowerDemandPhase2 = 18699,
+    SchneiderDemandIntervalMinimalVoltageL2 = 18704,
+    SchneiderDemandIntervalMaximalCurrentI2 = 18707,
+    SchneiderActivePowerDemandPhase3 = 18953,
+    SchneiderReactivePowerDemandPhase3 = 18954,
+    SchneiderApparentPowerDemandPhase3 = 18955,
+    SchneiderDemandIntervalMinimalVoltageL3 = 18960,
+    SchneiderDemandIntervalMaximalCurrentI3 = 18963,
+    SchneiderCurrentSensorMultiplier = 19968,
 };
 
 class HaElectricalMeasurementCluster: public Cluster {
@@ -2993,6 +4522,47 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class HaDiagnosticAttribute: uint16_t {
+    NumberOfResets = 0,
+    PersistentMemoryWrites = 1,
+    MacRxBcast = 256,
+    MacTxBcast = 257,
+    MacRxUcast = 258,
+    MacTxUcast = 259,
+    MacTxUcastRetry = 260,
+    MacTxUcastFail = 261,
+    APSRxBcast = 262,
+    APSTxBcast = 263,
+    APSRxUcast = 264,
+    APSTxUcastSuccess = 265,
+    APSTxUcastRetry = 266,
+    APSTxUcastFail = 267,
+    RouteDiscInitiated = 268,
+    NeighborAdded = 269,
+    NeighborRemoved = 270,
+    NeighborStale = 271,
+    JoinIndication = 272,
+    ChildMoved = 273,
+    NwkFcFailure = 274,
+    ApsFcFailure = 275,
+    ApsUnauthorizedKey = 276,
+    NwkDecryptFailures = 277,
+    ApsDecryptFailures = 278,
+    PacketBufferAllocateFailures = 279,
+    RelayedUcast = 280,
+    PhyToMacQueueLimitReached = 281,
+    PacketValidateDropCount = 282,
+    AverageMacRetryPerApsMessageSent = 283,
+    LastMessageLqi = 284,
+    LastMessageRssi = 285,
+    DanfossSystemStatusCode = 16384,
+    DanfossSystemStatusWater = 16896,
+    DanfossMultimasterRole = 16897,
+    SchneiderMeterStatus = 65281,
+    SchneiderDiagnosticRegister1 = 65282,
+    SchneiderCommunicationQuality = 16384,
+};
+
 class HaDiagnosticCluster: public Cluster {
 public:
     HaDiagnosticCluster(ClusterType type = ClusterType::Input) : Cluster(2821, type) {
@@ -3029,6 +4599,9 @@ public:
     AttributeUInt16* getAverageMacRetryPerApsMessageSent();
     AttributeUInt8* getLastMessageLqi();
     AttributeInt8* getLastMessageRssi();
+};
+
+enum class TouchlinkAttribute: uint16_t {
 };
 
 class TouchlinkCluster: public Cluster {
@@ -3112,11 +4685,18 @@ public:
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
 };
 
+enum class WiserDeviceInfoAttribute: uint16_t {
+    DeviceInfo = 32,
+};
+
 class WiserDeviceInfoCluster: public Cluster {
 public:
     WiserDeviceInfoCluster(ClusterType type = ClusterType::Input) : Cluster(65027, type) {
     }
     AttributeString* getDeviceInfo();
+};
+
+enum class ZosungIRTransmitAttribute: uint16_t {
 };
 
 class ZosungIRTransmitCluster: public Cluster {
@@ -3161,6 +4741,9 @@ public:
     void sendZosungSendIRCode05Command(DeviceManager& deviceManager, uint8_t endpointId, uint16_t seq, uint16_t zero);
 
     void processCommand(uint8_t commandId, Memory& request, Memory& response) override;
+};
+
+enum class ZosungIRControlAttribute: uint16_t {
 };
 
 class ZosungIRControlCluster: public Cluster {
