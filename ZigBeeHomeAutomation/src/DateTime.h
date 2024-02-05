@@ -43,4 +43,11 @@ public:
 	uint8_t getMilliseconds() const {
 		return (_time & 0xff) * 10;
 	}
+
+	bool operator ==(const DateTime& rhs) const {
+		return _date == rhs._date && _time == rhs._time;
+	}
+	bool operator !=(const DateTime& rhs) const {
+		return !operator ==(rhs);
+	}
 };
