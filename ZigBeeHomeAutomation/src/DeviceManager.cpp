@@ -35,6 +35,13 @@ DeviceManager::DeviceManager() :
 #endif
 }
 
+DeviceManager::~DeviceManager() {
+	if (_pendingZDORequest) {
+		delete _pendingZDORequest;
+		_pendingZDORequest = nullptr;
+	}
+}
+
 /* Send the device announce command */
 void DeviceManager::sendAnnounce() {
 	DEBUG(F("Sending announce"));
@@ -116,7 +123,7 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 #endif
 
 	if (clusterId == (uint16_t)ZdoCommand::SimpleDescriptorRequest) {
-		DEBUG(F("ZDO Simple Descriptor Request"));
+		INFO(F("ZDO Simple Descriptor Request"));
 
 		Device* dev = getDeviceByEndpoint(frameData[3]);
 		if (dev) {
@@ -181,7 +188,7 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 		}
 	}
 	else if (clusterId == (uint16_t)ZdoCommand::ActiveEndpointsRequest) {
-		DEBUG(F("ZDO Active Endpoints Request"));
+		INFO(F("ZDO Active Endpoints Request"));
 
 		Memory memory(_payload);
 
@@ -209,7 +216,7 @@ void DeviceManager::processZDO(XBeeAddress64 dst64, uint16_t dst16, uint16_t clu
 		_device.send(message);
 	}
 	else if (clusterId == (uint16_t)ZdoCommand::MatchDescriptorRequest) {
-		DEBUG(F("ZDO Match Descriptor Request"));
+		INFO(F("ZDO Match Descriptor Request"));
 
 		Memory memory(_payload);
 
@@ -282,9 +289,24 @@ void DeviceManager::atCommandCallback(AtCommandResponse& command) {
 			retrieveAssociationIndication();
 		}
 		else {
+			INFO(F("State -> Connected"));
+
 			_state = State::Connected;
 
 			sendAnnounce();
+
+			if (_pendingZDORequest) {
+				INFO(F("Sending pending ZDO request"));
+
+				processZDO(
+					_pendingZDORequest->dst64, _pendingZDORequest->dst16, _pendingZDORequest->clusterId,
+					_pendingZDORequest->frameData, _pendingZDORequest->frameDataLength
+				);
+
+				delete _pendingZDORequest;
+
+				_pendingZDORequest = nullptr;
+			}
 		}
 	}
 }
@@ -292,10 +314,10 @@ void DeviceManager::atCommandCallback(AtCommandResponse& command) {
 void DeviceManager::modemStatusCallback(ModemStatusResponse& status) {
 	switch (status.getStatus()) {
 		case HARDWARE_RESET:
-			DEBUG(F("Modem reset."));
+			INFO(F("Modem reset."));
 			break;
 		case ASSOCIATED:
-			DEBUG(F("Joined network."));
+			INFO(F("Joined network."));
 			if (_state == State::Connected) {
 				setCommandBuilder(buildReadDiagnosticsCommand);
 				sendAnnounce();
@@ -327,9 +349,21 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 	//DEBUG(F("profileId "), profileId, F(" srcEndpoint "), srcEndpoint, F(" dstEndpoint "), dstEndpoint, F(" clusterId "), clusterId, F(" remote addr "), resp.getRemoteAddress16());
 
 	if (profileId == 0x0000 && srcEndpoint == 0x00 && dstEndpoint == 0x00) {
-		/* ZDO command */
-		processZDO(resp.getRemoteAddress64(), resp.getRemoteAddress16(), clusterId, frameData,
-			frameDataLength);
+		if (_state == State::Connected) {
+			/* ZDO command */
+			processZDO(resp.getRemoteAddress64(), resp.getRemoteAddress16(), clusterId, frameData,
+				frameDataLength);
+		}
+		else {
+			INFO(F("Not connected, queueing ZDO request"));
+
+			if (_pendingZDORequest) {
+				delete _pendingZDORequest;
+			}
+
+			_pendingZDORequest = new PendingZDORequest(resp.getRemoteAddress64(), resp.getRemoteAddress16(), clusterId, frameData,
+				frameDataLength);
+		}
 	}
 	else if (profileId == ZHA_PROFILE_ID) {
 		auto frameBuffer = Memory(frameData, frameDataLength);
@@ -352,7 +386,7 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 		*/
 
 			if (request.frameControl().frameType() == FrameType::Global) {
-		        DEBUG(F("General command"));
+		        INFO(F("General command"));
 
 				Memory buffer(_payload);
 
@@ -395,74 +429,88 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 			}
 			if (request.frameControl().frameType() == FrameType::Cluster) {
 				auto cluster = device->getClusterById(clusterId);
-				auto commandId = request.commandIdentifier();
+				if (cluster) {
+					auto commandId = request.commandIdentifier();
 
-				DEBUG(F("Cluster "), clusterId, F(" specific command ID "), commandId);
+					INFO(F("Cluster "), clusterId, F(" specific command ID "), commandId);
 
-				if (request.frameControl().disableDefaultResponse()) {
-					WARN(F("Sending default response even though disable default response is set"));
+					if (request.frameControl().disableDefaultResponse()) {
+						WARN(F("Sending default response even though disable default response is set"));
+					}
+
+					Memory buffer(_payload);
+
+					Frame(
+						FrameControl(FrameType::Global, Direction::ToClient),
+						request.transactionSequenceNumber(),
+						(uint8_t)CommandIdentifier::DefaultResponse
+					).write(buffer);
+
+					buffer.writeUInt8(commandId);
+
+					cluster->processCommand(commandId, frameBuffer, buffer);
+
+					ZBExplicitTxRequest message(
+						resp.getRemoteAddress64(),
+						resp.getRemoteAddress16(),
+						0, // broadcastRadius
+						0, // option
+						buffer.getData(),
+						buffer.getPosition(),
+						_device.getNextFrameId(),
+						dstEndpoint,
+						srcEndpoint,
+						clusterId,
+						profileId
+					);
+
+					_device.send(message);
 				}
+				else {
+					ERROR(F("Request for unknown cluster "), clusterId);
 
-				Memory buffer(_payload);
-
-				Frame(
-					FrameControl(FrameType::Global, Direction::ToClient),
-					request.transactionSequenceNumber(),
-					(uint8_t)CommandIdentifier::DefaultResponse
-				).write(buffer);
-
-				buffer.writeUInt8(commandId);
-
-				cluster->processCommand(commandId, frameBuffer, buffer);
-
-				ZBExplicitTxRequest message(
-					resp.getRemoteAddress64(),
-					resp.getRemoteAddress16(),
-					0, // broadcastRadius
-					0, // option
-					buffer.getData(),
-					buffer.getPosition(),
-					_device.getNextFrameId(),
-					dstEndpoint,
-					srcEndpoint,
-					clusterId,
-					profileId
-				);
-
-				_device.send(message);
+					sendNotFound(resp);
+				}
 			}
 		}
 		else {
-			Memory buffer(_payload);
-
-			Frame(
-				FrameControl(FrameType::Global, Direction::ToClient, true),
-				request.transactionSequenceNumber(),
-				(uint8_t)CommandIdentifier::DefaultResponse
-			).write(buffer);
-
-			DefaultResponseFrame(
-				request.commandIdentifier(),
-				Status::NotFound
-			).write(buffer);
-
-			ZBExplicitTxRequest message(
-				resp.getRemoteAddress64(),
-				resp.getRemoteAddress16(),
-				0, // broadcastRadius
-				0, // option
-				buffer.getData(),
-				buffer.getPosition(),
-				_device.getNextFrameId(),
-				dstEndpoint,
-				srcEndpoint,
-				clusterId,
-				profileId
-			);
-
-			_device.send(message);
+			sendNotFound(resp);
 		}
 	}
+}
+
+void DeviceManager::sendNotFound(ZBExplicitRxResponse& resp) {
+	auto frameBuffer = Memory(resp.getFrameData(), resp.getFrameDataLength());
+	auto request = Frame::read(frameBuffer);
+
+	Memory buffer(_payload);
+
+	Frame(
+		FrameControl(FrameType::Global, Direction::ToClient, true),
+		request.transactionSequenceNumber(),
+		(uint8_t)CommandIdentifier::DefaultResponse
+	).write(buffer);
+
+	DefaultResponseFrame(
+		request.commandIdentifier(),
+		Status::NotFound
+	).write(buffer);
+
+	ZBExplicitTxRequest message(
+		resp.getRemoteAddress64(),
+		resp.getRemoteAddress16(),
+		0, // broadcastRadius
+		0, // option
+		buffer.getData(),
+		buffer.getPosition(),
+		_device.getNextFrameId(),
+		resp.getDstEndpoint(),
+		resp.getSrcEndpoint(),
+		resp.getClusterId(),
+		resp.getProfileId()
+	);
+
+	_device.send(message);
 }
 
 void DeviceManager::reportAttributes() {
@@ -584,6 +632,8 @@ void DeviceManager::begin(Stream& stream) {
 }
 
 void DeviceManager::performReset() {
+	INFO(F("State -> Resetting"));
+
 	_state = State::Resetting;
 
 	setCommandBuilder(buildResetCommand);
@@ -656,17 +706,17 @@ void DeviceManager::sendCurrentCommand() {
 }
 
 void DeviceManager::retrieveAssociationIndication() {
+	INFO(F("State -> Retrieving association indication"));
+
 	_state = State::RetrievingAssociationIndication;
 	_associationIndicationMillis = millis();
-
-	DEBUG(F("Requesting association indication"));
 
 	auto command = associationIndicationCommand();
 	_device.send(command);
 }
 
 void DeviceManager::retrieveConfiguration() {
-	DEBUG(F("Retrieving configuration"));
+	INFO(F("State -> Retrieving configuration"));
 
 	_state = State::RetrievingConfiguration;
 
@@ -677,6 +727,7 @@ void DeviceManager::retrieveConfiguration() {
 
 const __FlashStringHelper* DeviceManager::getAssociationIndicationDescription(uint8_t associationIndication) {
 	switch (associationIndication) {
+#if LOG_DEBUG
 	case 0x00: return F("Successfully formed or joined a network. (Coordinators form a network, routers and end devices join a network.)");
 	case 0x21: return F("Scan found no PANs");
 	case 0x22: return F("Scan found no valid PANs based on current SC and ID settings");
@@ -692,6 +743,7 @@ const __FlashStringHelper* DeviceManager::getAssociationIndicationDescription(ui
 	case 0xAD: return F("Secure join error - network security key not received");
 	case 0xAF: return F("Secure join error - joining device does not have the right preconfigured link key");
 	case 0xFF: return F("Scanning for a ZigBee network (routers and end devices)");
+#endif
 	default: return F("Unknown");
 	}
 }

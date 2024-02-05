@@ -26,6 +26,29 @@ class DeviceManager {
 		RetrievingAssociationIndication
 	};
 
+	class PendingZDORequest {
+	public:
+		PendingZDORequest(const XBeeAddress64& dst64, uint16_t dst16, uint16_t clusterId, uint8_t* frameData,
+			uint8_t frameDataLength)
+			: dst64(dst64),
+			  dst16(dst16),
+			  clusterId(clusterId),
+			  frameDataLength(frameDataLength) {
+			this->frameData = malloc(frameDataLength);
+			memcpy(this->frameData, frameData, frameDataLength);
+		}
+
+		~PendingZDORequest() {
+			free(frameData);
+		}
+
+		XBeeAddress64 dst64;
+		uint16_t dst16;
+		uint16_t clusterId;
+		uint8_t* frameData;
+		uint8_t frameDataLength;
+	};
+
 	static constexpr int AT_COMMAND_RETRY_MS = 1000;
 	static constexpr int ASSOCIATION_INDICATION_REFRESH_MS = 1000;
 	static constexpr time_t WAIT_FOR_DEFAULT_RESPONSE_TIMEOUT_MS = 120000ul; // 2 minutes
@@ -45,6 +68,7 @@ class DeviceManager {
 	time_t _lastSendMillis;
 	uint8_t _associationIndication;
 	time_t _associationIndicationMillis;
+	PendingZDORequest* _pendingZDORequest;
 
 	CallbackArgs<const __FlashStringHelper*> _setStatus;
 	CallbackArgs<ConnectionStatus> _setConnected;
@@ -59,6 +83,7 @@ public:
 	static constexpr uint16_t ANNOUNCE_BROADCAST_ADDR16 = 0xfffc;
 
 	DeviceManager();
+	~DeviceManager();
 
 	void resetDevice(uint8_t pin);
 	void begin(Stream& stream);
@@ -100,7 +125,8 @@ private:
 	void setCommandBuilder(command_builder_t commandBuilder);
 	bool sendNextCommand();
 	void sendCurrentCommand();
-	void retrieveAssociationIndication();	
+	void sendNotFound(ZBExplicitRxResponse& resp);
+	void retrieveAssociationIndication();
 	void retrieveConfiguration();
 
 	XBeeAddress64 getAddress();
