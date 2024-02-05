@@ -250,8 +250,10 @@ public:
     uint8_t getValue() { return _value; }
 
     void setValue(uint8_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -277,8 +279,10 @@ public:
     uint16_t getValue() { return _value; }
 
     void setValue(uint16_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -304,8 +308,10 @@ public:
     uint32_t getValue() { return _value; }
 
     void setValue(uint32_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -331,8 +337,10 @@ public:
     uint32_t getValue() { return _value; }
 
     void setValue(uint32_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -358,8 +366,10 @@ public:
     uint64_t getValue() { return _value; }
 
     void setValue(uint64_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -385,8 +395,10 @@ public:
     uint64_t getValue() { return _value; }
 
     void setValue(uint64_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -412,8 +424,10 @@ public:
     uint64_t getValue() { return _value; }
 
     void setValue(uint64_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -439,8 +453,10 @@ public:
     uint64_t getValue() { return _value; }
 
     void setValue(uint64_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -466,8 +482,10 @@ public:
     int8_t getValue() { return _value; }
 
     void setValue(int8_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -493,8 +511,10 @@ public:
     int16_t getValue() { return _value; }
 
     void setValue(int16_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -520,8 +540,10 @@ public:
     int32_t getValue() { return _value; }
 
     void setValue(int32_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -547,8 +569,10 @@ public:
     int32_t getValue() { return _value; }
 
     void setValue(int32_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -574,8 +598,10 @@ public:
     int64_t getValue() { return _value; }
 
     void setValue(int64_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -601,8 +627,10 @@ public:
     int64_t getValue() { return _value; }
 
     void setValue(int64_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -628,8 +656,10 @@ public:
     int64_t getValue() { return _value; }
 
     void setValue(int64_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -655,8 +685,10 @@ public:
     int64_t getValue() { return _value; }
 
     void setValue(int64_t value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -682,8 +714,10 @@ public:
     float getValue() { return _value; }
 
     void setValue(float value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -709,8 +743,10 @@ public:
     double getValue() { return _value; }
 
     void setValue(double value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
@@ -736,8 +772,10 @@ public:
     DateTime getValue() { return _value; }
 
     void setValue(DateTime value) {
-        _value = value;
-        markDirty();
+        if (_value != value) {
+            _value = value;
+            markDirty();
+        }
     }
 
     String toString() override {
