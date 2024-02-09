@@ -12,7 +12,7 @@ public:
     static constexpr uint8_t REPORT_BROADCAST = 0xff;
 
 	Attribute(uint16_t attributeId, DataType dataType) :
-		_dataType(dataType), _attributeId(attributeId), _dirty(false), _reportingEndpointId(0) {
+		_dataType(dataType), _attributeId(attributeId), _dirty(true), _reportingEndpointId(0) {
 	}
 	Attribute(const Attribute&) = delete;
     virtual ~Attribute() = default;
@@ -34,7 +34,7 @@ public:
 	Attribute& operator=(const Attribute&) = delete;
 
 protected:
-	void markDirty() { _dirty = true; }
+    void markDirty() { _dirty = true; }
 };
 
 enum class AttributeStringType : uint8_t {

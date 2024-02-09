@@ -15,6 +15,14 @@ P MGS-TYPE SPARE DATA-ID  DATA-VALUE
 #include <stdint.h>
 #include <Arduino.h>
 
+#ifndef ICACHE_RAM_ATTR
+#define ICACHE_RAM_ATTR
+#endif
+
+#ifndef IRAM_ATTR
+#define IRAM_ATTR ICACHE_RAM_ATTR
+#endif
+
 enum class OpenThermResponseStatus {
 	None,
 	Success,
@@ -106,6 +114,7 @@ enum class OpenThermStatus {
 
 struct OpenThermMessage
 {
+	OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type);
 	OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type, uint16_t payload);
 	OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type, uint8_t lb, uint8_t hb);
 	OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type, float payload);
@@ -128,7 +137,7 @@ class OpenTherm
 {
 public:
 	OpenTherm(uint8_t inPin, uint8_t outPin, bool isSlave);
-	void begin(void(*handleInterruptCallback)(), void(*processResponseCallback)(OpenThermFrame_t, OpenThermResponseStatus) = nullptr);
+	void begin(void(*handleInterruptCallback)(), void(*processResponseCallback)(OpenThermMessage, OpenThermResponseStatus) = nullptr);
 	bool isReady() const;
 	void sendResponse(OpenThermMessage message);
 	bool trySendRequest(OpenThermMessage message);
@@ -150,7 +159,7 @@ private:
 	volatile byte _responseBitIndex;
 
 	void(*_handleInterruptCallback)();
-	void(*_processResponseCallback)(OpenThermFrame_t, OpenThermResponseStatus);
+	void(*_processResponseCallback)(OpenThermMessage, OpenThermResponseStatus);
 
 	void sendFrame(OpenThermFrame_t frame);
 	void sendBit(bool high) const;

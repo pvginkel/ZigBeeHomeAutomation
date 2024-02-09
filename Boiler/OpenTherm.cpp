@@ -4,14 +4,10 @@ Copyright 2018, Ihor Melnyk
 */
 
 #include "OpenTherm.h"
+#include "Support.h"
 
-#ifndef ICACHE_RAM_ATTR
-#define ICACHE_RAM_ATTR
-#endif
-
-#ifndef IRAM_ATTR
-#define IRAM_ATTR ICACHE_RAM_ATTR
-#endif
+OpenThermMessage::OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type)
+	: id(id), type(type), payload(0) { }
 
 OpenThermMessage::OpenThermMessage(OpenThermMessageID id, OpenThermMessageType type, uint16_t payload)
 	: id(id), type(type), payload(payload) { }
@@ -34,9 +30,13 @@ uint8_t OpenThermMessage::getLB() const
 
 float OpenThermMessage::getFloat() const
 {
-	const auto sign = payload & (1 << 15) ? -1.0f : 0.0f;
-	const auto value = uint16_t(payload & ~(1 << 15));
-	return sign * float(value) / 256.0f;
+	auto value = payload;
+
+	if (value & 0x8000) {
+		value = 0x10000L - value;
+	}
+
+	return value / 256.0f;
 }
 
 uint16_t OpenThermMessage::serializeFloat(float value)
@@ -61,7 +61,7 @@ OpenTherm::OpenTherm(uint8_t inPin, uint8_t outPin, bool isSlave):
 	_handleInterruptCallback(nullptr),
 	_processResponseCallback(nullptr) { }
 
-void OpenTherm::begin(void(*handleInterruptCallback)(), void(*processResponseCallback)(OpenThermFrame_t, OpenThermResponseStatus))
+void OpenTherm::begin(void(*handleInterruptCallback)(), void(*processResponseCallback)(OpenThermMessage, OpenThermResponseStatus))
 {
 	pinMode(_inPin, INPUT);
 	pinMode(_outPin, OUTPUT);
@@ -132,6 +132,11 @@ void OpenTherm::sendResponse(OpenThermMessage message)
 
 void OpenTherm::sendFrame(OpenThermFrame_t frame)
 {
+#if LOG_DEBUG
+	Serial.print(F("Sending frame "));
+	Serial.println(frame, HEX);
+#endif
+
 	_status = OpenThermStatus::RequestSending;
 	_response = 0;
 	_responseStatus = OpenThermResponseStatus::None;
@@ -156,10 +161,9 @@ OpenThermResponseStatus OpenTherm::getLastResponseStatus()
 
 void IRAM_ATTR OpenTherm::handleInterrupt()
 {
-	if (isReady())
-	{
+	if (isReady()) {
 		if (_isSlave && readState() == HIGH) {
-		   _status = OpenThermStatus::ResponseWaiting;
+			_status = OpenThermStatus::ResponseWaiting;
 		}
 		else {
 			return;
@@ -167,6 +171,7 @@ void IRAM_ATTR OpenTherm::handleInterrupt()
 	}
 
 	const auto newTs = micros();
+
 	if (_status == OpenThermStatus::ResponseWaiting) {
 		if (readState() == HIGH) {
 			_status = OpenThermStatus::ResponseStartBit;
@@ -218,21 +223,29 @@ void OpenTherm::process()
 		_status = OpenThermStatus::Ready;
 		_responseStatus = OpenThermResponseStatus::Timeout;
 		if (_processResponseCallback != nullptr) {
-			_processResponseCallback(_response, _responseStatus);
+			_processResponseCallback(deserializeMessage(_response), _responseStatus);
 		}
 	}
 	else if (st == OpenThermStatus::ResponseInvalid) {
 		_status = OpenThermStatus::Delay;
 		_responseStatus = OpenThermResponseStatus::Invalid;
 		if (_processResponseCallback != nullptr) {
-			_processResponseCallback(_response, _responseStatus);
+			_processResponseCallback(deserializeMessage(_response), _responseStatus);
 		}
 	}
 	else if (st == OpenThermStatus::ResponseReady) {
 		_status = OpenThermStatus::Delay;
 		_responseStatus = !parity(_response) ? OpenThermResponseStatus::Success : OpenThermResponseStatus::Invalid;
+
+#if LOG_DEBUG
+		if (_responseStatus == OpenThermResponseStatus::Success) {
+			Serial.print(F("Received "));
+			Serial.println(_response, HEX);
+		}
+#endif
+
 		if (_processResponseCallback != nullptr) {
-			_processResponseCallback(_response, _responseStatus);
+			_processResponseCallback(deserializeMessage(_response), _responseStatus);
 		}
 	}
 	else if (st == OpenThermStatus::Delay) {
@@ -255,7 +268,7 @@ OpenThermFrame_t OpenTherm::parity(OpenThermFrame_t frame)
 		frame = frame >> 1;
 	}
 
-	return (p & 1) << 31;
+	return (p & 1ul) << 31;
 }
 
 void OpenTherm::end() const {

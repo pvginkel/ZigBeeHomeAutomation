@@ -121,6 +121,8 @@ private:
 	void atCommandCallback(AtCommandResponse& command);
 	void modemStatusCallback(ModemStatusResponse& status);
 	void explicitRxCallback(ZBExplicitRxResponse& resp);
+	void processZHAGlobal(ZBExplicitRxResponse& resp, Device* device, Frame& request, Memory& frameBuffer);
+	void processZHACluster(ZBExplicitRxResponse& resp, Device* device, Frame& request, Memory& frameBuffer);
 
 	void setCommandBuilder(command_builder_t commandBuilder);
 	bool sendNextCommand();

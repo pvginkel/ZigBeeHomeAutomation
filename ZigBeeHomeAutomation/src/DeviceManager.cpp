@@ -351,8 +351,7 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 	if (profileId == 0x0000 && srcEndpoint == 0x00 && dstEndpoint == 0x00) {
 		if (_state == State::Connected) {
 			/* ZDO command */
-			processZDO(resp.getRemoteAddress64(), resp.getRemoteAddress16(), clusterId, frameData,
-				frameDataLength);
+			processZDO(resp.getRemoteAddress64(), resp.getRemoteAddress16(), clusterId, frameData, frameDataLength);
 		}
 		else {
 			INFO(F("Not connected, queueing ZDO request"));
@@ -372,110 +371,126 @@ void DeviceManager::explicitRxCallback(ZBExplicitRxResponse& resp) {
 		Device* device = getDeviceByEndpoint(dstEndpoint);
 		if (device) {
 			/* Frame layout
-		  ---------------------------------------------------------------------
-		  |    Bits: 8     |   0/16   |    8     |    8       |   Variable    |
-		  |-------------------------------------------------------------------|
-		  | Frame Control  | MFR code | Frame ID | Command ID | Frame Payload |
-		  Frame Control Field
-		  ---------------------------------------------------------------------
-		  --------------------------------------------------------------------------------
-		  }  Bits: 3  |            1             |     1     |       1      |      2     |
-		  |------------------------------------------------------------------------------|
-		  | Reserverd | Disable Default Response | Direction | MFR specific | Frame Type |
-		  --------------------------------------------------------------------------------
-		*/
+			  ---------------------------------------------------------------------
+			  |    Bits: 8     |   0/16   |    8     |    8       |   Variable    |
+			  |-------------------------------------------------------------------|
+			  | Frame Control  | MFR code | Frame ID | Command ID | Frame Payload |
+			  Frame Control Field
+			  ---------------------------------------------------------------------
+			  --------------------------------------------------------------------------------
+			  }  Bits: 3  |            1             |     1     |       1      |      2     |
+			  |------------------------------------------------------------------------------|
+			  | Reserverd | Disable Default Response | Direction | MFR specific | Frame Type |
+			  --------------------------------------------------------------------------------
+			*/
+			switch (request.frameControl().frameType()) {
+			case FrameType::Global:
+				processZHAGlobal(resp, device, request, frameBuffer);
+				break;
 
-			if (request.frameControl().frameType() == FrameType::Global) {
-		        INFO(F("General command"));
+			case FrameType::Cluster:
+				processZHACluster(resp, device, request, frameBuffer);
+				break;
 
-				Memory buffer(_payload);
-
-				if (request.commandIdentifier() == (int)CommandIdentifier::DefaultResponse) {
-					WARN(F("Received a default response without a recipient"));
-					return;
-				}
-
-				auto status = device->processGeneralCommand(*this, request, frameBuffer, resp, buffer);
-				if (status != Status::Success) {
-					buffer.setPosition(0);
-
-					Frame(
-						FrameControl(FrameType::Global, Direction::ToClient, true),
-						request.transactionSequenceNumber(),
-						(uint8_t)CommandIdentifier::DefaultResponse
-					).write(buffer);
-
-					DefaultResponseFrame(
-						request.commandIdentifier(),
-						status
-					).write(buffer);
-				}
-
-				ZBExplicitTxRequest message(
-					resp.getRemoteAddress64(),
-					resp.getRemoteAddress16(),
-					0, // broadcastRadius
-					0, // option
-					buffer.getData(),
-					buffer.getPosition(),
-					_device.getNextFrameId(),
-					dstEndpoint,
-					srcEndpoint,
-					clusterId,
-					profileId
-				);
-
-				_device.send(message);
-			}
-			if (request.frameControl().frameType() == FrameType::Cluster) {
-				auto cluster = device->getClusterById(clusterId);
-				if (cluster) {
-					auto commandId = request.commandIdentifier();
-
-					INFO(F("Cluster "), clusterId, F(" specific command ID "), commandId);
-
-					if (request.frameControl().disableDefaultResponse()) {
-						WARN(F("Sending default response even though disable default response is set"));
-					}
-
-					Memory buffer(_payload);
-
-					Frame(
-						FrameControl(FrameType::Global, Direction::ToClient),
-						request.transactionSequenceNumber(),
-						(uint8_t)CommandIdentifier::DefaultResponse
-					).write(buffer);
-
-					buffer.writeUInt8(commandId);
-
-					cluster->processCommand(commandId, frameBuffer, buffer);
-
-					ZBExplicitTxRequest message(
-						resp.getRemoteAddress64(),
-						resp.getRemoteAddress16(),
-						0, // broadcastRadius
-						0, // option
-						buffer.getData(),
-						buffer.getPosition(),
-						_device.getNextFrameId(),
-						dstEndpoint,
-						srcEndpoint,
-						clusterId,
-						profileId
-					);
-
-					_device.send(message);
-				}
-				else {
-					ERROR(F("Request for unknown cluster "), clusterId);
-
-					sendNotFound(resp);
-				}
+			default:
+				sendNotFound(resp);
+				break;
 			}
 		}
 		else {
 			sendNotFound(resp);
 		}
+	}
+}
+
+void DeviceManager::processZHAGlobal(ZBExplicitRxResponse& resp, Device* device, Frame& request, Memory& frameBuffer) {
+	INFO(F("General command"));
+
+	Memory buffer(_payload);
+
+	if (request.commandIdentifier() == (int)CommandIdentifier::DefaultResponse) {
+		WARN(F("Received a default response without a recipient"));
+		return;
+	}
+
+	auto status = device->processGeneralCommand(*this, request, frameBuffer, resp, buffer);
+	if (status != Status::Success) {
+		buffer.setPosition(0);
+
+		Frame(
+			FrameControl(FrameType::Global, Direction::ToClient, true),
+			request.transactionSequenceNumber(),
+			(uint8_t)CommandIdentifier::DefaultResponse
+		).write(buffer);
+
+		DefaultResponseFrame(
+			request.commandIdentifier(),
+			status
+		).write(buffer);
+	}
+
+	ZBExplicitTxRequest message(
+		resp.getRemoteAddress64(),
+		resp.getRemoteAddress16(),
+		0, // broadcastRadius
+		0, // option
+		buffer.getData(),
+		buffer.getPosition(),
+		_device.getNextFrameId(),
+		resp.getDstEndpoint(),
+		resp.getSrcEndpoint(),
+		resp.getClusterId(),
+		resp.getProfileId()
+	);
+
+	_device.send(message);
+}
+
+void DeviceManager::processZHACluster(ZBExplicitRxResponse& resp, Device* device, Frame& request, Memory& frameBuffer) {
+	const auto clusterId = resp.getClusterId();
+
+	auto cluster = device->getClusterById(clusterId);
+	if (cluster) {
+		auto commandId = request.commandIdentifier();
+
+		INFO(F("Cluster "), clusterId, F(" specific command ID "), commandId);
+
+		if (request.frameControl().disableDefaultResponse()) {
+			WARN(F("Sending default response even though disable default response is set"));
+		}
+
+		Memory buffer(_payload);
+
+		Frame(
+			FrameControl(FrameType::Global, Direction::ToClient),
+			request.transactionSequenceNumber(),
+			(uint8_t)CommandIdentifier::DefaultResponse
+		).write(buffer);
+
+		buffer.writeUInt8(commandId);
+
+		cluster->processCommand(commandId, frameBuffer, buffer);
+
+		ZBExplicitTxRequest message(
+			resp.getRemoteAddress64(),
+			resp.getRemoteAddress16(),
+			0, // broadcastRadius
+			0, // option
+			buffer.getData(),
+			buffer.getPosition(),
+			_device.getNextFrameId(),
+			resp.getDstEndpoint(),
+			resp.getSrcEndpoint(),
+			clusterId,
+			resp.getProfileId()
+		);
+
+		_device.send(message);
+	}
+	else {
+		ERROR(F("Request for unknown cluster "), clusterId);
+
+		sendNotFound(resp);
 	}
 }
 

@@ -35,10 +35,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{0d670976-08e1-4580-9cac-7ccba4b58928}</ProjectGuid>
+    <ProjectGuid>{0ee65767-b651-4a06-861c-6fe46177dc9e}</ProjectGuid>
     <Keyword>Linux</Keyword>
-    <RootNamespace>Thermostat</RootNamespace>
-    <ProjectName>Thermostat</ProjectName>
+    <RootNamespace>Boiler</RootNamespace>
+    <ProjectName>Boiler</ProjectName>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ApplicationType>Linux</ApplicationType>
     <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
@@ -72,7 +72,9 @@
     <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
   <ImportGroup Label="ExtensionSettings" />
-  <ImportGroup Label="Shared" />
+  <ImportGroup Label="Shared">
+    <Import Project="..\ZigBeeHomeAutomation\ZigBeeHomeAutomation.vcxitems" Label="Shared" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
     <LinuxIncludePath>c:\visualmicro\ignore</LinuxIncludePath>
@@ -80,11 +82,13 @@
     <TargetOSAndVersion>Arduino</TargetOSAndVersion>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="OpenTherm.cpp" />
-    <ClCompile Include="Thermostat.ino">
+    <ClCompile Include="Boiler.ino">
       <FileType>CppCode</FileType>
       <DeploymentContent>true</DeploymentContent>
     </ClCompile>
+    <ClCompile Include="OpenTherm.cpp" />
+    <ClCompile Include="OpenThermCluster.cpp" />
+    <ClCompile Include="OpenThermMaster.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\arduino folders read me.txt">
@@ -94,27 +98,30 @@
     <ProjectCapability Include="VisualMicro" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Configuration.h" />
     <ClInclude Include="OpenTherm.h" />
-    <ClInclude Include="__vm\.Thermostat.vsarduino.h" />
+    <ClInclude Include="OpenThermCluster.h" />
+    <ClInclude Include="OpenThermMaster.h" />
+    <ClInclude Include="__vm\.Boiler.vsarduino.h" />
   </ItemGroup>
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\megaavr\\1.8.8\\cores\\arduino\api\deprecated;$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\megaavr\\1.8.8\\cores\\arduino;$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\megaavr\\1.8.8\\variants\\nona4809;$(ProjectDir)..\..\..\..\users\pvgin\appdata\local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\..\users\pvgin\appdata\local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\7.3.0\include-fixed;$(ProjectDir)..\..\..\..\users\pvgin\appdata\local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include</IncludePath>
+    <IncludePath>$(ProjectDir)..\Boiler;$(ProjectDir)..\ZigBeeHomeAutomation\src;$(ProjectDir)..\..\..\..\Users\pvgin\Documents\Arduino\libraries\XBee-Arduino_library;$(ProjectDir)..\..\..\..\Users\pvgin\Documents\Arduino\libraries\Bounce2\src;$(ProjectDir)..\..\..\..\Users\pvgin\AppData\Local\Arduino15\packages\arduino\hardware\megaavr\1.8.8\libraries\EEPROM\src;$(ProjectDir)..\..\..\..\Users\pvgin\Documents\Arduino\libraries\XBee-Arduino_library\utility;$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\megaavr\\1.8.8\\cores\\arduino\api\deprecated;$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\megaavr\\1.8.8\\cores\\arduino;$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\megaavr\\1.8.8\\variants\\nona4809;$(ProjectDir)..\..\..\..\users\pvgin\appdata\local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\..\users\pvgin\appdata\local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\7.3.0\include-fixed;$(ProjectDir)..\..\..\..\users\pvgin\appdata\local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include;$(ProjectDir)..\ZigBeeHomeAutomation\src;$(ProjectDir)..\..\..\..\Users\pvgin\Documents\Arduino\libraries\XBee-Arduino_library;$(ProjectDir)..\..\..\..\Users\pvgin\Documents\Arduino\libraries\Bounce2\src;$(ProjectDir)..\..\..\..\Users\pvgin\AppData\Local\Arduino15\packages\arduino\hardware\megaavr\1.8.8\libraries\EEPROM\src</IncludePath>
     <RemoteCCompileToolExe>$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino5\bin\avr-g++</RemoteCCompileToolExe>
     <RemoteCppCompileToolExe>$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino5\bin\avr-g++</RemoteCppCompileToolExe>
     <ValidateArchitecture>false</ValidateArchitecture>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\megaavr\\1.8.8\\cores\\arduino\api\deprecated;$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\megaavr\\1.8.8\\cores\\arduino;$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\megaavr\\1.8.8\\variants\\nona4809;$(ProjectDir)..\..\..\..\users\pvgin\appdata\local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\..\users\pvgin\appdata\local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\7.3.0\include-fixed;$(ProjectDir)..\..\..\..\users\pvgin\appdata\local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Boiler;$(ProjectDir)..\ZigBeeHomeAutomation\src;$(ProjectDir)..\..\..\..\Users\pvgin\Documents\Arduino\libraries\XBee-Arduino_library;$(ProjectDir)..\..\..\..\Users\pvgin\Documents\Arduino\libraries\Bounce2\src;$(ProjectDir)..\..\..\..\Users\pvgin\AppData\Local\Arduino15\packages\arduino\hardware\megaavr\1.8.8\libraries\EEPROM\src;$(ProjectDir)..\..\..\..\Users\pvgin\Documents\Arduino\libraries\XBee-Arduino_library\utility;$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\megaavr\\1.8.8\\cores\\arduino\api\deprecated;$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\megaavr\\1.8.8\\cores\\arduino;$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\megaavr\\1.8.8\\variants\\nona4809;$(ProjectDir)..\..\..\..\users\pvgin\appdata\local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\..\users\pvgin\appdata\local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\7.3.0\include-fixed;$(ProjectDir)..\..\..\..\users\pvgin\appdata\local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include;$(ProjectDir)..\ZigBeeHomeAutomation\src;$(ProjectDir)..\..\..\..\Users\pvgin\Documents\Arduino\libraries\XBee-Arduino_library;$(ProjectDir)..\..\..\..\Users\pvgin\Documents\Arduino\libraries\Bounce2\src;$(ProjectDir)..\..\..\..\Users\pvgin\AppData\Local\Arduino15\packages\arduino\hardware\megaavr\1.8.8\libraries\EEPROM\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GccToolChain>$(ProjectDir)..\..\..\..\\Users\\pvgin\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino5\bin\avr-g++</GccToolChain>
       <CppLanguageStandard>gnu++11</CppLanguageStandard>
       <CLanguageStandard>gnu11</CLanguageStandard>
       <CAdditionalWarning />
       <CppAdditionalWarning />
-      <ForcedIncludeFiles>$(ProjectDir)..\..\..\..\program files\microsoft visual studio\2022\community\common7\ide\extensions\rcnsurna.zh5\Micro Platforms\default\vm-intelli-pre.h;$(ProjectDir)..\..\..\..\Users\pvgin\AppData\Local\Temp\VMBuilds\Thermostat\nona4809\Release\.vmintelli\16eb003d0fea7959eec4739e21f24d55\vm-intelli-gcc-defines.h;$(ProjectDir)..\..\..\..\program files\microsoft visual studio\2022\community\common7\ide\extensions\rcnsurna.zh5\Micro Platforms\default\vm-intelli-post.h;$(ProjectDir)__vm\.Thermostat.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles>$(ProjectDir)..\..\..\..\program files\microsoft visual studio\2022\community\common7\ide\extensions\rcnsurna.zh5\Micro Platforms\default\vm-intelli-pre.h;$(ProjectDir)..\..\..\..\Users\pvgin\AppData\Local\Temp\VMBuilds\Boiler\nona4809\Release\.vmintelli\16eb003d0fea7959eec4739e21f24d55\vm-intelli-gcc-defines.h;$(ProjectDir)..\..\..\..\program files\microsoft visual studio\2022\community\common7\ide\extensions\rcnsurna.zh5\Micro Platforms\default\vm-intelli-post.h;$(ProjectDir)__vm\.Boiler.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <UndefineAllPreprocessorDefinitions>true</UndefineAllPreprocessorDefinitions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <PreprocessorDefinitions>_VMICRO_INTELLISENSE;__AVR_atmega4809__;__MEGAAVR_ATmega4809__;__AVR_ATmega4809__;F_CPU=16000000L;ARDUINO=108010;ARDUINO_AVR_NANO_EVERY;ARDUINO_ARCH_MEGAAVR;AVR_NANO_4809_328MODE;MILLIS_USE_TIMERB3;NO_EXTERNAL_I2C_PULLUP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -122,4 +129,9 @@
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties arduino.upload.port="COM12" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
