@@ -6,11 +6,11 @@ constexpr uint8_t IO_PB = 2;
 constexpr uint8_t IO_STATUS_LED = 3;
 constexpr uint8_t IO_XBEE_RESET = 15;
 constexpr uint8_t IO_POT = A3;
-constexpr uint8_t IO_BUTTON_1 = 10;
-constexpr uint8_t IO_BUTTON_2 = 16;
+constexpr uint8_t IO_BUTTON_1 = 7;
+constexpr uint8_t IO_BUTTON_2 = 8;
 constexpr uint8_t IO_BUTTON_3 = 9;
-constexpr uint8_t IO_BUTTON_4 = 8;
-constexpr uint8_t IO_BUTTON_5 = 7;
+constexpr uint8_t IO_BUTTON_4 = 16;
+constexpr uint8_t IO_BUTTON_5 = 10;
 
 DeviceManager deviceManager;
 BasicDevice remoteDevice(1, 1, PowerSource::DCSource);
