@@ -27,7 +27,7 @@ public:
 
 	Status onOnCommand() override {
 		INFO(F("Lamp on"));
-		light.setLevel(1);
+		light.setLevel(0.1);
 		return Status::Success;
 	}
 
