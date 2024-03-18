@@ -202,12 +202,13 @@ const tzLocal = Object.fromEntries(
 
     if (attribute.canSet) {
       result.convertSet = async (entity, key, value, meta) => {
+        let publishValue = value;
         if (attribute.scale) {
-          value = (value / attribute.scale) | 0;
+          publishValue = (publishValue / attribute.scale) | 0;
         }
 
         await entity.write("genOnOff", {
-          [attribute.msg]: { value, type: attribute.type },
+          [attribute.msg]: { publishValue, type: attribute.type },
         });
 
         return { state: { [name]: value } };

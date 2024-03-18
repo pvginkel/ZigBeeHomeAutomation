@@ -40,6 +40,24 @@ const fzLocal = {
       return result;
     },
   },
+
+  filteredTemperature: {
+    ...fz.temperature,
+    convert: (model, msg, publish, options, meta) => {
+      if (msg.data.measuredValue != 0) {
+          return fz.temperature.convert(model, msg, publish, options, meta);
+      }
+    }
+  },
+
+  filteredHumidity: {
+    ...fz.humidity,
+    convert: (model, msg, publish, options, meta) => {
+      if (msg.data.measuredValue != 0) {
+          return fz.humidity.convert(model, msg, publish, options, meta);
+      }
+    }
+  }
 };
 
 const definition = {
@@ -47,7 +65,7 @@ const definition = {
   model: "Sensors",
   vendor: "Pieter",
   description: "Temperature, humidity and photoresistor sensors",
-  fromZigbee: [fz.temperature, fz.humidity, fzLocal.illuminance],
+  fromZigbee: [fzLocal.filteredTemperature, fzLocal.filteredHumidity, fzLocal.illuminance],
   toZigbee: [],
   meta: { multiEndpoint: true },
   exposes: [

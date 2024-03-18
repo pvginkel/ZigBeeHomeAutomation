@@ -7,12 +7,32 @@ const utils = require("zigbee-herdsman-converters/lib/utils");
 const e = exposes.presets;
 const ea = exposes.access;
 
+const fzLocal = {
+  filteredTemperature: {
+    ...fz.temperature,
+    convert: (model, msg, publish, options, meta) => {
+      if (msg.data.measuredValue != 0) {
+          return fz.temperature.convert(model, msg, publish, options, meta);
+      }
+    }
+  },
+
+  filteredHumidity: {
+    ...fz.humidity,
+    convert: (model, msg, publish, options, meta) => {
+      if (msg.data.measuredValue != 0) {
+          return fz.humidity.convert(model, msg, publish, options, meta);
+      }
+    }
+  }
+};
+
 const definition = {
   zigbeeModel: ["DHT22 Sensor"],
   model: "DHT22 Sensor",
   vendor: "Pieter",
   description: "Temperature and humidity sensor",
-  fromZigbee: [fz.temperature, fz.humidity],
+  fromZigbee: [fzLocal.filteredTemperature, fzLocal.filteredHumidity],
   toZigbee: [],
   exposes: [e.temperature(), e.humidity()],
   configure: async (device, coordinatorEndpoint, logger) => {
