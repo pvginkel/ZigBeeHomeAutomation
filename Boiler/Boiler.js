@@ -2,8 +2,8 @@ const fz = require("zigbee-herdsman-converters/converters/fromZigbee");
 const tz = require("zigbee-herdsman-converters/converters/toZigbee");
 const exposes = require("zigbee-herdsman-converters/lib/exposes");
 const reporting = require("zigbee-herdsman-converters/lib/reporting");
-const extend = require("zigbee-herdsman-converters/lib/extend");
 const utils = require("zigbee-herdsman-converters/lib/utils");
+const logger = require("zigbee-herdsman-converters/lib/logger").logger;
 const e = exposes.presets;
 const ea = exposes.access;
 
@@ -208,7 +208,7 @@ const tzLocal = Object.fromEntries(
         }
 
         await entity.write("genOnOff", {
-          [attribute.msg]: { publishValue, type: attribute.type },
+          [attribute.msg]: { value: publishValue, type: attribute.type },
         });
 
         return { state: { [name]: value } };
@@ -268,18 +268,22 @@ const definition = {
      * event to send the reporting configuration again.
      */
     if (type === "deviceAnnounce") {
+      logger.info("Reconfiguring boiler reporting endpoints");
+
       for (const endpoint of device.endpoints) {
         for (const c of endpoint.configuredReportings) {
           let attribute = c.attribute.name;
 
           // The endpoint configuration doesn't store the type. We have
           // to re-retrieve it from our metadata.
-          if (!attribute) {
+
+          let attributeMetadata = Object.values(attributes).find(
+            (p) => p.msg === c.attribute.ID
+          );
+          if (attributeMetadata !== undefined) {
             attribute = {
               ID: c.attribute.ID,
-              type: Object.values(attributes).find(
-                (p) => p.msg === c.attribute.ID
-              ).type,
+              type: attributeMetadata.type,
             };
           }
 
